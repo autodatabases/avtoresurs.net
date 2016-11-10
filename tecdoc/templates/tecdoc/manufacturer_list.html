@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block  title %}
+    Марки автомобилей avtoresurs.net
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <!-- BREADCRUMBS -->
+        <div class="row">
+            <nav>
+                <div class="nav-wrapper">
+                    <div class="col s12  blue-grey lighten-3">
+                        <a href="/" class="breadcrumb">Главная</a>
+                        <a href="/parts" class="breadcrumb">Каталог автопроизводителей</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Header -->
+        <div class="row">
+            <div class="col s12">
+                <div class="card-panel">
+                    <h5>Каталог автопроизводителей</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="main-content">
+        <table class="table manufacturers">
+            {% for mnf in manufacturer_list %}
+                {% if forloop.counter0|divisibleby:3 %}
+                    <tr>
+                {% endif %}
+            <td><a href="{% url 'tecdoc:manufacturer' mnf.id %}">{{ mnf }}</a></td>
+            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <nav>
+                <div class="nav-wrapper">
+                    <div class="col s12  blue-grey lighten-3">
+                        <a href="/" class="breadcrumb">Главная</a>
+                        <a href="/shop" class="breadcrumb">Интернет-магазин</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <div class="card-panel">
+                    <h5>Онлайн каталог запчастей</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s4 offset-s2 hoverable">
+                <blockquote>
+                    Поиск по наименованию/номеру детали
+                </blockquote>
+                <div class="row">
+                    <form action="" class="col s12">
+                        <div class="input-field">
+                            <input placeholder="" id="first_name" type="text" class="validate">
+                            <label for="first_name">Номер детали</label>
+                        </div>
+                        <button class="btn waves-effect waves-light deep-purple darken-1" type="submit" name="action">
+                            Поиск по базе
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="col s4 hoverable">
+                <blockquote>
+                    Выбор детали по каталогу
+                </blockquote>
+                <a href="/parts">
+                    <img class="responsive-img" src="{% static 'main/images/autoparts.jpg' %}">
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

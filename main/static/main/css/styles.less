@@ -1,0 +1,43 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+@color_input_text: #3f51b5;
+
+.icon-block {
+  padding: 0 15px;
+}
+
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+/* label color */
+//.input-field label {
+//  color: @color_input_text;
+//}
+
+.input-field input[type=text] {
+  color: @color_input_text;
+}
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+  color: @color_input_text;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid @color_input_text;
+  box-shadow: 0 1px 0 0 @color_input_text;
+}
+
+/* valid color */
+.input-field input[type=text].valid {
+  border-bottom: 1px solid @color_input_text;
+  box-shadow: 0 1px 0 0 @color_input_text;
+}

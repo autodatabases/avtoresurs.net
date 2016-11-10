@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block  title %}{{ manufacturer }} avtoresurs.net{% endblock %}
+
+
+{% block content %}
+
+    <!-- BREADCRUMBS -->
+    <div class="breadcrumb_wrap">
+        <ul class="breadcrumb">
+            <li><a href="/" class="homepage-link">Главная</a></li>
+            <li><a href="{% url 'tecdoc:manufacturers' %}" class="homepage-link">
+                Каталог запчастей
+            </a></li>
+            <li><span class="page-title">{{ manufacturer }}</span></li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <h2 class="page_heading">Выбор модели автотранспорта<span id="cart_loader"></span></h2>
+
+    <div class="main-content">
+
+
+        <style>
+
+        </style>
+
+        <div class="table-tecdoc manufacturers detail">
+            <div class="row-tecdoc">
+                <div class="cell-tecdoc"><p class="cell-tecdoc-header">#</p></div>
+                <div class="cell-tecdoc"><p class="cell-tecdoc-header">Марка</p></div>
+                <div class="cell-tecdoc"><p class="cell-tecdoc-header">Модель</p></div>
+                <div class="cell-tecdoc"><p class="cell-tecdoc-header">Начало выпуска</p></div>
+                <div class="cell-tecdoc"><p class="cell-tecdoc-header">Окончание выпуска</p></div>
+            </div>
+            {% for model in manufacturer.carmodel_set.all %}
+                <a class="row-tecdoc" href="{% url 'tecdoc:models' manufacturer.id model.id %}">
+                    <div class="cell-tecdoc"><p>{{ forloop.counter }}</p></div>
+                    <div class="cell-tecdoc"><p>{{ model.manufacturer }}</p></div>
+                    <div class="cell-tecdoc"><p>{{ model.designation }}</p></div>
+                    <div class="cell-tecdoc">
+                        <p>{{ model.get_datestart }}</p>
+                    </div>
+                    <div class="cell-tecdoc"><p>
+                        <p>{{ model.get_dateend }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+
+
+    </div>
+
+{% endblock %}
