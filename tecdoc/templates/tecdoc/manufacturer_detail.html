@@ -5,51 +5,53 @@
 
 {% block content %}
 
-    <!-- BREADCRUMBS -->
-    <div class="breadcrumb_wrap">
-        <ul class="breadcrumb">
-            <li><a href="/" class="homepage-link">Главная</a></li>
-            <li><a href="{% url 'tecdoc:manufacturers' %}" class="homepage-link">
-                Каталог запчастей
-            </a></li>
-            <li><span class="page-title">{{ manufacturer }}</span></li>
-        </ul>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <h2 class="page_heading">Выбор модели автотранспорта<span id="cart_loader"></span></h2>
-
-    <div class="main-content">
-
-
-        <style>
-
-        </style>
-
-        <div class="table-tecdoc manufacturers detail">
-            <div class="row-tecdoc">
-                <div class="cell-tecdoc"><p class="cell-tecdoc-header">#</p></div>
-                <div class="cell-tecdoc"><p class="cell-tecdoc-header">Марка</p></div>
-                <div class="cell-tecdoc"><p class="cell-tecdoc-header">Модель</p></div>
-                <div class="cell-tecdoc"><p class="cell-tecdoc-header">Начало выпуска</p></div>
-                <div class="cell-tecdoc"><p class="cell-tecdoc-header">Окончание выпуска</p></div>
-            </div>
-            {% for model in manufacturer.carmodel_set.all %}
-                <a class="row-tecdoc" href="{% url 'tecdoc:models' manufacturer.id model.id %}">
-                    <div class="cell-tecdoc"><p>{{ forloop.counter }}</p></div>
-                    <div class="cell-tecdoc"><p>{{ model.manufacturer }}</p></div>
-                    <div class="cell-tecdoc"><p>{{ model.designation }}</p></div>
-                    <div class="cell-tecdoc">
-                        <p>{{ model.get_datestart }}</p>
+    <div class="container">
+        <!-- BREADCRUMBS -->
+        <div class="row">
+            <nav>
+                <div class="nav-wrapper">
+                    <div class="col s12  blue-grey lighten-3">
+                        <a href="/" class="breadcrumb">Главная</a>
+                        <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
+                        <a href="" class="breadcrumb">{{ manufacturer }}</a>
                     </div>
-                    <div class="cell-tecdoc"><p>
-                        <p>{{ model.get_dateend }}</p>
-                    </div>
-                </a>
-            {% endfor %}
+                </div>
+            </nav>
         </div>
 
+        <!-- Header -->
+        <div class="row">
+            <div class="col s12">
+                <div class="card-panel">
+                    <h5>Выбор модели автотранспорта</h5>
+                </div>
+            </div>
 
+
+            <!-- Main content -->
+            <div class="collection tecdoc-table">
+                <div class="collection-item">
+                    <div class="row">
+                        <div class="col s1"><strong>#</strong></div>
+                        <div class="col s2"><strong>Марка</strong></div>
+                        <div class="col s5"><strong>Модель</strong></div>
+                        <div class="col s2"><strong>Начало выпуска</strong></div>
+                        <div class="col s2"><strong>Окончание выпуска</strong></div>
+                    </div>
+                </div>
+                {% for model in manufacturer.carmodel_set.all %}
+                    <a href="{% url 'tecdoc:models' manufacturer.id model.id %}" class="collection-item">
+                        <div class="row" style="margin-bottom: 0">
+                            <div class="col s1">{{ forloop.counter }}</div>
+                            <div class="col s2">{{ model.manufacturer }}</div>
+                            <div class="col s5">{{ model.designation }}</div>
+                            <div class="col s2">{{ model.get_datestart }}</div>
+                            <div class="col s2">{{ model.get_dateend }}</div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
 {% endblock %}
