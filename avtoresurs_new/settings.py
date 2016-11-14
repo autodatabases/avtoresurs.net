@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'shop',
+    'products',
     'tecdoc',
 ]
 
@@ -79,7 +80,7 @@ DATABASES = {
         'HOST': '217.172.183.20',
         'USER': 'oleg',
         'PASSWORD': '11235813zZzZ',
-        'NAME': 'avtoresurs',
+        'NAME': 'test',
     },
     'tecdoc': {
         'ENGINE': 'django.db.backends.mysql',

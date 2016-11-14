@@ -9,7 +9,7 @@
         <div class="row">
             <nav>
                 <div class="nav-wrapper">
-                    <div class="col s12  blue-grey lighten-3">
+                    <div class="col s12 teal lighten-2">
                         <a href="/" class="breadcrumb">Главная</a>
                         <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
                         <a href="{% url 'tecdoc:manufacturer' carmodel.manufacturer.id %}"
@@ -23,42 +23,46 @@
         <!-- Header -->
         <div class="row">
             <div class="col s12">
-                <div class="card-panel">
-                    <h5>{{ carmodel }}</h5>
+                <div class="card-panel blue-grey lighten-3">
+                    <h5 style="color: #ffffff">{{ carmodel }}</h5>
                 </div>
             </div>
         </div>
 
         <!-- Main content -->
-        <div class="collection tecdoc-table">
-            <div class="collection-item">
-                <div class="row">
-                    <div class="col s1"><strong>№ п/п</strong></div>
-                    <div class="col s2"><strong>Марка автомобиля</strong></div>
-                    <div class="col s3"><strong>Модель автомобиля</strong></div>
-                    <div class="col s2"><strong>Дата производства</strong></div>
-                    <div class="col s1"><strong>Объем двигателя (куб.см.)</strong></div>
-                    <div class="col s1"><strong>Мощность двигателя (кВт/л.с.)</strong></div>
-                    <div class="col s1"><strong>Количество цилиндров</strong></div>
-                    <div class="col s1"><strong>Тип кузова</strong></div>
+        <div class="row">
+            <div class="col s12">
+                <div class="collection tecdoc-table">
+                    <div class="collection-item">
+                        <div class="row">
+                            <div class="col s1"><strong>№ п/п</strong></div>
+                            <div class="col s2"><strong>Марка автомобиля</strong></div>
+                            <div class="col s3"><strong>Модель автомобиля</strong></div>
+                            <div class="col s2"><strong>Дата производства</strong></div>
+                            <div class="col s1"><strong>Объем двигателя (куб.см.)</strong></div>
+                            <div class="col s1"><strong>Мощность двигателя (кВт/л.с.)</strong></div>
+                            <div class="col s1"><strong>Количество цилиндров</strong></div>
+                            <div class="col s1"><strong>Тип кузова</strong></div>
+                        </div>
+                    </div>
+                    {% for car_type in carmodel.cartypes.all %}
+                        <a href="{% url 'tecdoc:tree' carmodel.manufacturer.id carmodel.id car_type.id %}"
+                           class="collection-item">
+                            <div class="row" style="margin-bottom: 0">
+                                <div class="col s1">{{ forloop.counter }}</div>
+                                <div class="col s2">{{ carmodel.manufacturer }}</div>
+                                <div class="col s3">{{ car_type.full_designation }}</div>
+                                <div class="col s2">{{ car_type.get_production_start }}
+                                    - {{ car_type.get_production_end }}</div>
+                                <div class="col s1">{{ car_type.eng_volume }}</div>
+                                <div class="col s1">{{ car_type.power_kw_from }}/{{ car_type.power_hp_from }}</div>
+                                <div class="col s1">{{ car_type.cylinders }}</div>
+                                <div class="col s1">{{ car_type.body_des }}</div>
+                            </div>
+                        </a>
+                    {% endfor %}
                 </div>
             </div>
-            {% for car_type in carmodel.cartypes.all %}
-                <a href="{% url 'tecdoc:tree' carmodel.manufacturer.id carmodel.id car_type.id %}"
-                   class="collection-item">
-                    <div class="row" style="margin-bottom: 0">
-                        <div class="col s1">{{ forloop.counter }}</div>
-                        <div class="col s2">{{ carmodel.manufacturer }}</div>
-                        <div class="col s3">{{ car_type.full_designation }}</div>
-                        <div class="col s2">{{ car_type.get_production_start }}
-                            - {{ car_type.get_production_end }}</div>
-                        <div class="col s1">{{ car_type.eng_volume }}</div>
-                        <div class="col s1">{{ car_type.power_kw_from }}/{{ car_type.power_hp_from }}</div>
-                        <div class="col s1">{{ car_type.cylinders }}</div>
-                        <div class="col s1">{{ car_type.body_des }}</div>
-                    </div>
-                </a>
-            {% endfor %}
         </div>
     </div>
 

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Каталог запчастей{% endblock title %}
+
+{% block content %}
+
+    <!-- BREADCRUMBS -->
+
+    <div class="breadcrumb_wrap">
+        <ul class="breadcrumb">
+            <li><a href="/" class="homepage-link" title="Вернуться на главную">Главная</a></li>
+            <li><a href="/catalog" class="homepage-link">Интернет-магазин</a></li>
+            <li><span class="page-title">Каталог</span></li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+
+        <table class="table table-striped avtoresurs-table">
+            <tr class="avtoresurs-item-list">
+                <th>#</th>
+                <th>Название детали</th>
+                <th>Производитель</th>
+                <th>Количество на складе</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Заказать</th>
+            </tr>
+            {% for object in object_list %}
+                <tr>
+                    <td><p class="text-center">{{ forloop.counter }}</p></td>
+                    <td><p class="text-left"><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></p></td>
+                    {#                            <td>rrr</td>#}
+                    <td><p class="text-center">{{ object.manufacturer }}</p></td>
+                    <td><p class="text-center">{{ object.quantity }}</p></td>
+                    <td><p class="text-center"><strong>{{ object.get_price }}</strong></p></td>
+                    <form method="GET" action="{% url 'cart' %}" class="form-inline"
+                          id="add-form-{{ forloop.counter }}">
+                        <td>
+                            <input type="hidden" name="item" value="{{ object.id }}">
+                            <p class="text-center">
+                                <input type="number" class="form-control text-center" name="qty" value="1">
+                            </p>
+                        </td>
+                        <td>
+                            <p class="text-center">
+                                <button type="submit" class="btn btn-default" id="submit-btn-{{ forloop.counter }}"
+                                        onclick="changeBasketCount({{ forloop.counter }})"><i
+                                        class="fa fa-shopping-basket avtoresurs-item-basket" aria-hidden="true"></i> В
+                                    корзину
+                                </button>
+                            </p>
+                        </td>
+                    </form>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    </div>
+    </div>
+
+{% endblock %}
+
+{% block jquery %}
+    <script>
+        function changeBasketCount(id) {
+            {#        $('#submit-btn' + id).click(function (event) {#}
+            event.preventDefault();
+            var formData = $('#add-form-' + id).serialize();
+            console.log(formData);
+            $.ajax({
+                type: "GET",
+                url: "{% url 'cart' %}",
+                data: formData,
+                success: function (data) {
+                    console.log(data);
+                    {#                    $('#jquery-message').text("Added " + data.item_added + " Deleted " + data.deleted);#}
+                    {#                    showFlashMessage(data.flash_message);#}
+                    updateCartItemCount();
+                },
+                error: function (response, error) {
+                    {#                    console.log(response);#}
+                    {#                    console.log(error);#}
+                    $('#add-form-' + id).submit();
+                }
+            })
+            {#            $('#add-form').submit;#}
+        }
+    </script>
+{% endblock %}

@@ -12,7 +12,7 @@
         <div class="row">
             <nav>
                 <div class="nav-wrapper">
-                    <div class="col s12  blue-grey lighten-3">
+                    <div class="col s12 teal lighten-2">
                         <a href="/" class="breadcrumb">Главная</a>
                         <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
                     </div>
@@ -22,14 +22,14 @@
         <!-- Header -->
         <div class="row">
             <div class="col s12">
-                <div class="card-panel">
-                    <h5>Каталог автопроизводителей</h5>
+                <div class="card-panel blue-grey lighten-3">
+                    <h5 style="color: #ffffff">Каталог автопроизводителей</h5>
                 </div>
             </div>
         </div>
 
         <!-- Main content -->
-        <div class="collection tecdoc-table">
+        <div class="collection tecdoc-table" id="tecdoc-table">
             {% for mnf in manufacturer_list %}
                 {% if forloop.counter0|divisibleby:4 %}
                     <div class="row">

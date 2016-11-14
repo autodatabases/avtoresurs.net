@@ -1,6 +1,3 @@
-import collections
-# import copy
-
 from django.views.generic import ListView
 from collections import OrderedDict
 
@@ -32,5 +29,8 @@ class SearchTreeList(ListView):
         type_id = self.kwargs['type_id']
         car_type = CarType.objects.get(id=type_id)
         context['car_type'] = car_type
+
+        # for part in parts:
+        #     print(part)
 
         return context

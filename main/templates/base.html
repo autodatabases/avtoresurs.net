@@ -4,17 +4,25 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <title>Starter Template - Materialize</title>
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
 
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{% static 'main/css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link rel="stylesheet/less" type="text/css" href="{% static 'main/css/styles.less' %}" />
+    <link rel="stylesheet/less" type="text/css" href="{% static 'main/css/styles.less' %}"/>
     <script src="{% static 'main/js/less.min.js' %}" type="text/javascript"></script>
-{#    <link href="{% static 'main/js/less.min.js' %}" type="text/css" rel="stylesheet" media="screen,projection"/>#}
-{#    <link href="{% static 'main/css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>#}
+    {#    <link href="{% static 'main/js/less.min.js' %}" type="text/css" rel="stylesheet" media="screen,projection"/>#}
+    {#    <link href="{% static 'main/css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>#}
+    <link rel="stylesheet" href="{% static 'main/css/font-awesome.min.css' %}">
 </head>
-<body>
+<body class="grey lighten-4">
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="{% static 'main/js/materialize.js' %}"></script>
+<script src="{% static 'main/js/init.js' %}"></script>
+
 {#navbar#}
 <!-- Dropdown Structure -->
 <ul id="dropdown_nav" class="dropdown-content">
@@ -157,12 +165,6 @@
         </div>
     </div>
 </footer>
-
-
-<!--  Scripts-->
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="{% static 'main/js/materialize.js' %}"></script>
-<script src="{% static 'main/js/init.js' %}"></script>
 
 </body>
 </html>
