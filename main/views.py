@@ -17,7 +17,7 @@ class ProductLoader(TemplateView):
     def get(self, request):
         get_data = super(ProductLoader, self).get(request)
         get_data = 0
-        path = '/home/auto/avtoresurs/avtoresurs.net/NewsAuto.csv'
+        path = '/home/auto/avtoresurs_new/avtoresurs_newNewsAuto.csv'
         pass_first_line = True
 
         report = []
@@ -48,18 +48,24 @@ class ProductLoader(TemplateView):
                     part = Part.objects.filter(sku__iexact=created.sku, supplier__title__iexact=created.manufacturer)
                     if not part:
                         error_string = "%s %s %s %s %s" % (
-                        idx, created.sku, created.manufacturer, created.title, created.cross_sku)
+                            idx,
+                            created.sku,
+                            created.manufacturer,
+                            created.title,
+                            created.cross_sku
+                        )
                         report.append(error_string)
                 except:
                     pass
 
         if report:
-            error_file_path = ''
+            error_file_path = '/home/auto/avtoresurs_new/avtoresurs_new'
             report_log = ''
             for error_line in report:
                 error_line += '\n'
                 report_log += error_line
-            with open(error_file_path) as error_file:
+            with open(error_file_path, 'w+') as error_file:
+                print(report)
                 error_file.write(report_log)
 
         return get_data
