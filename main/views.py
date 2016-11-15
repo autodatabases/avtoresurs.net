@@ -17,7 +17,7 @@ class ProductLoader(TemplateView):
     def get(self, request):
         get_data = super(ProductLoader, self).get(request)
         get_data = 0
-        path = '/home/auto/avtoresurs_new/avtoresurs_newNewsAuto.csv'
+        path = '/home/auto/avtoresurs_new/avtoresurs_new/NewsAuto.csv'
         pass_first_line = True
 
         report = []
