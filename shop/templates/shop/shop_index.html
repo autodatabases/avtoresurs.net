@@ -4,6 +4,7 @@
 
 {% block content %}
     <div class="container">
+        <!-- BREADCRUMBS -->
         <div class="row">
             <nav>
                 <div class="nav-wrapper">
@@ -15,15 +16,15 @@
             </nav>
         </div>
 
-        <div class="row">
+        <!-- Header -->
+        <div class="row card-panel blue-grey lighten-3">
             <div class="col s12">
-                <div class="card-panel blue-grey lighten-3">
-                    <h5 style="color: #ffffff">Онлайн каталог запчастей</h5>
-                </div>
+                <h5 class="white-text">Онлайн каталог запчастей</h5>
             </div>
         </div>
 
-        <div class="row">
+        <!-- Main content -->
+        <div class="row card-panel">
             <div class="col s4 offset-s2 hoverable">
                 <blockquote>
                     Поиск по наименованию/номеру детали
@@ -31,7 +32,7 @@
                 <div class="row">
                     <form action="" class="col s12">
                         <div class="input-field">
-                            <input placeholder="" id="first_name" type="text" class="validate">
+                            <input placeholder="Введите название детали" id="first_name" type="text" class="validate">
                             <label for="first_name">Номер детали</label>
                         </div>
                         <button class="btn waves-effect waves-light deep-purple darken-1" type="submit" name="action">

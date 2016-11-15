@@ -59,7 +59,7 @@ class ProductLoader(TemplateView):
                     pass
 
         if report:
-            error_file_path = '/home/auto/avtoresurs_new/avtoresurs_new'
+            error_file_path = '/home/auto/avtoresurs_new/avtoresurs_new/error.log'
             report_log = ''
             for error_line in report:
                 error_line += '\n'

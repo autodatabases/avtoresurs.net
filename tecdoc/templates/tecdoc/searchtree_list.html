@@ -11,7 +11,7 @@
         <div class="row">
             <nav>
                 <div class="nav-wrapper">
-                    <div class="col s12 teal lighten-2">
+                    <div class="col s12 purple lighten-2">
                         <a href="/" class="breadcrumb">Главная</a>
                         <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
                         <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
@@ -25,23 +25,21 @@
         </div>
 
         <!-- Header -->
-        <div class="row">
+        <div class="row card-panel blue-grey lighten-3">
             <div class="col s12">
-                <div class="card-panel blue-grey lighten-3">
-                    <h5 style="color: #ffffff">{{ car_type.model }}</h5>
-                </div>
+                <h5 class="white-text">{{ car_type.model }}</h5>
             </div>
         </div>
 
         <!-- Main content -->
         <div class="row">
-            <div class="col s12">
+            <div class="col s12" style="padding-left: 0; padding-right: 0;">
                 <ul class="collapsible tecdoc-table" id="tecdoc-table" data-collapsible="expandable">
                     {% for part_1_key, part_1 in parts.items %}
                         <li>
                             <div class="collapsible-header">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
-                                {{ part_1.designation }}
+                                {{ part_1.designation|title }}
                             </div>
                             <div class="collapsible-body">
                                 <ul class="collapsible" data-collapsible="expandable"
@@ -51,7 +49,7 @@
                                             {% if part_2.children %}
                                                 <div class="collapsible-header">
                                                     <i class="fa fa-plus" aria-hidden="true"></i>
-                                                    {{ part_2.designation }}
+                                                    {{ part_2.designation|title }}
                                                 </div>
                                                 <div class="collapsible-body">
                                                     <ul class="collapsible"
@@ -62,7 +60,7 @@
                                                                 {% if part_3.children %}
                                                                     <div class="collapsible-header">
                                                                         <i class="fa fa-plus" aria-hidden="true"></i>
-                                                                        {{ part_3.designation }}
+                                                                        {{ part_3.designation|title }}
                                                                     </div>
 
                                                                     <div class="collapsible-body">
@@ -76,7 +74,7 @@
                                                                                         <div class="collapsible-header">
                                                                                             <i class="fa fa-plus"
                                                                                                aria-hidden="true"></i>
-                                                                                            {{ part_4.designation }}
+                                                                                            {{ part_4.designation|title }}
                                                                                         </div>
                                                                                         <div class="collapsible-body">
                                                                                             <ul class="collapsible"
@@ -86,7 +84,7 @@
                                                                                                     <li>
                                                                                                         <a href="{{ part_5.id }}">
                                                                                                             <div class="collapsible-header">
-                                                                                                                {{ part_5.designation }}
+                                                                                                                {{ part_5.designation|title }}
                                                                                                             </div>
                                                                                                         </a>
                                                                                                     </li>

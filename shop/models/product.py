@@ -42,7 +42,7 @@ class Product(models.Model):
         return self.quantity
 
     def __str__(self):
-        return self.title
+        return "%s %s" % (self.manufacturer, self.sku)
 
     def get_absolute_url(self):
         return reverse("shop:product_detail", kwargs={'pk': self.id})

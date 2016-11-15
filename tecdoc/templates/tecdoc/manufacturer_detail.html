@@ -10,7 +10,7 @@
         <div class="row">
             <nav>
                 <div class="nav-wrapper">
-                    <div class="col s12 teal lighten-2">
+                    <div class="col s12 purple lighten-2">
                         <a href="/" class="breadcrumb">Главная</a>
                         <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
                         <a href="" class="breadcrumb">{{ manufacturer }}</a>
@@ -20,39 +20,37 @@
         </div>
 
         <!-- Header -->
-        <div class="row">
+        <div class="row card-panel blue-grey lighten-3">
             <div class="col s12">
-                <div class="card-panel blue-grey lighten-3">
-                    <h5 style="color: #ffffff">Выбор модели автотранспорта</h5>
-                </div>
+                <h5 class="white-text">Выбор модели автотранспорта</h5>
             </div>
         </div>
 
 
-            <!-- Main content -->
-            <div class="collection tecdoc-table">
-                <div class="collection-item">
-                    <div class="row">
-                        <div class="col s1 tecdoc-header">#</div>
-                        <div class="col s2 tecdoc-header">Марка</div>
-                        <div class="col s5 tecdoc-header">Модель</div>
-                        <div class="col s2 tecdoc-header">Начало выпуска</div>
-                        <div class="col s2 tecdoc-header">Окончание выпуска</div>
+        <!-- Main content -->
+        <div class="collection tecdoc-table row card-panel">
+            <div class="collection-item">
+                <div class="row">
+                    <div class="col s1 tecdoc-header">#</div>
+                    <div class="col s2 tecdoc-header">Марка</div>
+                    <div class="col s5 tecdoc-header">Модель</div>
+                    <div class="col s2 tecdoc-header">Начало выпуска</div>
+                    <div class="col s2 tecdoc-header">Окончание выпуска</div>
+                </div>
+            </div>
+            {% for model in manufacturer.carmodel_set.all %}
+                <a href="{% url 'tecdoc:models' manufacturer.id model.id %}" class="collection-item">
+                    <div class="row" style="margin-bottom: 0">
+                        <div class="col s1">{{ forloop.counter }}</div>
+                        <div class="col s2">{{ model.manufacturer }}</div>
+                        <div class="col s5">{{ model.designation }}</div>
+                        <div class="col s2">{{ model.get_datestart }}</div>
+                        <div class="col s2">{{ model.get_dateend }}</div>
                     </div>
-                </div>
-                {% for model in manufacturer.carmodel_set.all %}
-                    <a href="{% url 'tecdoc:models' manufacturer.id model.id %}" class="collection-item">
-                        <div class="row" style="margin-bottom: 0">
-                            <div class="col s1">{{ forloop.counter }}</div>
-                            <div class="col s2">{{ model.manufacturer }}</div>
-                            <div class="col s5">{{ model.designation }}</div>
-                            <div class="col s2">{{ model.get_datestart }}</div>
-                            <div class="col s2">{{ model.get_dateend }}</div>
-                        </div>
-                    </a>
-                {% endfor %}
-            </div>
+                </a>
+            {% endfor %}
         </div>
+    </div>
     </div>
 
 {% endblock %}
