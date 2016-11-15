@@ -33,11 +33,11 @@
             <div class="collection tecdoc-table">
                 <div class="collection-item">
                     <div class="row">
-                        <div class="col s1"><strong>#</strong></div>
-                        <div class="col s2"><strong>Марка</strong></div>
-                        <div class="col s5"><strong>Модель</strong></div>
-                        <div class="col s2"><strong>Начало выпуска</strong></div>
-                        <div class="col s2"><strong>Окончание выпуска</strong></div>
+                        <div class="col s1 tecdoc-header">#</div>
+                        <div class="col s2 tecdoc-header">Марка</div>
+                        <div class="col s5 tecdoc-header">Модель</div>
+                        <div class="col s2 tecdoc-header">Начало выпуска</div>
+                        <div class="col s2 tecdoc-header">Окончание выпуска</div>
                     </div>
                 </div>
                 {% for model in manufacturer.carmodel_set.all %}

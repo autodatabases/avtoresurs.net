@@ -41,13 +41,13 @@
                 <div class="collection tecdoc-table">
                     <div class="collection-item">
                         <div class="row">
-                            <div class="col s1"><strong>№ п/п</strong></div>
-                            <div class="col s2"><strong>Артикул ТекДок</strong></div>
-                            <div class="col s2"><strong>Артикул</strong></div>
-                            <div class="col s2"><strong>Производитель</strong></div>
-                            <div class="col s3"><strong>Название</strong></div>
-                            <div class="col s1"><strong>Количество</strong></div>
-                            <div class="col s1"><strong>Цена</strong></div>
+                            <div class="col s1 tecdoc-header">№ п/п</div>
+                            <div class="col s2 tecdoc-header">Артикул ТекДок</div>
+                            <div class="col s2 tecdoc-header">Артикул</div>
+                            <div class="col s2 tecdoc-header">Производитель</div>
+                            <div class="col s3 tecdoc-header">Название</div>
+                            <div class="col s1 tecdoc-header">Количество</div>
+                            <div class="col s1 tecdoc-header">Цена</div>
                         </div>
                     </div>
                     {% for part in parttypegroupsupplier_list %}
@@ -56,7 +56,7 @@
                         {% else %}
                             <div class="collection-item">
                         {% endif %}
-                    <div class="row" style="margin-bottom: 0">
+                    <div class="row {% if part.part.part.price == -1 %} noactive {% endif %}" style="margin-bottom: 0">
                         <div class="col s1">{{ forloop.counter }}</div>
                         <div class="col s2">{{ part.part.part.sku }}</div>
                         <div class="col s2">{{ part.part.part.id }}</div>

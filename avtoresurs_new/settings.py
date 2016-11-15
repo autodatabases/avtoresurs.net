@@ -80,7 +80,7 @@ DATABASES = {
         'HOST': '217.172.183.20',
         'USER': 'oleg',
         'PASSWORD': '11235813zZzZ',
-        'NAME': 'test',
+        'NAME': 'avtoresurs',
     },
     'tecdoc': {
         'ENGINE': 'django.db.backends.mysql',
