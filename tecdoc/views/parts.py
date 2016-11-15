@@ -5,7 +5,8 @@ from django.template.response import TemplateResponse
 
 # from tecdoc.models import Part
 # from products.models import Product
-from products.models import Product
+# from products.models import Product
+from shop.models.product import Product
 from tecdoc.models import SectionGroup, Part, PartTypeGroupSupplier, CarType, SearchTree, Manufacturer
 # from tecdoc.conf import TecdocConf as tdsettings
 # from tecdoc.models.raw_models import LinkGaStr, Articles

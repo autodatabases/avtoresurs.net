@@ -52,7 +52,8 @@
                     </div>
                     {% for part in parttypegroupsupplier_list %}
                         {% if part.part.part.product_id %}
-                            <a href="#" class="collection-item">
+                            <a href="{% url 'shop:product_detail' part.part.part.product_id %}" class="collection-item">
+{#                            <a href="#" class="collection-item">#}
                         {% else %}
                             <div class="collection-item">
                         {% endif %}
@@ -84,31 +85,5 @@
     </div>
 
     </div>
-
-    <!-- BREADCRUMBS -->
-    <div class="breadcrumb_wrap">
-        <ul class="breadcrumb">
-            <li><a href="/" class="homepage-link">Главная</a></li>
-            <li><a href="{% url 'tecdoc:manufacturers' %}" class="homepage-link">
-                Каталог запчастей
-            </a></li>
-            <li><a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
-                   class="homepage-link">
-                {{ car_type.model.manufacturer }}
-            </a></li>
-            <li><a href="{% url 'tecdoc:models' car_type.model.manufacturer.id car_type.model.id %}"
-                   class="homepage-link">
-                {{ car_type.model.designation }}
-            </a></li>
-            <li>
-                <a href="{% url 'tecdoc:tree' car_type.model.manufacturer.id car_type.model.id car_type.id %}">{{ car_type }}</a>
-            </li>
-            <li><span class="page-title">{{ section.designation.description }}</span></li>
-        </ul>
-    </div>
-
-
-
-
 
 {% endblock content %}
