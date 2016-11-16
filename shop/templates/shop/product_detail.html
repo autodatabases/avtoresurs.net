@@ -27,144 +27,87 @@
         <!-- Main content -->
 
         <div class="row card-panel">
-
-            <div class="col s5">
-                <blockquote>
-                    <img src="http://placehold.it/600x400" alt="" class="responsive-img">
-                </blockquote>
-            </div>
-            <div class="col s7">
-
-                {#                <h4 class="avtoresurs-detail">{{ object.title|title }}</h4>#}
-                {#                <hr>#}
-                {#                <p class="flow-text">ID: #<span class="blue-text"></span></p>#}
-                <p class="flow-text">Производитель: <span
-                        class="blue-text"><strong>{{ object.manufacturer|upper }}</strong></span>
-                </p>
-                <p class="flow-text">Название: <span class="blue-text"><strong>{{ product|upper }}</strong></span></p>
-                <p class="flow-text">Код детали: <span class="blue-text"><strong>{{ object.sku|upper }}</strong></span>
-                </p>
-                <p class="flow-text">Количество на складе: <span
-                        class="blue-text"><strong>{{ object.quantity }}</strong></span></p>
-                <p class="flow-text">Цена: <span class="blue-text"><strong>{{ object.get_price }}</strong></span></p>
-
-                <div class="row">
-                    <form class="col s12">
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <input placeholder="Введите количество товара" id="first_name" type="number" class="validate" value="1">
-                                <label for="first_name">Количество</label>
-                                <button class="btn waves-effect waves-light deep-purple darken-1" type="submit" name="action">В корзину
-                                    <i class="material-icons right">send</i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+            <div class="row">
+                <div class="col s6">
+                    <img src="http://placehold.it/600x400" alt="" class="responsive-img materialboxed"
+                         data-caption="{{ product|upper }}">
                 </div>
-
-            </div>
-        </div>
-
-    </div>
-
-    <!-- BREADCRUMBS -->
-    <ol class="breadcrumb">
-        <li><a href="index.html">Главная</a></li>
-        <li><a href="/catalog">Интернет-магазин</a></li>
-        <li class="active">{{ object.title }}</li>
-    </ol>
-
-    <!-- MAIN CONTENT -->
-    <div class="row">
-        <p class="lead" id="jquery-message">
-
-        </p>
-
-        <div class="col-xs-12 col-sm-4">
-            {% if object.productimage_set.count > 0 %}
-                {% for img in object.productimage_set.all %}
-                    <img src="{{ img.image.url }}" alt="" class="img-thumbnail">
-                {% endfor %}
-            {% else %}
-                <img src="http://placehold.it/300x200" alt="" class="img-thumbnail">
-            {% endif %}
-        </div>
-        <div class="col-xs-12 col-sm-8">
-
-            <h4 class="avtoresurs-detail">{{ object.title }}</h4>
-            <hr>
-
-            <div class="id avtoresurs-id"><h4>ID: #</h4></div>
-            <div class="avtoresurs-detail-disc">
-                <h4>Производитель: <span class="avtoresurs-item-detail">{{ object.manufacturer }}</span></h4>
-                <h4>Код детали: <span class="avtoresurs-item-detail">{{ object.sku }}</span></h4>
-                <h4>Количество на складе: <span class="avtoresurs-item-detail">{{ object.quantity }}</span></h4>
-                <h4>Цена: <span class="avtoresurs-item-detail"><b>{{ object.get_price }}</b></span></h4>
-            </div>
-            <div class="prdt-cost">
-                <ul>
-                    <li>
-                        <form method="GET" action="#" id="add-form" class="form-inline">
-                            {#                        <form method="GET" action="{% url 'cart' %}" id="add-form" class="form-inline">#}
-                            <input type="hidden" name="item" value="{{ object.id }}">
-                            <div class="row item-detail-qty">
-                                <div class="col-xs-4">
-                                    <input type="number" class="form-control" name="qty" value="1">
-                                </div>
-                            </div>
+                <div class="col s6">
+                    <div class="row">
+                        <div class="col s12">
+                            <p class="flow-text" style="margin-top: 0;">Производитель: <span
+                                    class="blue-text"><strong>{{ product.manufacturer|upper }}</strong></span>
+                            </p>
+                            <p class="flow-text">Название: <span class="blue-text"><strong>{{ product|upper }}</strong></span>
+                            </p>
+                            <p class="flow-text">Код детали: <span
+                                    class="blue-text"><strong>{{ product.sku|upper }}</strong></span>
+                            </p>
+                            <p class="flow-text">Кросс: <span
+                                    class="blue-text"><strong>{{ product.cross_sku|upper }}</strong></span></p>
+                            <p class="flow-text">Количество на складе: <span
+                                    class="blue-text"><strong>{{ product.quantity }}</strong></span></p>
+                            <p class="flow-text">Цена: <span
+                                    class="blue-text"><strong>{{ product.get_price }}</strong></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form class="col s12">
                             <div class="row">
-                                <div class="col-xs-6">
-                                    <input type="submit" class="btn btn-default" value="В корзину" id="submit-btn">
+                                <div class="input-field col s12">
+                                    <input placeholder="Введите количество товара" id="first_name" type="number"
+                                           class="validate center-align"
+                                           value="1" style="font-weight: bold; font-size: 1.5em;">
+                                    <label for="first_name">Количество</label>
+                                </div>
+
+                            </div>
+                            <div class="row center-align">
+                                <div class="col s12">
+                                    <button class="btn waves-effect waves-light deep-purple darken-1" type="submit"
+                                            name="action">В корзину
+                                        <i class="material-icons right">send</i>
+                                    </button>
                                 </div>
                             </div>
                         </form>
-                    </li>
-                </ul>
-
-
+                    </div>
+                </div>
             </div>
 
-            {#                <p>{{ object.get_absolute_url }}</p>#}
         </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-4">
-            <p>Аналоги:</p>
+
+        <div class="row">
+            <div class="col s12">
+                <div class="collection tecdoc-table row card-panel">
+                    <div class="collection-item">
+                        <div class="row">
+                            <div class="col s1 tecdoc-header">№ п/п</div>
+                            <div class="col s2 tecdoc-header">Артикул ТекДок</div>
+                            <div class="col s2 tecdoc-header">Артикул</div>
+                            <div class="col s2 tecdoc-header">Производитель</div>
+                            <div class="col s3 tecdoc-header">Название</div>
+                            <div class="col s1 tecdoc-header">Количество</div>
+                            <div class="col s1 tecdoc-header">Цена</div>
+                        </div>
+                        {% for part_analog in part_analogs %}
+                            <div class="row">
+                                <div class="col s1">{{ forloop.counter }}</div>
+                                <div class="col s2">{{ part_analog.sku }}</div>
+                                <div class="col s2">{{ part_analog.id }}</div>
+                                <div class="col s2">{{ part_analog.supplier }}</div>
+                                <div class="col s3">{{ part_analog.title }}</div>
+                                <div class="col s1">{{ part_analog.product.quantity }}</div>
+                                <div class="col s1">{{ part_analog.product.get_price }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        {% for analog in analogs %}
-            <p>{{ analog }} - {{ analog.price }} ({{ analog.qty }})</p>
-        {% endfor %}
+
+
     </div>
 
-{% endblock %}
-
-
-{% block jquery %}
-    <script>
-        $('#submit-btn').click(function (event) {
-            event.preventDefault();
-            var formData = $('#add-form').serialize();
-            console.log(formData);
-            $.ajax({
-                type: "GET",
-                {#                url: "{% url 'cart' %}",#}
-                url: "#",
-                data: formData,
-                success: function (data) {
-                    {#                    console.log(data)#}
-                    {#                    $('#jquery-message').text("Added " + data.item_added + " Deleted " + data.deleted);#}
-                    showFlashMessage(data.flash_message);
-                    updateCartItemCount();
-                },
-                error: function (response, error) {
-                    {#                    console.log(response);#}
-                    {#                    console.log(error);#}
-                    $('#add-form').submit();
-                }
-            })
-            {#            $('#add-form').submit;#}
-        });
-    </script>
 {% endblock %}

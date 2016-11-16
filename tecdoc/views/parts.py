@@ -29,7 +29,6 @@ class PartList(ListView):
         for part in context['parttypegroupsupplier_list']:
             sku.append(part.part.part.sku)
         products = Product.objects.filter(sku__in=sku)
-        # products = []
 
         # adding price data into parttypegroupsupplier_list
         parts_with_price = []

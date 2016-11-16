@@ -2,7 +2,7 @@
 import re
 
 from django.conf import settings
-from django.core.cache import cache
+# from django.core.cache import cache
 from django.db import models
 from django.db.models import Q
 
@@ -11,7 +11,7 @@ from tecdoc.models.base import (TecdocModel, TecdocManager,
                                 TecdocManagerWithDes, Designation)
 from tecdoc.models.car import CarType
 
-CACHE_PREFIX = settings.CACHE_MIDDLEWARE_KEY_PREFIX
+# CACHE_PREFIX = settings.CACHE_MIDDLEWARE_KEY_PREFIX
 
 number_re = re.compile('[^a-zA-Z0-9]+')
 
@@ -109,27 +109,27 @@ class Part(TecdocModel):
     def list_car_types(self):
         return CarType.objects.filter(parttypegroupsupplier__part__part=self).distinct()
 
-    def get_images(self):
-        """Returns all images of the product, including the main image.
-        """
-        cache_key = "%s-tecdoc-product-%s-images" % (CACHE_PREFIX, self.id)
-        images = cache.get(cache_key)
-
-        if images is not None:
-            return images
-
-        images = self.images.all()
-        cache.set(cache_key, images)
-
-        return images
-
-    def get_image(self):
-        """Returns the first image (the main image) of the product.
-        """
-        try:
-            return self.get_images()[0]
-        except IndexError:
-            return None
+    # def get_images(self):
+    #     """Returns all images of the product, including the main image.
+    #     """
+    #     cache_key = "%s-tecdoc-product-%s-images" % (CACHE_PREFIX, self.id)
+    #     images = cache.get(cache_key)
+    #
+    #     if images is not None:
+    #         return images
+    #
+    #     images = self.images.all()
+    #     cache.set(cache_key, images)
+    #
+    #     return images
+    #
+    # def get_image(self):
+    #     """Returns the first image (the main image) of the product.
+    #     """
+    #     try:
+    #         return self.get_images()[0]
+    #     except IndexError:
+    #         return None
 
     def get_sub_images(self):
         """Returns all images of the product, except the main image.
@@ -319,17 +319,18 @@ class PartAnalog(TecdocModel):
         db_table = tdsettings.DB_PREFIX + 'art_lookup'
 
     def get_manufacturer(self):
+        # return self.brand
         if self.kind in ['3', '4']:
             return self.brand
         else:
             return self.part.supplier
 
     def get_sku(self):
-        return self.search_number
-        # if self.kind in ['2', '3']:
-        #     return self.number
-        # else:
-        #     return self.part.sku
+        # return self.search_number
+        if self.kind in ['2', '3']:
+            return self.number
+        else:
+            return self.part.sku
 
 
 class PartList(TecdocModel):
