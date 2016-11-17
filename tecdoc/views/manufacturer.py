@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
 
-from tecdoc.models.common import Manufacturer
+from tecdoc.models.base import Manufacturer
 
 
 class ManufacturerList(ListView):

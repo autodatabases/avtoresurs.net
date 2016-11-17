@@ -7,9 +7,9 @@ from django.conf.urls import include, url
 
 from .views import (
     MainPageView,
-    ProductLoader)
+ )
 
 urlpatterns = [
     url(r'^$', MainPageView.as_view(), name='main_page'),
-    url(r'^load/$', ProductLoader.as_view(), name='loader'),
+    # url(r'^load/$', ProductLoader.as_view(), name='loader'),
 ]

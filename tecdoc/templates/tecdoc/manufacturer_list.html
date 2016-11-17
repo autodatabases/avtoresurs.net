@@ -33,7 +33,8 @@
                     <div class="row">
                 {% endif %}
             <div class="col s3">
-                <a href="{% url 'tecdoc:manufacturer' mnf.id %}" class="collection-item">{{ mnf }}</a>
+{#                <a href="{% url 'tecdoc:manufacturer' mnf.id %}" class="collection-item">{{ mnf }}</a>#}
+                <a href="#" class="collection-item">{{ mnf }}</a>
             </div>
             {% if forloop.counter|divisibleby:4 or forloop.last %}
                 </div>
