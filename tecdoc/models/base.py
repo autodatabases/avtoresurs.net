@@ -2,13 +2,12 @@ from django.db import models
 from tecdoc.apps import TecdocConfig as tdsettings
 
 
-class TecdocLangManager(models.Manager):
-    use_for_related_fields = True
+class TecdocLanguageManager(models.Manager):
 
     def get_queryset(self, *args, **kwargs):
-        return super(TecdocLangManager, self). \
-            get_queryset(*args, **kwargs). \
-            filter(language=tdsettings.LANG_ID)
+        return super(TecdocLanguageManager, self).\
+            get_queryset(*args, **kwargs).\
+            filter(designation__language=tdsettings.LANG_ID)
 
 
 class Description(models.Model):
@@ -34,16 +33,10 @@ class Language(models.Model):
         db_table = tdsettings.DB_PREFIX + 'languages'
 
 
-class DesignationManager(TecdocLangManager):
-    use_for_related_fields = True
-
-
 class CountryDesignation(models.Model):
     id = models.AutoField(db_column='CDS_ID', primary_key=True, verbose_name='Ид')
     language = models.ForeignKey(Language, db_column='CDS_LNG_ID', verbose_name='Язык')
     description = models.ForeignKey(Description, db_column='CDS_TEX_ID', verbose_name='Описание')
-
-    objects = DesignationManager()
 
     def __str__(self):
         return self.description.text or u'-'
