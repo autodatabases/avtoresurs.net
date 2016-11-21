@@ -42,3 +42,5 @@ class CarModel(models.Model):
         # ordering =
         verbose_name = 'Модель автомобиля'
         verbose_name_plural = 'Модели автомобилей'
+
+

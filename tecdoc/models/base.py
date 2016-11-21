@@ -46,4 +46,21 @@ class CountryDesignation(models.Model):
 
 
 class Designation(models.Model):
-    pass
+    # XXX not a key
+    id = models.AutoField(u'Ид', primary_key=True,
+                          db_column='DES_ID')
+
+    lang = models.ForeignKey(Language,
+                             verbose_name=u'Язык',
+                             related_name='+',
+                             db_column='DES_LNG_ID')
+
+    description = models.ForeignKey(Description,
+                                    verbose_name=u'Описание',
+                                    db_column='DES_TEX_ID')
+
+    def __str__(self):
+        return self.description.text or u'-'
+
+    class Meta:
+        db_table = tdsettings.DB_PREFIX + 'designations'

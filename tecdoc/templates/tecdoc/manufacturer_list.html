@@ -14,7 +14,7 @@
                 <div class="nav-wrapper">
                     <div class="col s12 purple lighten-2">
                         <a href="/" class="breadcrumb">Главная</a>
-                        <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
+                        <a href="{% url 'tecdoc:manufacturer' %}" class="breadcrumb">Каталог автопроизводителей</a>
                     </div>
                 </div>
             </nav>
@@ -33,7 +33,7 @@
                     <div class="row">
                 {% endif %}
             <div class="col s3">
-                <a href="{% url 'tecdoc:manufacturer' mnf.id %}" class="collection-item">{{ mnf }}</a>
+                <a href="{% url 'tecdoc:model' mnf.id %}" class="collection-item">{{ mnf }}</a>
 {#                <a href="#" class="collection-item">{{ mnf }}</a>#}
             </div>
             {% if forloop.counter|divisibleby:4 or forloop.last %}
