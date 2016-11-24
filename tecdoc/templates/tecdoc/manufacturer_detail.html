@@ -12,7 +12,7 @@
                 <div class="nav-wrapper">
                     <div class="col s12 purple lighten-2">
                         <a href="/" class="breadcrumb">Главная</a>
-                        <a href="{% url 'tecdoc:manufacturer' %}" class="breadcrumb">Каталог автопроизводителей</a>
+                        <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
                         <a href="" class="breadcrumb">{{ manufacturer }}</a>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                 </div>
             </div>
             {% for model in manufacturer.carmodel_set.all %}
-                <a href="{% url 'tecdoc:type' manufacturer.id model.id %}" class="collection-item">
+                <a href="{% url 'tecdoc:model' manufacturer.id model.id %}" class="collection-item">
 {#                <a href="#" class="collection-item">#}
                     <div class="row" style="margin-bottom: 0">
                         <div class="col s1">{{ forloop.counter }}</div>

@@ -1,8 +1,6 @@
 from django.views.generic import ListView, DetailView
 
 from tecdoc.models.manufacturer import Manufacturer
-from tecdoc.models.carmodel import CarModel
-from django.db import connection
 
 class ManufacturerList(ListView):
     queryset = Manufacturer.objects.all().distinct()

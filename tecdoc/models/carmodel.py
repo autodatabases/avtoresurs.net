@@ -1,7 +1,6 @@
 from django.db import models
 from tecdoc.apps import TecdocConfig as tdsettings
-from tecdoc.models.base import CountryDesignation, TecdocLanguageManager
-from tecdoc.models.manufacturer import Manufacturer
+from tecdoc.models import TecdocLanguageManager, Manufacturer, CountryDesignation
 
 
 class CarModelManager(TecdocLanguageManager):
@@ -25,6 +24,11 @@ class CarModel(models.Model):
 
     objects = CarModelManager()
 
+    def __str__(self):
+        return u'%s %s (%s-%s)' % (self.manufacturer,
+                                   self.designation,
+                                   self.production_start, self.production_end or u'н.д.')
+
     def get_datestart(self):
         date_start = str(self.production_start)
         return "%s/%s" % (date_start[4:], date_start[:4])
@@ -42,5 +46,3 @@ class CarModel(models.Model):
         # ordering =
         verbose_name = 'Модель автомобиля'
         verbose_name_plural = 'Модели автомобилей'
-
-

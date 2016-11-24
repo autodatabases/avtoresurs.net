@@ -1,95 +1,37 @@
 from django.db import models
 
-from tecdoc.models.base import TecdocLanguageManager, CountryDesignation, Designation
-from tecdoc.models.carmodel import CarModel
 from tecdoc.apps import TecdocConfig as tdsettings
+from tecdoc.models import TecdocLanguageManager, Manufacturer, CountryDesignation, CarModel, Designation
 
 
 class CarTypeManager(TecdocLanguageManager):
     use_for_related_fields = True
 
     def get_queryset(self, *args, **kwargs):
-        print(kwargs)
-        qs = super(CarTypeManager, self). \
-            get_queryset(*args, **kwargs)
-        return qs
-
-
-class EngineManager(models.Manager):
-    def get_queryset(self, *args, **kwargs):
-        return (super(EngineManager, self).get_queryset(*args, **kwargs)
-                .filter(fuel_des__lang=tdsettings.LANG_ID)
-                .select_related('manufacturer',
-                                'fuel_des__description')
+        return (super(CarTypeManager, self).get_queryset(*args, **kwargs)
+                .filter(model__designation__language=tdsettings.LANG_ID,
+                        full_designation__language=tdsettings.LANG_ID,
+                        drive_des__language=tdsettings.LANG_ID,
+                        body_des__language=tdsettings.LANG_ID,
+                        designation__description__text__isnull=False)
+                .select_related('model__manufacturer',
+                                'model__designation__description',
+                                'full_designation__description',
+                                'designation__description',
+                                'drive_des__description',
+                                'body_des__description')
+                .prefetch_related('engines')
                 )
-
-
-class Engine(models.Model):
-    id = models.AutoField(u'Ид', primary_key=True,
-                          db_column='ENG_ID')
-
-    manufacturer = models.ForeignKey('tecdoc.Manufacturer',
-                                     verbose_name=u'Производитель',
-                                     db_column='ENG_MFA_ID')
-
-    code = models.CharField(u'Код', max_length=180, db_column='ENG_CODE')
-
-    production_start = models.IntegerField(u'Начало производства',
-                                           db_column='ENG_PCON_START')
-    production_end = models.IntegerField(u'Конец производства',
-                                         db_column='ENG_PCON_END')
-
-    power_kw_from = models.IntegerField(u'Мощность двигателя (кВт): ОТ',
-                                        db_column='ENG_KW_FROM',
-                                        blank=True, null=True)
-    power_kw_upto = models.IntegerField(u'Мощность двигателя (кВт): До',
-                                        db_column='ENG_KW_UPTO',
-                                        blank=True, null=True)
-    power_hp_from = models.IntegerField(u'Мощность двигателя (л.с.): ОТ',
-                                        db_column='ENG_HP_FROM',
-                                        blank=True, null=True)
-    power_hp_upto = models.IntegerField(u'Мощность двигателя (л.с.): До',
-                                        db_column='ENG_HP_UPTO',
-                                        blank=True, null=True)
-
-    fuel_des = models.ForeignKey('tecdoc.Designation',
-                                 verbose_name=u'Кузов',
-                                 db_column='ENG_KV_FUEL_TYPE_DES_ID',
-                                 related_name='+'
-                                 )
-
-    objects = EngineManager()
-
-    class Meta:
-        db_table = tdsettings.DB_PREFIX + 'engines'
-
-
-class CarTypeEngine(models.Model):
-    car_type = models.ForeignKey(CarType, primary_key=True,
-                                 verbose_name=u'Модификация модели',
-                                 db_column='LTE_TYP_ID')
-
-    engine = models.ForeignKey(Engine,
-                               verbose_name=u'Двигатель',
-                               db_column='LTE_ENG_iD')
-
-    production_start = models.IntegerField(u'Начало производства',
-                                           db_column='LTE_PCON_START')
-    production_end = models.IntegerField(u'Конец производства',
-                                         db_column='LTE_PCON_END')
-
-    class Meta:
-        db_table = tdsettings.DB_PREFIX + 'link_typ_eng'
 
 
 class CarType(models.Model):
     id = models.IntegerField(db_column='TYP_ID', primary_key=True, verbose_name='Ид')
     designation = models.ForeignKey(CountryDesignation, db_column='TYP_CDS_ID', blank=True, null=True,
                                     verbose_name='Обозначение')
-    typ_mmt_cds_id = models.IntegerField(db_column='TYP_MMT_CDS_ID', blank=True, null=True,
-                                         verbose_name='Полное обозначение')
-    carmodel = models.ForeignKey(CarModel, db_column='TYP_MOD_ID', verbose_name='Модель машины',
-                                 related_name='cartypes')
+    full_designation = models.ForeignKey(CountryDesignation, db_column='TYP_MMT_CDS_ID', blank=True, null=True,
+                                         verbose_name='Полное обозначение', related_name='+')
+    model = models.ForeignKey(CarModel, db_column='TYP_MOD_ID', verbose_name='Модель машины',
+                              related_name='cartypes')
     sorting = models.IntegerField(db_column='TYP_SORT', verbose_name='Сортировка')
     production_start = models.IntegerField(db_column='TYP_PCON_START', blank=True, null=True,
                                            verbose_name='Начало производства')
@@ -109,12 +51,12 @@ class CarType(models.Model):
                                          verbose_name='Количество цилиндров')
     doors = models.SmallIntegerField(db_column='TYP_DOORS', blank=True, null=True, verbose_name='Количество дверей')
     tank = models.SmallIntegerField(db_column='TYP_TANK', blank=True, null=True, verbose_name='Тип поплива')
-    engines = models.ManyToManyField(Engine, verbose_name=u'Двигатели', through=CarTypeEngine,
+    engines = models.ManyToManyField('tecdoc.Engine', verbose_name=u'Двигатели', through='tecdoc.CarTypeEngine',
                                      related_name='cartypes')
-    engine_des = models.ForeignKey(Designation, db_column='TYP_KV_ENGINE_DES_ID')
-    body_des = models.ForeignKey(Designation, db_column='TYP_KV_BODY_DES_ID')
-    fuel_des = models.ForeignKey(Designation, db_column='TYP_KV_FUEL_DES_ID', blank=True, null=True)
-    drive_des = models.ForeignKey(Designation, db_column='TYP_KV_DRIVE_DES_ID', blank=True, null=True)
+    engine_des = models.ForeignKey(Designation, db_column='TYP_KV_ENGINE_DES_ID', related_name='+')
+    body_des = models.ForeignKey(Designation, db_column='TYP_KV_BODY_DES_ID', related_name='+')
+    fuel_des = models.ForeignKey(Designation, db_column='TYP_KV_FUEL_DES_ID', blank=True, null=True, related_name='+')
+    drive_des = models.ForeignKey(Designation, db_column='TYP_KV_DRIVE_DES_ID', blank=True, null=True, related_name='+')
 
     typ_kv_voltage_des_id = models.IntegerField(db_column='TYP_KV_VOLTAGE_DES_ID', blank=True, null=True)
     typ_kv_abs_des_id = models.IntegerField(db_column='TYP_KV_ABS_DES_ID', blank=True, null=True)
@@ -159,3 +101,70 @@ class CarType(models.Model):
             return 'н.д.'
         end = divmod(self.production_end, 100)
         return '%02d/%d' % (end[1], end[0])
+
+
+class EngineManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        return (super(EngineManager, self).get_queryset(*args, **kwargs)
+                .filter(fuel_des__language=tdsettings.LANG_ID)
+                .select_related('manufacturer',
+                                'fuel_des__description')
+                )
+
+
+class Engine(models.Model):
+    id = models.AutoField(u'Ид', primary_key=True,
+                          db_column='ENG_ID')
+
+    manufacturer = models.ForeignKey(Manufacturer,
+                                     verbose_name=u'Производитель',
+                                     db_column='ENG_MFA_ID')
+
+    code = models.CharField(u'Код', max_length=180, db_column='ENG_CODE')
+
+    production_start = models.IntegerField(u'Начало производства',
+                                           db_column='ENG_PCON_START')
+    production_end = models.IntegerField(u'Конец производства',
+                                         db_column='ENG_PCON_END')
+
+    power_kw_from = models.IntegerField(u'Мощность двигателя (кВт): ОТ',
+                                        db_column='ENG_KW_FROM',
+                                        blank=True, null=True)
+    power_kw_upto = models.IntegerField(u'Мощность двигателя (кВт): До',
+                                        db_column='ENG_KW_UPTO',
+                                        blank=True, null=True)
+    power_hp_from = models.IntegerField(u'Мощность двигателя (л.с.): ОТ',
+                                        db_column='ENG_HP_FROM',
+                                        blank=True, null=True)
+    power_hp_upto = models.IntegerField(u'Мощность двигателя (л.с.): До',
+                                        db_column='ENG_HP_UPTO',
+                                        blank=True, null=True)
+
+    fuel_des = models.ForeignKey('tecdoc.Designation',
+                                 verbose_name=u'Кузов',
+                                 db_column='ENG_KV_FUEL_TYPE_DES_ID',
+                                 related_name='+'
+                                 )
+
+    objects = EngineManager()
+
+    class Meta:
+        db_table = tdsettings.DB_PREFIX + 'engines'
+
+
+class CarTypeEngine(models.Model):
+    car_type = models.OneToOneField(CarType, primary_key=True,
+                                 verbose_name=u'Модификация модели',
+                                 db_column='LTE_TYP_ID')
+
+    engine = models.ForeignKey(Engine,
+                               verbose_name=u'Двигатель',
+                               db_column='LTE_ENG_ID')
+
+    production_start = models.IntegerField(u'Начало производства',
+                                           db_column='LTE_PCON_START')
+    production_end = models.IntegerField(u'Конец производства',
+                                         db_column='LTE_PCON_END')
+
+    class Meta:
+        db_table = tdsettings.DB_PREFIX + 'link_typ_eng'
