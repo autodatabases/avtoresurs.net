@@ -1,17 +1,19 @@
 from django.views.generic import ListView
 from collections import OrderedDict
 
-from tecdoc.apps import TecdocConfig as tdsettings
 from tecdoc.models import Section, CarType
 
 
 class SectionList(ListView):
-    # model = SearchTree
-    queryset = Section.objects.all().filter(designation__language=tdsettings.LANG_ID)
+    model = Section
 
 
     def get_context_data(self, **kwargs):
         context = super(SectionList, self).get_context_data()
+
+        # sections = context['section_list']
+        # for section in sections:
+        #     print(section)
 
         parts = context['section_list']
         parts_dict = {part.id: part for part in parts}
@@ -31,7 +33,6 @@ class SectionList(ListView):
         car_type = CarType.objects.get(id=type_id)
         context['car_type'] = car_type
 
-        # get tree for current cartype
-
+        #todo get tree for current cartype only
 
         return context

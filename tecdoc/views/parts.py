@@ -1,5 +1,6 @@
-from django.db import models
-from tecdoc.apps import TecdocConfig as tdsettings
+from django.views.generic import ListView, DetailView
+from tecdoc.models import Part
+
 
 # SET @TYP_ID = 3822; /* ALFA ROMEO 145 (930) 1.4 i.e. [1994/07-1996/12] */
 # SET @STR_ID = 10630; /* Поршень в сборе; Можете использовать NULL для вывода ВСЕХ запчастей к автомобилю */
@@ -12,3 +13,6 @@ from tecdoc.apps import TecdocConfig as tdsettings
 # ORDER BY LA_ART_ID
 # LIMIT	100;
 
+
+class PartList(ListView):
+    model = Part
