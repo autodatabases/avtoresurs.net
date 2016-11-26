@@ -16,7 +16,8 @@
                            class="breadcrumb">{{ car_type.model.manufacturer }}</a>
                         <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
                            class="breadcrumb">{{ car_type.model.designation }}</a>
-                        <a href="{% url 'tecdoc:tree' car_type.model.manufacturer.id car_type.model.id car_type.id %}"
+                        <a href="#"
+{#                        <a href="{% url 'tecdoc:tree' car_type.model.manufacturer.id car_type.model.id car_type.id %}"#}
                            class="breadcrumb">
                             {{ car_type }}
                         </a>

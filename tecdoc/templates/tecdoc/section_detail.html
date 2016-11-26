@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Список запчастей по категории {{ section.designation }}{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <!-- BREADCRUMBS -->
+        <div class="row">
+            <nav>
+                <div class="nav-wrapper">
+                    <div class="col s12 purple lighten-2">
+                        <a href="/" class="breadcrumb">Главная</a>
+                        <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
+                        <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
+                           class="breadcrumb">{{ car_type.model.manufacturer }}</a>
+                        <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
+                           class="breadcrumb">{{ car_type.model.designation }}</a>
+                        <a href="" class="breadcrumb">{{ car_type }}</a>
+                        <a href="" class="breadcrumb">{{ section.designation }}</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Header -->
+        <div class="row card-panel blue-grey lighten-3">
+            <div class="col s12">
+                <h5 class="white-text">{{ section.designation }} для {{ car_type.model }}</h5>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="row">
+
+        </div>
+    </div>
+
+{% endblock content %}

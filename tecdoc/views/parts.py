@@ -16,3 +16,4 @@ from tecdoc.models import Part
 
 class PartList(ListView):
     model = Part
+
