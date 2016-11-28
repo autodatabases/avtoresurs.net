@@ -46,7 +46,7 @@
                     </div>
                     {% for car_type in carmodel.cartypes.all %}
 {#                        <a href="#"#}
-                        <a href="{% url 'tecdoc:tree' carmodel.manufacturer.id carmodel.id car_type.id %}"
+                        <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}"
                            class="collection-item">
                             <div class="row" style="margin-bottom: 0">
                                 <div class="col s1">{{ forloop.counter }}</div>

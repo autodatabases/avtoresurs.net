@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
-{% block title %}Каталог деталей {{ object.manufacturer.mfa_brand }}{% endblock %}
+{% load staticfiles %}
+
+{% block title %}Список запчастей по категории {{ section.designation }}{% endblock %}
 
 {% block content %}
 
@@ -16,12 +18,8 @@
                            class="breadcrumb">{{ car_type.model.manufacturer }}</a>
                         <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
                            class="breadcrumb">{{ car_type.model.designation }}</a>
-                        <a href="#"
-{#                        <a href="{% url 'tecdoc:tree' car_type.model.manufacturer.id car_type.model.id car_type.id %}"#}
-                           class="breadcrumb">
-                            {{ car_type }}
-                        </a>
-                        <a href="" class="breadcrumb">{{ section.designation.description }}</a>
+                        <a href="" class="breadcrumb">{{ car_type }}</a>
+                        <a href="" class="breadcrumb">{{ section.designation }}</a>
                     </div>
                 </div>
             </nav>
@@ -30,7 +28,7 @@
         <!-- Header -->
         <div class="row card-panel blue-grey lighten-3">
             <div class="col s12">
-                <h5 class="white-text">Каталог деталей {{ car_type }}, цены и аналоги</h5>
+                <h5 class="white-text">{{ section.designation }} для {{ car_type.model }}</h5>
             </div>
         </div>
 
@@ -41,39 +39,39 @@
                     <div class="collection-item">
                         <div class="row">
                             <div class="col s1 tecdoc-header">№ п/п</div>
-                            <div class="col s2 tecdoc-header">Артикул ТекДок</div>
-                            <div class="col s2 tecdoc-header">Артикул</div>
+                            <div class="col s1 tecdoc-header">Артикул ТекДок</div>
+                            <div class="col s1 tecdoc-header">Артикул</div>
                             <div class="col s2 tecdoc-header">Производитель</div>
-                            <div class="col s3 tecdoc-header">Название</div>
+                            <div class="col s5 tecdoc-header">Название</div>
                             <div class="col s1 tecdoc-header">Количество</div>
                             <div class="col s1 tecdoc-header">Цена</div>
                         </div>
                     </div>
                     {% for part in parttypegroupsupplier_list %}
-                        {% if part.part.part.product_id %}
-                            <a href="{% url 'shop:product_detail' part.part.part.product_id %}" class="collection-item">
-                            {#                            <a href="#" class="collection-item">#}
+                        {% if part.part_group.part.product_id %}
+                            <a href="{% url 'shop:product_detail' part.part_group.part.product_id %}" class="collection-item">
+{#                                                        <a href="#" class="collection-item">#}
                         {% else %}
                             <div class="collection-item">
                         {% endif %}
-                    <div class="row {% if part.part.part.price == -1 %} noactive {% endif %}" style="margin-bottom: 0">
+                    <div class="row {% if part.part_group.part.price == -1 %} noactive {% endif %}" style="margin-bottom: 0">
                         <div class="col s1">{{ forloop.counter }}</div>
-                        <div class="col s2">{{ part.part.part.sku }}</div>
-                        <div class="col s2">{{ part.part.part.id }}</div>
+                        <div class="col s1">{{ part.part_group.part.sku }}</div>
+                        <div class="col s1">{{ part.part_group.part.id }}</div>
                         <div class="col s2">{{ part.supplier }}</div>
-                        <div class="col s3">{{ part.part.part }}</div>
-                        <div class="col s1"><strong>{{ part.part.part.quantity }}</strong></div>
+                        <div class="col s5">{{ part.part_group.part }}</div>
+                        <div class="col s1"><strong>{{ part.part_group.part.quantity }}</strong></div>
                         <div class="col s1">
                             <strong>
-                                {% if part.part.part.price > 0 %}
-                                    {{ part.part.part.price }}
+                                {% if part.part_group.part.price > 0 %}
+                                    {{ part.part_group.part.price }}
                                 {% else %}
                                     -
                                 {% endif %}
                             </strong>
                         </div>
                     </div>
-                    {% if part.part.part.product_id %}
+                    {% if part.part_group.part.product_id %}
                         </a>
                     {% else %}
                         </div>

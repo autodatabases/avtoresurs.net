@@ -37,18 +37,3 @@ class SectionList(ListView):
         #todo get tree for current cartype only
 
         return context
-
-
-class SectionDetail(DetailView):
-    model = Section
-    pk_url_kwarg = 'section_id'
-
-
-    def get_context_data(self, **kwargs):
-        context = super(SectionDetail, self).get_context_data(**kwargs)
-
-        type_id = self.kwargs['type_id']
-        car_type = CarType.objects.get(id=type_id)
-        context['car_type'] = car_type
-
-        return context
