@@ -1,10 +1,11 @@
 from django.db import models
 
 from tecdoc.apps import TecdocConfig as tdsettings
-from tecdoc.models import TecdocLanguageManager, Manufacturer, CountryDesignation, CarModel, Designation
+from tecdoc.models import Manufacturer, CountryDesignation, CarModel, Designation, \
+    TecdocLanguageDesManager
 
 
-class CarTypeManager(TecdocLanguageManager):
+class CarTypeManager(TecdocLanguageDesManager):
     use_for_related_fields = True
 
     def get_queryset(self, *args, **kwargs):

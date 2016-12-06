@@ -98,9 +98,15 @@ class PartTypeGroupSupplier(models.Model):
     class Meta:
         db_table = tdsettings.DB_PREFIX + 'link_la_typ'
 
+
 class PartAnalogManager(models.Manager):
+    # use_for_related_fields = True
+
     def get_queryset(self):
-        return super(PartAnalogManager, self).get_queryset().select_related('part')
+        return super(PartAnalogManager, self).\
+            get_queryset().\
+            filter(part__designation__language=tdsettings.LANG_ID).\
+            select_related('part', 'part__designation__description')
 
 
 class PartAnalog(models.Model):
@@ -111,7 +117,7 @@ class PartAnalog(models.Model):
             (5, u'штрих-код'),
             )
 
-    part = models.ForeignKey(Part, db_column='ARL_ART_ID', primary_key=True, verbose_name='Запчасть')
+    part = models.OneToOneField(Part, db_column='ARL_ART_ID', primary_key=True, verbose_name='Запчасть')
     number = models.CharField(db_column='ARL_DISPLAY_NR', max_length=105, verbose_name='Номер')
     search_number = models.CharField(db_column='ARL_SEARCH_NUMBER', max_length=105, verbose_name='Номер для поиска')
     kind = models.CharField(db_column='ARL_KIND', max_length=1, verbose_name='Тип')

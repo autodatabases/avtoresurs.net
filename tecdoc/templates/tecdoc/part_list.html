@@ -47,7 +47,7 @@
                             <div class="col s1 tecdoc-header">Цена</div>
                         </div>
                     </div>
-                    {% for part in parttypegroupsupplier_list %}
+                    {% for part in part_analogs %}
                         {% if part.part_group.part.product_id %}
                             <a href="{% url 'shop:product_detail' part.part_group.part.product_id %}" class="collection-item">
 {#                                                        <a href="#" class="collection-item">#}

@@ -6,7 +6,7 @@ from shop.models.product import Product
 # from tecdoc.models import PartAnalog
 # from tecdoc.models import PartGroup
 # from tecdoc.models import clean_number
-from tecdoc.models import PartAnalog
+from tecdoc.models import PartAnalog, get_part_analogs
 
 number_re = re.compile('[^a-zA-Z0-9]+')
 
@@ -22,11 +22,15 @@ class ProductDetailView(DetailView):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
 
         product = context['product']
-        print(clean_number(product.sku))
-        part_analog = PartAnalog.objects.filter(search_number=clean_number(product.cross_sku))
-        for pa in part_analog:
-            print(pa)
+        part_analogs = PartAnalog.objects.filter(search_number=clean_number(product.cross_sku))
+        # print(clean_number(product.sku))
 
+        parts = []
+        if part_analogs:
+            for pa in part_analogs:
+                parts.append(pa.part)
+        data = get_part_analogs(parts)
+        print(data)
         # part = Part.objects.filter(supplier__title=product.manufacturer, sku=product.sku)
 
         # part = Part.objects.filter(sku=product.sku, supplier__title__iexact=product.manufacturer)
@@ -36,8 +40,6 @@ class ProductDetailView(DetailView):
         #
         # else:
         #     print('no')
-
-        parts = []
 
         context['part_analogs'] = parts
         return context

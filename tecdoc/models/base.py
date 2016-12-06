@@ -1,4 +1,6 @@
 from django.db import models
+
+from shop.models.product import Product
 from tecdoc.apps import TecdocConfig as tdsettings
 
 
@@ -8,9 +10,12 @@ class TecdocLanguageManager(models.Manager):
     def get_queryset(self, *args, **kwargs):
         return super(TecdocLanguageManager, self). \
             get_queryset(*args, **kwargs). \
-            filter(designation__language=tdsettings.LANG_ID)
+            filter(designation__language=tdsettings.LANG_ID).select_related('designation__description')
+
 
 class TecdocLanguageDesManager(models.Manager):
+    use_for_related_fields = True
+
     def get_queryset(self, *args, **kwargs):
         query = super(TecdocLanguageDesManager, self).get_queryset(*args, **kwargs)
         query = query.filter(designation__language=tdsettings.LANG_ID)
@@ -73,3 +78,29 @@ class Designation(models.Model):
 
     class Meta:
         db_table = tdsettings.DB_PREFIX + 'designations'
+
+
+def get_part_analogs(part_analog):
+    data = part_analog
+    sku = []
+    brand = []
+    for part in data:
+        sku.append(part.part_group.part.sku)
+    products = Product.objects.filter(sku__in=sku)
+
+    # adding price data into parttypegroupsupplier_list
+    parts_with_price = []
+    parts_without_price = []
+    for part in data:
+        brand_name_small = part.part_group.part.supplier.title.lower()
+        sku_small = part.part_group.part.sku.lower()
+        for product in products:
+            if sku_small == product.sku and brand_name_small == product.manufacturer:
+                # print(product)
+                part.part_group.part.price = product.get_price()
+                part.part_group.part.product_id = product.id
+                part.part_group.part.quantity = product.get_quantity()
+        if not hasattr(part.part_group.part, 'price'):
+            part.part_group.part.price = -1
+    part_analog_data = sorted(data, key=lambda x: x.part_group.part.price, reverse=True)
+    return part_analog_data
