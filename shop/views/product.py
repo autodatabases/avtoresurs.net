@@ -29,8 +29,8 @@ class ProductDetailView(DetailView):
         if part_analogs:
             for pa in part_analogs:
                 parts.append(pa.part)
-        data = get_part_analogs(parts)
-        print(data)
+
+        print(parts)
         # part = Part.objects.filter(supplier__title=product.manufacturer, sku=product.sku)
 
         # part = Part.objects.filter(sku=product.sku, supplier__title__iexact=product.manufacturer)
