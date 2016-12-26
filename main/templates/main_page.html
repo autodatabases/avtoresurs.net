@@ -1,143 +1,164 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 
 {% block title %}Главная Авторесурс. Добро пожаловать!{% endblock title %}
 
 {% block content %}
 
-    <div class="section no-pad-bot">
-        <div class="container">
-            <h2 class="center blue-text">Компания Авторесурс</h2>
-            <h4 class="center blue-grey-text">Добро пожаловать</h4>
+    <div class="row">
+        <div class="col s7">
+            <div class="slider">
+                <ul class="slides" style="box-shadow: 0 5px 11px 0 rgba(0,0,0,.18),0 4px 15px 0 rgba(0,0,0,.15);">
+                    <li class="waves-effect waves-block waves-light">
+                        <img src="http://lorempixel.com/580/250/nature/1"> <!-- random image -->
+                        <div class="caption center-align">
+                            <h3>This is our big Tagline!</h3>
+                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+                        </div>
+                    </li>
+                    <li class="waves-effect waves-block waves-light">
+                        <img src="http://lorempixel.com/580/250/nature/2"> <!-- random image -->
+                        <div class="caption left-align">
+                            <h3>Left Aligned Caption</h3>
+                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+                        </div>
+                    </li>
+                    <li class="waves-effect waves-block waves-light">
+                        <img src="http://lorempixel.com/580/250/nature/3"> <!-- random image -->
+                        <div class="caption right-align">
+                            <h3>Right Aligned Caption</h3>
+                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+                        </div>
+                    </li>
+                    <li class="waves-effect waves-block waves-light">
+                        <img src="http://lorempixel.com/580/250/nature/4"> <!-- random image -->
+                        <div class="caption center-align">
+                            <h3>This is our big Tagline!</h3>
+                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col s5">
+            <h4 style="opacity: 0.7">Мы - команда профессионалов!</h4>
+            <hr style="margin-top: 1rem; margin-bottom: 1rem; border: 0; border-top: 1px solid rgba(0,0,0,.1);">
+            <p>История нашей компании берёт своё начало, в октябре 2002 года. Тогда в условиях жёсткой конкуренции, в
+                сфере торговли авто-запчастями, мы смогли доказать право на жизнь, и уверенно начали завоёвывать хорошую
+                репутацию, и постоянных клиентов, с которыми работаем и по сей день. Не смотря на относительно юный
+                возраст компании “АВТОРЕСУРС”, наши сотрудники имеют достаточно богатый (свыше 15 лет) опыт работы в
+                сфере торговли авто-запчастями.</p>
+            <p><a class="waves-effect waves-light btn blue accent-2" href="about">О компании</a></p>
         </div>
     </div>
-    <div class="container">
-        <!-- BREADCRUMBS -->
-        {#        <div class="row">#}
-        {#            <nav>#}
-        {#                <div class="nav-wrapper">#}
-        {#                    <div class="col s12 teal lighten-2">#}
-        {#                        <a href="/" class="breadcrumb">Главная</a>#}
-        {#                    </div>#}
-        {#                </div>#}
-        {#            </nav>#}
-        {#        </div>#}
-        <!-- Header -->
 
-        <!-- Main content -->
-        <div class="row">
-            <div class="col s12">
-                <div class="card-panel">
-                    <h4 class="blue-text darken-4">Новости</h4>
+    <hr style="margin-top: 2rem; margin-bottom: 2rem; border: 0; border-top: 1px solid rgba(0,0,0,.1);">
+
+    <div class="row">
+        <div class="col s6 m4">
+            <div class="card large">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img src="http://avtoresurs.net/UserFiles/image/img529e31c21c2d2.jpg">
+                    <span class="card-title">Поступление</span>
+                </div>
+                <div class="card-content">
+                    <p>Поступление деталей подвески и тормозной системы фирмы DELPHI.</p>
+                </div>
+                <div class="card-action">
+                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col s12 m6">
-                <div class="card sticky-action large hoverable">
-                    <div class="card-image waves-effect waves-block waves-light">
-                        <img class="activator responsive-img"
-                             src="http://avtoresurs.net/UserFiles/image/img529e31c21c2d2.jpg">
-                    </div>
-                    <div class="card-content">
-                        <span class="card-title activator grey-text text-darken-4">Поступление деталей подвески и тормозной системы фирмы DELPHI<i
-                                class="material-icons right">more_vert</i></span>
-
-                        {#                        <p><a href="#!">Ссылка здесь</a></p>#}
-                    </div>
-
-                    <div class="card-action">
-                        <a href="#">Ссылка</a>
-                    </div>
-
-                    <div class="card-reveal" style="display: none; transform: translateY(0px);">
-                        <span class="card-title grey-text text-darken-4">Поступление деталей подвески и тормозной системы фирмы DELPHI<i
-                                class="material-icons right">close</i></span>
-                        <p>Поступление деталей подвески и тормозной системы фирмы DELPHI</p>
-                    </div>
+        <div class="col s6 m4">
+            <div class="card large">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img src="http://avtoresurs.net/UserFiles/image/img55eff61f65437.png">
+                    <span class="card-title">Поступление</span>
                 </div>
-            </div>
-
-            <div class="col s12 m6">
-                <div class="card sticky-action large hoverable">
-                    <div class="card-image waves-effect waves-block waves-light">
-                        <img class="activator responsive-img"
-                             src="http://avtoresurs.net/UserFiles/image/img55eff61f65437.png">
-                    </div>
-                    <div class="card-content">
-                        <span class="card-title activator grey-text text-darken-4">Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT<i
-                                class="material-icons right">more_vert</i></span>
-
-                        {#                        <p><a href="#!">Ссылка здесь</a></p>#}
-                    </div>
-
-                    <div class="card-action">
-                        <a href="#">Ссылка</a>
-                    </div>
-
-                    <div class="card-reveal" style="display: none; transform: translateY(0px);">
-                        <span class="card-title grey-text text-darken-4">Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT<i
-                                class="material-icons right">close</i></span>
-                        <p>Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER
-                            SPORT</p>
-                    </div>
+                <div class="card-content">
+                    <p>Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT</p>
+                </div>
+                <div class="card-action">
+                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col s12 m6">
-                <div class="card sticky-action large hoverable">
-                    <div class="card-image waves-effect waves-block waves-light">
-                        <img class="activator responsive-img"
-                             src="http://avtoresurs.net/UserFiles/image/img529e31c21c2d2.jpg">
-                    </div>
-                    <div class="card-content">
-                        <span class="card-title activator grey-text text-darken-4">Поступление деталей подвески и тормозной системы фирмы DELPHI<i
-                                class="material-icons right">more_vert</i></span>
 
-                        {#                        <p><a href="#!">Ссылка здесь</a></p>#}
-                    </div>
-
-                    <div class="card-action">
-                        <a href="#">Ссылка</a>
-                    </div>
-
-                    <div class="card-reveal" style="display: none; transform: translateY(0px);">
-                        <span class="card-title grey-text text-darken-4">Поступление деталей подвески и тормозной системы фирмы DELPHI<i
-                                class="material-icons right">close</i></span>
-                        <p>Поступление деталей подвески и тормозной системы фирмы DELPHI</p>
-                    </div>
+        <div class="col s6 m4">
+            <div class="card large">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img src="http://avtoresurs.net/UserFiles/image/img55eff61f65437.png">
+                    <span class="card-title">Поступление</span>
                 </div>
-            </div>
-
-            <div class="col s12 m6">
-                <div class="card sticky-action large hoverable">
-                    <div class="card-image waves-effect waves-block waves-light">
-                        <img class="activator responsive-img"
-                             src="http://avtoresurs.net/UserFiles/image/img55eff61f65437.png">
-                    </div>
-                    <div class="card-content">
-                        <span class="card-title activator grey-text text-darken-4">Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT<i
-                                class="material-icons right">more_vert</i></span>
-
-                        {#                        <p><a href="#!">Ссылка здесь</a></p>#}
-                    </div>
-
-                    <div class="card-action">
-                        <a href="#">Ссылка</a>
-                    </div>
-
-                    <div class="card-reveal" style="display: none; transform: translateY(0px);">
-                        <span class="card-title grey-text text-darken-4">Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT<i
-                                class="material-icons right">close</i></span>
-                        <p>Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER
-                            SPORT</p>
-                    </div>
+                <div class="card-content">
+                    <p>Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT</p>
+                </div>
+                <div class="card-action">
+                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
                 </div>
             </div>
         </div>
-
     </div>
+    <div class="row">
+        <div class="col s6 m4">
+            <div class="card large">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img src="http://avtoresurs.net/UserFiles/image/img529e31c21c2d2.jpg">
+                    <span class="card-title">Поступление</span>
+                </div>
+                <div class="card-content">
+                    <p>Поступление деталей подвески и тормозной системы фирмы DELPHI.</p>
+                </div>
+                <div class="card-action">
+                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s6 m4">
+            <div class="card large">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img src="http://avtoresurs.net/UserFiles/image/img55eff61f65437.png">
+                    <span class="card-title">Поступление</span>
+                </div>
+                <div class="card-content">
+                    <p>Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT</p>
+                </div>
+                <div class="card-action">
+                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col s6 m4">
+            <div class="card large">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img src="http://avtoresurs.net/UserFiles/image/img55eff61f65437.png">
+                    <span class="card-title">Поступление</span>
+                </div>
+                <div class="card-content">
+                    <p>Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT</p>
+                </div>
+                <div class="card-action">
+                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('.slider').slider({full_width: true});
+        });
+    </script>
 {% endblock %}
