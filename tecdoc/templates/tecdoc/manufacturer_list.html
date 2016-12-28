@@ -4,43 +4,44 @@
     Марки автомобилей avtoresurs.net
 {% endblock %}
 
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row no-pad-bot">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12 blue-grey lighten-3">
+                    <a href="/" class="breadcrumb">Главная</a>
+                    <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
 
 {% block content %}
 
-    <div class="container">
-        <!-- BREADCRUMBS -->
-        <div class="row">
-            <nav>
-                <div class="nav-wrapper">
-                    <div class="col s12 purple lighten-2">
-                        <a href="/" class="breadcrumb">Главная</a>
-                        <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-                    </div>
-                </div>
-            </nav>
-        </div>
-        <!-- Header -->
-        <div class="row card-panel blue-grey lighten-3">
-            <div class="col s12">
-                <h5 class="white-text">Каталог автопроизводителей</h5>
-            </div>
-        </div>
 
-        <!-- Main content -->
-        <div class="collection tecdoc-table row card-panel" id="tecdoc-table">
-            {% for mnf in manufacturer_list %}
-                {% if forloop.counter0|divisibleby:4 %}
-                    <div class="row">
-                {% endif %}
-            <div class="col s3">
-                <a href="{% url 'tecdoc:manufacturer' mnf.id %}" class="collection-item">{{ mnf }}</a>
-{#                <a href="#" class="collection-item">{{ mnf }}</a>#}
-            </div>
-            {% if forloop.counter|divisibleby:4 or forloop.last %}
-                </div>
+    <!-- Header -->
+{#    <div class="row card-panel blue-grey lighten-3">#}
+{#        <div class="col s12">#}
+{#            <h5 class="white-text">Каталог автопроизводителей</h5>#}
+{#        </div>#}
+{#    </div>#}
+
+    <!-- Main content -->
+    <div class="collection tecdoc-table row card-panel" id="tecdoc-table">
+        {% for mnf in manufacturer_list %}
+            {% if forloop.counter0|divisibleby:4 %}
+                <div class="row">
             {% endif %}
-            {% endfor %}
+        <div class="col s3">
+            <a href="{% url 'tecdoc:manufacturer' mnf.id %}" class="collection-item">{{ mnf }}</a>
+            {#                <a href="#" class="collection-item">{{ mnf }}</a>#}
         </div>
+        {% if forloop.counter|divisibleby:4 or forloop.last %}
+            </div>
+        {% endif %}
+        {% endfor %}
     </div>
 
 {% endblock %}

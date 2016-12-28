@@ -2,29 +2,31 @@
 
 {% block  title %}{{ manufacturer }} avtoresurs.net{% endblock %}
 
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12 blue-grey lighten-3">
+                    <a href="/" class="breadcrumb">Главная</a>
+                    <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
+                    <a href="" class="breadcrumb">{{ manufacturer }}</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
 
 {% block content %}
 
-    <div class="container">
-        <!-- BREADCRUMBS -->
-        <div class="row">
-            <nav>
-                <div class="nav-wrapper">
-                    <div class="col s12 purple lighten-2">
-                        <a href="/" class="breadcrumb">Главная</a>
-                        <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-                        <a href="" class="breadcrumb">{{ manufacturer }}</a>
-                    </div>
-                </div>
-            </nav>
-        </div>
+
 
         <!-- Header -->
-        <div class="row card-panel blue-grey lighten-3">
-            <div class="col s12">
-                <h5 class="white-text">Выбор модели автотранспорта</h5>
-            </div>
-        </div>
+{#        <div class="row card-panel blue-grey lighten-3">#}
+{#            <div class="col s12">#}
+{#                <h5 class="white-text">Выбор модели автотранспорта</h5>#}
+{#            </div>#}
+{#        </div>#}
 
 
         <!-- Main content -->
@@ -40,19 +42,17 @@
             </div>
             {% for model in manufacturer.carmodel_set.all %}
                 <a href="{% url 'tecdoc:model' manufacturer.id model.id %}" class="collection-item">
-{#                <a href="#" class="collection-item">#}
+                    {#                <a href="#" class="collection-item">#}
                     <div class="row" style="margin-bottom: 0">
                         <div class="col s1">{{ forloop.counter }}</div>
                         <div class="col s2">{{ model.manufacturer }}</div>
                         <div class="col s5">{{ model.designation }}</div>
-{#                        <div class="col s5">{{ model.description }}</div>#}
+                        {#                        <div class="col s5">{{ model.description }}</div>#}
                         <div class="col s2">{{ model.get_datestart }}</div>
                         <div class="col s2">{{ model.get_dateend }}</div>
                     </div>
                 </a>
             {% endfor %}
         </div>
-    </div>
-    </div>
 
 {% endblock %}

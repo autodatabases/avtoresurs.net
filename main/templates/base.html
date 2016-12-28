@@ -61,7 +61,11 @@
     </div>
 </nav>
 
-<main style="padding: 30px">
+<div class="container">
+    {% block breadcrumbs %}{% endblock %}
+</div>
+
+<main style="padding: 30px 0">
     <div class="container">
         {% block content %}{% endblock %}
     </div>
