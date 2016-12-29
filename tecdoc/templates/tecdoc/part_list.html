@@ -4,83 +4,85 @@
 
 {% block title %}Список запчастей по категории {{ section.designation }}{% endblock %}
 
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12 blue-grey lighten-3">
+                    <a href="/" class="breadcrumb">Главная</a>
+                    <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
+                    <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
+                       class="breadcrumb">{{ car_type.model.manufacturer }}</a>
+                    <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
+                       class="breadcrumb">{{ car_type.model.designation }}</a>
+                    <a href="" class="breadcrumb">{{ car_type }}</a>
+                    <a href="" class="breadcrumb">{{ section.designation }}</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block content %}
 
-    <div class="container">
-        <!-- BREADCRUMBS -->
-        <div class="row">
-            <nav>
-                <div class="nav-wrapper">
-                    <div class="col s12 purple lighten-2">
-                        <a href="/" class="breadcrumb">Главная</a>
-                        <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-                        <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
-                           class="breadcrumb">{{ car_type.model.manufacturer }}</a>
-                        <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
-                           class="breadcrumb">{{ car_type.model.designation }}</a>
-                        <a href="" class="breadcrumb">{{ car_type }}</a>
-                        <a href="" class="breadcrumb">{{ section.designation }}</a>
+    <!-- Header -->
+{#    <div class="row card-panel blue-grey lighten-3">#}
+{#        <div class="col s12">#}
+{#            <h5 class="white-text">{{ section.designation }} для {{ car_type.model }}</h5>#}
+{#        </div>#}
+{#    </div>#}
+
+    <!-- Main content -->
+    <div class="row">
+        <div class="col s12">
+            <div class="collection tecdoc-table row card-panel">
+                <div class="collection-item">
+                    <div class="row">
+                        <div class="col s1 tecdoc-header">№ п/п</div>
+                        <div class="col s1 tecdoc-header">Артикул ТекДок</div>
+                        <div class="col s1 tecdoc-header">Артикул</div>
+                        <div class="col s2 tecdoc-header">Производитель</div>
+                        <div class="col s5 tecdoc-header">Название</div>
+                        <div class="col s1 tecdoc-header">Количество</div>
+                        <div class="col s1 tecdoc-header">Цена</div>
                     </div>
                 </div>
-            </nav>
-        </div>
-
-        <!-- Header -->
-        <div class="row card-panel blue-grey lighten-3">
-            <div class="col s12">
-                <h5 class="white-text">{{ section.designation }} для {{ car_type.model }}</h5>
-            </div>
-        </div>
-
-        <!-- Main content -->
-        <div class="row">
-            <div class="col s12">
-                <div class="collection tecdoc-table row card-panel">
-                    <div class="collection-item">
-                        <div class="row">
-                            <div class="col s1 tecdoc-header">№ п/п</div>
-                            <div class="col s1 tecdoc-header">Артикул ТекДок</div>
-                            <div class="col s1 tecdoc-header">Артикул</div>
-                            <div class="col s2 tecdoc-header">Производитель</div>
-                            <div class="col s5 tecdoc-header">Название</div>
-                            <div class="col s1 tecdoc-header">Количество</div>
-                            <div class="col s1 tecdoc-header">Цена</div>
-                        </div>
-                    </div>
-                    {% for part in part_analogs %}
-                        {% if part.part_group.part.product_id %}
-                            <a href="{% url 'shop:product_detail' part.part_group.part.product_id %}" class="collection-item">
-{#                                                        <a href="#" class="collection-item">#}
-                        {% else %}
-                            <div class="collection-item">
-                        {% endif %}
-                    <div class="row {% if part.part_group.part.price == -1 %} noactive {% endif %}" style="margin-bottom: 0">
-                        <div class="col s1">{{ forloop.counter }}</div>
-                        <div class="col s1">{{ part.part_group.part.sku }}</div>
-                        <div class="col s1">{{ part.part_group.part.id }}</div>
-                        <div class="col s2">{{ part.supplier }}</div>
-                        <div class="col s5">{{ part.part_group.part }}</div>
-                        <div class="col s1"><strong>{{ part.part_group.part.quantity }}</strong></div>
-                        <div class="col s1">
-                            <strong>
-                                {% if part.part_group.part.price > 0 %}
-                                    {{ part.part_group.part.price }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </strong>
-                        </div>
-                    </div>
+                {% for part in part_analogs %}
                     {% if part.part_group.part.product_id %}
-                        </a>
+                        <a href="{% url 'shop:product_detail' part.part_group.part.product_id %}"
+                           class="collection-item">
+                        {#                                                        <a href="#" class="collection-item">#}
                     {% else %}
-                        </div>
+                        <div class="collection-item">
                     {% endif %}
-                    {% endfor %}
-            </div>
+                <div class="row {% if part.part_group.part.price == -1 %} noactive {% endif %}"
+                     style="margin-bottom: 0">
+                    <div class="col s1">{{ forloop.counter }}</div>
+                    <div class="col s1">{{ part.part_group.part.sku }}</div>
+                    <div class="col s1">{{ part.part_group.part.id }}</div>
+                    <div class="col s2">{{ part.supplier }}</div>
+                    <div class="col s5">{{ part.part_group.part }}</div>
+                    <div class="col s1"><strong>{{ part.part_group.part.quantity }}</strong></div>
+                    <div class="col s1">
+                        <strong>
+                            {% if part.part_group.part.price > 0 %}
+                                {{ part.part_group.part.price }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </strong>
+                    </div>
+                </div>
+                {% if part.part_group.part.product_id %}
+                    </a>
+                {% else %}
+                    </div>
+                {% endif %}
+                {% endfor %}
         </div>
     </div>
-
     </div>
+
 
 {% endblock content %}

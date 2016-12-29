@@ -2,112 +2,114 @@
 
 {% block title %}{{ object.title }}{% endblock title %}
 
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12 blue-grey lighten-3">
+                    <a href="/" class="breadcrumb">Главная</a>
+                    <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
+                    <a href="" class="breadcrumb">{{ product|title }}</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
 {% block content %}
 
-    <div class="container">
-        <!-- BREADCRUMBS -->
+    <!-- Header -->
+    {#    <div class="row card-panel blue-grey lighten-3">#}
+    {#        <div class="col s12">#}
+    {#            <h5 class="white-text">{{ product.title|title }}</h5>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    <!-- Main content -->
+
+    <div class="row card-panel">
         <div class="row">
-            <nav>
-                <div class="nav-wrapper">
-                    <div class="col s12 purple lighten-2">
-                        <a href="/" class="breadcrumb">Главная</a>
-                        <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
-                        <a href="" class="breadcrumb">{{ product|title }}</a>
-                    </div>
-                </div>
-            </nav>
-        </div>
-        <!-- Header -->
-        <div class="row card-panel blue-grey lighten-3">
-            <div class="col s12">
-                <h5 class="white-text">{{ product.title|title }}</h5>
+            <div class="col s6">
+                <img src="http://placehold.it/600x400" alt="" class="responsive-img materialboxed"
+                     data-caption="{{ product|upper }}">
             </div>
-        </div>
-
-        <!-- Main content -->
-
-        <div class="row card-panel">
-            <div class="row">
-                <div class="col s6">
-                    <img src="http://placehold.it/600x400" alt="" class="responsive-img materialboxed"
-                         data-caption="{{ product|upper }}">
-                </div>
-                <div class="col s6">
-                    <div class="row">
-                        <div class="col s12">
-                            <p class="flow-text" style="margin-top: 0;">Производитель: <span
-                                    class="blue-text"><strong>{{ product.manufacturer|upper }}</strong></span>
-                            </p>
-                            <p class="flow-text">Название: <span class="blue-text"><strong>{{ product|upper }}</strong></span>
-                            </p>
-                            <p class="flow-text">Код детали: <span
-                                    class="blue-text"><strong>{{ product.sku|upper }}</strong></span>
-                            </p>
-                            <p class="flow-text">Кросс: <span
-                                    class="blue-text"><strong>{{ product.cross_sku|upper }}</strong></span></p>
-                            <p class="flow-text">Количество на складе: <span
-                                    class="blue-text"><strong>{{ product.quantity }}</strong></span></p>
-                            <p class="flow-text">Цена: <span
-                                    class="blue-text"><strong>{{ product.get_price }}</strong></span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <form class="col s12">
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input placeholder="Введите количество товара" id="first_name" type="number"
-                                           class="validate center-align"
-                                           value="1" style="font-weight: bold; font-size: 1.5em;">
-                                    <label for="first_name">Количество</label>
-                                </div>
-
-                            </div>
-                            <div class="row center-align">
-                                <div class="col s12">
-                                    <button class="btn waves-effect waves-light deep-purple darken-1" type="submit"
-                                            name="action">В корзину
-                                        <i class="material-icons right">send</i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+            <div class="col s6">
+                <div class="row">
+                    <div class="col s12">
+                        <p class="flow-text" style="margin-top: 0;">Производитель: <span
+                                class="blue-text"><strong>{{ product.manufacturer|upper }}</strong></span>
+                        </p>
+                        <p class="flow-text">Название: <span
+                                class="blue-text"><strong>{{ product|upper }}</strong></span>
+                        </p>
+                        <p class="flow-text">Код детали: <span
+                                class="blue-text"><strong>{{ product.sku|upper }}</strong></span>
+                        </p>
+                        <p class="flow-text">Кросс: <span
+                                class="blue-text"><strong>{{ product.cross_sku|upper }}</strong></span></p>
+                        <p class="flow-text">Количество на складе: <span
+                                class="blue-text"><strong>{{ product.quantity }}</strong></span></p>
+                        <p class="flow-text">Цена: <span
+                                class="blue-text"><strong>{{ product.get_price }}</strong></span>
+                        </p>
                     </div>
                 </div>
-            </div>
-
-        </div>
-
-        <div class="row">
-            <div class="col s12">
-                <div class="collection tecdoc-table row card-panel">
-                    <div class="collection-item">
+                <div class="row">
+                    <form class="col s12">
                         <div class="row">
-                            <div class="col s1 tecdoc-header">№ п/п</div>
-                            <div class="col s2 tecdoc-header">Артикул ТекДок</div>
-                            <div class="col s2 tecdoc-header">Артикул</div>
-                            <div class="col s2 tecdoc-header">Производитель</div>
-                            <div class="col s3 tecdoc-header">Название</div>
-                            <div class="col s1 tecdoc-header">Количество</div>
-                            <div class="col s1 tecdoc-header">Цена</div>
-                        </div>
-                        {% for part_analog in part_analogs %}
-                            <div class="row">
-                                <div class="col s1">{{ forloop.counter }}</div>
-                                <div class="col s2">{{ part_analog.sku }}</div>
-                                <div class="col s2">{{ part_analog.id }}</div>
-                                <div class="col s2">{{ part_analog.supplier }}</div>
-                                <div class="col s3">{{ part_analog}}</div>
-                                <div class="col s1">{{ part_analog.product.quantity }}</div>
-                                <div class="col s1">{{ part_analog.product.get_price }}</div>
+                            <div class="input-field col s12">
+                                <input placeholder="Введите количество товара" id="first_name" type="number"
+                                       class="validate center-align"
+                                       value="1" style="font-weight: bold; font-size: 1.5em;">
+                                <label for="first_name">Количество</label>
                             </div>
-                        {% endfor %}
-                    </div>
+
+                        </div>
+                        <div class="row center-align">
+                            <div class="col s12">
+                                <button class="btn waves-effect waves-light deep-purple darken-1" type="submit"
+                                        name="action">В корзину
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-
 
     </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="collection tecdoc-table row card-panel">
+                <div class="collection-item">
+                    <div class="row">
+                        <div class="col s1 tecdoc-header">№ п/п</div>
+                        <div class="col s2 tecdoc-header">Артикул ТекДок</div>
+                        <div class="col s2 tecdoc-header">Артикул</div>
+                        <div class="col s2 tecdoc-header">Производитель</div>
+                        <div class="col s3 tecdoc-header">Название</div>
+                        <div class="col s1 tecdoc-header">Количество</div>
+                        <div class="col s1 tecdoc-header">Цена</div>
+                    </div>
+                    {% for part_analog in part_analogs %}
+                        <div class="row">
+                            <div class="col s1">{{ forloop.counter }}</div>
+                            <div class="col s2">{{ part_analog.sku }}</div>
+                            <div class="col s2">{{ part_analog.id }}</div>
+                            <div class="col s2">{{ part_analog.supplier }}</div>
+                            <div class="col s3">{{ part_analog }}</div>
+                            <div class="col s1">{{ part_analog.product.quantity }}</div>
+                            <div class="col s1">{{ part_analog.product.get_price }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 {% endblock %}

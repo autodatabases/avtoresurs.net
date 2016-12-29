@@ -66,7 +66,7 @@
                     <p>Поступление деталей подвески и тормозной системы фирмы DELPHI.</p>
                 </div>
                 <div class="card-action">
-                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
+                    <a class="waves-effect waves-light btn blue accent-2" href="#modal1">Подробнее</a>
                 </div>
             </div>
         </div>
@@ -150,6 +150,17 @@
         </div>
     </div>
 
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Modal Header</h4>
+            <p>A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
+
 
 
 
@@ -160,5 +171,10 @@
         $(document).ready(function () {
             $('.slider').slider({full_width: true});
         });
+        $(document).ready(function () {
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal').modal();
+        });
+          
     </script>
 {% endblock %}
