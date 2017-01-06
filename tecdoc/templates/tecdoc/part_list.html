@@ -27,11 +27,11 @@
 {% block content %}
 
     <!-- Header -->
-{#    <div class="row card-panel blue-grey lighten-3">#}
-{#        <div class="col s12">#}
-{#            <h5 class="white-text">{{ section.designation }} для {{ car_type.model }}</h5>#}
-{#        </div>#}
-{#    </div>#}
+    {#    <div class="row card-panel blue-grey lighten-3">#}
+    {#        <div class="col s12">#}
+    {#            <h5 class="white-text">{{ section.designation }} для {{ car_type.model }}</h5>#}
+    {#        </div>#}
+    {#    </div>#}
 
     <!-- Main content -->
     <div class="row">
@@ -54,10 +54,9 @@
                            class="collection-item">
                         {#                                                        <a href="#" class="collection-item">#}
                     {% else %}
-                        <div class="collection-item">
+                        <div class="collection-item{% if part.part_group.part.price == -1 %} noactive {% endif %}">
                     {% endif %}
-                <div class="row {% if part.part_group.part.price == -1 %} noactive {% endif %}"
-                     style="margin-bottom: 0">
+                <div class="row no-margin-bot">
                     <div class="col s1">{{ forloop.counter }}</div>
                     <div class="col s1">{{ part.part_group.part.sku }}</div>
                     <div class="col s1">{{ part.part_group.part.id }}</div>

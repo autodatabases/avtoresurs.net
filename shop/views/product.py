@@ -26,11 +26,30 @@ class ProductDetailView(DetailView):
         # print(clean_number(product.sku))
 
         parts = []
-        if part_analogs:
-            for pa in part_analogs:
-                parts.append(pa.part)
+        sku = []
+        # if part_analogs:
+        for pa in part_analogs:
+            parts.append(pa.part)
+            sku.append(pa.part.sku)
+        # print(parts)
+        products = Product.objects.filter(sku__in=sku)
 
-        print(parts)
+        for part in parts:
+            brand_name_small = part.supplier.title.lower()
+            sku_small = part.sku.lower()
+            for product in products:
+                if sku_small == product.sku and brand_name_small == product.manufacturer:
+                    # print(product)
+                    part.price = product.get_price()
+                    part.product_id = product.id
+                    part.quantity = product.get_quantity()
+            if not hasattr(part, 'price'):
+                part.price = -1
+
+        # print(parts)
+        parts = sorted(parts, key=lambda part: part.price, reverse=True)
+
+
         # part = Part.objects.filter(supplier__title=product.manufacturer, sku=product.sku)
 
         # part = Part.objects.filter(sku=product.sku, supplier__title__iexact=product.manufacturer)

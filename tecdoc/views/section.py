@@ -8,7 +8,6 @@ from tecdoc.models import Section, CarType
 class SectionList(ListView):
     model = Section
 
-
     def get_context_data(self, **kwargs):
         context = super(SectionList, self).get_context_data()
 
@@ -34,6 +33,6 @@ class SectionList(ListView):
         car_type = CarType.objects.get(id=type_id)
         context['car_type'] = car_type
 
-        #todo get tree for current cartype only
+        # todo get tree for current cartype only
 
         return context
