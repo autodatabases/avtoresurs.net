@@ -1,4 +1,6 @@
 import re
+
+from collections import Set
 from django.views.generic import DetailView
 
 from shop.models.product import Product
@@ -25,16 +27,19 @@ class ProductDetailView(DetailView):
         part_analogs = PartAnalog.objects.filter(search_number=clean_number(product.cross_sku))
         # print(clean_number(product.sku))
 
-        parts = []
+        parts = set()
         sku = []
         # if part_analogs:
         for pa in part_analogs:
-            parts.append(pa.part)
+            parts.add(pa.part)
             sku.append(pa.part.sku)
         # print(parts)
         products = Product.objects.filter(sku__in=sku)
 
+
+
         for part in parts:
+            print(part)
             brand_name_small = part.supplier.title.lower()
             sku_small = part.sku.lower()
             for product in products:

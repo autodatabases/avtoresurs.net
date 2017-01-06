@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a6e2c78-86cd-4981-b332-a9ae5cf2d745" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tecdoc/templates/tecdoc/section_detail.html" afterPath="$PROJECT_DIR$/tecdoc/templates/tecdoc/section_detail.html.old" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main/templates/main_page.html" afterPath="$PROJECT_DIR$/main/templates/main_page.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shop/templates/shop/product_detail.html" afterPath="$PROJECT_DIR$/shop/templates/shop/product_detail.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shop/views/product.py" afterPath="$PROJECT_DIR$/shop/views/product.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tecdoc/templates/tecdoc/part_list.html" afterPath="$PROJECT_DIR$/tecdoc/templates/tecdoc/part_list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tecdoc/views/section.py" afterPath="$PROJECT_DIR$/tecdoc/views/section.py" />
     </list>
     <ignored path="avtoresurs_new.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,21 +26,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="product.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="product.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/shop/views/product.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="534">
-              <caret line="42" column="36" selection-start-line="42" selection-start-column="36" selection-end-line="42" selection-end-column="36" />
+            <state relative-caret-position="374">
+              <caret line="40" column="26" selection-start-line="40" selection-start-column="26" selection-end-line="40" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="part.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tecdoc/models/part.py">
+      <file leaf-file-name="builtins.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.PyCharm2016.2/system/python_stubs/1166025385/builtins.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="22" column="36" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="36" />
+            <state relative-caret-position="199">
+              <caret line="4353" column="13" selection-start-line="4353" selection-start-column="13" selection-end-line="4353" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -106,7 +100,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="part_list.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="part_list.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tecdoc/templates/tecdoc/part_list.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="133">
@@ -199,9 +193,9 @@
         <option value="$PROJECT_DIR$/tecdoc/templates/tecdoc/section_list.html" />
         <option value="$PROJECT_DIR$/main/templates/main_page.html" />
         <option value="$PROJECT_DIR$/tecdoc/views/section.py" />
-        <option value="$PROJECT_DIR$/shop/views/product.py" />
         <option value="$PROJECT_DIR$/shop/templates/shop/product_detail.html" />
         <option value="$PROJECT_DIR$/tecdoc/templates/tecdoc/part_list.html" />
+        <option value="$PROJECT_DIR$/shop/views/product.py" />
       </list>
     </option>
   </component>
@@ -803,7 +797,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tecdoc/models/category.py" />
     <entry file="file://$PROJECT_DIR$/tecdoc/models/common.py" />
     <entry file="file://$PROJECT_DIR$/tecdoc/models/criteria.py" />
     <entry file="file://$PROJECT_DIR$/tecdoc/models/graphics.py" />
@@ -1138,14 +1131,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shop/views/product.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="534">
-          <caret line="42" column="36" selection-start-line="42" selection-start-column="36" selection-end-line="42" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tecdoc/templates/tecdoc/manufacturer_list.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
@@ -1166,6 +1151,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
           <caret line="56" column="113" selection-start-line="56" selection-start-column="113" selection-end-line="56" selection-end-column="113" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2016.2/system/python_stubs/1166025385/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="4353" column="13" selection-start-line="4353" selection-start-column="13" selection-end-line="4353" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shop/views/product.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="40" column="26" selection-start-line="40" selection-start-column="26" selection-end-line="40" selection-end-column="26" />
           <folding />
         </state>
       </provider>
