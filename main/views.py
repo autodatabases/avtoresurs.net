@@ -1,6 +1,8 @@
 import csv
 
 from django.views.generic import TemplateView
+
+from news.models import Post
 from shop.models.product import Product
 
 # Create your views here.
@@ -9,6 +11,13 @@ from shop.models.product import Product
 
 class MainPageView(TemplateView):
     template_name = 'main_page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MainPageView, self).get_context_data()
+        news = Post.objects.all()
+        context['news'] = news
+        print(news)
+        return context
 
 
 # class ProductLoader(TemplateView):

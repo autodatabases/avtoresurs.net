@@ -39,7 +39,7 @@ class ProductDetailView(DetailView):
 
 
         for part in parts:
-            print(part)
+            # print(part)
             brand_name_small = part.supplier.title.lower()
             sku_small = part.sku.lower()
             for product in products:

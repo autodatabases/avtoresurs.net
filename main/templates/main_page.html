@@ -56,113 +56,41 @@
     <hr style="margin-top: 2rem; margin-bottom: 2rem; border: 0; border-top: 1px solid rgba(0,0,0,.1);">
 
     <div class="row">
-        <div class="col s6 m4">
-            <div class="card large">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img src="http://avtoresurs.net/UserFiles/image/img529e31c21c2d2.jpg">
-                    <span class="card-title">Поступление</span>
+        {% for post in news %}
+            {% if forloop.counter0|divisibleby:3 %}
                 </div>
-                <div class="card-content">
-                    <p>Поступление деталей подвески и тормозной системы фирмы DELPHI.</p>
-                </div>
-                <div class="card-action">
-                    <a class="waves-effect waves-light btn blue accent-2" href="#modal1">Подробнее</a>
+                <div class="row">
+            {% endif %}
+
+            <div class="col s6 m4">
+                <div class="card large">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img src="{{ post.image.url }}">
+                        <span class="card-title">{{ post.title }}</span>
+                    </div>
+                    <div class="card-content">
+                        <p>{{ post.content }}</p>
+                        <p><strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong></p>
+                    </div>
+                    <div class="card-action">
+                        <a class="waves-effect waves-light btn blue accent-2" href="#modal{{ forloop.counter }}">Подробнее</a>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col s6 m4">
-            <div class="card large">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img src="http://avtoresurs.net/UserFiles/image/img55eff61f65437.png">
-                    <span class="card-title">Поступление</span>
+            <!-- Modal Structure -->
+            <div id="modal{{ forloop.counter }}" class="modal">
+                <div class="modal-content">
+                    <h4>{{ post.title }}</h4>
+                    <p><img src="{{ post.image.url }}"></p>
+                    <p>{{ post.content }}</p>
+                    <p><strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong></p>
                 </div>
-                <div class="card-content">
-                    <p>Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT</p>
-                </div>
-                <div class="card-action">
-                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
+                <div class="modal-footer">
+                    <a class=" modal-action modal-close waves-effect waves-green btn-flat">Закрыть</a>
                 </div>
             </div>
+        {% endfor %}
         </div>
-
-
-        <div class="col s6 m4">
-            <div class="card large">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img src="http://avtoresurs.net/UserFiles/image/img55eff61f65437.png">
-                    <span class="card-title">Поступление</span>
-                </div>
-                <div class="card-content">
-                    <p>Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT</p>
-                </div>
-                <div class="card-action">
-                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col s6 m4">
-            <div class="card large">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img src="http://avtoresurs.net/UserFiles/image/img529e31c21c2d2.jpg">
-                    <span class="card-title">Поступление</span>
-                </div>
-                <div class="card-content">
-                    <p>Поступление деталей подвески и тормозной системы фирмы DELPHI.</p>
-                </div>
-                <div class="card-action">
-                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col s6 m4">
-            <div class="card large">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img src="http://avtoresurs.net/UserFiles/image/img55eff61f65437.png">
-                    <span class="card-title">Поступление</span>
-                </div>
-                <div class="card-content">
-                    <p>Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT</p>
-                </div>
-                <div class="card-action">
-                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col s6 m4">
-            <div class="card large">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img src="http://avtoresurs.net/UserFiles/image/img55eff61f65437.png">
-                    <span class="card-title">Поступление</span>
-                </div>
-                <div class="card-content">
-                    <p>Поступление деталей подвески, ступичных подшипников , ШРУС-ов. фильтров фирмы MASTER SPORT</p>
-                </div>
-                <div class="card-action">
-                    <a class="waves-effect waves-light btn blue accent-2">Подробнее</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Structure -->
-    <div id="modal1" class="modal">
-        <div class="modal-content">
-            <h4>Modal Header</h4>
-            <p>A bunch of text</p>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-        </div>
-    </div>
-
-
-
 
 {% endblock %}
 

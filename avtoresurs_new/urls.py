@@ -15,10 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf.urls.static import static
+
+from avtoresurs_new import settings
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^', include('main.urls', namespace='main')),
-    url(r'shop/', include('shop.urls', namespace='shop')),
-    url(r'parts/', include('tecdoc.urls', namespace='tecdoc')),
-]
+                  url(r'^admin/', admin.site.urls),
+                  url(r'^', include('main.urls', namespace='main')),
+                  url(r'shop/', include('shop.urls', namespace='shop')),
+                  url(r'parts/', include('tecdoc.urls', namespace='tecdoc')),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

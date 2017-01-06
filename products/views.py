@@ -19,7 +19,7 @@ class ProductDetailView(DetailView):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         product = context['product']
         part = Part.objects.filter(supplier__title=product.manufacturer, sku=product.sku)
-        print(part)
+        # print(part)
 
 
         return context
