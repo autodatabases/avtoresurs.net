@@ -1,3 +1,4 @@
+import re
 from django.db import models
 
 from shop.models.product import Product
@@ -104,3 +105,8 @@ def get_part_analogs(part_analog):
             part.part_group.part.price = -1
     part_analog_data = sorted(data, key=lambda x: x.part_group.part.price, reverse=True)
     return part_analog_data
+
+number_re = re.compile('[^a-zA-Z0-9]+')
+
+def clean_number(number):
+    return number_re.sub('', number)

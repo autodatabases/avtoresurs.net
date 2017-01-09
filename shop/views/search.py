@@ -1,19 +1,19 @@
-from collections import Set
-from django.views.generic import DetailView
+from distutils.command.clean import clean
 
-from shop.models.product import Product
-from tecdoc.models import PartAnalog, get_part_analogs, clean_number
+from django.views.generic import TemplateView
+
+from tecdoc.models import PartAnalog, clean_number, Product
 
 
-class ProductDetailView(DetailView):
-    model = Product
+class SearchView(TemplateView):
+    template_name = 'shop/search_page.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ProductDetailView, self).get_context_data(**kwargs)
+        context = super(SearchView, self).get_context_data()
+        q = self.request.GET['q']
+        context['q'] = q
 
-        product = context['product']
-        part_analogs = PartAnalog.objects.filter(search_number=clean_number(product.cross_sku))
-
+        part_analogs = PartAnalog.objects.filter(search_number=clean_number(q))
         parts = set()
         sku = []
         for pa in part_analogs:
@@ -35,4 +35,5 @@ class ProductDetailView(DetailView):
         parts = sorted(parts, key=lambda part: part.price, reverse=True)
 
         context['part_analogs'] = parts
+
         return context
