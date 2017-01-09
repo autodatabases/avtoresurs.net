@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a6e2c78-86cd-4981-b332-a9ae5cf2d745" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shop/templates/shop/search_page.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shop/views/search.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main/templates/base.html" afterPath="$PROJECT_DIR$/main/templates/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shop/templates/shop/product_detail.html" afterPath="$PROJECT_DIR$/shop/templates/shop/product_detail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shop/templates/shop/shop_index.html" afterPath="$PROJECT_DIR$/shop/templates/shop/shop_index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shop/urls.py" afterPath="$PROJECT_DIR$/shop/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shop/views/product.py" afterPath="$PROJECT_DIR$/shop/views/product.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tecdoc/models/base.py" afterPath="$PROJECT_DIR$/tecdoc/models/base.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
     </list>
     <ignored path="avtoresurs_new.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -115,8 +108,8 @@
       <file leaf-file-name="base.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="43" column="116" selection-start-line="43" selection-start-column="116" selection-end-line="43" selection-end-column="116" />
+            <state relative-caret-position="239">
+              <caret line="34" column="46" selection-start-line="34" selection-start-column="46" selection-end-line="34" selection-end-column="46" />
               <folding>
                 <element signature="n#style#0;n#input#0;n#div#0;n#form#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -1244,8 +1237,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="43" column="116" selection-start-line="43" selection-start-column="116" selection-end-line="43" selection-end-column="116" />
+        <state relative-caret-position="239">
+          <caret line="34" column="46" selection-start-line="34" selection-start-column="46" selection-end-line="34" selection-end-column="46" />
           <folding>
             <element signature="n#style#0;n#input#0;n#div#0;n#form#0;n#li#0;n#ul#0;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
