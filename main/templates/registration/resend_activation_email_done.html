@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Повторная активация{% endblock %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col s8 offset-s2">
+            Пожалуйста проверьте свой e-mail <strong>{{ email }}</strong>, на него выслано письмо с дальнейшими
+            инструкциями для повторной активации учетной записи.
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s8 offset-s2">
+            <a href="/">Вернуться на главную</a>
+        </div>
+    </div>
+{% endblock %}

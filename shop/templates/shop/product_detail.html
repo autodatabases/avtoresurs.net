@@ -56,20 +56,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    <form class="col s12">
+                    <form method="GET" action="{% url 'cart' %}" id="add-form" class="form-inline">
                         <div class="row">
                             <div class="input-field col s12">
-                                <input placeholder="Введите количество товара" id="first_name" type="number"
-                                       class="validate center-align"
+                                <input placeholder="Введите количество товара" id="id_qty" type="number"
+                                       class="validate center-align" name="qty"
                                        value="1" style="font-weight: bold; font-size: 1.5em;">
                                 <label for="first_name">Количество</label>
                             </div>
-
                         </div>
+
                         <div class="row center-align">
                             <div class="col s12">
+                                <input type="hidden" name="item" value="{{ object.id }}">
                                 <button class="btn waves-effect waves-light deep-purple darken-1" type="submit"
-                                        name="action">В корзину
+                                        name="action" id="submit-btn">В корзину
                                     <i class="material-icons right">send</i>
                                 </button>
                             </div>
@@ -134,4 +135,31 @@
 
 
 
+{% endblock %}
+
+{% block js %}
+    <script>
+        $('#submit-btn').click(function (event) {
+            event.preventDefault();
+            var formData = $('#add-form').serialize();
+            console.log(formData);
+            $.ajax({
+                type: "GET",
+                url: "{% url 'cart' %}",
+                data: formData,
+                success: function (data) {
+                                        console.log(data)
+                    {#                    $('#jquery-message').text("Added " + data.item_added + " Deleted " + data.deleted);#}
+                    showFlashMessage(data.flash_message);
+                    updateCartItemCount();
+                },
+                error: function (response, error) {
+                                        console.log(response);
+                                        console.log(error);
+                    $('#add-form').submit();
+                }
+            })
+            {#            $('#add-form').submit;#}
+        });
+    </script>
 {% endblock %}

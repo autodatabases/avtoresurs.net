@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{#{% load crispy_forms_tags %}#}
+
+{% block title %}Оформление покупки{% endblock title %}
+
+{% block content %}
+
+    <!-- BREADCRUMBS -->
+    <div class="breadcrumb_wrap">
+        <ul class="breadcrumb">
+            <li><a href="/" class="homepage-link">Главная</a></li>
+            <li><a href="{% url 'shop:products' %}" class="homepage-link">Каталог</a></li>
+            <li><a href="{% url 'cart' %}" class="homepage-link">Корзина</a></li>
+            <li><span class="page-title">Оформление заказа</span></li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="page_heading">Оформление заказа - проверьте свой заказ</h2>
+        </div>
+    </div>
+    <div class="div-checkout col-xs-12 col-md-6 col-md-offset-3">
+        <div class="row">
+            <div class="col-sm-6 hidden-xs hidden-sm"><p>Товар<br>(наименование)</p></div>
+            <div class="col-sm-3 hidden-xs hidden-sm"><p>Количество<br>(шт.)</p></div>
+            <div class="col-sm-3 hidden-xs hidden-sm"><p>Сумма<br>(<i class="fa fa-rub" aria-hidden="true"></i>)</p></div>
+        </div>
+        <hr class="hidden-xs hidden-sm">
+        {% for item in cart.cartitem_set.all %}
+            <div class="row">
+                <div class="col-sm-12 col-md-6"><p>{{ item.item.title }}</p></div>
+                <div class="col-sm-12 col-md-3"><p>{{ item.quantity }}</p></div>
+                <div class="col-sm-12 col-md-3"><p>{{ item.line_item_total }}</p></div>
+            </div>
+            <hr>
+        {% endfor %}
+        <div class="row">
+            <div class="col-xs-12"><p class="text-right">Итого: <span class="checkout">{{ object.subtotal }}
+                <i class="fa fa-rub" aria-hidden="true"></i></span></p></div>
+
+        </div>
+        <div class="row checkout-cart">
+            <div class="col-xs-6 text-left">
+                <a class="btn btn-alt cart_continue" href="/cart"><i class="fa fa-arrow-left"
+                                                                     aria-hidden="true"></i>Корзина</a>
+            </div>
+            <div class="col-xs-6 text-right">
+                <form action="{% url 'checkout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-alt cart_continue">Оформить заказ</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+
+
+    {#    <form action="" method="POST">#}
+    {#        {% csrf_token %}#}
+    {#        {{ login_form|crispy }}#}
+    {#        <input type="submit" class="btn btn-success" value="Войти">#}
+    {#    </form>#}
+
+{% endblock %}

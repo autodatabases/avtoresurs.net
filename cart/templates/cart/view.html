@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <!-- BREADCRUMBS -->
+    <div class="breadcrumb_wrap">
+        <ul class="breadcrumb">
+            <li><a href="/" class="homepage-link">Главная</a></li>
+            <li><a href="/catalog/" class="homepage-link">Интернет-магазин</a></li>
+            <li><span class="page-title">Корзина</span></li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <h2 class="page_heading">Корзина<span id="cart_loader"></span></h2>
+
+    <div class="main-content">
+        {% if object.cartitem_set.count < 1 %}
+
+            {% include "cart/empty_cart.html" %}
+
+        {% else %}
+
+
+            <div id="cart_content">
+
+                <form action="/cart" method="post" class="">
+
+                    <table class="cart_list">
+                        <thead>
+                        <tr>
+                            <th>Товар</th>
+                            <th>Цена</th>
+                            <th>Количество</th>
+                            <th>Итого</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        {% for item in object.cartitem_set.all %}
+                            <tr class="cart-item-{{ item.item.id }}">
+                                <td class="cell_1">
+                                    {#                        <div class="cart_item__img">#}
+                                    {#                            <a href="/products/body-sport-fitness-ball">#}
+                                    {#                                <img src="//cdn.shopify.com/s/files/1/0980/5368/products/body_sport_fitness_ball_1_medium.png?v=1441292712"#}
+                                    {#                                     alt="Body Sport Fitness Ball">#}
+                                    {#                            </a>#}
+                                    {#                        </div>#}
+
+                                    <div class="cart_item__info">
+                                        <h3 class="cart_item__name product_name">
+                                            <a href="{{ item.item.get_absolute_url }}">
+                                                {{ item.item.title }}
+                                            </a>
+                                        </h3>
+
+
+                                        <div class="cart_item__details">
+                                            <p class="item_type">
+                                                <span>Производитель:</span> {{ item.item.manufacturer }}
+                                            </p>
+                                            <p class="item_vendor"><span>Код детали:</span> {{ item.item.sku }}</p>
+                                        </div>
+
+
+                                    </div>
+                                </td>
+
+                                <td class="cell_2 cart_price">
+                                    <p class="text-center"><span class="money">{{ item.item.get_price }} <i class="fa fa-rub" aria-hidden="true"></i></span></p>
+
+                                </td>
+
+                                <td class="cell_3">
+
+{#                                    <div class="quantity_box text-center">#}
+                                    <div class="item_quantity_box text-center">
+                                        <form action="." method="GET">
+                                            <input type="hidden" name="item" value="{{ item.item.id }}">
+                                            <input class="item-qty quantity_input text-center" name="qty"
+                                                   value="{{ item.quantity }}" type="number">
+                                            {#                                    <span class="quantity_modifier quantity_down"><i class="fa fa-minus"></i></span>#}
+                                            {#                                    <span class="quantity_modifier quantity_up"><i class="fa fa-plus"></i></span>#}
+                                        </form>
+                                    </div>
+
+                                </td>
+
+                                <td class="cell_4 cart_price">
+                                    <p class="text-center">
+                                <span class="money"><span
+                                        id="item-line-total-{{ item.item.id }}">{{ item.line_item_total }}</span> <i class="fa fa-rub" aria-hidden="true"></i></span>
+                                    </p>
+                                </td>
+
+                                <td class="cell_5">
+                                    <p class="text-center">
+                                        <a class="cart_item__remove" title="1"
+                                           href="{{ item.item.remove_from_cart }}"><i
+                                                class="fa fa-trash fa-2x"></i></a>
+                                    </p>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                        <tfoot>
+                        <tr class="cart_buttons">
+                            <td colspan="5">
+
+                                <a class="btn btn-alt cart_continue" href="/shop">Вернуться к покупкам</a>
+                                {#                        <button class="btn cart_update">Update cart</button>#}
+                                {#                        <a class="btn" id="cart_clear" href="#">Clear cart</a>#}
+
+
+                            </td>
+                        </tr>
+
+                        <tr class="cart_summary">
+                            <td colspan="5">
+                                <p class="cart_summary__row">
+                                    Итоговая сумма
+                            <span class="money">
+                                <span id="subtotal">{{ object.subtotal }} <i class="fa fa-rub" aria-hidden="true"></i></span></span>
+                                </p>
+
+                                <div class="cart_summary__checkout">
+{#                                    <button name="checkout" class="btn btn-alt">#}
+                                        <a href="{% url 'checkout' %}" class="btn btn-alt">Перейти к оформлению заказа</a>
+{#                                    </button>#}
+                                </div>
+                            </td>
+                        </tr>
+
+                        </tfoot>
+                    </table>
+                </form>
+
+
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock content %}
+
+
+
+{% block jquery %}
+    <script>
+        $('.item-qty').change(function () {
+            var item = $(this).prev("input[type='hidden']").val();
+            {#        alert(item);#}
+            var qty = $(this).val();
+            var data = {
+                item: item,
+                qty: qty
+            }
+{#            console.log(data);#}
+            $.ajax({
+                type: "GET",
+                url: "{% url 'cart' %}",
+                data: data,
+                success: function (data) {
+                    {#                    console.log(data)#}
+                    $('#jquery-message').text("Added " + data.item_added + " Deleted " + data.deleted);
+                    if (data.deleted) {
+                        $(".cart-item-" + item).fadeOut();
+                        {#                $(alert("cart-item-" + item));#}
+                        $("#subtotal").text(data.subtotal);
+                    } else {
+                        $("#item-line-total-" + item).text(data.line_total);
+                        $("#subtotal").text(data.subtotal);
+                    }
+
+                    if (data.total_items == 0) {
+                        $("#cart_content").fadeOut();
+                        var template = "{% include 'empty_cart.html' %}";
+                        $(".main-content").html(template);
+                    }
+                    updateCartItemCount();
+                    {#                    showFlashMessage(data.flash_message);#}
+                },
+                error: function (response, error) {
+                    {#                    console.log(response);#}
+                    {#                    console.log(error);#}
+                    $('#add-form').submit();
+                }
+            })
+        });
+    </script>
+{% endblock %}

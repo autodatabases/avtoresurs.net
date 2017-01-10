@@ -16,12 +16,27 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
+from registration.backends.hmac.views import RegistrationView
 
 from avtoresurs_new import settings
+from cart.views import CartView, ItemCountView, CheckoutView
+from main.forms import RegistrationFormTOSAndEmail
 
 urlpatterns = [
                   url(r'^admin/', admin.site.urls),
                   url(r'^', include('main.urls', namespace='main')),
+                  url(r'^accounts/register/$', RegistrationView.as_view(form_class=RegistrationFormTOSAndEmail),
+                      name='registration_register'),
+                  url(r'^accounts/', include('registration.backends.hmac.urls')),
+
+                  url(r'^accounts/profile/$', RedirectView.as_view(url='/account/', permanent=False),
+                      name='ProfilePage'),
+                  # url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/successfully_logged_out/'}),
+                  # url(r'account/', include('account.urls', namespace='account')),
                   url(r'shop/', include('shop.urls', namespace='shop')),
                   url(r'parts/', include('tecdoc.urls', namespace='tecdoc')),
+                  url(r'^cart/$', CartView.as_view(), name='cart'),
+                  url(r'^cart/count/$', ItemCountView.as_view(), name='item_count'),
+                  url(r'^checkout/$', CheckoutView.as_view(), name='checkout'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

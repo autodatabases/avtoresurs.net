@@ -1,0 +1,11 @@
+{% load i18n %}
+{% url 'registration_activate' activation_key as activation_key_url%}
+Здравствуйте!
+Вы регистрируетесь на сайте http://accr.gov39.ru
+Если это были не Вы, пожалуйста проигнорируйте это сообщение
+
+Для активации аккаунта, пожалуйста перейдите по ссылке:
+
+http://{{ site.domain }}{% url 'registration_activate' activation_key %}
+
+Ссылка действительна в течение {{ expiration_days }} дней.

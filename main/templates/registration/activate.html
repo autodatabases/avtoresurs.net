@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% if account %}{% trans "Активация завершена" %}{% else %}{% trans "Возникла ошибка" %}
+{% endif %}{% endblock %}
+{% block content %}
+    {% url 'auth_login' as auth_login_url %}
+    {% if account %}
+        {% blocktrans %}
+            Thanks {{ account }}, activation complete!
+            You may now <a href='{{ auth_login_url }}'>login</a> using the username and password you set at
+            registration.
+        {% endblocktrans %}
+    {% else %}
+        {% blocktrans %}Внимание! Произошла ошибка - введенный ключ активации не верен. Пожалуйста, проверьте URL.
+        {% endblocktrans %}
+    {% endif %}
+{% endblock %}

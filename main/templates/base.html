@@ -54,6 +54,13 @@
             <li><a class="dropdown-button" href="#!" data-activates="dropdown_nav">О компании<i
                     class="material-icons right">arrow_drop_down</i></a>
             </li>
+            <li>
+                <!-- HEADER CART -->
+                <div class="header_cart">
+                    <a href="{% url 'cart' %}"><i class="fa fa-shopping-cart"></i> Корзина: <span
+                            id="cart-count-badge">{{ request.session.cart_item_count }}</span> товар(ов)</a>
+                </div>
+            </li>
 
         </ul>
 
@@ -183,6 +190,28 @@
         </div>
     </div>
 </footer>
+
+<script src="{% static 'main/js/custom.js' %}" type="text/javascript"></script>
+<script>
+    function updateCartItemCount() {
+        var badge = $("#cart-count-badge");
+        $.ajax({
+            type: "GET",
+            url: "{% url 'item_count' %}",
+            success: function (data) {
+                badge.text(data.count);
+            },
+            error: function (response, error) {
+                console.log(response);
+                console.log(error);
+            }
+        })
+    }
+    $(document).ready(function () {
+        updateCartItemCount();
+    });
+</script>
+
 
 {% block js %}
 {% endblock %}
