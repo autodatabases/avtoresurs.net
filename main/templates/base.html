@@ -2,6 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="main/static/main/css/styles.less"/>
+    <link rel="stylesheet" type="text/css" href="main/static/main/css/styles.less"/>
+    <link rel="stylesheet" type="text/css" href="main/static/main/css/styles.less"/>
+    <link rel="stylesheet" type="text/css" href="main/static/main/css/styles.less"/>
+    <link rel="stylesheet" type="text/css" href="main/static/main/css/styles.less"/>
+    <link rel="stylesheet" type="text/css" href="main/static/main/css/styles.less"/>
+    <link rel="stylesheet" type="text/css" href="main/static/main/css/styles.less"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
     <title>
@@ -25,57 +32,108 @@
 
 {#navbar#}
 <!-- Dropdown Structure -->
-<ul id="dropdown_nav" class="dropdown-content">
-    <li><a href="#!">О компании</a></li>
-    <li><a href="#!">Бренды</a></li>
-    {#    <li class="divider"></li>#}
-    <li><a href="#!">Ассортимент</a></li>
-    <li><a href="#!">Запчасти для грузовиков</a></li>
-    <li><a href="#!">FAQ</a></li>
-    <li><a href="#!">Для автосервисов</a></li>
-    <li><a href="#!">Контакты</a></li>
-</ul>
-<nav class="blue darken-4" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">Авторесурс</a>
-        <ul class="right hide-on-med-and-down">
-            <li>
-                <form action="/shop/search/">
-                    <div class="input-field">
-                        <input id="search" type="search" required name="q" style="height: 63px" class="no-margin-bot">
-                        <label for="search"><i class="material-icons">search</i></label>
-                        <i class="material-icons">close</i>
+<header>
+    <div class="container">
+        <div class="row header_row_1">
+            <div class="col s8 offset-s4">
+                <ul class="no-margin-top no-margin-bot">
+                    <li><a href="/account/login" id="customer_login_link">Войти</a></li>
+                    <li><a href="/account/login" id="customer_register_link">Зарегистрироваться</a></li>
+                    <li class="checkout"><a href="/checkout/">Оформить покупки</a></li>
+                </ul>
+                <ul class="no-margin-top no-margin-bot">
+                    <li><a href="//twitter.com/templatemonster"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="//www.facebook.com/TemplateMonster"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="//www.youtube.com/user/TemplateMonsterCo"><i class="fa fa-youtube"></i></a></li>
+                    <li><a href="//www.pinterest.com/templatemonster/"><i class="fa fa-pinterest"></i></a></li>
+                    <li><a href="//google.com/+templatemonster"><i class="fa fa-google-plus"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row header_row_2 no-margin-bot">
+            <div class="col s3">
+                <!-- LOGO -->
+                <a href="/" style="display: inline-block;">
+                    <div class="logo_main" style="display: block; white-space: nowrap;">
+                        <div class="logo-circle" style="background-color: #26a0d7; color: #fff; display: inline-block;
+                            width: 60px; height: 60px; vertical-align: middle; text-align: center; border-radius: 50%;
+                            font-size: 35px">
+                            <strong>А</strong>
+                        </div>
+
+                        <div class="logo-text" style="display: inline-block; height:60px; vertical-align: middle;">
+                            <strong style="font-size:20px">вторесурс</strong><br>
+                            <span style="font-size:14px">Добро пожаловать!</span>
+                        </div>
+
+
                     </div>
-                </form>
-            </li>
-            <li><a href="#">Новости</a></li>
-            <li><a href="/shop">Интернет магазин</a></li>
-            <li><a href="#">Бонусная акция</a></li>
-            <!-- Dropdown Trigger -->
-            <li><a class="dropdown-button" href="#!" data-activates="dropdown_nav">О компании<i
-                    class="material-icons right">arrow_drop_down</i></a>
-            </li>
-            <li>
-                <!-- HEADER CART -->
-                <div class="header_cart">
-                    <a href="{% url 'cart' %}"><i class="fa fa-shopping-cart"></i> Корзина: <span
-                            id="cart-count-badge">{{ request.session.cart_item_count }}</span> товар(ов)</a>
+                </a>
+            </div>
+            <div class="col s6">
+                <nav class="blue-grey lighten-4 no-box-shadow">
+                    <div class="nav-wrapper">
+                        <form action="/shop/search/">
+                            <div class="input-field">
+                                <input id="search" type="search" required name="q">
+                                <label for="search"><i class="material-icons">search</i></label>
+                                <i class="material-icons">close</i>
+                            </div>
+                        </form>
+                    </div>
+                </nav>
+            </div>
+            <div class="col s3">
+                <div class="custom_header">
+                    <i class="fa fa-phone"></i><span>+7 (4012) 51-49-53</span>
                 </div>
-            </li>
+            </div>
+        </div>
 
+        <ul id="dropdown_nav" class="dropdown-content">
+            <li><a href="#!">О компании</a></li>
+            <li><a href="#!">Бренды</a></li>
+            {#    <li class="divider"></li>#}
+            <li><a href="#!">Ассортимент</a></li>
+            <li><a href="#!">Запчасти для грузовиков</a></li>
+            <li><a href="#!">FAQ</a></li>
+            <li><a href="#!">Для автосервисов</a></li>
+            <li><a href="#!">Контакты</a></li>
         </ul>
 
-        <ul id="nav-mobile" class="side-nav">
-            <li><a href="#">Navbar Link</a></li>
-            <li><a href="#">Navbar Link</a></li>
-            <li><a href="#">Navbar Link</a></li>
-            <li><a href="#">Navbar Link</a></li>
-            <li><a href="#">Navbar Link</a></li>
-            <li><a href="#">Navbar Link</a></li>
-        </ul>
-        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        <nav class="dark-blue no-box-shadow" role="navigation">
+            <div class="nav-wrapper">
+                <ul class="right hide-on-med-and-down no-float avtoresurs-menu">
+                    <li><a href="#">Новости</a></li>
+                    <li><a href="/shop">Интернет магазин</a></li>
+                    <li><a href="#">Бонусная акция</a></li>
+                    <!-- Dropdown Trigger -->
+                    <li><a class="dropdown-button" href="#!" data-activates="dropdown_nav">О компании<i
+                            class="material-icons right">arrow_drop_down</i></a>
+                    </li>
+                </ul>
 
+                <!-- HEADER CART -->
+                <a href="{% url 'cart' %}" class="header-cart">
+                    <i class="fa fa-shopping-cart"></i> Корзина: <span
+                        id="cart-count-badge">{{ request.session.cart_item_count }}</span> товар(ов)
+                </a>
+
+                <ul id="nav-mobile" class="side-nav">
+                    <li><a href="#">Navbar Link</a></li>
+                    <li><a href="#">Navbar Link</a></li>
+                    <li><a href="#">Navbar Link</a></li>
+                    <li><a href="#">Navbar Link</a></li>
+                    <li><a href="#">Navbar Link</a></li>
+                    <li><a href="#">Navbar Link</a></li>
+                </ul>
+                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+
+            </div>
+        </nav>
     </div>
-</nav>
+</header>
+
 
 <div class="container">
     {% block breadcrumbs %}{% endblock %}
