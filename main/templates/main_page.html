@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col s7">
             <div class="slider">
-                <ul class="slides" style="box-shadow: 0 5px 11px 0 rgba(0,0,0,.18),0 4px 15px 0 rgba(0,0,0,.15);">
+                <ul class="slides">
                     <li class="waves-effect waves-block waves-light">
                         <img src="http://lorempixel.com/580/250/nature/1"> <!-- random image -->
                         <div class="caption center-align">
@@ -49,7 +49,7 @@
                 репутацию, и постоянных клиентов, с которыми работаем и по сей день. Не смотря на относительно юный
                 возраст компании “АВТОРЕСУРС”, наши сотрудники имеют достаточно богатый (свыше 15 лет) опыт работы в
                 сфере торговли авто-запчастями.</p>
-            <p><a class="waves-effect waves-light btn blue accent-2" href="about">О компании</a></p>
+            <p><a class="waves-effect waves-light btn lighten-blue" href="about">О компании</a></p>
         </div>
     </div>
 
@@ -63,7 +63,7 @@
             {% endif %}
 
             <div class="col s6 m4">
-                <div class="card large">
+                <div class="card large z-depth-0">
                     <div class="card-image waves-effect waves-block waves-light">
                         <img src="{{ post.image.url }}">
                         <span class="card-title">{{ post.title }}</span>
@@ -73,7 +73,7 @@
                         <p><strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong></p>
                     </div>
                     <div class="card-action">
-                        <a class="waves-effect waves-light btn blue accent-2" href="#modal{{ forloop.counter }}">Подробнее</a>
+                        <a class="waves-effect waves-light btn lighten-blue" href="#modal{{ forloop.counter }}">Подробнее</a>
                     </div>
                 </div>
             </div>

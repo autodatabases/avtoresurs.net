@@ -5,25 +5,23 @@
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
     <div class="row">
-        <nav>
-            <div class="nav-wrapper">
-                <div class="col s12 blue-grey lighten-3">
-                    <a href="/" class="breadcrumb">Главная</a>
-                    <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
-                    <a href="" class="breadcrumb">Поиск</a>
-                </div>
-            </div>
-        </nav>
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
+            <a href="" class="breadcrumb">Поиск</a>
+        </div>
     </div>
 {% endblock %}
 
 
 {% block content %}
-    <h4>Вы искали - {{ q }}</h4>
+    <div class="row">
+        <h5 class="card-panel z-depth-0">Поиск осуществлен по фразе: {{ q }}</h5>
+    </div>
 
     <div class="row">
         <div class="col s12">
-            <div class="collection tecdoc-table row card-panel">
+            <div class="collection tecdoc-table row card-panel z-depth-0 no-border">
                 <div class="collection-item">
                     <div class="row">
                         <div class="col s1 tecdoc-header">№ п/п</div>

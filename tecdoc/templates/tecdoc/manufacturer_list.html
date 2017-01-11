@@ -7,14 +7,10 @@
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
     <div class="row no-pad-bot">
-        <nav>
-            <div class="nav-wrapper">
-                <div class="col s12 blue-grey lighten-3">
-                    <a href="/" class="breadcrumb">Главная</a>
-                    <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-                </div>
-            </div>
-        </nav>
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
+        </div>
     </div>
 {% endblock %}
 
@@ -22,11 +18,11 @@
 
 
     <!-- Header -->
-{#    <div class="row card-panel blue-grey lighten-3">#}
-{#        <div class="col s12">#}
-{#            <h5 class="white-text">Каталог автопроизводителей</h5>#}
-{#        </div>#}
-{#    </div>#}
+    {#    <div class="row card-panel blue-grey lighten-3">#}
+    {#        <div class="col s12">#}
+    {#            <h5 class="white-text">Каталог автопроизводителей</h5>#}
+    {#        </div>#}
+    {#    </div>#}
 
     <!-- Main content -->
     <div class="collection tecdoc-table row card-panel" id="tecdoc-table">

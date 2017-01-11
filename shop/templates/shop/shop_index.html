@@ -3,41 +3,38 @@
 {% load staticfiles %}
 
 {% block breadcrumbs %}
-<!-- BREADCRUMBS -->
-<div class="row no-margin-bot">
-    <nav>
-        <div class="nav-wrapper">
-            <div class="col s12 blue-grey lighten-3">
-                <a href="/" class="breadcrumb">Главная</a>
-                <a href="/shop" class="breadcrumb">Интернет-магазин</a>
-            </div>
+    <!-- BREADCRUMBS -->
+    <div class="row no-margin-bot">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="/shop" class="breadcrumb">Интернет-магазин</a>
         </div>
-    </nav>
-</div>
+    </div>
 {% endblock %}
 {% block content %}
 
 
     <!-- Header -->
-{#    <div class="row card-panel blue-grey lighten-3">#}
-{#        <div class="col s12">#}
-{#            <h5 class="white-text">Онлайн каталог запчастей</h5>#}
-{#        </div>#}
-{#    </div>#}
+    {#    <div class="row card-panel blue-grey lighten-3">#}
+    {#        <div class="col s12">#}
+    {#            <h5 class="white-text">Онлайн каталог запчастей</h5>#}
+    {#        </div>#}
+    {#    </div>#}
 
     <!-- Main content -->
-    <div class="row card-panel">
-        <div class="col s4 offset-s2 hoverable">
+    <div class="row card-panel z-depth-0">
+        <div class="col s4 offset-s2">
             <blockquote>
                 Поиск по наименованию/номеру детали
             </blockquote>
             <div class="row">
                 <form action="search/" class="col s12">
                     <div class="input-field">
-                        <input placeholder="Введите название детали" id="q" type="text" class="validate" name="q" required>
+                        <input placeholder="Введите название детали" id="q" type="text" class="validate" name="q"
+                               required>
                         <label for="q">Номер детали</label>
                     </div>
-                    <button class="btn waves-effect waves-light deep-purple darken-1" type="submit">
+                    <button class="btn waves-effect waves-light lighten-blue" type="submit">
                         Поиск по базе
                         <i class="material-icons right">send</i>
                     </button>

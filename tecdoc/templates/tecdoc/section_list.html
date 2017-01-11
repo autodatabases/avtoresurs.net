@@ -7,19 +7,15 @@
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
     <div class="row">
-        <nav>
-            <div class="nav-wrapper">
-                <div class="col s12 blue-grey lighten-3">
-                    <a href="/" class="breadcrumb">Главная</a>
-                    <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-                    <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
-                       class="breadcrumb">{{ car_type.model.manufacturer }}</a>
-                    <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
-                       class="breadcrumb">{{ car_type.model.designation }}</a>
-                    <a href="" class="breadcrumb">{{ car_type }}</a>
-                </div>
-            </div>
-        </nav>
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
+            <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
+               class="breadcrumb">{{ car_type.model.manufacturer }}</a>
+            <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
+               class="breadcrumb">{{ car_type.model.designation }}</a>
+            <a href="" class="breadcrumb">{{ car_type }}</a>
+        </div>
     </div>
 {% endblock %}
 

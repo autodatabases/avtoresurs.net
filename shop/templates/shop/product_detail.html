@@ -5,15 +5,11 @@
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
     <div class="row">
-        <nav>
-            <div class="nav-wrapper">
-                <div class="col s12 blue-grey lighten-3">
-                    <a href="/" class="breadcrumb">Главная</a>
-                    <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
-                    <a href="" class="breadcrumb">{{ product|title }}</a>
-                </div>
-            </div>
-        </nav>
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
+            <a href="" class="breadcrumb">{{ product|title }}</a>
+        </div>
     </div>
 {% endblock %}
 
@@ -28,7 +24,7 @@
 
     <!-- Main content -->
 
-    <div class="row card-panel">
+    <div class="row card-panel z-depth-0">
         <div class="row">
             <div class="col s6">
                 <img src="http://placehold.it/600x400" alt="" class="responsive-img materialboxed"
@@ -69,7 +65,7 @@
                         <div class="row center-align">
                             <div class="col s12">
                                 <input type="hidden" name="item" value="{{ object.id }}">
-                                <button class="btn waves-effect waves-light deep-purple darken-1" type="submit"
+                                <button class="btn waves-effect waves-light lighten-blue" type="submit"
                                         name="action" id="submit-btn">В корзину
                                     <i class="material-icons right">send</i>
                                 </button>
@@ -84,7 +80,7 @@
 
     <div class="row">
         <div class="col s12">
-            <div class="collection tecdoc-table row card-panel">
+            <div class="collection tecdoc-table row card-panel z-depth-0 no-border">
                 <div class="collection-item">
                     <div class="row">
                         <div class="col s1 tecdoc-header">№ п/п</div>
@@ -148,14 +144,14 @@
                 url: "{% url 'cart' %}",
                 data: formData,
                 success: function (data) {
-                                        console.log(data)
+                    console.log(data)
                     {#                    $('#jquery-message').text("Added " + data.item_added + " Deleted " + data.deleted);#}
                     showFlashMessage(data.flash_message);
                     updateCartItemCount();
                 },
                 error: function (response, error) {
-                                        console.log(response);
-                                        console.log(error);
+                    console.log(response);
+                    console.log(error);
                     $('#add-form').submit();
                 }
             })
