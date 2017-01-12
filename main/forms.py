@@ -21,3 +21,6 @@ class RegistrationFormTermsOfServiceRu(RegistrationForm):
 
 class RegistrationFormTOSAndEmail(RegistrationFormUniqueEmail, RegistrationFormTermsOfServiceRu):
     pass
+
+class ResendActivationEmailForm(forms.Form):
+    email = forms.EmailField(required=True)

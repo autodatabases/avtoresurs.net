@@ -87,12 +87,12 @@
         </form>
         <div class="row">
             <div class="col s8 offset-s2 center-align">
-                Забыли пароль? <a href="{% url 'auth_password_reset' %}">Восстановить!</a>
+                Забыли пароль? <a href="{% url 'auth_password_reset' %}" class="link">Восстановить!</a>
             </div>
         </div>
         <div class="row">
             <div class="col s8 offset-s2 center-align">
-                Не пришло письмо для активации учетной записи? <a href="">Активировать повторно!</a>
+                Не пришло письмо для активации учетной записи? <a href="{% url 'main:account_reactivate' %}" class="link">Активировать повторно!</a>
             </div>
         </div>
     </div>

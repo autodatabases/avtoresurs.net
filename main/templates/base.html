@@ -37,8 +37,13 @@
         <div class="row header_row_1">
             <div class="col s8 offset-s4">
                 <ul class="no-margin-top no-margin-bot">
-                    <li><a href="/accounts/login" id="customer_login_link">Войти</a></li>
-                    <li><a href="/accounts/login" id="customer_register_link">Зарегистрироваться</a></li>
+                    {% if request.user.is_authenticated %}
+                        <li><a href="/accounts/logout">Выйти
+                            ({{ request.user }})</a></li>
+                    {% else %}
+                        <li><a href="/accounts/login" id="customer_login_link">Войти</a></li>
+                        <li><a href="/accounts/login" id="customer_register_link">Зарегистрироваться</a></li>
+                    {% endif %}
                     <li class="checkout"><a href="/checkout/">Оформить покупки</a></li>
                 </ul>
                 <ul class="no-margin-top no-margin-bot">

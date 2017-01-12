@@ -30,7 +30,7 @@ urlpatterns = [
                       name='registration_register'),
                   url(r'^accounts/', include('registration.backends.hmac.urls')),
 
-                  url(r'^accounts/profile/$', RedirectView.as_view(url='/account/', permanent=False),
+                  url(r'^accounts/profile/$', RedirectView.as_view(url='/', permanent=False),
                       name='ProfilePage'),
                   # url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/successfully_logged_out/'}),
                   # url(r'account/', include('account.urls', namespace='account')),
