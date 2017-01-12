@@ -4,27 +4,24 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row no-margin-bot no-padding-left no-padding-right accr-breadcrumb">
-        <nav>
-            <div class="nav-wrapper">
-                <div class="col s12 accr-gray">
-                    <a href="/" class="breadcrumb">Главная</a>
-                    <a href="{% url 'auth_login' %}" class="breadcrumb">Аутентификация</a>
-                    <a href="{% url 'registration_register' %}" class="breadcrumb">Регистрация</a>
-                    <a href="" class="breadcrumb">Активация учетной записи завершена</a>
-                </div>
-            </div>
-        </nav>
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'auth_login' %}" class="breadcrumb">Аутентификация</a>
+            <a href="{% url 'registration_register' %}" class="breadcrumb">Регистрация</a>
+            <a href="" class="breadcrumb">Активация учетной записи завершена</a>
+        </div>
     </div>
 {% endblock %}
 
 {% block content %}
 
-    <div class="row">
+    <div class="row white">
         <div class="col s8 offset-s2">
-            Поздравляем! Активация Вашего аккаунта успешно завершена.<br>
-            Теперь Вы можете войти в систему, используя имя пользователя и пароль, указанный при регистрации.<br>
-            <a href='/accounts/login/'>Перейти к форме аутентификации на сайте.</a>
+            <p>Поздравляем! Активация Вашего аккаунта успешно завершена.<br>
+                Теперь Вы можете войти в систему, используя имя пользователя и пароль, указанный при регистрации.<br>
+                <a href='/accounts/login/'>Перейти к форме аутентификации на сайте.</a>
+            </p>
         </div>
     </div>
 

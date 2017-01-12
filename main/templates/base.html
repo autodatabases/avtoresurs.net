@@ -37,8 +37,8 @@
         <div class="row header_row_1">
             <div class="col s8 offset-s4">
                 <ul class="no-margin-top no-margin-bot">
-                    <li><a href="/account/login" id="customer_login_link">Войти</a></li>
-                    <li><a href="/account/login" id="customer_register_link">Зарегистрироваться</a></li>
+                    <li><a href="/accounts/login" id="customer_login_link">Войти</a></li>
+                    <li><a href="/accounts/login" id="customer_register_link">Зарегистрироваться</a></li>
                     <li class="checkout"><a href="/checkout/">Оформить покупки</a></li>
                 </ul>
                 <ul class="no-margin-top no-margin-bot">
@@ -137,12 +137,12 @@
     </div>
 </header>
 
+<main>
+    <div class="container">
+        {% block breadcrumbs %}{% endblock %}
+    </div>
 
-<div class="container">
-    {% block breadcrumbs %}{% endblock %}
-</div>
 
-<main style="padding: 30px 0">
     <div class="container">
         {% block content %}{% endblock %}
     </div>

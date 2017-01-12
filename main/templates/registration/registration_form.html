@@ -4,25 +4,27 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row no-margin-bot no-padding-left no-padding-right accr-breadcrumb">
-        <nav>
-            <div class="nav-wrapper">
-                <div class="col s12 accr-gray">
-                    <a href="/" class="breadcrumb">Главная</a>
-                    <a href="{% url 'auth_login' %}" class="breadcrumb">Аутентификация</a>
-                    <a href="{% url 'registration_register' %}" class="breadcrumb">Регистрация нового
-                        пользователя</a>
-                </div>
-            </div>
-        </nav>
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'auth_login' %}" class="breadcrumb">Аутентификация</a>
+            <a href="{% url 'registration_register' %}" class="breadcrumb">Регистрация нового
+                пользователя</a>
+        </div>
     </div>
 {% endblock %}
 
 {% block content %}
 
+    <div class="row white">
+        <div class="col s12">
+            <p>Регистрация нового пользователя</p>
+        </div>
+    </div>
 
-    <div class="row">
+    <div class="row white">
         <form action="." class="col s12" method="post">
+            <h5 class="center-align">Чтобы создать нового пользователя, пожалуйста заполните все поля:</h5>
             {% csrf_token %}
 
             <div class="row">
@@ -76,7 +78,7 @@
 
             <div class="row">
                 <div class="col s8 offset-s2 center-align">
-                    <button class="btn waves-effect waves-light coral" type="submit" name="action">
+                    <button class="btn waves-effect waves-light dark-blue" type="submit" name="action">
                         Зарегистрироваться
                         <i class="material-icons right">send</i>
                     </button>
@@ -90,7 +92,7 @@
         </div>
         <div class="row">
             <div class="col s8 offset-s2 center-align">
-                Не пришло письмо для активации учетной записи? <a href="{% url 'main:account_reactivate' %}">Активировать повторно!</a>
+                Не пришло письмо для активации учетной записи? <a href="">Активировать повторно!</a>
             </div>
         </div>
     </div>

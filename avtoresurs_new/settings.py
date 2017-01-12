@@ -152,3 +152,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #
 # )
+
+
+ACCOUNT_ACTIVATION_DAYS = 7
+# Host for sending e-mail.
+EMAIL_HOST = 'localhost'
+
+# Port for sending e-mail.
+EMAIL_PORT = 1025
