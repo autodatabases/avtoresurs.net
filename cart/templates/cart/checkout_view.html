@@ -63,8 +63,8 @@
             </div>
             <div class="row">
                 <div class="col s12">
-                    <p class="right-align">Итого: <span class="checkout">{{ cart.subtotal }}
-                <i class="fa fa-rub" aria-hidden="true"></i></span></p>
+                    <p class="right-align"><strong>Итого: <span class="checkout">{{ cart.subtotal }}
+                <i class="fa fa-rub" aria-hidden="true"></i></span></strong></p>
                 </div>
             </div>
             <div class="row">
@@ -81,43 +81,6 @@
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col s3"><p>Товар<br>(наименование)</p></div>
-        <div class="col s3"><p>Количество<br>(шт.)</p></div>
-        <div class="col s3"><p>Сумма<br>(<i class="fa fa-rub" aria-hidden="true"></i>)</p>
-        </div>
-    </div>
-    <hr class="hidden-xs hidden-sm">
-    {% for item in cart.cartitem_set.all %}
-        <div class="row">
-            <div class="col-sm-12 col-md-6"><p>{{ item.item.title }}</p></div>
-            <div class="col-sm-12 col-md-3"><p><strong>{{ item.quantity }}</strong></p></div>
-            <div class="col-sm-12 col-md-3"><p><strong>{{ item.line_item_total }}</strong></p></div>
-        </div>
-        <hr>
-    {% endfor %}
-    <div class="row">
-        <div class="col-xs-12"><p class="right-align">Итого: <span class="checkout">{{ object.subtotal }}
-                <i class="fa fa-rub" aria-hidden="true"></i></span></p></div>
-
-    </div>
-    <div class="row checkout-cart">
-        <div class="col-xs-6 text-left">
-            <a class="btn btn-alt cart_continue" href="/cart"><i class="fa fa-arrow-left"
-                                                                 aria-hidden="true"></i> Корзина</a>
-        </div>
-        <div class="col-xs-6 text-right">
-            <form action="{% url 'checkout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-alt cart_continue">Оформить заказ</button>
-            </form>
-        </div>
-    </div>
-    </div>
-
-    </div>
-
 
 
     {#    <form action="" method="POST">#}

@@ -149,7 +149,7 @@ class CheckoutView(TemplateView):
         try:
             user_checkout, created = UserCheckout.objects.get_or_create(user=self.request.user)
             request.session['user_checkout_id'] = user_checkout.id
-            print(user_checkout)
+            # print(user_checkout)
             # return self.form_valid(form)
             return reverse('cart')
         except:
