@@ -3,56 +3,117 @@
 
 {% block title %}Оформление покупки{% endblock title %}
 
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
+            <a href="/cart/" class="breadcrumb">Корзина</a>
+            <a href="" class="breadcrumb">Оформление заказа</a>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
 
-    <!-- BREADCRUMBS -->
-    <div class="breadcrumb_wrap">
-        <ul class="breadcrumb">
-            <li><a href="/" class="homepage-link">Главная</a></li>
-            <li><a href="{% url 'shop:products' %}" class="homepage-link">Каталог</a></li>
-            <li><a href="{% url 'cart' %}" class="homepage-link">Корзина</a></li>
-            <li><span class="page-title">Оформление заказа</span></li>
-        </ul>
+
+    <!-- Main content -->
+    <div class="row white">
+        <div class="col s12">
+            <p>Оформление заказа - проверьте свой заказ</p>
+        </div>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="row">
-        <div class="col-sm-12">
-            <h2 class="page_heading">Оформление заказа - проверьте свой заказ</h2>
+        <div class="col m12 l6 offset-l3 white">
+            <div class="row">
+                <div class="col s6">
+                    <p class="center-align">Товар<br>(наименование)</p>
+                </div>
+                <div class="col s3">
+                    <p class="center-align">Количество<br>(шт.)</p>
+                </div>
+                <div class="col s3">
+                    <p class="center-align">Сумма<br>(<i class="fa fa-rub" aria-hidden="true"></i>)</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <hr>
+                </div>
+            </div>
+            {% for item in cart.cartitem_set.all %}
+                <div class="row">
+                    <div class="col s6">
+                        <p>{{ item.item.title }}</p>
+                    </div>
+                    <div class="col s3">
+                        <p class="center-align"><strong>{{ item.quantity }}</strong></p>
+                    </div>
+                    <div class="col s3">
+                        <p class="center-align"><strong>{{ item.line_item_total }}</strong></p>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col s12">
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <p class="right-align">Итого: <span class="checkout">{{ cart.subtotal }}
+                <i class="fa fa-rub" aria-hidden="true"></i></span></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s4">
+                    <a class="btn btn-alt cart_continue lighten-blue" href="/cart"><i class="fa fa-arrow-left"
+                                                                                      aria-hidden="true"></i>Корзина</a>
+                </div>
+                <div class="col s4 offset-s4">
+                    <form action="{% url 'checkout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-alt cart_continue lighten-blue">Оформить заказ</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="div-checkout col-xs-12 col-md-6 col-md-offset-3">
-        <div class="row">
-            <div class="col-sm-6 hidden-xs hidden-sm"><p>Товар<br>(наименование)</p></div>
-            <div class="col-sm-3 hidden-xs hidden-sm"><p>Количество<br>(шт.)</p></div>
-            <div class="col-sm-3 hidden-xs hidden-sm"><p>Сумма<br>(<i class="fa fa-rub" aria-hidden="true"></i>)</p></div>
+
+    <div class="row">
+        <div class="col s3"><p>Товар<br>(наименование)</p></div>
+        <div class="col s3"><p>Количество<br>(шт.)</p></div>
+        <div class="col s3"><p>Сумма<br>(<i class="fa fa-rub" aria-hidden="true"></i>)</p>
         </div>
-        <hr class="hidden-xs hidden-sm">
-        {% for item in cart.cartitem_set.all %}
-            <div class="row">
-                <div class="col-sm-12 col-md-6"><p>{{ item.item.title }}</p></div>
-                <div class="col-sm-12 col-md-3"><p>{{ item.quantity }}</p></div>
-                <div class="col-sm-12 col-md-3"><p>{{ item.line_item_total }}</p></div>
-            </div>
-            <hr>
-        {% endfor %}
+    </div>
+    <hr class="hidden-xs hidden-sm">
+    {% for item in cart.cartitem_set.all %}
         <div class="row">
-            <div class="col-xs-12"><p class="text-right">Итого: <span class="checkout">{{ object.subtotal }}
+            <div class="col-sm-12 col-md-6"><p>{{ item.item.title }}</p></div>
+            <div class="col-sm-12 col-md-3"><p><strong>{{ item.quantity }}</strong></p></div>
+            <div class="col-sm-12 col-md-3"><p><strong>{{ item.line_item_total }}</strong></p></div>
+        </div>
+        <hr>
+    {% endfor %}
+    <div class="row">
+        <div class="col-xs-12"><p class="right-align">Итого: <span class="checkout">{{ object.subtotal }}
                 <i class="fa fa-rub" aria-hidden="true"></i></span></p></div>
 
+    </div>
+    <div class="row checkout-cart">
+        <div class="col-xs-6 text-left">
+            <a class="btn btn-alt cart_continue" href="/cart"><i class="fa fa-arrow-left"
+                                                                 aria-hidden="true"></i> Корзина</a>
         </div>
-        <div class="row checkout-cart">
-            <div class="col-xs-6 text-left">
-                <a class="btn btn-alt cart_continue" href="/cart"><i class="fa fa-arrow-left"
-                                                                     aria-hidden="true"></i>Корзина</a>
-            </div>
-            <div class="col-xs-6 text-right">
-                <form action="{% url 'checkout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-alt cart_continue">Оформить заказ</button>
-                </form>
-            </div>
+        <div class="col-xs-6 text-right">
+            <form action="{% url 'checkout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-alt cart_continue">Оформить заказ</button>
+            </form>
         </div>
+    </div>
     </div>
 
     </div>

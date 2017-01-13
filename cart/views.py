@@ -1,8 +1,9 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, Http404, redirect
-from django.views.generic.base import View
+from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import SingleObjectMixin, DetailView
 from shop.models.product import Product
 from .models import Cart, CartItem
@@ -111,7 +112,7 @@ class CartView(SingleObjectMixin, View):
         return render(request, template, context)
 
 
-class CheckoutView(FormMixin, DetailView):
+class CheckoutView(TemplateView):
     model = Cart
     template_name = "cart/checkout_view.html"
 
@@ -122,6 +123,7 @@ class CheckoutView(FormMixin, DetailView):
         if not cart_id:
             return redirect("cart")
         cart = Cart.objects.get(id=cart_id)
+        print(cart.subtotal)
         return cart
 
     def get_context_data(self, *args, **kwargs):
@@ -157,8 +159,8 @@ class CheckoutView(FormMixin, DetailView):
     def get_success_url(self):
         return reverse("checkout")
 
-    def get(self, request):
-        get_data = super(CheckoutView, self).get(request)
+    def get(self, request, *args, **kwargs):
+        get_data = super(CheckoutView, self).get(request, *args, **kwargs)
         cart = self.get_object()
         user_checkout_id = request.session.get("user_checkout_id")
         if user_checkout_id:
@@ -174,4 +176,5 @@ class CheckoutView(FormMixin, DetailView):
             new_order.cart = cart
             new_order.user = user_checkout
             # new_order.save()
+
         return get_data
