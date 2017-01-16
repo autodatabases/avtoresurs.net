@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Личный кабинет пользователя{% endblock %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'account:account_main' %}" class="breadcrumb">Личный кабинет</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <!-- Main content -->
+    <div class="row white">
+        <div class="col s12">
+            <p>Личный кабинет пользователя</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card dark-blue">
+                <div class="card-content white-text">
+                    <span class="card-title">Здравствуйте, {{ request.user }}!</span>
+                    <p>Полное имя: {{ account.fullname }}</p>
+                    <p>Всего баллов: <strong>{{ account.points }}</strong></p>
+                    <p>Дата последнего входа: {{ request.user.last_login }}</p>
+                </div>
+                <div class="card-action">
+                    <a href="#">Редактировать информацию о пользователе</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m6">
+            <div class="card blue darken-3">
+                <div class="card-content white-text">
+                    <span class="card-title">Информация о заказах</span>
+                    <p>Полное имя: {{ account.fullname }}</p>
+                    <p>Всего баллов: <strong>{{ account.points }}</strong></p>
+                    <p>Дата последнего входа: {{ request.user.last_login }}</p>
+                </div>
+                <div class="card-action">
+                    <a href="#">Посмотреть заказы</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -12,10 +12,10 @@ class PostManager(models.Manager):
 class Post(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название новости')
     content = models.TextField(null=True, blank=True, verbose_name='Содержание')
-    added = models.DateTimeField(auto_now=False, auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True, auto_now_add=False)
-    image = models.ImageField(null=True, blank=True)
-    status = models.BooleanField(default=True)
+    added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
+    image = models.ImageField(null=True, blank=True, verbose_name='Картинка')
+    status = models.BooleanField(default=True, verbose_name='Статус')
 
     objects = PostManager()
 
