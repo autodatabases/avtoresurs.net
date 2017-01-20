@@ -24,6 +24,9 @@ class Post(models.Model):
 
     class Meta:
         ordering = ["-updated"]
+        verbose_name = 'Новость'
+        verbose_name_plural = 'Публикации'
+
 
     def get_absolute_url(self):
         return reverse('news:news_detail', kwargs={'pk': self.id})

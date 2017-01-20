@@ -9,6 +9,13 @@ class Account(models.Model):
     vip_code = models.CharField(max_length=50, blank=True, null=True)
     fullname = models.CharField(max_length=255, blank=True, null=True)
 
+    def __str__(self):
+        return self.user.get_username()
+
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили'
+
     def points(self):
         points = Point.objects.filter(account=self)
         print(points)
@@ -22,7 +29,15 @@ class Point(models.Model):
     account = models.ForeignKey(Account)
     point = models.DecimalField(max_digits=12, decimal_places=2)
 
+    class Meta:
+        verbose_name = 'Балл'
+        verbose_name_plural = 'Баллы'
+
 
 class Prize(models.Model):
     sku = models.CharField(max_length=50)
     title = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'Приз'
+        verbose_name_plural = 'Призы'

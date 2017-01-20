@@ -33,6 +33,7 @@ urlpatterns = [
                   url(r'^accounts/profile/$', RedirectView.as_view(url='/account/', permanent=False),
                       name='ProfilePage'),
                   url(r'^account/', include('account.urls', namespace='account')),
+                  url(r'^panel/', include('panel.urls', namespace='panel')),
                   # url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/successfully_logged_out/'}),
                   # url(r'account/', include('account.urls', namespace='account')),
                   url(r'shop/', include('shop.urls', namespace='shop')),

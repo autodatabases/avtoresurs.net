@@ -22,7 +22,7 @@
 
     <div class="row">
         <div class="col s12 m6">
-            <div class="card dark-blue">
+            <div class="card dark-blue no-box-shadow">
                 <div class="card-content white-text">
                     <span class="card-title">Здравствуйте, {{ request.user }}!</span>
                     <p>Полное имя: {{ account.fullname }}</p>
@@ -36,8 +36,8 @@
         </div>
 
         <div class="col s12 m6">
-            <div class="card blue darken-3">
-                <div class="card-content white-text">
+            <div class="card white no-box-shadow">
+                <div class="card-content black-text">
                     <span class="card-title">Информация о заказах</span>
                     <p>Полное имя: {{ account.fullname }}</p>
                     <p>Всего баллов: <strong>{{ account.points }}</strong></p>

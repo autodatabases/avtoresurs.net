@@ -1,16 +1,28 @@
 import MySQLdb
+import datetime
+from django.http import HttpResponse
 from django.shortcuts import render
+
 from django.views.generic import DetailView
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 
+import os
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings
 
 # Create your views here.
+from django.views.generic.edit import FormMixin
+
+from account.forms import UploadFileForm
 from account.models import Account, Point
+from avtoresurs_new.settings import BASE_DIR
 
 
 class AccountView(TemplateView):
     template_name = 'account/account_view.html'
+
     # model = Account
 
     # def get_object(self, queryset=None):
@@ -73,3 +85,36 @@ class AccountImport(TemplateView):
             user_import(row)
 
         return context
+
+
+class PointLoader(TemplateView):
+    template_name = 'account/point_file_upload.html'
+
+    # form_class = UploadFileForm
+
+    def post(self, request):
+        file = self.request.FILES['file']
+
+        filename, file_extension = os.path.splitext(self.request.FILES['file'].name)
+        date = datetime.datetime.now()
+        now = str(date.year) + '-' + str(date.month) + '-' + str(date.day)
+        filename = 'points/' + str(date.year) + '/' + str(date.month) + '/' + filename + '_' + now + file_extension
+        # print(filename)
+        path = default_storage.save(filename, ContentFile(file.read()))
+
+        with open('media/' + path, 'r', encoding='cp1251') as fin:
+            data = fin.read().splitlines(True)
+        with open('media/' + path, 'w') as fout:
+            fout.writelines(data[1:])
+
+        for line in data[1:]:
+            row = line.split(';')
+            login = row[0].replace('ЦБ', 'cl')
+            account = Account.objects.get(user__username=login)
+            account.fullname = row[1]
+            account.vip_code = row[2].strip()
+
+
+
+
+        return HttpResponse('ok')
