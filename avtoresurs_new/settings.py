@@ -85,7 +85,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': 'localhost',
-        'USER': 'roor',
+        'USER': 'root',
         'PASSWORD': 'backtrack5',
         'NAME': 'avtoresurs',
     },
