@@ -5,3 +5,4 @@ local_settings.py
 media/*
 db.sqlite3
 logs/cronjob.log
+.idea/workspace.xml

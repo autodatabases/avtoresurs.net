@@ -84,16 +84,16 @@ WSGI_APPLICATION = 'avtoresurs_new.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '217.172.183.20',
-        'USER': 'oleg',
-        'PASSWORD': '11235813zZzZ',
+        'HOST': 'localhost',
+        'USER': 'roor',
+        'PASSWORD': 'backtrack5',
         'NAME': 'avtoresurs',
     },
     'tecdoc': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '217.172.183.20',
-        'USER': 'oleg',
-        'PASSWORD': '11235813zZzZ',
+        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': 'backtrack5',
         'NAME': 'tecdoc',
     },
     # 'default': {
