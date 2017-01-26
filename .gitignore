@@ -6,3 +6,17 @@ media/*
 db.sqlite3
 logs/cronjob.log
 .idea/workspace.xml
+static/*
+account/__pycache__/
+avtoresurs_new/__pycache__/
+cart/__pycache__/
+main/__pycache__/
+news/__pycache__/
+order/__pycache__/
+panel/__pycache__/
+shop/__pycache__/
+shop/models/__pycache__/
+shop/views/__pycache__/
+tecdoc/__pycache__/
+tecdoc/models/__pycache__/
+tecdoc/views/__pycache__/
