@@ -148,3 +148,11 @@ EMAIL_HOST = 'localhost'
 # Port for sending e-mail.
 EMAIL_PORT = 1025
 DEFAULT_FROM_EMAIL = 'noreplyweb@gov39.ru'
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'mail.gov39.ru'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'noreplyweb@gov39.local'
+EMAIL_HOST_PASSWORD = 'cbl6hrIKna25gQQ'
+DEFAULT_FROM_EMAIL = 'noreplyweb@gov39.ru'
