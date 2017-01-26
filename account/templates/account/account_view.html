@@ -27,7 +27,7 @@
                     <span class="card-title">Здравствуйте, {{ request.user }}!</span>
                     <p>Полное имя: {{ account.fullname }}</p>
                     <p>Всего баллов: <strong>{{ account.points }}</strong></p>
-                    <p>Дата последнего входа: {{ request.user.last_login }}</p>
+                    <p>Дата последнего визита: <strong>{{ request.user.last_login|date:"d.m.Y H:i" }}</strong></p>
                 </div>
                 <div class="card-action">
                     <a href="#">Редактировать информацию о пользователе</a>
