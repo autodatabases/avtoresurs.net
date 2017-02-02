@@ -18,13 +18,15 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
 from registration.backends.hmac.views import RegistrationView
-
+from filebrowser.sites import site
 from avtoresurs_new import settings
 from cart.views import CartView, ItemCountView, CheckoutView
 from main.forms import RegistrationFormTOSAndEmail
 
 urlpatterns = [
-                  url(r'^admin/', admin.site.urls),
+                  url(r'^admin/filebrowser/', include(site.urls)),
+                  url(r'^grappelli/', include('grappelli.urls')),
+                  url(r'^admin/', include(admin.site.urls)),
                   url(r'^', include('main.urls', namespace='main')),
                   url(r'^accounts/register/$', RegistrationView.as_view(form_class=RegistrationFormTOSAndEmail),
                       name='registration_register'),

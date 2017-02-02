@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     'main',
     # 'material',
     # 'material.admin',
+    'registration',
+    'grappelli',
+    'filebrowser',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -126,6 +129,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'main', 'static'),
 # )
@@ -156,3 +160,5 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = 'noreplyweb@gov39.local'
 EMAIL_HOST_PASSWORD = 'cbl6hrIKna25gQQ'
 DEFAULT_FROM_EMAIL = 'noreplyweb@gov39.ru'
+
+
