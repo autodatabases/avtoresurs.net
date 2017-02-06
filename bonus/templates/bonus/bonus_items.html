@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col s3">
+            <div class="card">
+                <div class="card-content center-align">
+                    <p><b>MW-1055: MAXWELL ЭЛЕКТРОЧАЙНИК</b></p>
+                </div>
+                <div class="card-image">
+                    <img src="{% static 'bonus/i/item1.jpg' %}" alt="item1" title="MAXWELL ЭЛЕКТРОЧАЙНИК"/>
+                </div>
+                <div class="card-content center-align card-footer">
+                    <div class="bonus-prise">1599 Р.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s3">
+            <div class="card">
+                <div class="card-content center-align">
+                    <p><b>SC-CM33002: КОФЕВАРКА SCARLETT</b></p>
+                </div>
+                <div class="card-image">
+                    <img src="{% static 'bonus/i/item2.jpg' %}" alt="item1" title="КОФЕВАРКА SCARLETT"/>
+                </div>
+                <div class="card-content center-align card-footer">
+                    <div class="bonus-prise">1199 Р.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s3">
+            <div class="card">
+                <div class="card-content center-align">
+                    <p><b>GIGABYTE WIRELESS: БЕСПРОВОДНАЯ МЫШЬ</b></p>
+                </div>
+                <div class="card-image">
+                    <img src="{% static 'bonus/i/item3.jpg' %}" alt="item1" title="БЕСПРОВОДНАЯ МЫШЬ"/>
+                </div>
+                <div class="card-content center-align card-footer">
+                    <div class="bonus-prise">599 Р.</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col s3">
+            <div class="card">
+                <div class="card-content center-align">
+                    <p><b>NWZ-E384/B : MP3 ПЛЕЕР SONY</b></p>
+                </div>
+                <div class="card-image">
+                    <img src="{% static 'bonus/i/item4.jpg' %}" alt="item1" title="MP3 ПЛЕЕР SONY"/>
+                </div>
+                <div class="card-content center-align card-footer">
+                    <div class="bonus-prise">2599 Р.</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col s3">
+            <div class="card">
+                <div class="card-content center-align">
+                    <p><b>HC-V730EE-K :ВИДЕОКАМЕРА PANASONIC</b></p>
+                </div>
+                <div class="card-image">
+                    <img src="{% static 'bonus/i/item5.jpg' %}" alt="item1" title="ВИДЕОКАМЕРА PANASONIC"/>
+                </div>
+                <div class="card-content center-align card-footer">
+                    <div class="bonus-prise">3599 Р.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s3">
+            <div class="card">
+                <div class="card-content center-align">
+                    <p><b>IP2840: ПРИНТЕР CANON</b></p>
+                </div>
+                <div class="card-image">
+                    <img src="{% static 'bonus/i/item6.jpg' %}" alt="item1" title="ПРИНТЕР CANON"/>
+                </div>
+                <div class="card-content center-align card-footer">
+                    <div class="bonus-prise">2799 Р.</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col s3">
+            <div class="card">
+                <div class="card-content center-align">
+                    <p><b>MEMOPAD ME70C :ASUS ПЛАНШЕТ 7"</b></p>
+                </div>
+                <div class="card-image">
+                    <img src="{% static 'bonus/i/item7.jpg' %}" alt="item1" title="ASUS ПЛАНШЕТ 7"/>
+                </div>
+                <div class="card-content center-align card-footer">
+                    <div class="bonus-prise">5599 Р.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s3">
+            <div class="card">
+                <div class="card-content center-align">
+                    <p><b>SX 610HS: CANON POWER SHOT ЦИФРОВОЙ ФОТОАППАРАТ</b></p>
+                </div>
+                <div class="card-image">
+                    <img src="{% static 'bonus/i/item8.jpg' %}" alt="item1" title="POWER SHOT ЦИФРОВОЙ ФОТОАППАРАТ"/>
+                </div>
+                <div class="card-content center-align card-footer">
+                    <div class="bonus-prise">2999 Р.</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <ul class="pagination center-align" style="margin-top:60px;">
+        {% if bonuses.has_previous %}
+            <li class="disabled">
+                <a href="?page={{ bonuses.previous_page_number }}" style="cursor:pointer;">
+                    <i class="material-icons black">chevron_left</i>
+                </a>
+            </li>
+        {% endif %}
+
+        <li class="active"><a style="cursor: default;" class="blue" href="#">{{ bonuses.number }}
+            из {{ bonuses.paginator.num_pages }}</a>
+        </li>
+
+        {% if bonuses.has_next %}
+            <li class="waves-effect"><a href="?page={{ bonuses.next_page_number }}"><i
+                    class="material-icons black">chevron_right</i></a></li>
+        {% endif %}
+    </ul>
+
+{% endblock %}

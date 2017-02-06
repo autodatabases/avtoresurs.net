@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^$', MainPageView.as_view(), name='main_page'),
     # url(r'^load/$', ProductLoader.as_view(), name='loader'),
     url(r'^accounts/reactivate/$', resend_activation_email, name='account_reactivate'),
+    url(r'^bonus/', include('bonus.urls', namespace="bonus")),
 ]
