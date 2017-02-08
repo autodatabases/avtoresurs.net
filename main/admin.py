@@ -4,6 +4,6 @@ from django.contrib import admin
 from main.models import Slider
 
 class SliderAdmin(admin.ModelAdmin):
-    list_display = ('caption', 'text', 'updated', 'status', 'image.url')
+    list_display = ('caption', 'text', 'updated', 'image.url')
 
 admin.site.register(Slider, SliderAdmin)
