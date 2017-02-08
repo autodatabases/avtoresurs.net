@@ -66,10 +66,9 @@
                 <div class="card large z-depth-0">
                     <div class="card-image waves-effect waves-block waves-light">
                         <img src="{{ post.image.url }}">
-                        <span class="card-title">{{ post.title }}</span>
                     </div>
                     <div class="card-content">
-                        <p>{{ post.content }}</p>
+                        <p>{{ post.title }}</p>
                         <p><strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong></p>
                     </div>
                     <div class="card-action">
