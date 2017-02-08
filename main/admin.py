@@ -5,7 +5,7 @@ from main.models import Slider
 
 
 class SliderAdmin(admin.ModelAdmin):
-    list_display = ('caption', 'text', 'updated', 'image.url')
+    list_display = ('caption', 'text', 'updated', 'image')
 
 
 admin.site.register(Slider, SliderAdmin)
