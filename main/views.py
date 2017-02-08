@@ -10,6 +10,7 @@ from django.views.generic import TemplateView
 
 from avtoresurs_new import settings
 from main.forms import ResendActivationEmailForm
+from main.models import Slider
 from news.models import Post
 from registration.forms import User
 from shop.models.product import Product
@@ -25,7 +26,8 @@ class MainPageView(TemplateView):
         context = super(MainPageView, self).get_context_data()
         news = Post.objects.all()
         context['news'] = news
-        print(news)
+        slides = Slider.objects.all()
+        context['slides'] = slides
         return context
 
 

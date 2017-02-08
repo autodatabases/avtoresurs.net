@@ -10,34 +10,15 @@
         <div class="col s7">
             <div class="slider">
                 <ul class="slides">
+                    {% for slide in slides %}
                     <li class="waves-effect waves-block waves-light">
-                        <img src="http://lorempixel.com/580/250/nature/1"> <!-- random image -->
+                        <img src="{{ slide.image.url }}">
                         <div class="caption center-align">
-                            <h3>This is our big Tagline!</h3>
-                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+                            <h3>{{ slide.caption }}</h3>
+                            <h5 class="light grey-text text-lighten-3">{{ slide.text }}</h5>
                         </div>
                     </li>
-                    <li class="waves-effect waves-block waves-light">
-                        <img src="http://lorempixel.com/580/250/nature/2"> <!-- random image -->
-                        <div class="caption left-align">
-                            <h3>Left Aligned Caption</h3>
-                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                        </div>
-                    </li>
-                    <li class="waves-effect waves-block waves-light">
-                        <img src="http://lorempixel.com/580/250/nature/3"> <!-- random image -->
-                        <div class="caption right-align">
-                            <h3>Right Aligned Caption</h3>
-                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                        </div>
-                    </li>
-                    <li class="waves-effect waves-block waves-light">
-                        <img src="http://lorempixel.com/580/250/nature/4"> <!-- random image -->
-                        <div class="caption center-align">
-                            <h3>This is our big Tagline!</h3>
-                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                        </div>
-                    </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
