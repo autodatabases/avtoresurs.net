@@ -17,3 +17,7 @@ class Slider(models.Model):
         ordering = ["order"]
         verbose_name = 'Слайд'
         verbose_name_plural = 'Слайды'
+
+
+# class About(models.Model):
+#

@@ -30,6 +30,9 @@ class MainPageView(TemplateView):
         context['slides'] = slides
         return context
 
+class AboutView(TemplateView):
+    template_name = 'about_view.html'
+
 
 # class ProductLoader(TemplateView):
 #     template_name = 'load.html'
