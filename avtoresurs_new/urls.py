@@ -34,6 +34,7 @@ urlpatterns = [
                       name='ProfilePage'),
                   url(r'^account/', include('account.urls', namespace='account')),
                   url(r'^panel/', include('panel.urls', namespace='panel')),
+                  url(r'^news/', include('news.urls', namespace='news')),
                   # url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/successfully_logged_out/'}),
                   # url(r'account/', include('account.urls', namespace='account')),
                   url(r'shop/', include('shop.urls', namespace='shop')),
