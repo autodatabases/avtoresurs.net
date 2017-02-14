@@ -144,7 +144,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ACCOUNT_ACTIVATION_DAYS = 7
 
 # EMAIL_USE_TLS = True
-EMAIL_HOST = '127.0.0.1'
+EMAIL_HOST = 'localhost'
 EMAIL_PORT = 25
 # EMAIL_HOST_USER = 'kashim'
 # EMAIL_HOST_PASSWORD = 'Kashim31337'
