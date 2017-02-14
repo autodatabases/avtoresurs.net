@@ -142,13 +142,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 ACCOUNT_ACTIVATION_DAYS = 7
-# Host for sending e-mail.
-EMAIL_HOST = 'localhost'
-
-# Port for sending e-mail.
-EMAIL_PORT = 1025
-DEFAULT_FROM_EMAIL = 'noreplyweb@gov39.ru'
-
 
 # EMAIL_USE_TLS = True
 EMAIL_HOST = '127.0.0.1'
