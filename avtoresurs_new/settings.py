@@ -150,7 +150,7 @@ EMAIL_PORT = 1025
 DEFAULT_FROM_EMAIL = 'noreplyweb@gov39.ru'
 
 
-EMAIL_USE_TLS = True
+# EMAIL_USE_TLS = True
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'kashim'
