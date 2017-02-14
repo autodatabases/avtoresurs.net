@@ -151,8 +151,8 @@ DEFAULT_FROM_EMAIL = 'noreplyweb@gov39.ru'
 
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'mail.gov39.ru'
+EMAIL_HOST = 'localhost'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'noreplyweb@gov39.local'
-EMAIL_HOST_PASSWORD = 'cbl6hrIKna25gQQ'
-DEFAULT_FROM_EMAIL = 'noreplyweb@gov39.ru'
+# EMAIL_HOST_USER = 'no-reply@avtoresurs.net'
+# EMAIL_HOST_PASSWORD = 'cbl6hrIKna25gQQ'
+DEFAULT_FROM_EMAIL = 'no-reply@avtoresurs.net'
