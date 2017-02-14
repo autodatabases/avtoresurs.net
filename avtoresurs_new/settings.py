@@ -144,8 +144,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ACCOUNT_ACTIVATION_DAYS = 7
 
 # EMAIL_USE_TLS = True
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 25
-# EMAIL_HOST_USER = 'kashim'
-# EMAIL_HOST_PASSWORD = 'Kashim31337'
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'no-reply@avtoresurs.net'
+EMAIL_HOST_PASSWORD = 'Iddqd31337'
 DEFAULT_FROM_EMAIL = 'no-reply@avtoresurs.net'
