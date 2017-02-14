@@ -60,6 +60,10 @@ class ContactsView(TemplateView):
     template_name = 'contacts_view.html'
 
 
+class YandexDnsView(TemplateView):
+    template_name = 'yandex_dns_view.html'
+
+
 # class ProductLoader(TemplateView):
 #     template_name = 'load.html'
 #

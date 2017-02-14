@@ -7,7 +7,7 @@ from main.views import resend_activation_email, AboutView
 # )
 
 from .views import (
-    MainPageView, BrandsView, AssortmentView, TrucksView, FAQView, ServiceStationView, ContactsView
+    MainPageView, BrandsView, AssortmentView, TrucksView, FAQView, ServiceStationView, ContactsView, YandexDnsView
 )
 
 urlpatterns = [
@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^faq/$', FAQView.as_view(), name='faq_view'),
     url(r'^service_stations/$', ServiceStationView.as_view(), name='service_stations_view'),
     url(r'^contacts/$', ContactsView.as_view(), name='contacts_view'),
+    url(r'^c4c41ec4a9e4.html$', YandexDnsView.as_view(), name='yandex_dns_view'),
     # url(r'^load/$', ProductLoader.as_view(), name='loader'),
     url(r'^accounts/reactivate/$', resend_activation_email, name='account_reactivate'),
 ]
