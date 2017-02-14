@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Контакты{% endblock %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="" class="breadcrumb">Контакты</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row white">
+        <div class="col s12">
+            <div class="main-content">
+                <p><b>Вы можете связаться с нами любым удобным Вам способом.</b><br>
+                    Мы находимся по адресу:<br>
+                    <b>236038, Россия, Калининград, ул.Гагарина, 235;</b><br>
+                    Телефон: <b>(4012) 51-49-53</b>; Телефон/факс: <b>(4012) 51-49-48</b><br>
+                    e-mail: <a href="mailto:avtoresurs@mail.ru">avtoresurs@mail.ru</a><br>
+                    <b>Надеемся на успешное сотрудничество!</b>
+                </p>
+                <div class="center-align">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2303.709244859286!2d20.565331216188007!3d54.732328980292856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e315c91cc52bef%3A0x722d13fb71c5a128!2z0YPQuy4g0K7RgNC40Y8g0JPQsNCz0LDRgNC40L3QsCwgMjM1LCDQmtCw0LvQuNC90LjQvdCz0YDQsNC0LCDQmtCw0LvQuNC90LjQvdCz0YDQsNC00YHQutCw0Y8g0L7QsdC7LiwgMjM2MDM4!5e0!3m2!1sru!2sru!4v1487059512828"
+                            width="1000" height="600" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

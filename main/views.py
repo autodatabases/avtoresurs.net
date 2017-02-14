@@ -15,6 +15,7 @@ from news.models import Post
 from registration.forms import User
 from shop.models.product import Product
 
+
 # Create your views here.
 # from tecdoc.models import Part
 
@@ -30,8 +31,33 @@ class MainPageView(TemplateView):
         context['slides'] = slides
         return context
 
+
 class AboutView(TemplateView):
     template_name = 'about_view.html'
+
+
+class BrandsView(TemplateView):
+    template_name = 'brands_view.html'
+
+
+class AssortmentView(TemplateView):
+    template_name = 'assortment_view.html'
+
+
+class TrucksView(TemplateView):
+    template_name = 'trucks_view.html'
+
+
+class FAQView(TemplateView):
+    template_name = 'faq_view.html'
+
+
+class ServiceStationView(TemplateView):
+    template_name = 'service_station_view.html'
+
+
+class ContactsView(TemplateView):
+    template_name = 'contacts_view.html'
 
 
 # class ProductLoader(TemplateView):

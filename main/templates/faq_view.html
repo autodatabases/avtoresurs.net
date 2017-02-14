@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}FAQ{% endblock %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="" class="breadcrumb">FAQ</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row white">
+        <div class="col s12">
+            <div class="main-content">
+                <table cellspacing="5" cellpadding="1" border="0" width="200">
+                    <tbody>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/pdf.gif' %}" alt=""></td>
+                        <td nowrap="nowrap"><a href="{% static 'main/files/2007_Oxygen_Sensor_Direct_Fit_proposal.pdf' %}">2007
+                            Oxygen Sensor Direct Fit proposal</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/rtf.gif' %}" alt=""></td>
+                        <td nowrap="nowrap"><a href="{% static 'main/files/061114_Delphi_Krosno_FORD_VOLVO_ENG_TR_final.rtf' %}">Delphi
+                            Krosno FORD VOLVO ENG TR final</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/ppt.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/Amortyzatory_z_Krosna_Mini_ang.ppt' %}">Amortyzatory z Krosna Mini
+                            ang</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/ppt.gif' %}" alt=""></td>
+                        <td nowrap="nowrap"><a
+                                href="{% static 'main/files/Amortyzatory_z_Krosna_Opel_Agilla_Suzuki_Wagon_ang.ppt' %}">Amortyzatory
+                            z Krosna Opel Agilla Suzuki Wagon ang</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/ppt.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/Amortyzatory_z_Krosna_Mercedes_ang.ppt' %}">Amortyzatory z Krosna
+                            Mercedes ang</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/doc.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/Audi_R8_MagneRide_RUS.doc' %}">Audi R8 MagneRide RUS</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/doc.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/Audi_TT_MagneRide_RUS.doc' %}">Audi TT MagneRide RUS</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/doc.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/Automechanika_preview_Final_RUS.doc' %}">Automechanika preview Final
+                            RUS</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/doc.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/DAO4468_Diagnostic_data_update.doc' %}">DAO4468 - Diagnostic data
+                            update</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/doc.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/Disc_article.doc' %}">Disc article</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/doc.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/DPSS_AC_TSP_Catalogue_07_RUS.doc' %}">DPSS AC TSP Catalogue '07 RUS</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/pdf.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/FINAL_IAA_2006_Slides.pdf' %}">FINAL IAA 2006 Slides</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/ppt.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/Ford_Volvo_Nov06.ppt' %}">Ford Volvo Nov 06</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/doc.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/SS_russian_article.doc' %}">S&amp;S russian article</a></td>
+                    </tr>
+                    <tr>
+                        <td><img height="24" width="24" src="{% static 'main/images/doc.gif' %}" alt=""></td>
+                        <td><a href="{% static 'main/files/shock_absorbers_article.doc' %}">Shock Absorbers article</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
