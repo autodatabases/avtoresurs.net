@@ -24,33 +24,40 @@
     </div>
 
     <div class="row white">
-        <div class="col s8 offset-s2">
-            <form action="" method="post">
-                <p>Пожалуйста, введите Ваш e-mail:</p>
-                {% csrf_token %}
+        <div class="main-content">
+            <div class="col s8 offset-s2">
                 <div class="row">
-                    <div class="input-field col s12">
-                        {{ form.email }}
-                        <label for="{{ form.email.id_for_label }}">E-mail</label>
-                        {% if form.email.errors %}
-                            <blockquote>{{ form.email.errors }}</blockquote>
-                        {% endif %}
+                    <div class="col s12">
+                        <form action="" method="post">
+                            <p>Пожалуйста, введите Ваш e-mail:</p>
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    {{ form.email }}
+                                    <label for="{{ form.email.id_for_label }}">E-mail</label>
+                                    {% if form.email.errors %}
+                                        <blockquote>{{ form.email.errors }}</blockquote>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s8 offset-s2 center-align">
+                                    <button class="btn waves-effect waves-light dark-blue" type="submit" name="action">
+                                        Выслать повторно
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col s8 offset-s2 center-align">
-                        <button class="btn waves-effect waves-light dark-blue" type="submit" name="action">
-                            Выслать повторно
-                            <i class="material-icons right">send</i>
-                        </button>
+                    <div class="col s12 center-align">
+                        Забыли пароль? <a href="{% url 'auth_password_reset' %}" class="link">Восстановить!</a>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col s8 offset-s2 center-align">
-            Забыли пароль? <a href="{% url 'auth_password_reset' %}" class="link">Восстановить!</a>
-        </div>
-    </div>
+
 {% endblock %}
