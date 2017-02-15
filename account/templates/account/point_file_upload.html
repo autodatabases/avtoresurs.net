@@ -23,7 +23,7 @@
         <div class="col s12">
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="file" name="file">
+                <input type="file" name="file" required>
                 <button class="btn waves-effect waves-light blue darken-1 center-align" type="submit"
                         name="action">
                     Загрузить
