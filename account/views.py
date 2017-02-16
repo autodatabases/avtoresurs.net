@@ -20,26 +20,19 @@ from account.forms import UploadFileForm
 from account.models import Account, Point
 from avtoresurs_new.settings import BASE_DIR
 
+import urllib.parse
+
+from service.parser.klients import parse_klients
+
 
 class AccountView(TemplateView):
     template_name = 'account/account_view.html'
-
-    # model = Account
-
-    # def get_object(self, queryset=None):
-    #     """ Hook to ensure object is owned by request.user"""
-    #     obj = super(AccountView, self).get_object()
-    #     account = Account.objects.all().filter(user=self.request.user).first()
-    #     # if not obj in massmedia.reporter_set.all():
-    #     #     raise Http404
-    #     return obj
 
     def get_context_data(self, **kwargs):
         context = super(AccountView, self).get_context_data()
         account = Account.objects.all().filter(user=self.request.user).first()
         context['account'] = account
         return context
-        # account = User.objects.g
 
 
 def user_import(row):
@@ -74,10 +67,6 @@ class AccountImport(TemplateView):
         con = MySQLdb.connect(host=host, user=login, passwd=password, db=database, charset='utf8')
         cur = con.cursor()
 
-        # cur.execute("SELECT VERSION()")
-        # ver = cur.fetchone()
-        # print("Database version : %s " % ver)
-
         sql = "select * from x17f_catalog_users"
         cur.execute(sql)
         rows = cur.fetchall()
@@ -91,39 +80,24 @@ class AccountImport(TemplateView):
 class PointLoader(TemplateView):
     template_name = 'account/point_file_upload.html'
 
-    # form_class = UploadFileForm
-
-    # def get(self, request):
-    #     return HttpResponseRedirect('/account/point_load/')
-
     def post(self, request):
         try:
             file = self.request.FILES['file']
-        except:
+        except KeyError as ke:
             return HttpResponseRedirect('/account/point_load/')
 
-        # filename, file_extension = os.path.splitext(self.request.FILES['file'].name)
         date = datetime.datetime.now()
-        now = str(date.year) + '-' + str(date.month) + '-' + str(date.day)
-        filename = str(date.date()) + '_' + self.request.FILES['file'].name
-        filename = 'points/' + str(date.year) + '/' + str(date.month) + '/' + filename
-        # print(filename)
+        filename = os.path.join('csv', 'klients', date.strftime('%Y'), date.strftime('%m'),
+                                self.request.FILES['file'].name)
+
         path = default_storage.save(filename, ContentFile(file.read()))
+        file.close()
 
         with open('media/' + path, 'r', encoding='cp1251') as fin:
             data = fin.read().splitlines(True)
-        with open('media/' + path, 'w') as fout:
-            fout.writelines(data[1:])
 
-        for line in data[1:]:
-            row = line.split(';')
-            login = row[0].replace('ЦБ', 'cl')
-            account = Account.objects.get(user__username=login)
-            account.fullname = row[1]
-            account.vip_code = row[2].strip()
-            point = account.get_point()
-            point.point = float(row[3].replace(',', '.'))
-            account.save()
-            point.save()
-
-        return HttpResponse('ok')
+        protocol = parse_klients(data)
+        print('Загружено - %s, не загружено - %s' % (protocol[1], protocol[2]))
+        for p in protocol[0]:
+            print(p)
+        return HttpResponse('OK')
