@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Брэнды{% endblock %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="" class="breadcrumb">Брэнды</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row white">
+        <div class="col s12">
+            <div class="main-content">
+                <p>Добро пожаловать в мир National автозапчастей - сцепления и тормоза для специалистов. с более чем 25
+                    летний опыт
+                    работы в автомобильных запчастях, мы сделали нашим выбором номер один качество, надежность и высокий
+                    уровень
+                    обслуживания клиентов.</p>
+                <p>Наш ассортимент состоит из сцепления и тормозной системы, сосредоточив внимание на деталях для
+                    легковых и легких
+                    коммерческих автомобилей.</p>
+                <p>Основанная в Alfreton в Англии, мы поставляем нашу продукцию на независимый рынок запчастей (
+                    Aftermarket ) в
+                    Великобритании и по всей Европе.</p>
+                <p>
+                    <strong>National</strong> - движущая сила на независимом рынке запчастей европы
+                </p>
+                <p class="center-align"><img src="{% static 'main/images/clutchbanner.jpg' %}" alt="National"></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

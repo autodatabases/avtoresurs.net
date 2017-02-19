@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %} Новости {% endblock %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'news:news_page' %}" class="breadcrumb">Новости</a>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="row">
+        {% for post in post_list %}
+            {% if forloop.counter0|divisibleby:3 %}
+                </div>
+                <div class="row">
+            {% endif %}
+
+            <div class="col s6 m4">
+                <div class="card large z-depth-0">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img src="{{ post.image.url }}">
+                    </div>
+                    <div class="card-content">
+                        <p>{{ post.title }}</p>
+                        <p>
+                            <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>
+                        </p>
+                    </div>
+                    <div class="card-action">
+                        <a class="waves-effect waves-light btn dark-blue"
+                           href="#modal{{ forloop.counter }}">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Structure -->
+            <div id="modal{{ forloop.counter }}" class="modal">
+                <div class="modal-content">
+                    <h4>{{ post.title }}</h4>
+                    <p><img src="{{ post.image.url }}"></p>
+                    <p>{{ post.content }}</p>
+                    <p>
+                        <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a class=" modal-action modal-close waves-effect waves-green btn-flat">Закрыть</a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+    {% if is_paginated %}
+
+        <div class="row">
+            <div class="col s12">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="waves-effect"><a href="{{ page_obj.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+                    {% else %}
+                        <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="active"><a href="">{{ i }}</a></li>
+                        {% else %}
+                            <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
+                    {% else %}
+                        <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('.slider').slider({full_width: true});
+        });
+        $(document).ready(function () {
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal').modal();
+        });
+
+    </script>
+{% endblock %}

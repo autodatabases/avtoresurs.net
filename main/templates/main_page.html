@@ -10,34 +10,15 @@
         <div class="col s7">
             <div class="slider">
                 <ul class="slides">
-                    <li class="waves-effect waves-block waves-light">
-                        <img src="http://lorempixel.com/580/250/nature/1"> <!-- random image -->
-                        <div class="caption center-align">
-                            <h3>This is our big Tagline!</h3>
-                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                        </div>
-                    </li>
-                    <li class="waves-effect waves-block waves-light">
-                        <img src="http://lorempixel.com/580/250/nature/2"> <!-- random image -->
-                        <div class="caption left-align">
-                            <h3>Left Aligned Caption</h3>
-                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                        </div>
-                    </li>
-                    <li class="waves-effect waves-block waves-light">
-                        <img src="http://lorempixel.com/580/250/nature/3"> <!-- random image -->
-                        <div class="caption right-align">
-                            <h3>Right Aligned Caption</h3>
-                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                        </div>
-                    </li>
-                    <li class="waves-effect waves-block waves-light">
-                        <img src="http://lorempixel.com/580/250/nature/4"> <!-- random image -->
-                        <div class="caption center-align">
-                            <h3>This is our big Tagline!</h3>
-                            <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-                        </div>
-                    </li>
+                    {% for slide in slides %}
+                        <li class="waves-effect waves-block waves-light">
+                            <img src="{{ slide.image.url }}">
+                            <div class="caption center-align">
+                                <h3>{{ slide.caption }}</h3>
+                                <h5 class="light grey-text text-lighten-3">{{ slide.text }}</h5>
+                            </div>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -66,14 +47,16 @@
                 <div class="card large z-depth-0">
                     <div class="card-image waves-effect waves-block waves-light">
                         <img src="{{ post.image.url }}">
-                        <span class="card-title">{{ post.title }}</span>
                     </div>
                     <div class="card-content">
-                        <p>{{ post.content }}</p>
-                        <p><strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong></p>
+                        <p>{{ post.title }}</p>
+                        <p>
+                            <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>
+                        </p>
                     </div>
                     <div class="card-action">
-                        <a class="waves-effect waves-light btn dark-blue" href="#modal{{ forloop.counter }}">Подробнее</a>
+                        <a class="waves-effect waves-light btn dark-blue"
+                           href="#modal{{ forloop.counter }}">Подробнее</a>
                     </div>
                 </div>
             </div>
@@ -83,7 +66,9 @@
                     <h4>{{ post.title }}</h4>
                     <p><img src="{{ post.image.url }}"></p>
                     <p>{{ post.content }}</p>
-                    <p><strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong></p>
+                    <p>
+                        <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <a class=" modal-action modal-close waves-effect waves-green btn-flat">Закрыть</a>

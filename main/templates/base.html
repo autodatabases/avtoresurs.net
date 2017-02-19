@@ -39,17 +39,17 @@
                             ({{ request.user }})</a></li>
                         <li><a href="/account/">Личный кабинет</a></li>
                     {% else %}
-                        <li><a href="/accounts/login" id="customer_login_link">Войти</a></li>
-                        <li><a href="/accounts/login" id="customer_register_link">Зарегистрироваться</a></li>
+                        <li><a href="/accounts/login/" id="customer_login_link">Войти</a></li>
+                        <li><a href="/accounts/register/" id="customer_register_link">Зарегистрироваться</a></li>
                     {% endif %}
                     <li class="checkout"><a href="/checkout/">Оформить покупки</a></li>
                 </ul>
                 <ul class="no-margin-top no-margin-bot">
-                    <li><a href="//twitter.com/templatemonster"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="//www.facebook.com/TemplateMonster"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="//www.youtube.com/user/TemplateMonsterCo"><i class="fa fa-youtube"></i></a></li>
-                    <li><a href="//www.pinterest.com/templatemonster/"><i class="fa fa-pinterest"></i></a></li>
-                    <li><a href="//google.com/+templatemonster"><i class="fa fa-google-plus"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                    <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -95,20 +95,20 @@
 
         <div class="row no-margin-bot">
             <ul id="dropdown_nav" class="dropdown-content">
-                <li><a href="#!">О компании</a></li>
-                <li><a href="#!">Бренды</a></li>
+                <li><a href="/about/">О компании</a></li>
+                <li><a href="/brands/">Бренды</a></li>
                 {#    <li class="divider"></li>#}
-                <li><a href="#!">Ассортимент</a></li>
-                <li><a href="#!">Запчасти для грузовиков</a></li>
-                <li><a href="#!">FAQ</a></li>
-                <li><a href="#!">Для автосервисов</a></li>
-                <li><a href="#!">Контакты</a></li>
+                <li><a href="/assortment/">Ассортимент</a></li>
+                <li><a href="/trucks/">Запчасти для грузовиков</a></li>
+                <li><a href="/faq/">FAQ</a></li>
+                <li><a href="/service_stations/">Для автосервисов</a></li>
+                <li><a href="/contacts/">Контакты</a></li>
             </ul>
 
             <nav class="dark-blue z-depth-0" role="navigation">
                 <div class="nav-wrapper">
                     <ul class="right hide-on-med-and-down no-float avtoresurs-menu">
-                        <li><a href="#">Новости</a></li>
+                        <li><a href="{% url 'news:news_page' %}">Новости</a></li>
                         <li><a href="/shop">Интернет магазин</a></li>
                         <li><a href="#">Бонусная акция</a></li>
                         <!-- Dropdown Trigger -->
@@ -221,36 +221,34 @@
     <div class="container">
         <div class="row">
             <div class="col l6 s12">
-                <h5 class="white-text">Company Bio</h5>
-                <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's
-                    our full time job. Any amount would help support and continue development on this project and is
-                    greatly appreciated.</p>
+                <h5 class="white-text">АВТОЗАПЧАСТИ ДЛЯ ИНОМАРОК</h5>
+                <p class="grey-text text-lighten-4"></p>
 
 
             </div>
             <div class="col l3 s12">
-                <h5 class="white-text">Settings</h5>
+{#                <h5 class="white-text">Навигация</h5>#}
                 <ul>
-                    <li><a class="white-text" href="#!">Link 1</a></li>
-                    <li><a class="white-text" href="#!">Link 2</a></li>
-                    <li><a class="white-text" href="#!">Link 3</a></li>
-                    <li><a class="white-text" href="#!">Link 4</a></li>
+                    <li><a class="white-text" href="#!">Новости</a></li>
+                    <li><a class="white-text" href="#!">Интернет-магазин</a></li>
+                    <li><a class="white-text" href="#!">Поиск</a></li>
+                    <li><a class="white-text" href="#!">О компании</a></li>
                 </ul>
             </div>
             <div class="col l3 s12">
-                <h5 class="white-text">Connect</h5>
+{#                <h5 class="white-text">Навигация</h5>#}
                 <ul>
-                    <li><a class="white-text" href="#!">Link 1</a></li>
-                    <li><a class="white-text" href="#!">Link 2</a></li>
-                    <li><a class="white-text" href="#!">Link 3</a></li>
-                    <li><a class="white-text" href="#!">Link 4</a></li>
+                    <li><a class="white-text" href="#!">Личный кабинет</a></li>
+                    <li><a class="white-text" href="#!">Корзина</a></li>
+                    <li><a class="white-text" href="#!">FAQ</a></li>
+                    <li><a class="white-text" href="#!">Контакты</a></li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="footer-copyright blue darken-4">
         <div class="container">
-            Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+            2017 ООО "Авторесурс"
         </div>
     </div>
 </footer>

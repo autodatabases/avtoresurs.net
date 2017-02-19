@@ -1,6 +1,7 @@
 import MySQLdb
 import datetime
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from django.views.generic import DetailView
@@ -92,13 +93,20 @@ class PointLoader(TemplateView):
 
     # form_class = UploadFileForm
 
-    def post(self, request):
-        file = self.request.FILES['file']
+    # def get(self, request):
+    #     return HttpResponseRedirect('/account/point_load/')
 
-        filename, file_extension = os.path.splitext(self.request.FILES['file'].name)
+    def post(self, request):
+        try:
+            file = self.request.FILES['file']
+        except:
+            return HttpResponseRedirect('/account/point_load/')
+
+        # filename, file_extension = os.path.splitext(self.request.FILES['file'].name)
         date = datetime.datetime.now()
         now = str(date.year) + '-' + str(date.month) + '-' + str(date.day)
-        filename = 'points/' + str(date.year) + '/' + str(date.month) + '/' + filename + '_' + now + file_extension
+        filename = str(date.date()) + '_' + self.request.FILES['file'].name
+        filename = 'points/' + str(date.year) + '/' + str(date.month) + '/' + filename
         # print(filename)
         path = default_storage.save(filename, ContentFile(file.read()))
 
@@ -113,8 +121,9 @@ class PointLoader(TemplateView):
             account = Account.objects.get(user__username=login)
             account.fullname = row[1]
             account.vip_code = row[2].strip()
-
-
-
+            point = account.get_point()
+            point.point = float(row[3].replace(',', '.'))
+            account.save()
+            point.save()
 
         return HttpResponse('ok')
