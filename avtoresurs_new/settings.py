@@ -82,6 +82,10 @@ TEMPLATES = [
     },
 ]
 
+settings_dir = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
+UNIT_TEST_FOLDER = os.path.join(PROJECT_ROOT, 'unit_tests/')
+
 WSGI_APPLICATION = 'avtoresurs_new.wsgi.application'
 
 # Database
@@ -152,15 +156,11 @@ ACCOUNT_ACTIVATION_DAYS = 7
 # Port for sending e-mail.
 EMAIL_PORT = 1025
 DEFAULT_FROM_EMAIL = 'noreplyweb@gov39.ru'
-
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'mail.gov39.ru'
-EMAIL_PORT = 25
 EMAIL_HOST_USER = 'noreplyweb@gov39.local'
 EMAIL_HOST_PASSWORD = 'cbl6hrIKna25gQQ'
-DEFAULT_FROM_EMAIL = 'noreplyweb@gov39.ru'
-
+PROTOCOL_REPORTS_EMAIL = 'shaman@born2fish.ru'
 
 # EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = True
