@@ -120,10 +120,11 @@ class CheckoutView(TemplateView):
 
     def get_object(self, *args, **kwargs):
         cart_id = self.request.session.get("cart_id")
+        # print(cart_id)
         if not cart_id:
             return redirect("cart")
         cart = Cart.objects.get(id=cart_id)
-        print(cart.subtotal)
+        # print(cart.subtotal)
         return cart
 
     def get_context_data(self, *args, **kwargs):
@@ -143,6 +144,7 @@ class CheckoutView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
+        # print(self.object)
         # form = self.get_form()
         # if form.is_valid():
         # email = form.cleaned_data.get('email')
@@ -151,10 +153,11 @@ class CheckoutView(TemplateView):
             request.session['user_checkout_id'] = user_checkout.id
             # print(user_checkout)
             # return self.form_valid(form)
-            return reverse('cart')
+            return HttpResponseRedirect('/news/')
         except:
-            return reverse('news')
+            return HttpResponse('not ok')
             # return self.form_invalid(form)
+
 
     def get_success_url(self):
         return reverse("checkout")

@@ -30,13 +30,14 @@ class Product(models.Model):
     cross_sku = models.CharField(max_length=255)
     quantity = models.IntegerField(blank=True, null=True)
     active = models.BooleanField(default=True)
-    price = models.DecimalField(decimal_places=2, max_digits=20)
+    retail_price = models.DecimalField(decimal_places=2, max_digits=20, default=False)
+    whosale_price = models.DecimalField(decimal_places=2, max_digits=20, default=False)
 
     # slug
     objects = ProductManager()
 
     def get_price(self):
-        return self.price
+        return self.retail_price
 
     def get_quantity(self):
         return self.quantity
