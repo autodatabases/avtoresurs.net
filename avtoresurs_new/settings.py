@@ -156,7 +156,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
-EMAIL_USE_TLS = True
+# EMAIL_USE_TLS = True
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
