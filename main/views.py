@@ -86,18 +86,18 @@ class ProductLoader(TemplateView):
                 created = Product.objects.get_or_create(
                     sku=row[0].lower().replace(" ", ""),
                     manufacturer=row[1].lower(),
-                    title=row[2].lower(),
-                    cross_sku=row[3].lower(),
-                    quantity=row[4],
-                    # quantity=10,
-                    active=True,
-                    retail_price=row[5],
-                    whosale_price=row[6],
-                    # price=455.12,
                 )
+                created.title = row[2].lower()
+                created.cross_sku = row[3].lower()
+                created.quantity = row[4].lower()
+                created.active = True
+                created.retail_price = row[5].lower()
+                created.whosale_price = row[6].lower()
+                created.save()
+
                 part = Part.objects.filter(sku__iexact=created.sku, supplier__title__iexact=created.manufacturer)
                 if not part:
-                    error_string = "%s %s %s %s %s" % (
+                    error_string = "product - %s %s %s %s %s - not in TECDOC DB" % (
                         idx,
                         created.sku,
                         created.manufacturer,
@@ -161,7 +161,6 @@ class ProductLoader(TemplateView):
         #     with open(error_file_path, 'w+') as error_file:
         #         # print(report)
         #         error_file.write(report_log)
-
 
 
 # todo make CBV
