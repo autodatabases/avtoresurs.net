@@ -91,7 +91,8 @@ class ProductLoader(TemplateView):
                     quantity=row[4],
                     # quantity=10,
                     active=True,
-                    price=row[5],
+                    retail_price=row[5],
+                    whosale_price=row[6],
                     # price=455.12,
                 )
                 part = Part.objects.filter(sku__iexact=created.sku, supplier__title__iexact=created.manufacturer)
