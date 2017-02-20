@@ -31,24 +31,20 @@ class CsvWorker:
 
         """
         result = []
+        first_row = 0
         try:
-            with open(csv_file_path, newline='', encoding=encoding) as source_csv:
-                csv_reader = csv.reader(source_csv, delimiter=delimiter)
-                for ind, row in enumerate(csv_reader):
-                    # skip header here
-                    if ind == 0 and skip_header:
-                        pass
-                    else:
-                        # rows limit
-                        if rows_limit:
-                            if ind <= rows_limit:
-                                result.append(row)
-                            else:
-                                pass
-                        else:
-                            result.append(row)
-                self.report = "File was read. There are %s row(s)" % len(result)
-                return result
+            with open(csv_file_path, 'r', encoding=encoding) as source_csv:
+                data = source_csv.read().splitlines(True)
+            if not rows_limit:
+                rows_limit = len(data)
+            if skip_header:
+                first_row = 1
+            for idx, line in enumerate(data[first_row:rows_limit]):
+                row = line.split(';')
+                result.append(row)
+
+            self.report = "File was read. There are %s row(s)" % len(result)
+            return result
         except FileNotFoundError:
             print("File for READ with name '%s' was not found!" % csv_file_path)
             print_error()
@@ -99,5 +95,3 @@ class CsvWorker:
             error_text = "Can't write dict into file %s" % csv_file_path
             self.report = error_text
             self.report = error_text
-
-
