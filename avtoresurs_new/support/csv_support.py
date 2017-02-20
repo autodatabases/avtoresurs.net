@@ -17,7 +17,7 @@ class CsvWorker:
         return "%s" % self.report
 
     def get_rows_list_from_csv(self, csv_file_path, encoding, delimiter=';',
-                               skip_header=True, rows_limit=None):
+                               start_row=0, end_row=None):
         """
         Get list of rows from CSV
 
@@ -25,22 +25,19 @@ class CsvWorker:
         ----------
         :param csv_file_path: full path to source csv file
         :param encoding: csv file encoding
-        :param skip_header: True if we should skip first string in our csv
-        :param rows_limit: max limit of rows - should be positive integer
+        :param start_row: 0 is defaul value
+        :param end_row: max limit of rows - should be positive integer
         :param delimiter: columns delimiter
 
         """
         result = []
-        first_row = 0
         try:
             with open(csv_file_path, 'r', encoding=encoding) as source_csv:
                 data = source_csv.read().splitlines(True)
-            if not rows_limit:
-                rows_limit = len(data)
-            if skip_header:
-                first_row = 1
-            for idx, line in enumerate(data[first_row:rows_limit]):
-                row = line.split(';')
+            if not end_row:
+                end_row = len(data) - 1
+            for idx, line in enumerate(data[start_row:end_row]):
+                row = line.split(delimiter)
                 result.append(row)
 
             self.report = "File was read. There are %s row(s)" % len(result)
