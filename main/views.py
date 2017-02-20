@@ -87,13 +87,15 @@ class ProductLoader(TemplateView):
                     sku=row[0].lower().replace(" ", ""),
                     manufacturer=row[1].lower(),
                 )
-                created.title = row[2].lower()
-                created.cross_sku = row[3].lower()
-                created.quantity = row[4].lower()
-                created.active = True
-                created.retail_price = row[5].lower()
-                created.whosale_price = row[6].lower()
-                created.save()
+                product = created[0]
+                # print(product)
+                product.title = row[2].lower()
+                product.cross_sku = row[3].lower()
+                product.quantity = row[4].lower()
+                product.active = True
+                product.retail_price = row[5].lower()
+                product.whosale_price = row[6].lower()
+                product.save()
 
                 part = Part.objects.filter(sku__iexact=created.sku, supplier__title__iexact=created.manufacturer)
                 if not part:
