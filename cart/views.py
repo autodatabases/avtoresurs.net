@@ -6,12 +6,11 @@ from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import SingleObjectMixin, DetailView
 from shop.models.product import Product
-from .models import Cart, CartItem
+from .models import Cart, CartItem, UserCheckout, Order
 
 from django.contrib.auth.forms import AuthenticationForm
 # from orders.forms import GuestCheckoutForm
 from django.views.generic.edit import FormMixin
-from order.models import UserCheckout, Order
 
 
 class ItemCountView(View):
@@ -151,9 +150,11 @@ class CheckoutView(TemplateView):
         try:
             user_checkout, created = UserCheckout.objects.get_or_create(user=self.request.user)
             request.session['user_checkout_id'] = user_checkout.id
+            print(user_checkout)
+            print(created)
             # print(user_checkout)
             # return self.form_valid(form)
-            return HttpResponseRedirect('/news/')
+            return HttpResponseRedirect('/checkout/')
         except:
             return HttpResponse('not ok')
             # return self.form_invalid(form)

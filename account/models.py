@@ -8,8 +8,8 @@ class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     vip_code = models.CharField(max_length=50, blank=True, null=True)
     fullname = models.CharField(max_length=255, blank=True, null=True)
-    created = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
-    updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
+    created = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена', blank=True)
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена', blank=True)
 
     def __str__(self):
         return self.user.get_username()

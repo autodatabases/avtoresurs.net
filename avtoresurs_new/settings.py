@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'news',
     'shop',
     'cart',
-    'order',
+    # 'order',
     'bonus',
     # 'products',
     'tecdoc',

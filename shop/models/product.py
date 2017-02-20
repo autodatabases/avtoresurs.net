@@ -21,6 +21,11 @@ class ProductManager(models.Manager):
     def all(self, *args, **kwargs):
         return self.get_queryset().active()
 
+    def get_price(self):
+        if self.user.request.group == 'розница':
+            return self.get_retail_price()
+        return self.get_whosale_price()
+
 
 class Product(models.Model):
     """ реализует класс Товар """
@@ -37,7 +42,14 @@ class Product(models.Model):
     objects = ProductManager()
 
     def get_price(self):
+        # print(self.request.user)
         return self.retail_price
+
+    def get_retail_price(self):
+        return self.retail_price
+
+    def get_whosale_price(self):
+        return self.whosale_price
 
     def get_quantity(self):
         return self.quantity
