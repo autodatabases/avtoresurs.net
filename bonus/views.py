@@ -6,7 +6,7 @@ from django.shortcuts import render, render_to_response
 # todo move it to better app; and do not forget to move also template
 from django.views.generic import ListView
 
-from account.models import Prize
+from bonus.models import Prize
 
 
 class BonusPageView(ListView):
