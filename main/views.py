@@ -107,6 +107,7 @@ class ProductLoader(TemplateView):
             except:
                 pass
 
+        report.append("File load succesfully")
         if report:
             error_file_path = 'error.log'
             report_log = ''
