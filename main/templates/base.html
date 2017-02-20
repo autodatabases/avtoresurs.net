@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="main/static/main/css/styles.less"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
     <title>
@@ -12,7 +11,8 @@
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{% static 'main/css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link rel="stylesheet/less" type="text/css" href="{% static 'main/css/styles.less' %}"/>
+    <link rel="stylesheet/less" type="text/css" href="{% static 'main/less/styles.less' %}"/>
+    <link rel="stylesheet/less" type="text/css" href="{% static 'bonus/less/bonus.less' %}"/>
     <script src="{% static 'main/js/less.min.js' %}" type="text/javascript"></script>
     {#    <link href="{% static 'main/js/less.min.js' %}" type="text/css" rel="stylesheet" media="screen,projection"/>#}
     {#    <link href="{% static 'main/css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>#}
@@ -110,7 +110,7 @@
                     <ul class="right hide-on-med-and-down no-float avtoresurs-menu">
                         <li><a href="{% url 'news:news_page' %}">Новости</a></li>
                         <li><a href="/shop">Интернет магазин</a></li>
-                        <li><a href="#">Бонусная акция</a></li>
+                        <li><a href="/bonus/">Бонусная акция</a></li>
                         <!-- Dropdown Trigger -->
                         <li><a class="dropdown-button" href="#!" data-activates="dropdown_nav">О компании<i
                                 class="material-icons right">arrow_drop_down</i></a>

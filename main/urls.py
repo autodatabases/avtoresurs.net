@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^c4c41ec4a9e4.html$', YandexDnsView.as_view(), name='yandex_dns_view'),
     # url(r'^load/$', ProductLoader.as_view(), name='loader'),
     url(r'^accounts/reactivate/$', resend_activation_email, name='account_reactivate'),
+    url(r'^bonus/', include('bonus.urls', namespace="bonus")),
 ]

@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     'main',
     # 'material',
     # 'material.admin',
+    'registration',
+    'grappelli',
+    'filebrowser',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +49,7 @@ INSTALLED_APPS = [
     'shop',
     'cart',
     'order',
+    'bonus',
     # 'products',
     'tecdoc',
 ]
@@ -77,6 +81,10 @@ TEMPLATES = [
         },
     },
 ]
+
+settings_dir = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
+UNIT_TEST_FOLDER = os.path.join(PROJECT_ROOT, 'unit_tests/')
 
 WSGI_APPLICATION = 'avtoresurs_new.wsgi.application'
 
@@ -127,7 +135,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+<<<<<<< HEAD
 LOGGING_CONFIG = None
+=======
+>>>>>>> e52f779225d2c433b1c57baa7434f31464cabaa8
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'main', 'static'),
 # )
@@ -145,10 +156,11 @@ LOGGING_CONFIG = None
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
-# EMAIL_USE_TLS = True
+EMAIL_USE_TLS = True
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'no-reply@avtoresurs.net'
 EMAIL_HOST_PASSWORD = 'Iddqd31337'
 DEFAULT_FROM_EMAIL = 'no-reply@avtoresurs.net'
+
