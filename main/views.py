@@ -97,7 +97,7 @@ class ProductLoader(TemplateView):
                 product.whosale_price = row[6].lower()
                 product.save()
 
-                part = Part.objects.filter(sku__iexact=created.sku, supplier__title__iexact=created.manufacturer)
+                part = Part.objects.filter(sku__iexact=product.sku, supplier__title__iexact=product.manufacturer)
                 if not part:
                     error_string = "product - %s %s %s %s %s - not in TECDOC DB" % (
                         idx,
