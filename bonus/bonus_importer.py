@@ -3,12 +3,16 @@
 import django
 from django.core.mail import EmailMessage
 from django.utils import timezone
-from avtoresurs_new.settings import DEFAULT_FROM_EMAIL, PROTOCOL_REPORTS_EMAIL
-from avtoresurs_new.support.csv_support import CsvWorker
-from avtoresurs_new.support.error_support import print_error
+from mr_csv_worker.error_tracer import print_error
+from mr_csv_worker.worker import CsvWorker
+from avtoresurs_new.settings import DEFAULT_FROM_EMAIL
+
 import os
 os.environ["DJANGO_SETTINGS_MODULE"] = "avtoresurs_new.settings"
 django.setup()
+
+
+PROTOCOL_REPORTS_EMAIL = 'shaman@born2fish.ru'
 
 csv_worker = CsvWorker()
 

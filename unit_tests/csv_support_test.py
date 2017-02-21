@@ -13,7 +13,7 @@ class CsvWorkerTest(unittest.TestCase):
 
     def test_get_rows_list_from_csv(self):
         rows = self.worker.get_rows_list_from_csv(csv_file_path=self.test_file_4_read, encoding='cp1251',
-                                                  start_row=1, end_row=1)
+                                                  start_row=1, end_row=2)
         self.assertIsNotNone(rows)
         self.assertEqual(len(rows), 1)
 
