@@ -20,8 +20,10 @@ from django.views.generic import RedirectView
 from registration.backends.hmac.views import RegistrationView
 from filebrowser.sites import site
 from avtoresurs_new import settings
-from cart.views import CartView, ItemCountView, CheckoutView
+
 from main.forms import RegistrationFormTOSAndEmail
+from shop.views.cart import CartView, ItemCountView
+from shop.views.checkout import CheckoutView
 
 urlpatterns = [
                   url(r'^admin/filebrowser/', include(site.urls)),

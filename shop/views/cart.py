@@ -5,8 +5,10 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import SingleObjectMixin, DetailView
+
+from shop.models.cart import Cart, CartItem
 from shop.models.product import Product
-from .models import Cart, CartItem, UserCheckout, Order
+
 
 from django.contrib.auth.forms import AuthenticationForm
 # from orders.forms import GuestCheckoutForm
@@ -33,7 +35,7 @@ class ItemCountView(View):
 class CartView(SingleObjectMixin, View):
     """ вьюха для корзины с json """
     model = Cart
-    template_name = 'cart/view.html'
+    template_name = "shop/cart_view.html"
 
     def get_object(self, *args, **kwargs):
         self.request.session.set_expiry(259200)
@@ -111,74 +113,3 @@ class CartView(SingleObjectMixin, View):
         return render(request, template, context)
 
 
-class CheckoutView(TemplateView):
-    model = Cart
-    template_name = "cart/checkout_view.html"
-
-    # form_class = CheckoutForm
-
-    def get_object(self, *args, **kwargs):
-        cart_id = self.request.session.get("cart_id")
-        # print(cart_id)
-        if not cart_id:
-            return redirect("cart")
-        cart = Cart.objects.get(id=cart_id)
-        # print(cart.subtotal)
-        return cart
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(CheckoutView, self).get_context_data(**kwargs)
-
-        # context["form"] = self.get_form()
-        # user_check_id = request.session.get("user_checkout_id")
-        # context['']
-        user_checkout = None
-        if self.request.user.is_authenticated():
-            user_checkout, created = UserCheckout.objects.get_or_create(user=self.request.user)
-            user_checkout.user = self.request.user
-            user_checkout.save()
-            self.request.session['user_checkout_id'] = user_checkout.id
-            context["cart"] = self.get_object()
-        return context
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        # print(self.object)
-        # form = self.get_form()
-        # if form.is_valid():
-        # email = form.cleaned_data.get('email')
-        try:
-            user_checkout, created = UserCheckout.objects.get_or_create(user=self.request.user)
-            request.session['user_checkout_id'] = user_checkout.id
-            print(user_checkout)
-            print(created)
-            # print(user_checkout)
-            # return self.form_valid(form)
-            return HttpResponseRedirect('/checkout/')
-        except:
-            return HttpResponse('not ok')
-            # return self.form_invalid(form)
-
-
-    def get_success_url(self):
-        return reverse("checkout")
-
-    def get(self, request, *args, **kwargs):
-        get_data = super(CheckoutView, self).get(request, *args, **kwargs)
-        cart = self.get_object()
-        user_checkout_id = request.session.get("user_checkout_id")
-        if user_checkout_id:
-            user_checkout = UserCheckout.objects.get(id=user_checkout_id)
-            # billing_address_id = ?
-            # shipping_address_id = ?
-            try:
-                new_order_id = request.session["order_id"]
-                new_order = Order.objects.get(id=new_order_id)
-            except:
-                new_order = Order()
-                request.session['order_id'] = new_order.id
-            new_order.cart = cart
-            new_order.user = user_checkout
-            # new_order.save()
-
-        return get_data

@@ -26,7 +26,7 @@
     <div class="main-content">
         {% if object.cartitem_set.count < 1 %}
 
-            {% include "cart/empty_cart.html" %}
+            {% include "shop/empty_cart.html" %}
 
         {% else %}
 
@@ -188,7 +188,7 @@
 
                     if (data.total_items == 0) {
                         $("#cart_content").fadeOut();
-                        var template = "{% include 'cart/empty_cart.html' %}";
+                        var template = "{% include 'shop/empty_cart.html' %}";
                         $(".main-content").html(template);
                     }
                     updateCartItemCount();

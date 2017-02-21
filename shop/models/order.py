@@ -1,11 +1,10 @@
-from django.db import models
-from django.conf import settings
-from cart.models import Cart
-from django.db.models.signals import pre_save
 from decimal import Decimal
+from django.conf import settings
+from django.db import models
+from django.db.models.signals import pre_save
 
+from shop.models.cart import Cart
 
-# Create your models here.
 
 class UserCheckout(models.Model):
     # email = models.EmailField(unique=True)
@@ -33,11 +32,3 @@ def order_pre_save(sender, instance, *args, **kwargs):
 
 
 pre_save.connect(order_pre_save, sender=Order)
-# class Order(models.Model):
-#     #cart
-#     #user checkout --> required
-#     #shipping address
-#     #billing address
-#     #shipping total
-#     #order total
-#     #order_id --> custom id
