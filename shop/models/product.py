@@ -46,6 +46,15 @@ class Product(models.Model):
     # slug
     objects = ProductManager()
 
+    def update(self, quantity, prices):
+        self.quantity = quantity
+        self.retail_price = prices[0]
+        self.price_1 = prices[1]
+        self.price_2 = prices[2]
+        self.price_3 = prices[3]
+        # self.price_4 = prices[4]
+        self.save()
+
     def get_price(self):
         # print(self.request.user)
         return self.retail_price
@@ -60,7 +69,7 @@ class Product(models.Model):
         return self.quantity
 
     def __str__(self):
-        return "%s %s" % (self.manufacturer, self.sku)
+        return "%s %s" % (self.brand, self.sku)
 
     def get_absolute_url(self):
         return reverse("shop:product_detail", kwargs={'pk': self.id})

@@ -87,21 +87,11 @@ class ProductLoader(TemplateView):
                 brand = row[1]
                 sku = clean_number(row[0])
                 quantity = row[2]
-                retail_price = row[3]
-                price_1 = row[4]
-                price_2 = row[5]
-                price_3 = row[6]
-                price_4 = row[7]
-
-                created = Product.objects.get_or_create(sku=sku, brand=brand)
-                product = created[0]
-                product.quantity = quantity
-                product.retail_price = retail_price
-                product.price_1 = price_1
-                product.price_2 = price_2
-                product.price_3 = price_3
-                product.price_4 = price_4
-                product.save()
+                prices = [row[3], row[4], row[5], row[6], ]
+                # print('%s %s' % (quantity, prices))
+                product, created = Product.objects.get_or_create(sku=sku, brand=brand)
+                print('%s %s' % (product, created))
+                product.update(quantity, prices)
 
                 part_analog = PartAnalog.objects.filter(search_number=sku, brand__title=brand)
 
