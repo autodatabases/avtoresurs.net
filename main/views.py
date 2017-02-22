@@ -100,6 +100,7 @@ class ProductLoader(TemplateView):
                 product.price_2 = price_2
                 product.price_3 = price_3
                 product.price_4 = price_4
+                product.save()
 
                 part_analog = PartAnalog.objects.filter(search_number=sku, brand__title=brand)
 
