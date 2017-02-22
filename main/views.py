@@ -21,7 +21,7 @@ from shop.models.product import Product
 
 # Create your views here.
 # from tecdoc.models import Part
-from tecdoc.models import Part, clean_number, PartAnalog
+from tecdoc.models import Part, PartAnalog
 
 
 class MainPageView(TemplateView):
@@ -82,24 +82,24 @@ class ProductLoader(TemplateView):
         for idx, line in enumerate(data[1:]):
             row = line.split(';')
             created = ''
-            part_analog = None
+            part = None
             try:
                 brand = row[1]
-                sku = clean_number(row[0])
+                sku = row[0]
                 quantity = row[2]
                 prices = [row[3], row[4], row[5], row[6], ]
                 product, created = Product.objects.get_or_create(sku=sku, brand=brand)
                 product.update(quantity, prices)
-
-                part_analog = PartAnalog.objects.filter(search_number=sku, brand__title=brand)
-                if not part_analog:
+                print(brand)
+                part = Part.objects.filter(sku=sku, supplier__title=brand)
+                if not part:
                     report.append('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
-
+                    # print('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
                     # print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
             except:
                 pass
 
-        error_file_path = os.path.join('error_', date, '.log')
+        error_file_path = 'error.log'
         with open(error_file_path, 'w+') as error_file:
             for item in report:
                 error_file.write('\r\n%s' % item)

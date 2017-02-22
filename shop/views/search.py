@@ -13,6 +13,8 @@ class SearchView(TemplateView):
         q = self.request.GET['q']
         context['q'] = q
 
+        print(clean_number(q))
+
         part_analogs = PartAnalog.objects.filter(search_number=clean_number(q))
         parts = set()
         sku = []
@@ -20,6 +22,7 @@ class SearchView(TemplateView):
             parts.add(pa.part)
             sku.append(pa.part.sku)
         products = Product.objects.filter(sku__in=sku)
+        print(parts)
 
         for part in parts:
             brand_name_small = part.supplier.title.lower()
