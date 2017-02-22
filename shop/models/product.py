@@ -29,14 +29,17 @@ class ProductManager(models.Manager):
 
 class Product(models.Model):
     """ реализует класс Товар """
-    manufacturer = models.CharField(max_length=255, blank=True, null=True)
-    title = models.CharField(max_length=255)
+    brand = models.CharField(max_length=255, blank=True, null=True)
+    # title = models.CharField(max_length=255)
     sku = models.CharField(max_length=255)
-    cross_sku = models.CharField(max_length=255)
+    # cross_sku = models.CharField(max_length=255)
     quantity = models.IntegerField(blank=True, null=True)
     active = models.BooleanField(default=True)
     retail_price = models.DecimalField(decimal_places=2, max_digits=20, default=False)
-    whosale_price = models.DecimalField(decimal_places=2, max_digits=20, default=False)
+    price_1 = models.DecimalField(decimal_places=2, max_digits=20, default=False)
+    price_2 = models.DecimalField(decimal_places=2, max_digits=20, default=False)
+    price_3 = models.DecimalField(decimal_places=2, max_digits=20, default=False)
+    price_4 = models.DecimalField(decimal_places=2, max_digits=20, default=False)
 
     # slug
     objects = ProductManager()

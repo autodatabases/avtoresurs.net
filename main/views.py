@@ -69,11 +69,7 @@ class ProductLoader(TemplateView):
     template_name = 'load.html'
 
     def get(self, request):
-        get_data = super(ProductLoader, self).get(request)
-        get_data = 1
         path = 'NewsAuto.csv'
-        pass_first_line = True
-
         report = []
 
         with open(path, 'r', encoding='cp1251') as f:
@@ -83,43 +79,55 @@ class ProductLoader(TemplateView):
             row = line.split(';')
             created = ''
             try:
-                created = Product.objects.get_or_create(
-                    sku=row[0].lower().replace(" ", ""),
-                    manufacturer=row[1].lower(),
-                )
-                product = created[0]
-                # print(product)
-                product.title = row[2].lower()
-                product.cross_sku = row[3].lower()
-                product.quantity = row[4].lower()
-                product.active = True
-                product.retail_price = row[5].lower()
-                product.whosale_price = row[6].lower()
-                product.save()
-
-                part = Part.objects.filter(sku__iexact=product.sku, supplier__title__iexact=product.manufacturer)
-                if not part:
-                    error_string = "product - %s %s %s %s %s - not in TECDOC DB" % (
-                        idx,
-                        created.sku,
-                        created.manufacturer,
-                        created.title,
-                        created.cross_sku
-                    )
-                    report.append(error_string)
+                brand = row[1]
+                sku = row[0].replace(' ', '')
+                quantity = row[2]
+                retail_price = row[3]
+                price_1 = row[4]
+                price_2 = row[5]
+                price_3 = row[6]
+                price_4 = row[7]
+                print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
             except:
                 pass
-
-        report.append("File load succesfully")
-        if report:
-            error_file_path = 'error.log'
-            report_log = ''
-            for error_line in report:
-                error_line += '\n'
-                report_log += error_line
-            with open(error_file_path, 'w+') as error_file:
-                # print(report)
-                error_file.write(report_log)
+        #     try:
+        #         created = Product.objects.get_or_create(
+        #             sku=row[0].lower().replace(" ", ""),
+        #             manufacturer=row[1].lower(),
+        #         )
+        #         product = created[0]
+        #         # print(product)
+        #         product.title = row[2].lower()
+        #         product.cross_sku = row[3].lower()
+        #         product.quantity = row[4].lower()
+        #         product.active = True
+        #         product.retail_price = row[5].lower()
+        #         product.whosale_price = row[6].lower()
+        #         product.save()
+        #
+        #         part = Part.objects.filter(sku__iexact=product.sku, supplier__title__iexact=product.manufacturer)
+        #         if not part:
+        #             error_string = "product - %s %s %s %s %s - not in TECDOC DB" % (
+        #                 idx,
+        #                 created.sku,
+        #                 created.manufacturer,
+        #                 created.title,
+        #                 created.cross_sku
+        #             )
+        #             report.append(error_string)
+        #     except:
+        #         pass
+        #
+        # report.append("File load succesfully")
+        # if report:
+        #     error_file_path = 'error.log'
+        #     report_log = ''
+        #     for error_line in report:
+        #         error_line += '\n'
+        #         report_log += error_line
+        #     with open(error_file_path, 'w+') as error_file:
+        #         # print(report)
+        #         error_file.write(report_log)
 
         return HttpResponse('OK')
 
