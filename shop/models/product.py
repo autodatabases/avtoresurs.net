@@ -40,6 +40,8 @@ class Product(models.Model):
     price_2 = models.DecimalField(decimal_places=2, max_digits=20, default=False)
     price_3 = models.DecimalField(decimal_places=2, max_digits=20, default=False)
     price_4 = models.DecimalField(decimal_places=2, max_digits=20, default=False)
+    added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
 
     # slug
     objects = ProductManager()

@@ -1,5 +1,8 @@
 import csv
 
+import datetime
+import os
+
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import signing
 from django.http import HttpResponse
@@ -18,7 +21,7 @@ from shop.models.product import Product
 
 # Create your views here.
 # from tecdoc.models import Part
-from tecdoc.models import Part
+from tecdoc.models import Part, clean_number, PartAnalog
 
 
 class MainPageView(TemplateView):
@@ -70,7 +73,8 @@ class ProductLoader(TemplateView):
 
     def get(self, request):
         path = 'NewsAuto.csv'
-        report = []
+        date = datetime.datetime.now()
+        report = ['Прококол загрузки файла с ценами от %s' % date]
 
         with open(path, 'r', encoding='cp1251') as f:
             data = f.read().splitlines(True)
@@ -78,18 +82,39 @@ class ProductLoader(TemplateView):
         for idx, line in enumerate(data[1:]):
             row = line.split(';')
             created = ''
+            part_analog = None
             try:
                 brand = row[1]
-                sku = row[0].replace(' ', '')
+                sku = clean_number(row[0])
                 quantity = row[2]
                 retail_price = row[3]
                 price_1 = row[4]
                 price_2 = row[5]
                 price_3 = row[6]
                 price_4 = row[7]
-                print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
+
+                created = Product.objects.get_or_create(sku=sku, brand=brand)
+                product = created[0]
+                product.quantity = quantity
+                product.price_1 = price_1
+                product.price_2 = price_2
+                product.price_3 = price_3
+                product.price_4 = price_4
+
+                part_analog = PartAnalog.objects.filter(search_number=sku, brand__title=brand)
+
+                if not part_analog:
+                    report.append('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
+
+                    # print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
             except:
                 pass
+
+        error_file_path = os.path.join('error_', date, '.log')
+        with open(error_file_path, 'w+') as error_file:
+            for item in report:
+                error_file.write('\r\n%s' % item)
+
         #     try:
         #         created = Product.objects.get_or_create(
         #             sku=row[0].lower().replace(" ", ""),
