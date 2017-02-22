@@ -80,10 +80,9 @@ class ProductLoader(TemplateView):
             data = f.read().splitlines(True)
 
         for idx, line in enumerate(data[1:]):
-            row = line.split(';')
-            created = ''
-            part = None
             try:
+                row = line.split(';')
+                part = None
                 brand = row[1]
                 sku = row[0]
                 quantity = row[2]

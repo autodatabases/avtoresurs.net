@@ -34,16 +34,14 @@
                 <div class="row">
                     <div class="col s12">
                         <p class="flow-text" style="margin-top: 0;">Производитель: <span
-                                class="blue-text"><strong>{{ product.manufacturer|upper }}</strong></span>
+                                class="blue-text"><strong>{{ product.brand|upper }}</strong></span>
                         </p>
                         <p class="flow-text">Название: <span
-                                class="blue-text"><strong>{{ product|upper }}</strong></span>
+                                class="blue-text"><strong>{{ product.title|upper }}</strong></span>
                         </p>
                         <p class="flow-text">Код детали: <span
                                 class="blue-text"><strong>{{ product.sku|upper }}</strong></span>
                         </p>
-                        <p class="flow-text">Кросс: <span
-                                class="blue-text"><strong>{{ product.cross_sku|upper }}</strong></span></p>
                         <p class="flow-text">Количество на складе: <span
                                 class="blue-text"><strong>{{ product.quantity }}</strong></span></p>
                         <p class="flow-text">Цена: <span
@@ -84,11 +82,10 @@
                 <div class="collection-item">
                     <div class="row">
                         <div class="col s1 tecdoc-header">№ п/п</div>
-                        <div class="col s1 tecdoc-header">Артикул ТекДок</div>
-                        <div class="col s1 tecdoc-header">Артикул</div>
+                        <div class="col s2 tecdoc-header">Артикул</div>
                         <div class="col s2 tecdoc-header">Производитель</div>
-                        <div class="col s5 tecdoc-header">Название</div>
-                        <div class="col s1 tecdoc-header">Количество</div>
+                        <div class="col s4 tecdoc-header">Название</div>
+                        <div class="col s2 tecdoc-header">Количество</div>
                         <div class="col s1 tecdoc-header">Цена</div>
                     </div>
                 </div>
@@ -101,11 +98,10 @@
 
                 <div class="row no-margin-bot">
                     <div class="col s1">{{ forloop.counter }}</div>
-                    <div class="col s1">{{ part_analog.sku }}</div>
-                    <div class="col s1">{{ part_analog.id }}</div>
+                    <div class="col s2">{{ part_analog.sku }}</div>
                     <div class="col s2">{{ part_analog.supplier }}</div>
-                    <div class="col s5">{{ part_analog }}</div>
-                    <div class="col s1">
+                    <div class="col s4">{{ part_analog.designation }}</div>
+                    <div class="col s2">
                         <strong>
                             {{ part_analog.quantity }}
                         </strong>
