@@ -88,13 +88,10 @@ class ProductLoader(TemplateView):
                 sku = clean_number(row[0])
                 quantity = row[2]
                 prices = [row[3], row[4], row[5], row[6], ]
-                # print('%s %s' % (quantity, prices))
                 product, created = Product.objects.get_or_create(sku=sku, brand=brand)
-                print('%s %s' % (product, created))
                 product.update(quantity, prices)
 
                 part_analog = PartAnalog.objects.filter(search_number=sku, brand__title=brand)
-
                 if not part_analog:
                     report.append('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
 
