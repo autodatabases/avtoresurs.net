@@ -93,10 +93,10 @@ def get_part_analogs(part_analog):
     parts_with_price = []
     parts_without_price = []
     for part in data:
-        brand_name_small = part.part_group.part.supplier.title.lower()
-        sku_small = part.part_group.part.sku.lower()
+        brand_name = part.part_group.part.supplier.title
+        sku = part.part_group.part.sku
         for product in products:
-            if sku_small == product.sku and brand_name_small == product.manufacturer:
+            if sku == product.sku and brand_name == product.brand:
                 # print(product)
                 part.part_group.part.price = product.get_price()
                 part.part_group.part.product_id = product.id
