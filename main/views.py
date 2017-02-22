@@ -96,6 +96,7 @@ class ProductLoader(TemplateView):
                 created = Product.objects.get_or_create(sku=sku, brand=brand)
                 product = created[0]
                 product.quantity = quantity
+                product.retail_price = retail_price
                 product.price_1 = price_1
                 product.price_2 = price_2
                 product.price_3 = price_3
