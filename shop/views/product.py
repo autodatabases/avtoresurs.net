@@ -12,7 +12,7 @@ class ProductDetailView(DetailView):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
 
         product = context['product']
-        part_analogs = PartAnalog.objects.filter(search_number=clean_number(product.sku))
+        part_analogs = PartAnalog.objects.filter(search_number__startswith=clean_number(product.sku))
         product.title = Part.objects.filter(sku=product.sku, supplier__title=product.brand)[0].designation
         parts = set()
         sku = []
