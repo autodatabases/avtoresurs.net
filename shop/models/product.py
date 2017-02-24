@@ -66,6 +66,9 @@ class Product(models.Model):
         return self.whosale_price
 
     def get_quantity(self):
+        if self.quantity == None:
+            self.quantity = 0
+            print(self.quantity)
         return self.quantity
 
     def __str__(self):
