@@ -15,7 +15,7 @@ class SearchView(TemplateView):
 
         # print(clean_number(q))
 
-        part_analogs = PartAnalog.objects.filter(search_number__startswith=clean_number(q))
+        part_analogs = PartAnalog.objects.filter(search_number=clean_number(q))
         parts = set()
         sku = []
         for pa in part_analogs:
