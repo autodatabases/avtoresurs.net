@@ -22,7 +22,9 @@ class CarTypeManager(TecdocLanguageDesManager):
                                 'drive_des__description',
                                 'body_des__description')
                 .prefetch_related('engines')
+                .order_by('power_kw_from')
                 )
+
 
 
 class CarType(models.Model):

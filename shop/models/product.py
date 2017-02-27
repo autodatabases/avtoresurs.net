@@ -16,7 +16,7 @@ class ProductManager(models.Manager):
     """ кастомный менеджер товаров"""
 
     def all(self, *args, **kwargs):
-        return self.get_queryset().active()
+        return self.get_queryset()
 
     def get_price(self):
         if self.user.request.group == 'розница':
@@ -48,11 +48,14 @@ class Product(models.Model):
 
     def update(self, quantity, prices):
         self.quantity = quantity
-        self.retail_price = prices[0]
-        self.price_1 = prices[1]
-        self.price_2 = prices[2]
-        self.price_3 = prices[3]
+        # self.retail_price = prices[0]
+        # self.price_1 = prices[1]
+        # self.price_2 = prices[2]
+        # self.price_3 = prices[3]
         # self.price_4 = prices[4]
+        pp = ProductPrice(product=self, retail_price=prices[0], price_1=prices[1], price_2=prices[2], price_3=prices[3])
+        pp.save()
+        print(pp)
         self.save()
 
     def get_price(self):
@@ -98,3 +101,13 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return self.product.title
+
+class ProductPrice(models.Model):
+    product = models.ForeignKey(Product)
+    retail_price = models.DecimalField(decimal_places=2, max_digits=20, default=False)
+    price_1 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
+    price_2 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
+    price_3 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
+    price_4 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
+    added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')

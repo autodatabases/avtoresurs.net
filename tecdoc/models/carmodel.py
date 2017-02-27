@@ -7,10 +7,12 @@ class CarModelManager(TecdocLanguageDesManager):
     use_for_related_fields = True
 
     def get_queryset(self, *args, **kwargs):
-        return super(CarModelManager, self). \
-            get_queryset(*args, **kwargs). \
-            select_related('manufacturer', 'designation__description'). \
-            distinct()
+        return (super(CarModelManager, self)
+                .get_queryset(*args, **kwargs)
+                .select_related('manufacturer', 'designation__description')
+                .order_by('designation__description__text')
+                .distinct()
+                )
 
 
 class CarModel(models.Model):
@@ -43,6 +45,6 @@ class CarModel(models.Model):
 
     class Meta:
         db_table = tdsettings.DB_PREFIX + 'models'
-        # ordering =
+        # ordering = [self]
         verbose_name = 'Модель автомобиля'
         verbose_name_plural = 'Модели автомобилей'

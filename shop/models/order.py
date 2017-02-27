@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 
 from shop.models.cart import Cart
+from shop.models.product import Product
 
 
 class UserCheckout(models.Model):
@@ -15,8 +16,9 @@ class UserCheckout(models.Model):
 
 
 class Order(models.Model):
-    cart = models.ForeignKey(Cart)
-    user = models.ForeignKey(UserCheckout)
+    # cart = models.ForeignKey(Cart)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    products = models.ManyToManyField(Product)
     shipping_total_price = models.DecimalField(decimal_places=2, max_digits=50, default=5.99)
     order_total = models.DecimalField(decimal_places=2, max_digits=50)
 
