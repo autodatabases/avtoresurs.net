@@ -24,9 +24,6 @@ class ProductManager(models.Manager):
         return self.get_whosale_price()
 
 
-
-
-
 class Product(models.Model):
     """ реализует класс Товар """
     brand = models.CharField(max_length=255, blank=True, null=True)
@@ -53,9 +50,9 @@ class Product(models.Model):
         # self.price_2 = prices[2]
         # self.price_3 = prices[3]
         # self.price_4 = prices[4]
-        pp = ProductPrice(product=self, retail_price=prices[0], price_1=prices[1], price_2=prices[2], price_3=prices[3])
-        pp.save()
-        print(pp)
+        ProductPrice(product=self, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
+                     price_3=prices[3]).save()
+        # print(pp)
         self.save()
 
     def get_price(self):
@@ -101,6 +98,7 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return self.product.title
+
 
 class ProductPrice(models.Model):
     product = models.ForeignKey(Product)
