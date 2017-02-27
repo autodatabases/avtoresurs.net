@@ -88,7 +88,7 @@ class ProductLoader(TemplateView):
                 quantity = row[2]
                 prices = [row[3], row[4], row[5], row[6], ]
                 clean_sku = clean_number(sku)
-                part_analog = PartAnalog.objects.filter(search_number=clean_sku, brand__title__iexact=brand)
+                part_analog = PartAnalog.objects.filter(search_number=clean_sku)
                 # get_tecdoc(clean_sku, brand)
                 product, created = Product.objects.get_or_create(sku=sku, brand=brand)
                 product.update(quantity, prices)
@@ -96,6 +96,8 @@ class ProductLoader(TemplateView):
                 # part = Part.objects.filter(sku=sku, supplier__title=brand)
                 if not part_analog:
                     report.append('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
+                    print('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
+
                     # print('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
                     # print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
             except:
