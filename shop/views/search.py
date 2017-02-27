@@ -28,7 +28,7 @@ class SearchView(TemplateView):
             brand_name = part.supplier.title
             sku = part.sku
             for product in products:
-                if part.sku == product.sku and brand_name == product.brand:
+                if clean_number(part.sku) == clean_number(product.sku) and brand_name == product.brand:
                     part.price = product.get_price()
                     part.product_id = product.id
                     part.quantity = product.get_quantity()

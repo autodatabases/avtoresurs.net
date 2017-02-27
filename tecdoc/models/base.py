@@ -96,7 +96,7 @@ def get_part_analogs(part_analog):
         brand_name = part.part_group.part.supplier.title
         sku = part.part_group.part.sku
         for product in products:
-            if sku == product.sku and brand_name == product.brand:
+            if clean_number(sku) == clean_number(product.sku) and brand_name == product.brand:
                 # print(product)
                 part.part_group.part.price = product.get_price()
                 part.part_group.part.product_id = product.id

@@ -21,7 +21,7 @@ from shop.models.product import Product
 
 # Create your views here.
 # from tecdoc.models import Part
-from tecdoc.models import Part, PartAnalog
+from tecdoc.models import Part, PartAnalog, clean_number
 
 
 class MainPageView(TemplateView):
@@ -82,17 +82,20 @@ class ProductLoader(TemplateView):
         for idx, line in enumerate(data[1:]):
             try:
                 row = line.split(';')
-                part = None
+                part_analog = None
                 brand = row[1]
                 sku = row[0]
                 quantity = row[2]
                 prices = [row[3], row[4], row[5], row[6], ]
+                clean_sku = clean_number(sku)
+                part_analog = PartAnalog.objects.filter(search_number=clean_sku, brand__title__iexact=brand)
+                # get_tecdoc(clean_sku, brand)
                 product, created = Product.objects.get_or_create(sku=sku, brand=brand)
                 product.update(quantity, prices)
-                print(brand)
-                part = Part.objects.filter(sku=sku, supplier__title=brand)
-                if not part:
-                    report.append('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
+                # print(brand)
+                # part = Part.objects.filter(sku=sku, supplier__title=brand)
+                if not part_analog:
+                    report.append('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
                     # print('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
                     # print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
             except:
@@ -103,7 +106,7 @@ class ProductLoader(TemplateView):
             for item in report:
                 error_file.write('\r\n%s' % item)
 
-        #     try:
+        # try:
         #         created = Product.objects.get_or_create(
         #             sku=row[0].lower().replace(" ", ""),
         #             manufacturer=row[1].lower(),

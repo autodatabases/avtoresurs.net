@@ -106,7 +106,7 @@ class PartAnalogManager(models.Manager):
         return super(PartAnalogManager, self).\
             get_queryset().\
             filter(part__designation__language=tdsettings.LANG_ID).\
-            select_related('part', 'part__designation__description')
+            select_related('part', 'part__designation__description', 'brand')
 
 
 class PartAnalog(models.Model):

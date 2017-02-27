@@ -15,9 +15,6 @@ class ProductQuerySet(models.query.QuerySet):
 class ProductManager(models.Manager):
     """ кастомный менеджер товаров"""
 
-    def get_queryset(self):
-        return ProductQuerySet(self.model, using=self._db)
-
     def all(self, *args, **kwargs):
         return self.get_queryset().active()
 
@@ -25,6 +22,9 @@ class ProductManager(models.Manager):
         if self.user.request.group == 'розница':
             return self.get_retail_price()
         return self.get_whosale_price()
+
+
+
 
 
 class Product(models.Model):

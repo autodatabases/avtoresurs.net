@@ -23,9 +23,9 @@ class ProductDetailView(DetailView):
 
         for part in parts:
             brand_name = part.supplier.title
-            sku_small = part.sku.lower()
+            # sku = part.sku
             for product in products:
-                if sku_small == product.sku and brand_name == product.brand:
+                if clean_number(part.sku) == clean_number(product.sku) and brand_name == product.brand:
                     part.price = product.get_price()
                     part.product_id = product.id
                     part.quantity = product.get_quantity()
