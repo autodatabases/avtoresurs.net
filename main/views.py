@@ -17,7 +17,7 @@ from main.forms import ResendActivationEmailForm
 from main.models import Slider
 from news.models import Post
 from registration.forms import User
-from shop.models.product import Product
+from shop.models.product import Product, ProductPrice
 
 # Create your views here.
 # from tecdoc.models import Part
@@ -91,7 +91,11 @@ class ProductLoader(TemplateView):
                 part_analog = PartAnalog.objects.filter(search_number=clean_sku)
                 # get_tecdoc(clean_sku, brand)
                 product, created = Product.objects.get_or_create(sku=sku, brand=brand)
-                product.update(quantity, prices)
+                product.quantity = quantity
+                product.save()
+                ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
+                             price_3=prices[3]).save()
+                # product.update(quantity, prices)
                 # print(brand)
                 # part = Part.objects.filter(sku=sku, supplier__title=brand)
                 if not part_analog:
