@@ -72,7 +72,7 @@ class ProductLoader(TemplateView):
     template_name = 'load.html'
 
     def get(self, request):
-        path = 'NewsAuto2.csv'
+        path = 'NewsAuto3.csv'
         date = datetime.datetime.now()
         report = ['Прококол загрузки файла с ценами от %s' % date]
 

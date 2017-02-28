@@ -54,10 +54,21 @@ class Product(models.Model):
         ProductPrice(product=self, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
                      price_3=prices[3]).save()
 
-
-    def get_price(self):
-        # print(self.request.user)
-        return self.retail_price
+    # def get_price(self, group):
+    #     # print(self.request.user)
+    #     print('%s %s ' % (type(group), group))
+    #     pp = ProductPrice.objects.filter(product=self).order_by('added').first()
+    #     if group == 1:
+    #         return pp.retail_price
+    #     elif group == 2:
+    #         return pp.price_1
+    #     elif group == 3:
+    #         return pp.price_2
+    #     elif group == 4:
+    #         return pp.price_3
+    #     elif group == 5:
+    #         return pp.price_4
+    #     return pp.retail_price
 
     def get_retail_price(self):
         return self.retail_price
@@ -83,6 +94,21 @@ class Product(models.Model):
 
     def remove_from_cart(self):
         return "%s?item=%s&delete=true" % (reverse("cart"), self.id)
+
+
+def get_price(product, group_id=1):
+    pp = ProductPrice.objects.filter(product=product).order_by('added').first()
+    if group_id == 1:
+        return pp.retail_price
+    elif group_id == 2:
+        return pp.price_1
+    elif group_id == 3:
+        return pp.price_2
+    elif group_id == 4:
+        return pp.price_3
+    elif group_id == 5:
+        return pp.price_4
+    return pp.retail_price
 
 
 def image_upload_to(instance, filename):

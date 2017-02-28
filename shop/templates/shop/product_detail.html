@@ -44,8 +44,11 @@
                         </p>
                         <p class="flow-text">Количество на складе: <span
                                 class="blue-text"><strong>{{ product.get_quantity }}</strong></span></p>
-                        <p class="flow-text">Цена: <span
-                                class="blue-text"><strong>{{ product.get_price }}</strong></span>
+                        <p class="flow-text">Ваша цена: <span
+                                class="blue-text"><strong>{{ product.price }}</strong></span>
+                        </p>
+                        <p class="flow-text">Стандартная цена: <span
+                                class="blue-text"><strong>{{ product.default_price }}</strong></span>
                         </p>
                     </div>
                 </div>
