@@ -11,7 +11,10 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         product = context['product']
-        group_id = self.request.user.groups.all()[0].id
+        try:
+            group_id = self.request.user.groups.all()[0].id
+        except Exception:
+            group_id = None
         product.price = get_price(product, group_id)
         product.default_price = get_price(product)
         part_analogs = PartAnalog.objects.filter(search_number=clean_number(product.sku))

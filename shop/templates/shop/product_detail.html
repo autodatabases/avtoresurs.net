@@ -39,16 +39,19 @@
                         <p class="flow-text">Название: <span
                                 class="blue-text"><strong>{{ product.title|upper }}</strong></span>
                         </p>
+                        <p class="flow-text">Артикул: <span
+                                class="blue-text"><strong>{{ product.id|upper }}</strong></span>
+                        </p>
                         <p class="flow-text">Код детали: <span
                                 class="blue-text"><strong>{{ product.sku|upper }}</strong></span>
                         </p>
                         <p class="flow-text">Количество на складе: <span
                                 class="blue-text"><strong>{{ product.get_quantity }}</strong></span></p>
-                        <p class="flow-text">Ваша цена: <span
-                                class="blue-text"><strong>{{ product.price }}</strong></span>
+                        <p class="flow-text green-text"><strong>Ваша цена: <span
+                                class="blue-text">{{ product.price }}</strong></span>
                         </p>
-                        <p class="flow-text">Стандартная цена: <span
-                                class="blue-text"><strong>{{ product.default_price }}</strong></span>
+                        <p class="flow-text red-text">Стандартная цена: <span
+                                class="blue-text">{{ product.default_price }}</span>
                         </p>
                     </div>
                 </div>

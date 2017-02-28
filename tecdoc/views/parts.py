@@ -33,7 +33,12 @@ class PartTypeGroupSupplierList(ListView):
     def get_context_data(self, **kwargs):
         context = super(PartTypeGroupSupplierList, self).get_context_data(**kwargs)
 
-        context['part_analogs'] = get_part_analogs(context['parttypegroupsupplier_list'])
+        try:
+            group_id = self.request.user.groups.all()[0].id
+        except Exception:
+            group_id = None
+
+        context['part_analogs'] = get_part_analogs(context['parttypegroupsupplier_list'], group_id)
 
         type_id = self.kwargs['type_id']
         car_type = CarType.objects.get(id=type_id)

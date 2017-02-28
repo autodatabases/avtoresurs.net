@@ -1,7 +1,7 @@
 import re
 from django.db import models
 
-from shop.models.product import Product
+from shop.models.product import Product, get_price
 from tecdoc.apps import TecdocConfig as tdsettings
 
 
@@ -81,7 +81,7 @@ class Designation(models.Model):
         db_table = tdsettings.DB_PREFIX + 'designations'
 
 
-def get_part_analogs(part_analog):
+def get_part_analogs(part_analog, group_id):
     data = part_analog
     sku = []
     brand = []
@@ -98,7 +98,8 @@ def get_part_analogs(part_analog):
         for product in products:
             if clean_number(sku) == clean_number(product.sku) and brand_name == product.brand:
                 # print(product)
-                part.part_group.part.price = product.get_price()
+                print(group_id)
+                part.part_group.part.price = get_price(product, group_id)
                 part.part_group.part.product_id = product.id
                 part.part_group.part.quantity = product.get_quantity()
         if not hasattr(part.part_group.part, 'price'):
