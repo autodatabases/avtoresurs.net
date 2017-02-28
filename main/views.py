@@ -86,7 +86,7 @@ class ProductLoader(TemplateView):
                 brand = row[1]
                 sku = row[0]
                 quantity = row[2]
-                prices = [row[3], row[4], row[5], row[6], ]
+                prices = [row[3], row[4], row[5], row[6], row[7]]
                 clean_sku = clean_number(sku)
                 part_analog = PartAnalog.objects.filter(search_number=clean_sku)
                 # get_tecdoc(clean_sku, brand)
@@ -94,7 +94,7 @@ class ProductLoader(TemplateView):
                 product.quantity = quantity
                 product.save()
                 ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
-                             price_3=prices[3]).save()
+                             price_3=prices[3], price_4=prices[4]).save()
                 # product.update(quantity, prices)
                 # print(brand)
                 # part = Part.objects.filter(sku=sku, supplier__title=brand)
