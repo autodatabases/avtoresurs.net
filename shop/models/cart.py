@@ -62,3 +62,7 @@ class Cart(models.Model):
             subtotal += item.line_item_total
         self.subtotal = subtotal
         self.save()
+
+    class Meta:
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'

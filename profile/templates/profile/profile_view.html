@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col s12 nav-breadcrumb white">
             <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'account:account_main' %}" class="breadcrumb">Личный кабинет</a>
+            <a href="{% url 'profile:profile_main' %}" class="breadcrumb">Личный кабинет</a>
         </div>
     </div>
 {% endblock %}
@@ -25,8 +25,8 @@
             <div class="card dark-blue no-box-shadow">
                 <div class="card-content white-text">
                     <span class="card-title">Здравствуйте, {{ request.user }}!</span>
-                    <p>Полное имя: {{ account.fullname }}</p>
-                    <p>Всего баллов: <strong>{{ account.points }}</strong></p>
+                    <p>Полное имя: {{ profile.fullname }}</p>
+                    <p>Всего баллов: <strong>{{ profile.points }}</strong></p>
                     <p>Дата последнего визита: <strong>{{ request.user.last_login|date:"d.m.Y H:i" }}</strong></p>
                 </div>
                 <div class="card-action">
@@ -39,8 +39,8 @@
             <div class="card white no-box-shadow">
                 <div class="card-content black-text">
                     <span class="card-title">Информация о заказах</span>
-                    <p>Полное имя: {{ account.fullname }}</p>
-                    <p>Всего баллов: <strong>{{ account.points }}</strong></p>
+                    <p>Полное имя: {{ profile.fullname }}</p>
+                    <p>Всего баллов: <strong>{{ profile.points }}</strong></p>
                     <p>Дата последнего входа: {{ request.user.last_login }}</p>
                 </div>
                 <div class="card-action">

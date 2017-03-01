@@ -7,7 +7,7 @@ import sys, os, django
 os.environ["DJANGO_SETTINGS_MODULE"] = "avtoresurs_new.settings"
 django.setup()
 
-from account.models import Account
+from profile.models import Account
 
 HOST = '195.190.127.74'
 USER = 'Oleg'

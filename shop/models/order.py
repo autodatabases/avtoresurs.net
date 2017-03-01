@@ -25,6 +25,11 @@ class Order(models.Model):
     def __str__(self):
         return str(self.cart.id)
 
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+
 
 def order_pre_save(sender, instance, *args, **kwargs):
     shipping_total_price = instance.shipping_total_price

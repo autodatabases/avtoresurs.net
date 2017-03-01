@@ -16,8 +16,8 @@ from django.conf import settings
 # Create your views here.
 from django.views.generic.edit import FormMixin
 
-from account.forms import UploadFileForm
-from account.models import Account, Point
+from profile.forms import UploadFileForm
+from profile.models import Profile, Point
 from avtoresurs_new.settings import BASE_DIR
 
 import urllib.parse
@@ -25,13 +25,13 @@ import urllib.parse
 from service.parser.klients import parse_klients
 
 
-class AccountView(TemplateView):
-    template_name = 'account/account_view.html'
+class ProfileView(TemplateView):
+    template_name = 'profile/profile_view.html'
 
     def get_context_data(self, **kwargs):
-        context = super(AccountView, self).get_context_data()
-        account = Account.objects.all().filter(user=self.request.user).first()
-        context['account'] = account
+        context = super(ProfileView, self).get_context_data()
+        profile = Profile.objects.all().filter(user=self.request.user).first()
+        context['profile'] = profile
         return context
 
 
@@ -42,26 +42,27 @@ def user_import(row):
     vip_code = row[2]
     points = row[6]
 
-    user = User(username=username)
-    user.set_password(password)
-    user.save()
+    user, created = User.objects.get_or_create(username=username)
+    if created:
+        user.set_password(password)
+        user.save()
 
-    account = Account(user=user, fullname=fullname, vip_code=vip_code)
-    account.save()
+    profile = Profile(user=user, fullname=fullname, vip_code=vip_code)
+    profile.save()
 
-    point = Point(account=account, point=points)
+    point = Point(profile=profile, point=points)
     point.save()
     print("Пользователь %s %s добавлен" % (username, password))
 
 
-class AccountImport(TemplateView):
-    template_name = 'account/account_view.html'
+class ProfileImport(TemplateView):
+    template_name = 'profile/profile_view.html'
 
     def get_context_data(self, **kwargs):
-        context = super(AccountImport, self).get_context_data()
+        context = super(ProfileImport, self).get_context_data()
         host = '85.25.45.121'
-        login = ''
-        password = ''
+        login = 'root'
+        password = '11235813zZ!'
         database = 'main'
 
         con = MySQLdb.connect(host=host, user=login, passwd=password, db=database, charset='utf8')
@@ -78,13 +79,13 @@ class AccountImport(TemplateView):
 
 
 class PointLoader(TemplateView):
-    template_name = 'account/point_file_upload.html'
+    template_name = 'profile/point_file_upload.html'
 
     def post(self, request):
         try:
             file = self.request.FILES['file']
         except KeyError as ke:
-            return HttpResponseRedirect('/account/point_load/')
+            return HttpResponseRedirect('/profile/point_load/')
 
         date = datetime.datetime.now()
         filename = os.path.join('csv', 'klients', date.strftime('%Y'), date.strftime('%m'),

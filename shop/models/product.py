@@ -45,30 +45,9 @@ class Product(models.Model):
 
     def update(self, quantity, prices):
         self.quantity = quantity
-        # self.retail_price = prices[0]
-        # self.price_1 = prices[1]
-        # self.price_2 = prices[2]
-        # self.price_3 = prices[3]
-        # self.price_4 = prices[4]
         self.save()
         ProductPrice(product=self, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
                      price_3=prices[3]).save()
-
-    # def get_price(self, group):
-    #     # print(self.request.user)
-    #     print('%s %s ' % (type(group), group))
-    #     pp = ProductPrice.objects.filter(product=self).order_by('added').first()
-    #     if group == 1:
-    #         return pp.retail_price
-    #     elif group == 2:
-    #         return pp.price_1
-    #     elif group == 3:
-    #         return pp.price_2
-    #     elif group == 4:
-    #         return pp.price_3
-    #     elif group == 5:
-    #         return pp.price_4
-    #     return pp.retail_price
 
     def get_retail_price(self):
         return self.retail_price
@@ -95,19 +74,15 @@ class Product(models.Model):
     def remove_from_cart(self):
         return "%s?item=%s&delete=true" % (reverse("cart"), self.id)
 
+    class Meta:
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
 
-def get_price(product, group_id=1):
+
+
+def get_price(product, discount=None):
     pp = ProductPrice.objects.filter(product=product).order_by('added').first()
-    if group_id == 1:
-        return pp.retail_price
-    elif group_id == 2:
-        return pp.price_1
-    elif group_id == 3:
-        return pp.price_2
-    elif group_id == 4:
-        return pp.price_3
-    elif group_id == 5:
-        return pp.price_4
+
     return pp.retail_price
 
 
