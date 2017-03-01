@@ -82,8 +82,12 @@ class Product(models.Model):
 
 def get_price(product, discount=None):
     pp = ProductPrice.objects.filter(product=product).order_by('added').first()
+    if not discount:
+        return pp.retail_price
+    price = pp.retail_price - round((pp.retail_price * discount / 100), 2)
+    print(price)
+    return price
 
-    return pp.retail_price
 
 
 def image_upload_to(instance, filename):

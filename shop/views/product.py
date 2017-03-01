@@ -13,7 +13,7 @@ class ProductDetailView(DetailView):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         product = context['product']
         try:
-            discount = Profile.objects.get(user=self.request.user).discount
+            discount = Profile.objects.get(user=self.request.user).discount.discount
         except Exception:
             discount = None
         print(discount)
