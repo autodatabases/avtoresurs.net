@@ -12,12 +12,7 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         product = context['product']
-        try:
-            discount = Profile.objects.get(user=self.request.user).discount.discount
-        except Exception:
-            discount = None
-        print(discount)
-        product.price = get_price(product, discount)
+        product.price = get_price(product=product, user=self.request.user)
         product.default_price = get_price(product)
         part_analogs = PartAnalog.objects.filter(search_number=clean_number(product.sku))
         product.title = Part.objects.filter(sku=product.sku, supplier__title=product.brand)[0].designation
@@ -33,7 +28,7 @@ class ProductDetailView(DetailView):
             # sku = part.sku
             for prod in products:
                 if clean_number(part.sku) == clean_number(prod.sku) and brand_name == prod.brand:
-                    part.price = get_price(prod, discount)
+                    part.price = get_price(product=prod, user=self.request.user)
                     part.product_id = prod.id
                     part.quantity = prod.get_quantity()
             if not hasattr(part, 'price'):

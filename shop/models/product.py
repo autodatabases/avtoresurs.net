@@ -1,8 +1,12 @@
+from enum import Enum
+
 from django.db import models
 
 # Create your models here.
 from django.core.urlresolvers import reverse
 from django.utils.text import slugify
+
+from profile.models import Profile
 
 
 class ProductQuerySet(models.query.QuerySet):
@@ -79,14 +83,48 @@ class Product(models.Model):
         verbose_name_plural = 'Продукты'
 
 
+class PriceGroup(Enum):
+    RETAIL = 1
+    OPT1 = 2
+    OPT2 = 3
+    OPT3 = 4
+    OPT4 = 5
 
-def get_price(product, discount=None):
-    pp = ProductPrice.objects.filter(product=product).order_by('added').first()
-    if not discount:
+
+def get_price(product, user=None):
+    pp = ProductPrice.objects.filter(product=product).first()
+
+    if not user:
         return pp.retail_price
-    price = pp.retail_price - round((pp.retail_price * discount / 100), 2)
-    print(price)
-    return price
+
+    try:
+        discount = Profile.objects.get(user=user).discount.discount
+        price = pp.retail_price - round((pp.retail_price * discount / 100), 2)
+        # print(price)
+        return price
+    except Exception:
+        pass
+
+    try:
+        group = user.groups.all()[0]
+        group = group.pk
+        print(PriceGroup.OPT3.value)
+        if group == PriceGroup.RETAIL.value:
+            return pp.retail_price
+        elif group == PriceGroup.OPT1.value:
+            return pp.price_1
+        elif group == PriceGroup.OPT2.value:
+            return pp.price_2
+        elif group == PriceGroup.OPT3.value:
+            return pp.price_3
+        elif group == PriceGroup.OPT4.value:
+            return pp.price_4
+    except Exception:
+        pass
+
+    return pp.retail_price
+
+
 
 
 
@@ -114,3 +152,6 @@ class ProductPrice(models.Model):
     price_4 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
+
+    class Meta:
+        ordering = ['-added']

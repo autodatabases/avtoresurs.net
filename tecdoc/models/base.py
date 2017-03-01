@@ -81,7 +81,7 @@ class Designation(models.Model):
         db_table = tdsettings.DB_PREFIX + 'designations'
 
 
-def get_part_analogs(part_analog, group_id):
+def get_part_analogs(part_analog, user):
     data = part_analog
     sku = []
     brand = []
@@ -98,8 +98,8 @@ def get_part_analogs(part_analog, group_id):
         for product in products:
             if clean_number(sku) == clean_number(product.sku) and brand_name == product.brand:
                 # print(product)
-                print(group_id)
-                part.part_group.part.price = get_price(product, group_id)
+                # print(group_id)
+                part.part_group.part.price = get_price(product=product, user=user)
                 part.part_group.part.product_id = product.id
                 part.part_group.part.quantity = product.get_quantity()
         if not hasattr(part.part_group.part, 'price'):
