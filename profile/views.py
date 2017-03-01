@@ -14,9 +14,9 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 
 # Create your views here.
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, UpdateView, FormView
 
-from profile.forms import UploadFileForm
+from profile.forms import UploadFileForm, ProfileForm
 from profile.models import Profile, Point
 from avtoresurs_new.settings import BASE_DIR
 
@@ -33,6 +33,15 @@ class ProfileView(TemplateView):
         profile = Profile.objects.all().filter(user=self.request.user).first()
         context['profile'] = profile
         return context
+
+
+class ProfileEdit(FormView):
+    form_class = ProfileForm
+    template_name = 'profile/profile_edit.html'
+    success_url = '/profile/'
+
+
+
 
 
 def user_import(row):

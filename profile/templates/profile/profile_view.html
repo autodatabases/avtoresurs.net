@@ -30,7 +30,7 @@
                     <p>Дата последнего визита: <strong>{{ request.user.last_login|date:"d.m.Y H:i" }}</strong></p>
                 </div>
                 <div class="card-action">
-                    <a href="#">Редактировать информацию о пользователе</a>
+                    <a href="{% url 'profile:profile_edit' profile.pk %}">Редактировать информацию о пользователе</a>
                 </div>
             </div>
         </div>
