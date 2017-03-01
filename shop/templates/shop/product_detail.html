@@ -47,12 +47,19 @@
                         </p>
                         <p class="flow-text">Количество на складе: <span
                                 class="blue-text"><strong>{{ product.get_quantity }}</strong></span></p>
-                        <p class="flow-text green-text"><strong>Ваша цена: <span
-                                class="blue-text">{{ product.price }}</strong></span>
-                        </p>
-                        <p class="flow-text red-text">Стандартная цена: <span
-                                class="blue-text">{{ product.default_price }}</span>
-                        </p>
+
+                        {% if product.price != product.default_price %}
+                            <p class="flow-text green-text"><strong>Ваша цена: <span
+                                    class="blue-text">{{ product.price }}</span></strong>
+                            </p>
+                            <p class="flow-text red-text">Стандартная цена: <span
+                                    class="blue-text">{{ product.default_price }}</span>
+                            </p>
+                        {% else %}
+                            <p class="flow-text">Цена: <span
+                                    class="blue-text"><strong>{{ product.price }}</strong></span>
+                            </p>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row">
