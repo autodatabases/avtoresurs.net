@@ -29,6 +29,13 @@
             <div class="col s6">
                 <img src="{{ product.images.0 }}" alt="" class="responsive-img materialboxed"
                      data-caption="{{ product|upper }}">
+                <p>Описание:</p>
+{#                {% for criteria in product.criterias %}#}
+{#                    <p>{{ criteria }}</p>#}
+{#                {% endfor %}#}
+                {% for pc in product.part_criteria %}
+                    <p>{{ pc }}</p>
+                {% endfor %}
             </div>
             <div class="col s6">
                 <div class="row">
@@ -38,9 +45,6 @@
                         </p>
                         <p class="flow-text">Название: <span
                                 class="blue-text"><strong>{{ product.title|upper }}</strong></span>
-                        </p>
-                        <p class="flow-text">Артикул: <span
-                                class="blue-text"><strong>{{ product.id|upper }}</strong></span>
                         </p>
                         <p class="flow-text">Код детали: <span
                                 class="blue-text"><strong>{{ product.sku|upper }}</strong></span>
@@ -97,8 +101,8 @@
                         <div class="col s1 tecdoc-header">№ п/п</div>
                         <div class="col s2 tecdoc-header">Артикул</div>
                         <div class="col s2 tecdoc-header">Производитель</div>
-                        <div class="col s4 tecdoc-header">Название</div>
-                        <div class="col s2 tecdoc-header">Количество</div>
+                        <div class="col s5 tecdoc-header">Название</div>
+                        <div class="col s1 tecdoc-header">Кол-во</div>
                         <div class="col s1 tecdoc-header">Цена</div>
                     </div>
                 </div>
@@ -113,8 +117,8 @@
                     <div class="col s1">{{ forloop.counter }}</div>
                     <div class="col s2">{{ part_analog.sku }}</div>
                     <div class="col s2">{{ part_analog.supplier }}</div>
-                    <div class="col s4">{{ part_analog.designation }}</div>
-                    <div class="col s2">
+                    <div class="col s5">{{ part_analog }}</div>
+                    <div class="col s1">
                         <strong>
                             {{ part_analog.quantity }}
                         </strong>

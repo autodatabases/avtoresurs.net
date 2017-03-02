@@ -4,7 +4,6 @@ from tecdoc.apps import TecdocConfig as tdsettings
 from tecdoc.models import Section, Designation, CarType, Supplier, TecdocLanguageDesManager
 
 
-
 class PartManager(TecdocLanguageDesManager):
     use_for_related_fields = True
 
@@ -13,7 +12,7 @@ class PartManager(TecdocLanguageDesManager):
         query = query.select_related('designation__description',
                                      'supplier')
 
-        query = query.prefetch_related('analogs', 'images')
+        query = query.prefetch_related('analogs', 'images',)
         # query = query.prefetch_related('analogs')
         return query
 
@@ -42,7 +41,13 @@ class Part(models.Model):
     # car_type = models.ManyToManyField(CarType, through='tecdoc.PartTypeGroupSupplier')
     group = models.ManyToManyField('tecdoc.Group', through='tecdoc.PartGroup', verbose_name='Группа запчастей')
 
-    images = models.ManyToManyField('tecdoc.Image', verbose_name=u'Изображения', through='tecdoc.PartImage', related_name='parts')
+    images = models.ManyToManyField('tecdoc.Image', verbose_name=u'Изображения', through='tecdoc.PartImage',
+                                    related_name='parts')
+
+    # criteries = models.ManyToManyField('tecdoc.Criteria',
+    #                                    verbose_name=u'Оговорки',
+    #                                    through='tecdoc.PartCriteria',
+    #                                    related_name='parts')
 
     # pdfs = models.ManyToManyField(PdfFile, verbose_name=u'Инструкция', through=PartPdf, related_name='parts')
 
@@ -122,7 +127,8 @@ class PartAnalog(models.Model):
             (5, u'штрих-код'),
             )
 
-    part = models.OneToOneField(Part, db_column='ARL_ART_ID', primary_key=True, verbose_name='Запчасть', related_name='analogs')
+    part = models.OneToOneField(Part, db_column='ARL_ART_ID', primary_key=True, verbose_name='Запчасть',
+                                related_name='analogs')
     number = models.CharField(db_column='ARL_DISPLAY_NR', max_length=105, verbose_name='Номер')
     search_number = models.CharField(db_column='ARL_SEARCH_NUMBER', max_length=105, verbose_name='Номер для поиска')
     kind = models.CharField(db_column='ARL_KIND', max_length=1, verbose_name='Тип')
@@ -165,4 +171,37 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.title.upper()
+
         # return self.title.capitalize()
+
+
+# TODO
+class PartListCriteria(models.Model):
+    class Meta:
+        db_table = tdsettings.DB_PREFIX + 'ARTICLE_LIST_CRITERIA'
+
+# class Criteria(models.Model):
+#     id = models.AutoField(db_column='CRI_ID', primary_key=True, verbose_name='Ид')
+#     designation = models.ForeignKey(Designation, db_column='CRI_DES_ID')
+#     short_designation = models.IntegerField(db_column='CRI_SHORT_DES_ID', blank=True, null=True)
+#     unit_designation = models.ForeignKey(Designation, db_column='CRI_UNIT_DES_ID', blank=True, null=True)
+#     type = models.CharField(db_column='CRI_TYPE', max_length=1)
+#     cri_kt_id = models.IntegerField(db_column='CRI_KT_ID', blank=True, null=True)
+#     cri_is_interval = models.IntegerField(db_column='CRI_IS_INTERVAL', blank=True, null=True)
+#     cri_successor = models.IntegerField(db_column='CRI_SUCCESSOR', blank=True, null=True)
+#
+#     class Meta:
+#         db_table = tdsettings.DB_PREFIX + 'criteria'
+#
+#
+# class ArticleCriteria(models.Model):
+#     id = models.AutoField(db_column='ACR_ART_ID', primary_key=True, verbose_name='Ид')
+#     acr_ga_id = models.IntegerField(db_column='ACR_GA_ID')
+#     sort = models.IntegerField(db_column='ACR_SORT')
+#     cri_id = models.IntegerField(db_column='ACR_CRI_ID')
+#     value = models.CharField(db_column='ACR_VALUE', blank=True, null=True)
+#     kv_des_id = models.IntegerField(db_column='ACR_KV_DES', blank=True, null=True)
+#     display = models.IntegerField(db_column='ACR_DISPLAY', blank=True, null=True)
+#
+#     class Meta:
+#         db_table = tdsettings.DB_PREFIX + 'article_criteria'

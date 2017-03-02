@@ -36,11 +36,10 @@
                 <div class="collection-item">
                     <div class="row">
                         <div class="col s1 tecdoc-header">№ п/п</div>
-                        <div class="col s1 tecdoc-header">Артикул ТекДок</div>
-                        <div class="col s1 tecdoc-header">Артикул</div>
+                        <div class="col s2 tecdoc-header">Артикул</div>
                         <div class="col s2 tecdoc-header">Производитель</div>
                         <div class="col s5 tecdoc-header">Название</div>
-                        <div class="col s1 tecdoc-header">Количество</div>
+                        <div class="col s1 tecdoc-header">Кол-во</div>
                         <div class="col s1 tecdoc-header">Цена</div>
                     </div>
                 </div>
@@ -54,8 +53,7 @@
                     {% endif %}
                 <div class="row no-margin-bot">
                     <div class="col s1">{{ forloop.counter }}</div>
-                    <div class="col s1">{{ part.part_group.part.sku }}</div>
-                    <div class="col s1">{{ part.part_group.part.id }}</div>
+                    <div class="col s2">{{ part.part_group.part.sku }}</div>
                     <div class="col s2">{{ part.supplier }}</div>
                     <div class="col s5">{{ part.part_group.part }}</div>
                     <div class="col s1"><strong>{{ part.part_group.part.quantity }}</strong></div>

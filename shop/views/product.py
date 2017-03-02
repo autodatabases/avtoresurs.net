@@ -16,11 +16,27 @@ class ProductDetailView(DetailView):
         product.default_price = get_price(product)
 
         part = Part.objects.get(sku__iexact=product.sku, supplier__title=product.brand)
+        print(part.pk)
         images = list()
         for image in part.images.all():
             images.append(image.absolute_url())
             # print(image.absolute_url())
         product.images = images
+
+        # criterias = list()
+        # for criteria in part.criteries.all():
+        #     criterias.append(criteria)
+            # print(criteria)
+        # product.criterias = criterias
+
+        # print(part)
+        # part_criteria = PartCriteria.objects.filter(part=part)
+        # print(part_criteria)
+        # for pc in part_criteria:
+        #     print(pc.criteria)
+        # product.part_criteria = part_criteria
+
+
 
         part_analogs = PartAnalog.objects.filter(search_number=clean_number(product.sku))
         product.title = Part.objects.filter(sku=product.sku, supplier__title=product.brand)[0].designation
