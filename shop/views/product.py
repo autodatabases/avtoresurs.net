@@ -14,6 +14,14 @@ class ProductDetailView(DetailView):
         product = context['product']
         product.price = get_price(product=product, user=self.request.user)
         product.default_price = get_price(product)
+
+        part = Part.objects.get(sku__iexact=product.sku, supplier__title=product.brand)
+        images = list()
+        for image in part.images.all():
+            images.append(image.absolute_url())
+            # print(image.absolute_url())
+        product.images = images
+
         part_analogs = PartAnalog.objects.filter(search_number=clean_number(product.sku))
         product.title = Part.objects.filter(sku=product.sku, supplier__title=product.brand)[0].designation
         parts = set()

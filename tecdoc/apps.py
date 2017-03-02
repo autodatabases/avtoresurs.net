@@ -14,3 +14,6 @@ class TecdocConfig(AppConfig):
     LANG_ID = RU_LANG
 
     CACHE_TIMEOUT = 60 * 60  # one hour
+
+    # Host for generation absolute path for images and pdf
+    FILE_HOST = 'http://avtoresurs.net/'

@@ -62,7 +62,6 @@ class Product(models.Model):
     def get_quantity(self):
         if self.quantity == None:
             self.quantity = 0
-            print(self.quantity)
         return self.quantity
 
     def __str__(self):
@@ -100,7 +99,6 @@ def get_price(product, user=None):
     try:
         discount = Profile.objects.get(user=user).discount.discount
         price = pp.retail_price - round((pp.retail_price * discount / 100), 2)
-        # print(price)
         return price
     except Exception:
         pass
@@ -108,7 +106,6 @@ def get_price(product, user=None):
     try:
         group = user.groups.all()[0]
         group = group.pk
-        print(PriceGroup.OPT3.value)
         if group == PriceGroup.RETAIL.value:
             return pp.retail_price
         elif group == PriceGroup.OPT1.value:

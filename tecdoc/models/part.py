@@ -4,6 +4,7 @@ from tecdoc.apps import TecdocConfig as tdsettings
 from tecdoc.models import Section, Designation, CarType, Supplier, TecdocLanguageDesManager
 
 
+
 class PartManager(TecdocLanguageDesManager):
     use_for_related_fields = True
 
@@ -12,7 +13,7 @@ class PartManager(TecdocLanguageDesManager):
         query = query.select_related('designation__description',
                                      'supplier')
 
-        # query = query.prefetch_related('analogs', 'images')
+        query = query.prefetch_related('analogs', 'images')
         # query = query.prefetch_related('analogs')
         return query
 
@@ -40,6 +41,10 @@ class Part(models.Model):
                                           null=True)
     # car_type = models.ManyToManyField(CarType, through='tecdoc.PartTypeGroupSupplier')
     group = models.ManyToManyField('tecdoc.Group', through='tecdoc.PartGroup', verbose_name='Группа запчастей')
+
+    images = models.ManyToManyField('tecdoc.Image', verbose_name=u'Изображения', through='tecdoc.PartImage', related_name='parts')
+
+    # pdfs = models.ManyToManyField(PdfFile, verbose_name=u'Инструкция', through=PartPdf, related_name='parts')
 
     objects = PartManager()
 
@@ -103,9 +108,9 @@ class PartAnalogManager(models.Manager):
     # use_for_related_fields = True
 
     def get_queryset(self):
-        return super(PartAnalogManager, self).\
-            get_queryset().\
-            filter(part__designation__language=tdsettings.LANG_ID).\
+        return super(PartAnalogManager, self). \
+            get_queryset(). \
+            filter(part__designation__language=tdsettings.LANG_ID). \
             select_related('part', 'part__designation__description', 'brand')
 
 
@@ -117,7 +122,7 @@ class PartAnalog(models.Model):
             (5, u'штрих-код'),
             )
 
-    part = models.OneToOneField(Part, db_column='ARL_ART_ID', primary_key=True, verbose_name='Запчасть')
+    part = models.OneToOneField(Part, db_column='ARL_ART_ID', primary_key=True, verbose_name='Запчасть', related_name='analogs')
     number = models.CharField(db_column='ARL_DISPLAY_NR', max_length=105, verbose_name='Номер')
     search_number = models.CharField(db_column='ARL_SEARCH_NUMBER', max_length=105, verbose_name='Номер для поиска')
     kind = models.CharField(db_column='ARL_KIND', max_length=1, verbose_name='Тип')

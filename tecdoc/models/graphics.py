@@ -1,23 +1,23 @@
 from django.db import models
 
-from tecdoc.conf import TecdocConf as tdsettings
-from tecdoc.models.base import (TecdocModel, TecdocManager,
-                                TecdocManagerWithDes)
+from tecdoc.apps import TecdocConfig as tdsettings
+
+# from tecdoc.models import Part
 
 PDF_TYPE = 2
 
 
-class FileType(TecdocModel):
+class FileType(models.Model):
     id = models.AutoField(u'Ид', primary_key=True,
                           db_column='DOC_TYPE')
 
     ext = models.CharField(max_length=9, db_column='DOC_EXTENSION')
 
-    class Meta(TecdocModel.Meta):
-        db_table = tdsettings.DB_PREFIX + 'DOC_TYPES'
+    class Meta:
+        db_table = tdsettings.DB_PREFIX + 'doc_types'
 
 
-class File(TecdocModel):
+class File(models.Model):
     id = models.AutoField(u'Ид', primary_key=True,
                           db_column='GRA_ID')
 
@@ -30,15 +30,15 @@ class File(TecdocModel):
 
     lang = models.IntegerField(u'Язык', db_column='GRA_LNG_ID')
 
-    class Meta(TecdocModel.Meta):
-        db_table = tdsettings.DB_PREFIX + 'GRAPHICS'
+    class Meta:
+        db_table = tdsettings.DB_PREFIX + 'graphics'
 
     def absolute_url(self):
         return '%s%s' % (tdsettings.FILE_HOST, self.relative_url())
     url = absolute_url
 
 
-class ImageManager(TecdocManager):
+class ImageManager(models.Manager):
     def get_query_set(self, *args, **kwargs):
         return (super(ImageManager, self).get_query_set(*args, **kwargs)
                                          .filter(lang__in=(tdsettings.LANG_ID, 255))
@@ -50,17 +50,17 @@ class Image(File):
 
     objects = ImageManager()
 
-    class Meta(File.Meta):
+    class Meta:
         proxy = True
 
     def relative_url(self):
         ext = self.type.ext.lower()
-        return 'images/%s/%s.%s' % (self.db_number,
+        return 'static/main/images/tecdoc/TOF_GRA_DATA_%s/%s.%s' % (self.db_number,
                                     self.filename,
                                     ext == 'jp2' and 'jpg' or ext)
 
 
-class PartImage(TecdocModel):
+class PartImage(models.Model):
 
     part = models.ForeignKey('tecdoc.Part', verbose_name=u'Запчасть',
                              db_column='LGA_ART_ID')
@@ -68,11 +68,11 @@ class PartImage(TecdocModel):
     image = models.ForeignKey(Image, verbose_name=u'Изображение',
                               db_column='LGA_GRA_ID')
 
-    class Meta(TecdocModel.Meta):
-        db_table = tdsettings.DB_PREFIX + 'LINK_GRA_ART'
+    class Meta:
+        db_table = tdsettings.DB_PREFIX + 'link_gra_art'
 
 
-class PdfManager(TecdocManager):
+class PdfManager(models.Manager):
     def get_query_set(self, *args, **kwargs):
         return (super(PdfManager, self).get_query_set(*args, **kwargs)
                                        .filter(lang__in=(tdsettings.LANG_ID, 255),
@@ -84,14 +84,14 @@ class PdfFile(File):
 
     objects = PdfManager()
 
-    class Meta(File.Meta):
+    class Meta:
         proxy = True
 
     def relative_url(self):
         return '/pdf/%s%s.pdf' % (self.id, str(self.lang).zfill(3))
 
 
-class PartPdf(TecdocModel):
+class PartPdf(models.Model):
 
     part = models.ForeignKey('tecdoc.Part', verbose_name=u'Запчасть',
                              db_column='LGA_ART_ID')
@@ -99,5 +99,5 @@ class PartPdf(TecdocModel):
     pdf = models.ForeignKey(PdfFile, verbose_name=u'Документация',
                             db_column='LGA_GRA_ID')
 
-    class Meta(TecdocModel.Meta):
-        db_table = tdsettings.DB_PREFIX + 'LINK_GRA_ART'
+    class Meta:
+        db_table = tdsettings.DB_PREFIX + 'link_gra_art'
