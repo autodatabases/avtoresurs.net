@@ -36,7 +36,7 @@ class Criteria(models.Model):
         return self.unit if self.unit_id else ''
 
     def get_display_value(self):
-        return self.short_designation.description.text or self.designation.description.text
+        return self.short_designation or self.designation
 
     def __str__(self):
         return self.get_display_value()
@@ -56,14 +56,21 @@ class PartCriteria(models.Model):
     part = models.OneToOneField('tecdoc.Part', db_column='ACR_ART_ID', primary_key=True, verbose_name='Ид')
     acr_ga_id = models.IntegerField(db_column='ACR_GA_ID')
     sort = models.IntegerField(db_column='ACR_SORT')
+
     criteria = models.ForeignKey(Criteria, db_column='ACR_CRI_ID')
+
     value = models.CharField(db_column='ACR_VALUE', blank=True, null=True, max_length=60)
     designation = models.ForeignKey('tecdoc.Designation', db_column='ACR_KV_DES_ID', blank=True, null=True,
                                     related_name='+')
     display = models.IntegerField(db_column='ACR_DISPLAY', blank=True, null=True)
 
     def __str__(self):
-        return '%s: %s' % (self.criteria, self.value)
+        # print(self.criteria)
+        try:
+            return '%s: %s' % (self.criteria.get_display_value(), self.value)
+        except:
+            return 'Exception'
 
     class Meta:
         db_table = tdsettings.DB_PREFIX + 'article_criteria'
+        ordering = ['sort']
