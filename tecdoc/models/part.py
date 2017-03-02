@@ -12,7 +12,7 @@ class PartManager(TecdocLanguageDesManager):
         query = query.select_related('designation__description',
                                      'supplier')
 
-        query = query.prefetch_related('analogs', 'images',)
+        query = query.prefetch_related('analogs', 'images', )
         # query = query.prefetch_related('analogs')
         return query
 
@@ -179,29 +179,3 @@ class Brand(models.Model):
 class PartListCriteria(models.Model):
     class Meta:
         db_table = tdsettings.DB_PREFIX + 'ARTICLE_LIST_CRITERIA'
-
-# class Criteria(models.Model):
-#     id = models.AutoField(db_column='CRI_ID', primary_key=True, verbose_name='Ид')
-#     designation = models.ForeignKey(Designation, db_column='CRI_DES_ID')
-#     short_designation = models.IntegerField(db_column='CRI_SHORT_DES_ID', blank=True, null=True)
-#     unit_designation = models.ForeignKey(Designation, db_column='CRI_UNIT_DES_ID', blank=True, null=True)
-#     type = models.CharField(db_column='CRI_TYPE', max_length=1)
-#     cri_kt_id = models.IntegerField(db_column='CRI_KT_ID', blank=True, null=True)
-#     cri_is_interval = models.IntegerField(db_column='CRI_IS_INTERVAL', blank=True, null=True)
-#     cri_successor = models.IntegerField(db_column='CRI_SUCCESSOR', blank=True, null=True)
-#
-#     class Meta:
-#         db_table = tdsettings.DB_PREFIX + 'criteria'
-#
-#
-# class ArticleCriteria(models.Model):
-#     id = models.AutoField(db_column='ACR_ART_ID', primary_key=True, verbose_name='Ид')
-#     acr_ga_id = models.IntegerField(db_column='ACR_GA_ID')
-#     sort = models.IntegerField(db_column='ACR_SORT')
-#     cri_id = models.IntegerField(db_column='ACR_CRI_ID')
-#     value = models.CharField(db_column='ACR_VALUE', blank=True, null=True)
-#     kv_des_id = models.IntegerField(db_column='ACR_KV_DES', blank=True, null=True)
-#     display = models.IntegerField(db_column='ACR_DISPLAY', blank=True, null=True)
-#
-#     class Meta:
-#         db_table = tdsettings.DB_PREFIX + 'article_criteria'

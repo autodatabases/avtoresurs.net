@@ -3,7 +3,7 @@ from django.views.generic import DetailView
 
 from profile.models import Profile
 from shop.models.product import Product, get_price
-from tecdoc.models import PartAnalog, get_part_analogs, clean_number, Part
+from tecdoc.models import PartAnalog, get_part_analogs, clean_number, Part, PartCriteria
 
 
 class ProductDetailView(DetailView):
@@ -29,12 +29,12 @@ class ProductDetailView(DetailView):
             # print(criteria)
         # product.criterias = criterias
 
-        # print(part)
-        # part_criteria = PartCriteria.objects.filter(part=part)
-        # print(part_criteria)
+        print(part)
+        part_criteria = PartCriteria.objects.filter(part=part)
+        print(part_criteria)
         # for pc in part_criteria:
         #     print(pc.criteria)
-        # product.part_criteria = part_criteria
+        product.part_criteria = part_criteria
 
 
 
