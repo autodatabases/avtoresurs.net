@@ -32,14 +32,19 @@ class Criteria(models.Model):
     class Meta:
         db_table = tdsettings.DB_PREFIX + 'criteria'
 
+
     def get_unit(self):
         return self.unit if self.unit_id else ''
 
     def get_display_value(self):
-        return self.short_designation or self.designation
+        if self.short_designation:
+            return self.short_designation
+        return self.designation
 
     def __str__(self):
-        return self.get_display_value()
+        if self.short_designation:
+            return self.short_designation.__str__()
+        return self.designation.__str__()
 
 
 class PartCriteriaManager(TecdocLanguageDesManager):
@@ -67,10 +72,12 @@ class PartCriteria(models.Model):
     def __str__(self):
         # print(self.criteria)
         try:
-            return '%s: %s' % (self.criteria.get_display_value(), self.value)
-        except:
+            return '%s: %s' % (self.criteria, self.value)
+        except Exception as e:
+            print(e)
             return 'Exception'
 
     class Meta:
         db_table = tdsettings.DB_PREFIX + 'article_criteria'
+        unique_together = (('part','acr_ga_id', 'sort', 'criteria'))
         ordering = ['sort']
