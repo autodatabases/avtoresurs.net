@@ -28,6 +28,8 @@ class ProductDetailView(DetailView):
             part_criteria = None
         product.part_criteria = part_criteria
 
+        print(part.pk)
+
         part_analogs = PartAnalog.objects.filter(search_number=clean_number(product.sku))
         product.title = Part.objects.filter(sku=product.sku, supplier__title=product.brand)[0].designation
         parts = set()
