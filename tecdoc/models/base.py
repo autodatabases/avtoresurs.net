@@ -105,6 +105,8 @@ def get_part_analogs(part_analog, user):
         if not hasattr(part.part_group.part, 'price'):
             part.part_group.part.price = -1
     part_analog_data = sorted(data, key=lambda x: x.part_group.part.price, reverse=True)
+    for pa in part_analog_data:
+        print(pa.part_group.part.pk)
     return part_analog_data
 
 number_re = re.compile('[^a-zA-Z0-9]+')
