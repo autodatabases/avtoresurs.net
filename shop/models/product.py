@@ -94,7 +94,10 @@ def get_price(product, user=None):
     pp = ProductPrice.objects.filter(product=product).first()
 
     if not user:
-        return pp.retail_price
+        try:
+            return pp.retail_price
+        except:
+            return -1
 
     try:
         discount = Profile.objects.get(user=user).discount.discount
@@ -119,7 +122,7 @@ def get_price(product, user=None):
     except Exception:
         pass
 
-    return pp.retail_price
+    return -1
 
 
 
