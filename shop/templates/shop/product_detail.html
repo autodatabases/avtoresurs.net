@@ -40,16 +40,57 @@
                         <a class="waves-effect waves-light btn dark-blue center-align" href="#modal1">Описание</a>
                     </div>
                     <!-- Modal Structure -->
-                    <div id="modal1" class="modal">
+                    <div id="modal1" class="modal modal-fixed-footer">
                         <div class="modal-content">
                             <h4>{{ product.title }} {{ product|upper }}</h4>
-                            {% if product.part_criteria %}
-                                {% for pc in product.part_criteria %}
-                                    <p>{{ pc.text1 }}: <strong>{{ pc.text2 }}</strong></p>
-                                {% endfor %}
-                            {% else %}
-                                <p>Описание отсутствует</p>
-                            {% endif %}
+
+                            <div class="row">
+                                <div class="col s12">
+                                    <ul class="tabs tabs-fixed-width">
+                                        <li class="tab col s3"><a href="#tab1" class="active blue-text">Параметры</a>
+                                        </li>
+                                        <li class="tab col s3"><a href="#tab2" class="blue-text">Применимость</a></li>
+                                    </ul>
+                                </div>
+                                <div id="tab1" class="col s12">
+                                    {% if product.part_criteria %}
+                                        {% for pc in product.part_criteria %}
+                                            <p>{{ pc.text1 }}: <strong>{{ pc.text2 }}</strong></p>
+                                        {% endfor %}
+                                    {% else %}
+                                        <p>Описание отсутствует</p>
+                                    {% endif %}
+                                </div>
+                                <div id="tab2" class="col s12">
+                                    {% if product.car_types %}
+                                        <table class="striped">
+                                            <thead>
+                                            <tr>
+                                                <th data-field="id">МОДЕЛЬ</th>
+                                                <th data-field="name">МОДИЦИКАЦИЯ</th>
+                                                <th data-field="price">ДВИГАТЕЛЬ</th>
+                                                <th data-field="price">МОЩНОСТЬ</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            {% for car in product.car_types %}
+                                                <tr>
+                                                    <td>{{ car.mfa_brand }} {{ car.mod_cds_text }}</td>
+                                                    <td>{{ car.typ_cds_text }}</td>
+                                                    <td>{{ car.eng_code }} {{ car.typ_fuel_des_text }}</td>
+                                                    <td>{{ car.typ_hp_from }}</td>
+                                                </tr>
+                                            {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    {% else %}
+                                        <p>Описание отсутствует</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <a href="#!"
