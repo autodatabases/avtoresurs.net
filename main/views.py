@@ -72,9 +72,10 @@ class ProductLoader(TemplateView):
     template_name = 'load.html'
 
     def get(self, request):
-        path = 'NewsAuto4.csv'
+        path = 'NewsAuto5.csv'
         date = datetime.datetime.now()
-        report = ['Прококол загрузки файла с ценами от %s' % date]
+        report = ['Прококол загрузки файла товаров от %s' % date]
+        report_product_price = ['Прококол загрузки цен от %s' % date]
 
         with open(path, 'r', encoding='cp1251') as f:
             data = f.read().splitlines(True)
@@ -95,6 +96,8 @@ class ProductLoader(TemplateView):
                 product.save()
                 ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
                              price_3=prices[3], price_4=prices[4]).save()
+                if not prices[0]:
+                    report_product_price.append('Строка № %s не указана цена товара. [%s]' % (idx, line))
                 # product.update(quantity, prices)
                 # print(brand)
                 # part = Part.objects.filter(sku=sku, supplier__title=brand)
@@ -112,87 +115,12 @@ class ProductLoader(TemplateView):
             for item in report:
                 error_file.write('\r\n%s' % item)
 
-        # try:
-        #         created = Product.objects.get_or_create(
-        #             sku=row[0].lower().replace(" ", ""),
-        #             manufacturer=row[1].lower(),
-        #         )
-        #         product = created[0]
-        #         # print(product)
-        #         product.title = row[2].lower()
-        #         product.cross_sku = row[3].lower()
-        #         product.quantity = row[4].lower()
-        #         product.active = True
-        #         product.retail_price = row[5].lower()
-        #         product.whosale_price = row[6].lower()
-        #         product.save()
-        #
-        #         part = Part.objects.filter(sku__iexact=product.sku, supplier__title__iexact=product.manufacturer)
-        #         if not part:
-        #             error_string = "product - %s %s %s %s %s - not in TECDOC DB" % (
-        #                 idx,
-        #                 created.sku,
-        #                 created.manufacturer,
-        #                 created.title,
-        #                 created.cross_sku
-        #             )
-        #             report.append(error_string)
-        #     except:
-        #         pass
-        #
-        # report.append("File load succesfully")
-        # if report:
-        #     error_file_path = 'error.log'
-        #     report_log = ''
-        #     for error_line in report:
-        #         error_line += '\n'
-        #         report_log += error_line
-        #     with open(error_file_path, 'w+') as error_file:
-        #         # print(report)
-        #         error_file.write(report_log)
+        error_file_price_path = 'error_price.log'
+        with open(error_file_price_path, 'w+') as error_file_price:
+            for item in report_product_price:
+                error_file_price.write('\r\n%s' % item)
 
         return HttpResponse('OK')
-
-        # for idx, row in enumerate(reader):
-        #     created = ''
-        #     try:
-        #         # print('sku - %s, brand - %s, title - %s, cross - %s , quantity - %s, active - True, price - %s' %
-        #         #       (row[0], row[1], row[2], row[3], row[4], row[5]))
-        #
-        #         created = Product.objects.get_or_create(
-        #             sku=row[0].lower().replace(" ", ""),
-        #             manufacturer=row[1].lower(),
-        #             title=row[2].lower(),
-        #             cross_sku=row[3].lower(),
-        #             quantity=row[4],
-        #             # quantity=10,
-        #             active=True,
-        #             price=row[5],
-        #             # price=455.12,
-        #         )
-        #         # print(created)
-        #         part = Part.objects.filter(sku__iexact=created.sku, supplier__title__iexact=created.manufacturer)
-        #         if not part:
-        #             error_string = "%s %s %s %s %s" % (
-        #                 idx,
-        #                 created.sku,
-        #                 created.manufacturer,
-        #                 created.title,
-        #                 created.cross_sku
-        #             )
-        #             report.append(error_string)
-        #     except:
-        #         pass
-        #
-        # if report:
-        #     error_file_path = '/home/avto/avto/error.log'
-        #     report_log = ''
-        #     for error_line in report:
-        #         error_line += '\n'
-        #         report_log += error_line
-        #     with open(error_file_path, 'w+') as error_file:
-        #         # print(report)
-        #         error_file.write(report_log)
 
 
 # todo make CBV
