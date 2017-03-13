@@ -1,12 +1,16 @@
-import multiprocessing as mp
+# import threading
+# import time
+#
+#
+# def clock(interval):
+#     while True:
+#         print("The time is %s" % time.ctime())
+#         time.sleep(interval)
+#
+#
+# t = threading.Thread(target=clock, args=(1,))
+# # t.daemon = True
+# t.start()
 
-def foo(q):
-    q.put('hello')
-
-if __name__ == '__main__':
-    mp.set_start_method('spawn')
-    q = mp.Queue()
-    p = mp.Process(target=foo, args=(q,))
-    p.start()
-    print(q.get())
-    p.join()
+string = "Hello, World"
+print(string[0:5])

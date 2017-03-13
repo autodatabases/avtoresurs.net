@@ -2,6 +2,7 @@ import csv
 
 import datetime
 import os
+import threading
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import signing
@@ -22,6 +23,39 @@ from shop.models.product import Product, ProductPrice
 # Create your views here.
 # from tecdoc.models import Part
 from tecdoc.models import Part, PartAnalog, clean_number
+
+
+def add(data, interval, report_product, report_price):
+    for idx, line in enumerate(data[1:]):
+        try:
+            row = line.split(';')
+            part_analog = None
+            brand = row[1]
+            sku = row[0]
+            quantity = row[2]
+            prices = [row[3], row[4], row[5], row[6], row[7]]
+            clean_sku = clean_number(sku)
+            part_analog = PartAnalog.objects.filter(search_number=clean_sku)
+            # get_tecdoc(clean_sku, brand)
+            product, created = Product.objects.get_or_create(sku=sku, brand=brand)
+            product.quantity = quantity
+            product.save()
+            product_price = ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
+                                         price_3=prices[3], price_4=prices[4])
+            product_price.save()
+            if not prices[0]:
+                report_price.append('Строка № %s не указана цена товара. [%s]' % (idx, line))
+            # product.update(quantity, prices)
+            # print(brand)
+            # part = Part.objects.filter(sku=sku, supplier__title=brand)
+            if not part_analog:
+                report_product.append('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
+                # print('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
+
+                # print('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
+                # print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
+        except:
+            pass
 
 
 class MainPageView(TemplateView):
@@ -74,61 +108,91 @@ class ProductLoader(TemplateView):
     def get(self, request):
         path = 'SKF.csv'
         date = datetime.datetime.now()
-        report = ['Прококол загрузки файла товаров от %s' % date]
-        report_product_price = ['Прококол загрузки цен от %s' % date]
+        report_product = ['Прококол загрузки файла товаров от %s' % date]
+        report_price = ['Прококол загрузки цен от %s' % date]
 
         with open(path, 'r', encoding='cp1251') as f:
             data = f.read().splitlines(True)
 
-        products = list()
-        prices = list()
-        for idx, line in enumerate(data[1:]):
-            try:
-                row = line.split(';')
-                part_analog = None
-                brand = row[1]
-                sku = row[0]
-                quantity = row[2]
-                prices = [row[3], row[4], row[5], row[6], row[7]]
-                clean_sku = clean_number(sku)
-                part_analog = PartAnalog.objects.filter(search_number=clean_sku)
-                # get_tecdoc(clean_sku, brand)
-                product, created = Product.objects.get_or_create(sku=sku, brand=brand)
-                product.quantity = quantity
-                # product.save()
-                products.append(product)
-                product_price = ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
-                             price_3=prices[3], price_4=prices[4])
-                prices.append(product_price)
-                # ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
-                #              price_3=prices[3], price_4=prices[4]).save()
-                if not prices[0]:
-                    report_product_price.append('Строка № %s не указана цена товара. [%s]' % (idx, line))
-                # product.update(quantity, prices)
-                # print(brand)
-                # part = Part.objects.filter(sku=sku, supplier__title=brand)
-                if not part_analog:
-                    report.append('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
-                    # print('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
+        interval = len(data) // 5
+        intervals = [[1, interval], [interval, interval * 2], [interval * 2, interval * 3],
+                     [interval * 3, interval * 4], [interval * 4, len(data)]]
 
-                    # print('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
-                    # print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
-            except:
-                pass
+        t0 = threading.Thread(target=add, args=(data, intervals[0], report_product, report_price))
+        t0.daemon = True
+        t0.start()
 
-        for product in products:
-            product.save()
-        for product_price in prices:
-            product_price.save()
+        t1 = threading.Thread(target=add, args=(data, intervals[1], report_product, report_price))
+        t1.daemon = True
+        t1.start()
 
+        t2 = threading.Thread(target=add, args=(data, intervals[2], report_product, report_price))
+        t2.daemon = True
+        t2.start()
+
+        t3 = threading.Thread(target=add, args=(data, intervals[3], report_product, report_price))
+        t3.daemon = True
+        t3.start()
+
+        t4 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        t4.daemon = True
+        t4.start()
+
+        t0.join()
+        t1.join()
+        t2.join()
+        t3.join()
+        t4.join()
+
+        # # products = list()
+        # # prices = list()
+        # for idx, line in enumerate(data[1:]):
+        #     try:
+        #         row = line.split(';')
+        #         part_analog = None
+        #         brand = row[1]
+        #         sku = row[0]
+        #         quantity = row[2]
+        #         prices = [row[3], row[4], row[5], row[6], row[7]]
+        #         clean_sku = clean_number(sku)
+        #         part_analog = PartAnalog.objects.filter(search_number=clean_sku)
+        #         # get_tecdoc(clean_sku, brand)
+        #         product, created = Product.objects.get_or_create(sku=sku, brand=brand)
+        #         product.quantity = quantity
+        #         # product.save()
+        #         products.append(product)
+        #         product_price = ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
+        #                      price_3=prices[3], price_4=prices[4])
+        #         prices.append(product_price)
+        #         # ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
+        #         #              price_3=prices[3], price_4=prices[4]).save()
+        #         if not prices[0]:
+        #             report_product_price.append('Строка № %s не указана цена товара. [%s]' % (idx, line))
+        #         # product.update(quantity, prices)
+        #         # print(brand)
+        #         # part = Part.objects.filter(sku=sku, supplier__title=brand)
+        #         if not part_analog:
+        #             report.append('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
+        #             # print('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
+        #
+        #             # print('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
+        #             # print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
+        #     except:
+        #         pass
+        #
+        # for product in products:
+        #     product.save()
+        # for product_price in prices:
+        #     product_price.save()
+        #
         error_file_path = 'error.log'
         with open(error_file_path, 'w+') as error_file:
-            for item in report:
+            for item in report_product:
                 error_file.write('\r\n%s' % item)
 
         error_file_price_path = 'error_price.log'
         with open(error_file_price_path, 'w+') as error_file_price:
-            for item in report_product_price:
+            for item in report_price:
                 error_file_price.write('\r\n%s' % item)
 
         return HttpResponse('OK')
