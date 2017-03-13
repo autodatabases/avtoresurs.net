@@ -151,23 +151,23 @@ class ProductLoader(TemplateView):
         # t4.daemon = True
         t4.start()
 
-        t5 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        t5 = threading.Thread(target=add, args=(data, intervals[5], report_product, report_price))
         # t4.daemon = True
         t5.start()
 
-        t6 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        t6 = threading.Thread(target=add, args=(data, intervals[6], report_product, report_price))
         # t4.daemon = True
         t6.start()
 
-        t7 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        t7 = threading.Thread(target=add, args=(data, intervals[7], report_product, report_price))
         # t4.daemon = True
         t7.start()
 
-        t8 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        t8 = threading.Thread(target=add, args=(data, intervals[8], report_product, report_price))
         # t4.daemon = True
         t8.start()
 
-        t9 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        t9 = threading.Thread(target=add, args=(data, intervals[9], report_product, report_price))
         # t4.daemon = True
         t9.start()
 
