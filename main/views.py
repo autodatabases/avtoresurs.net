@@ -72,7 +72,7 @@ class ProductLoader(TemplateView):
     template_name = 'load.html'
 
     def get(self, request):
-        path = 'NewsAuto5.csv'
+        path = 'SKF.csv'
         date = datetime.datetime.now()
         report = ['Прококол загрузки файла товаров от %s' % date]
         report_product_price = ['Прококол загрузки цен от %s' % date]
@@ -80,6 +80,8 @@ class ProductLoader(TemplateView):
         with open(path, 'r', encoding='cp1251') as f:
             data = f.read().splitlines(True)
 
+        products = list()
+        prices = list()
         for idx, line in enumerate(data[1:]):
             try:
                 row = line.split(';')
@@ -93,9 +95,13 @@ class ProductLoader(TemplateView):
                 # get_tecdoc(clean_sku, brand)
                 product, created = Product.objects.get_or_create(sku=sku, brand=brand)
                 product.quantity = quantity
-                product.save()
-                ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
-                             price_3=prices[3], price_4=prices[4]).save()
+                # product.save()
+                products.append(product)
+                product_price = ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
+                             price_3=prices[3], price_4=prices[4])
+                prices.append(product_price)
+                # ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
+                #              price_3=prices[3], price_4=prices[4]).save()
                 if not prices[0]:
                     report_product_price.append('Строка № %s не указана цена товара. [%s]' % (idx, line))
                 # product.update(quantity, prices)
@@ -109,6 +115,11 @@ class ProductLoader(TemplateView):
                     # print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
             except:
                 pass
+
+        for product in products:
+            product.save()
+        for product_price in prices:
+            product_price.save()
 
         error_file_path = 'error.log'
         with open(error_file_path, 'w+') as error_file:
