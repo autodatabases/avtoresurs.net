@@ -26,7 +26,7 @@ from tecdoc.models import Part, PartAnalog, clean_number
 
 
 def add(data, interval, report_product, report_price):
-    for idx, line in enumerate(data[1:]):
+    for idx, line in enumerate(data[interval[0]:interval[1]]):
         try:
             row = line.split(';')
             part_analog = None
@@ -122,23 +122,23 @@ class ProductLoader(TemplateView):
                      [interval * 3, interval * 4], [interval * 4, len(data)]]
 
         t0 = threading.Thread(target=add, args=(data, intervals[0], report_product, report_price))
-        t0.daemon = True
+        # t0.daemon = True
         t0.start()
 
         t1 = threading.Thread(target=add, args=(data, intervals[1], report_product, report_price))
-        t1.daemon = True
+        # t1.daemon = True
         t1.start()
 
         t2 = threading.Thread(target=add, args=(data, intervals[2], report_product, report_price))
-        t2.daemon = True
+        # t2.daemon = True
         t2.start()
 
         t3 = threading.Thread(target=add, args=(data, intervals[3], report_product, report_price))
-        t3.daemon = True
+        # t3.daemon = True
         t3.start()
 
         t4 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
-        t4.daemon = True
+        # t4.daemon = True
         t4.start()
 
         t0.join()
