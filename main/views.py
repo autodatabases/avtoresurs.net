@@ -105,7 +105,10 @@ class YandexDnsView(TemplateView):
 class ProductLoader(TemplateView):
     template_name = 'load.html'
 
-    def get(self, request):
+    # def get(self, request):
+    #     pass
+
+    def post(self, request):
         path = 'SKF.csv'
         date = datetime.datetime.now()
         report_product = ['Прококол загрузки файла товаров от %s' % date]
@@ -196,7 +199,6 @@ class ProductLoader(TemplateView):
                 error_file_price.write('\r\n%s' % item)
 
         return HttpResponse('OK')
-
 
 # todo make CBV
 def resend_activation_email(request):

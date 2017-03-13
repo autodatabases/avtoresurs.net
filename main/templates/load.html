@@ -2,6 +2,11 @@
 
 {% block content %}
 
-    Начинаем загрузку
+    <p>Нажмите старт</p>
+
+    <form action="" method="post">
+        {% csrf_token %} 
+        <input type="submit">
+    </form>
 
 {% endblock %}
