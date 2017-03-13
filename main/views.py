@@ -117,9 +117,19 @@ class ProductLoader(TemplateView):
         with open(path, 'r', encoding='cp1251') as f:
             data = f.read().splitlines(True)
 
-        interval = len(data) // 5
-        intervals = [[1, interval], [interval, interval * 2], [interval * 2, interval * 3],
-                     [interval * 3, interval * 4], [interval * 4, len(data)]]
+        interval = len(data) // 10
+        intervals = [
+            [1, interval],
+            [interval, interval * 2],
+            [interval * 2, interval * 3],
+            [interval * 3, interval * 4],
+            [interval * 4, interval * 5],
+            [interval * 5, interval * 6],
+            [interval * 6, interval * 7],
+            [interval * 7, interval * 8],
+            [interval * 8, interval * 9],
+            [interval * 9, len(data)]
+        ]
 
         t0 = threading.Thread(target=add, args=(data, intervals[0], report_product, report_price))
         # t0.daemon = True
@@ -141,11 +151,36 @@ class ProductLoader(TemplateView):
         # t4.daemon = True
         t4.start()
 
+        t5 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        # t4.daemon = True
+        t5.start()
+
+        t6 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        # t4.daemon = True
+        t6.start()
+
+        t7 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        # t4.daemon = True
+        t7.start()
+
+        t8 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        # t4.daemon = True
+        t8.start()
+
+        t9 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        # t4.daemon = True
+        t9.start()
+
         t0.join()
         t1.join()
         t2.join()
         t3.join()
         t4.join()
+        t5.join()
+        t6.join()
+        t7.join()
+        t8.join()
+        t9.join()
 
         # # products = list()
         # # prices = list()
@@ -199,6 +234,7 @@ class ProductLoader(TemplateView):
                 error_file_price.write('\r\n%s' % item)
 
         return HttpResponse('OK')
+
 
 # todo make CBV
 def resend_activation_email(request):
