@@ -102,6 +102,27 @@ class YandexDnsView(TemplateView):
     template_name = 'yandex_dns_view.html'
 
 
+def get_intervals(interval, THREADS, end_idx):
+    intervals = list()
+    for idx in range(1, THREADS+1):
+        intervals.append([interval*idx, interval*(idx+1)])
+    intervals[THREADS-1][1] = end_idx
+    return intervals
+
+    # [
+    #     [1, interval],
+    #     [interval, interval * 2],
+    #     [interval * 2, interval * 3],
+    #     [interval * 3, interval * 4],
+    #     [interval * 4, interval * 5],
+    #     [interval * 5, interval * 6],
+    #     [interval * 6, interval * 7],
+    #     [interval * 7, interval * 8],
+    #     [interval * 8, interval * 9],
+    #     [interval * 9, len(data)]
+    # ]
+
+
 class ProductLoader(TemplateView):
     template_name = 'load.html'
 
@@ -109,7 +130,7 @@ class ProductLoader(TemplateView):
     #     pass
 
     def post(self, request):
-        path = 'SKF.csv'
+        path = 'NewsAuto6.csv'
         date = datetime.datetime.now()
         report_product = ['Прококол загрузки файла товаров от %s' % date]
         report_price = ['Прококол загрузки цен от %s' % date]
@@ -117,70 +138,70 @@ class ProductLoader(TemplateView):
         with open(path, 'r', encoding='cp1251') as f:
             data = f.read().splitlines(True)
 
-        interval = len(data) // 10
-        intervals = [
-            [1, interval],
-            [interval, interval * 2],
-            [interval * 2, interval * 3],
-            [interval * 3, interval * 4],
-            [interval * 4, interval * 5],
-            [interval * 5, interval * 6],
-            [interval * 6, interval * 7],
-            [interval * 7, interval * 8],
-            [interval * 8, interval * 9],
-            [interval * 9, len(data)]
-        ]
+        THREADS = 20
+        list_len = len(data)
+        interval = list_len // THREADS
+        intervals = get_intervals(interval, THREADS, list_len)
 
-        t0 = threading.Thread(target=add, args=(data, intervals[0], report_product, report_price))
-        # t0.daemon = True
-        t0.start()
+        threads = list()
+        for interval in intervals:
+            thread = threading.Thread(target=add, args=(data, interval, report_product, report_price))
+            thread.start()
+            threads.append(thread)
 
-        t1 = threading.Thread(target=add, args=(data, intervals[1], report_product, report_price))
-        # t1.daemon = True
-        t1.start()
+        for thread in threads:
+            thread.join()
 
-        t2 = threading.Thread(target=add, args=(data, intervals[2], report_product, report_price))
-        # t2.daemon = True
-        t2.start()
-
-        t3 = threading.Thread(target=add, args=(data, intervals[3], report_product, report_price))
-        # t3.daemon = True
-        t3.start()
-
-        t4 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
-        # t4.daemon = True
-        t4.start()
-
-        t5 = threading.Thread(target=add, args=(data, intervals[5], report_product, report_price))
-        # t4.daemon = True
-        t5.start()
-
-        t6 = threading.Thread(target=add, args=(data, intervals[6], report_product, report_price))
-        # t4.daemon = True
-        t6.start()
-
-        t7 = threading.Thread(target=add, args=(data, intervals[7], report_product, report_price))
-        # t4.daemon = True
-        t7.start()
-
-        t8 = threading.Thread(target=add, args=(data, intervals[8], report_product, report_price))
-        # t4.daemon = True
-        t8.start()
-
-        t9 = threading.Thread(target=add, args=(data, intervals[9], report_product, report_price))
-        # t4.daemon = True
-        t9.start()
-
-        t0.join()
-        t1.join()
-        t2.join()
-        t3.join()
-        t4.join()
-        t5.join()
-        t6.join()
-        t7.join()
-        t8.join()
-        t9.join()
+        # t0 = threading.Thread(target=add, args=(data, intervals[0], report_product, report_price))
+        # # t0.daemon = True
+        # t0.start()
+        #
+        # t1 = threading.Thread(target=add, args=(data, intervals[1], report_product, report_price))
+        # # t1.daemon = True
+        # t1.start()
+        #
+        # t2 = threading.Thread(target=add, args=(data, intervals[2], report_product, report_price))
+        # # t2.daemon = True
+        # t2.start()
+        #
+        # t3 = threading.Thread(target=add, args=(data, intervals[3], report_product, report_price))
+        # # t3.daemon = True
+        # t3.start()
+        #
+        # t4 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
+        # # t4.daemon = True
+        # t4.start()
+        #
+        # t5 = threading.Thread(target=add, args=(data, intervals[5], report_product, report_price))
+        # # t4.daemon = True
+        # t5.start()
+        #
+        # t6 = threading.Thread(target=add, args=(data, intervals[6], report_product, report_price))
+        # # t4.daemon = True
+        # t6.start()
+        #
+        # t7 = threading.Thread(target=add, args=(data, intervals[7], report_product, report_price))
+        # # t4.daemon = True
+        # t7.start()
+        #
+        # t8 = threading.Thread(target=add, args=(data, intervals[8], report_product, report_price))
+        # # t4.daemon = True
+        # t8.start()
+        #
+        # t9 = threading.Thread(target=add, args=(data, intervals[9], report_product, report_price))
+        # # t4.daemon = True
+        # t9.start()
+        #
+        # t0.join()
+        # t1.join()
+        # t2.join()
+        # t3.join()
+        # t4.join()
+        # t5.join()
+        # t6.join()
+        # t7.join()
+        # t8.join()
+        # t9.join()
 
         # # products = list()
         # # prices = list()

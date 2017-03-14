@@ -12,5 +12,5 @@
 # # t.daemon = True
 # t.start()
 
-string = "Hello, World"
-print(string[0:5])
+for idx in range(0,10):
+    print(idx)
