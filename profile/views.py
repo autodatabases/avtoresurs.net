@@ -37,6 +37,7 @@ class ProfileView(TemplateView):
 
 class ProfileEdit(FormView):
     form_class = ProfileForm
+    model = User
     template_name = 'profile/profile_edit.html'
     success_url = '/profile/'
 
