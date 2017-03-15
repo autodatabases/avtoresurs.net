@@ -1,7 +1,7 @@
 from django.views.generic import ListView, DetailView
 
-from shop.models.product import Product
-from tecdoc.models import Part, PartTypeGroupSupplier, CarType, Section, get_part_analogs
+from shop.models.product import Product, get_part_analogs
+from tecdoc.models import Part, PartTypeGroupSupplier, CarType, Section
 
 
 # SET @TYP_ID = 3822; /* ALFA ROMEO 145 (930) 1.4 i.e. [1994/07-1996/12] */

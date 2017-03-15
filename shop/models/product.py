@@ -1,5 +1,6 @@
 from enum import Enum
 
+import re
 from django.db import models
 
 # Create your models here.
@@ -7,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.utils.text import slugify
 
 from profile.models import Profile
+from tecdoc.models.part import Part
 
 
 class ProductQuerySet(models.query.QuerySet):
@@ -64,8 +66,15 @@ class Product(models.Model):
             self.quantity = 0
         return self.quantity
 
+    def get_title(self):
+        product_title = Part.objects.filter(sku=self.sku, supplier__title=self.brand)[0].designation
+        return product_title
+
     def __str__(self):
+        # product_title = Part.objects.filter(sku=self.sku, supplier__title=self.brand)[0].designation
+        # return str(product_title)
         return "%s %s" % (self.brand, self.sku)
+        return product_title
 
     def get_absolute_url(self):
         return reverse("shop:product_detail", kwargs={'pk': self.id})
@@ -125,9 +134,6 @@ def get_price(product, user=None):
     return -1
 
 
-
-
-
 def image_upload_to(instance, filename):
     title = instance.product.title
     slug = slugify(title)
@@ -155,3 +161,37 @@ class ProductPrice(models.Model):
 
     class Meta:
         ordering = ['-added']
+
+
+def get_part_analogs(part_analog, user):
+    data = part_analog
+    sku = []
+    brand = []
+    for part in data:
+        sku.append(part.part_group.part.sku)
+    products = Product.objects.filter(sku__in=sku)
+
+    # adding price data into parttypegroupsupplier_list
+    parts_with_price = []
+    parts_without_price = []
+    for part in data:
+        brand_name = part.part_group.part.supplier.title
+        sku = part.part_group.part.sku
+        for product in products:
+            if clean_number(sku) == clean_number(product.sku) and brand_name == product.brand:
+                # print(product)
+                # print(group_id)
+                part.part_group.part.price = get_price(product=product, user=user)
+                part.part_group.part.product_id = product.id
+                part.part_group.part.quantity = product.get_quantity()
+        if not hasattr(part.part_group.part, 'price'):
+            part.part_group.part.price = -1
+    part_analog_data = sorted(data, key=lambda x: x.part_group.part.price, reverse=True)
+    # for pa in part_analog_data:
+    #     print(pa.part_group.part.pk)
+    return part_analog_data
+
+number_re = re.compile('[^a-zA-Z0-9]+')
+
+def clean_number(number):
+    return number_re.sub('', number)

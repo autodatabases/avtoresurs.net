@@ -2,8 +2,8 @@ from collections import Set
 from django.views.generic import DetailView
 
 from profile.models import Profile
-from shop.models.product import Product, get_price
-from tecdoc.models import PartAnalog, get_part_analogs, clean_number, Part, PartCriteria, CarType, PartGroup
+from shop.models.product import Product, get_price, clean_number
+from tecdoc.models import PartAnalog, Part, PartCriteria, CarType, PartGroup
 
 
 class ProductDetailView(DetailView):

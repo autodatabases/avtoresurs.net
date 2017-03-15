@@ -2,8 +2,8 @@ from distutils.command.clean import clean
 
 from django.views.generic import TemplateView
 
-from shop.models.product import get_price
-from tecdoc.models import PartAnalog, clean_number, Product
+from shop.models.product import get_price, Product, clean_number
+from tecdoc.models import PartAnalog
 
 
 class SearchView(TemplateView):

@@ -18,11 +18,11 @@ from main.forms import ResendActivationEmailForm
 from main.models import Slider
 from news.models import Post
 from registration.forms import User
-from shop.models.product import Product, ProductPrice
+from shop.models.product import Product, ProductPrice, clean_number
 
 # Create your views here.
 # from tecdoc.models import Part
-from tecdoc.models import Part, PartAnalog, clean_number
+from tecdoc.models import Part, PartAnalog
 
 
 def add(data, interval, report_product, report_price):
@@ -104,6 +104,7 @@ class YandexDnsView(TemplateView):
 
 def get_intervals(interval, THREADS, end_idx):
     intervals = list()
+    intervals.append([1, interval])
     for idx in range(1, THREADS+1):
         intervals.append([interval*idx, interval*(idx+1)])
     intervals[THREADS-1][1] = end_idx
@@ -130,7 +131,7 @@ class ProductLoader(TemplateView):
     #     pass
 
     def post(self, request):
-        path = 'NewsAuto6.csv'
+        path = 'NewsAuto.csv'
         date = datetime.datetime.now()
         report_product = ['Прококол загрузки файла товаров от %s' % date]
         report_price = ['Прококол загрузки цен от %s' % date]

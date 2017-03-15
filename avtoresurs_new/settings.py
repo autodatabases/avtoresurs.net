@@ -46,12 +46,12 @@ INSTALLED_APPS = [
     'profile',
     # 'panel',
     'news',
+    'tecdoc',
     'shop',
     # 'cart',
     # 'order',
     'bonus',
     # 'products',
-    'tecdoc',
 ]
 
 MIDDLEWARE = [
