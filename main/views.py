@@ -44,7 +44,7 @@ def add(data, interval, report_product, report_price):
             product, created = Product.objects.get_or_create(sku=sku, brand=brand)
             product.quantity = quantity
             product.save()
-            product_price = ProductPrice.objects.get_or_create(
+            product_price = ProductPrice(
                 product=product,
                 retail_price=prices[0],
                 prices_1=prices[1],
