@@ -134,20 +134,24 @@ class ProductLoader(TemplateView):
     #     pass
 
     def post(self, request):
-        try:
-            file = self.request.FILES['file']
-        except KeyError as ke:
-            return HttpResponseRedirect('/profile/point_load/')
-
-        date = datetime.datetime.now()
-        filename = os.path.join('csv', 'auto', date.strftime('%Y'), date.strftime('%m'),
-                                self.request.FILES['file'].name)
-
-        path = default_storage.save(filename, ContentFile(file.read()))
-        file.close()
-
-        with open('media/' + path, 'r', encoding='cp1251') as fin:
+        file = 'NewsAuto2.csv'
+        with open(file, 'r', encoding='cp1251') as fin:
             data = fin.read().splitlines(True)
+        date = datetime.datetime.now()
+        # try:
+        #     file = self.request.FILES['file']
+        # except KeyError as ke:
+        #     return HttpResponseRedirect('/profile/point_load/')
+        #
+        # date = datetime.datetime.now()
+        # filename = os.path.join('csv', 'auto', date.strftime('%Y'), date.strftime('%m'),
+        #                         self.request.FILES['file'].name)
+        #
+        # path = default_storage.save(filename, ContentFile(file.read()))
+        # file.close()
+        #
+        # with open('media/' + path, 'r', encoding='cp1251') as fin:
+        #     data = fin.read().splitlines(True)
 
         report_product = ['Прококол загрузки файла товаров от %s' % date]
         report_price = ['Прококол загрузки цен от %s' % date]
