@@ -6,6 +6,8 @@ import threading
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import signing
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -132,13 +134,26 @@ class ProductLoader(TemplateView):
     #     pass
 
     def post(self, request):
-        path = 'NewsAuto.csv'
+        try:
+            file = self.request.FILES['file']
+        except KeyError as ke:
+            return HttpResponseRedirect('/profile/point_load/')
+
         date = datetime.datetime.now()
+        filename = os.path.join('csv', 'auto', date.strftime('%Y'), date.strftime('%m'),
+                                self.request.FILES['file'].name)
+
+        path = default_storage.save(filename, ContentFile(file.read()))
+        file.close()
+
+        with open('media/' + path, 'r', encoding='cp1251') as fin:
+            data = fin.read().splitlines(True)
+
         report_product = ['Прококол загрузки файла товаров от %s' % date]
         report_price = ['Прококол загрузки цен от %s' % date]
 
-        with open(path, 'r', encoding='cp1251') as f:
-            data = f.read().splitlines(True)
+        # print(data[0:50])
+        # exit()
 
         THREADS = 50
         list_len = len(data)
