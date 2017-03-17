@@ -160,7 +160,7 @@ class ProductLoader(TemplateView):
         # print(data[0:50])
         # exit()
 
-        THREADS = 40
+        THREADS = 300
         list_len = len(data)
         interval = list_len // THREADS
         intervals = get_intervals(interval, THREADS, list_len)
