@@ -151,7 +151,7 @@ class ProductImage(models.Model):
 
 class ProductPrice(models.Model):
     product = models.ForeignKey(Product)
-    retail_price = models.DecimalField(decimal_places=2, max_digits=20, default=False)
+    retail_price = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
     price_1 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
     price_2 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
     price_3 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
@@ -191,7 +191,9 @@ def get_part_analogs(part_analog, user):
     #     print(pa.part_group.part.pk)
     return part_analog_data
 
+
 number_re = re.compile('[^a-zA-Z0-9]+')
+
 
 def clean_number(number):
     return number_re.sub('', number)

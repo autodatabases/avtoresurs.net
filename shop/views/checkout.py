@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
+from django.core.mail import send_mail
 
 from shop.models.cart import Cart
 from shop.models.order import Order, OrderProduct
@@ -55,9 +56,18 @@ class CheckoutView(TemplateView):
             product = item.item
             price = get_price(product, user)
             qty = item.quantity
-            op = OrderProduct(order=order, product=product, qty=qty, price=price)
+            op = OrderProduct(order=order, item=product, qty=qty, price=price)
             # print(op)
             op.save()
+
+        send_mail(
+            'Новый заказ',
+            'Сформирован новый заказ',
+            'no-reply@avtoresurs.net',
+            ['o.artemov@gov39.ru'],
+            fail_silently=False,
+        )
+
         return HttpResponseRedirect('/checkout/')
         # order.save()
 

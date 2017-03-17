@@ -1,16 +1,45 @@
 # import threading
-# import time
 #
-#
-# def clock(interval):
+# def test():
+#     i = 1
 #     while True:
-#         print("The time is %s" % time.ctime())
-#         time.sleep(interval)
+#         i += 1
+#         print(i)
 #
-#
-# t = threading.Thread(target=clock, args=(1,))
-# # t.daemon = True
-# t.start()
+# thread = threading.Thread(target=test, args=())
+# thread.daemon = True
+# thread.start()
 
-for idx in range(0,10):
-    print(idx)
+
+# thread.join()
+
+
+# s1 = 'test'
+# s2 = 'test'
+#
+# if s1 == s2:
+#     print(True)
+# else:
+#     print(False)
+
+def makebold(fn):
+    def wrapped():
+        return "<b>" + fn() + "</b>"
+
+    return wrapped
+
+
+def makeitalic(fn):
+    def wrapped():
+        return "<i>" + fn() + "</i>"
+
+    return wrapped
+
+
+@makebold
+@makeitalic
+def hello():
+    return "hello habr"
+
+
+print(hello())  ## выведет <b><i>hello habr</i></b>

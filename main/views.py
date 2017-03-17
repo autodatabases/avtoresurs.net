@@ -34,28 +34,28 @@ def add(data, interval, report_product, report_price):
             sku = row[0]
             quantity = row[2]
             prices = [row[3], row[4], row[5], row[6], row[7]]
+            if not prices[4]:
+                prices[4] = 0
+            # print(prices)
             clean_sku = clean_number(sku)
             part_analog = PartAnalog.objects.filter(search_number=clean_sku)
-            # get_tecdoc(clean_sku, brand)
             product, created = Product.objects.get_or_create(sku=sku, brand=brand)
             product.quantity = quantity
             product.save()
-            product_price = ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
-                                         price_3=prices[3], price_4=prices[4])
+            product_price, created = ProductPrice.objects.get_or_create(product=product)
+            product_price.retail_price = prices[0]
+            product_price.price_1 = prices[1]
+            product_price.price_2 = prices[2]
+            product_price.price_3 = prices[3]
+            product_price.price_4 = prices[4]
+            # print(product_price)
             product_price.save()
             if not prices[0]:
                 report_price.append('Строка № %s не указана цена товара. [%s]' % (idx, line))
-            # product.update(quantity, prices)
-            # print(brand)
-            # part = Part.objects.filter(sku=sku, supplier__title=brand)
             if not part_analog:
                 report_product.append('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
-                # print('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
-
-                # print('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
-                # print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
         except:
-            pass
+            report_product.append('Строка № %s КРИТИЧЕСКАЯ ОШИБКА. [%s]' % (idx, line))
 
 
 class MainPageView(TemplateView):
@@ -105,9 +105,10 @@ class YandexDnsView(TemplateView):
 def get_intervals(interval, THREADS, end_idx):
     intervals = list()
     intervals.append([1, interval])
-    for idx in range(1, THREADS+1):
-        intervals.append([interval*idx, interval*(idx+1)])
-    intervals[THREADS-1][1] = end_idx
+    for idx in range(1, THREADS + 1):
+        intervals.append([interval * idx, interval * (idx + 1)])
+    intervals[0][0] = 1
+    intervals[THREADS - 1][1] = end_idx
     return intervals
 
     # [
@@ -139,10 +140,13 @@ class ProductLoader(TemplateView):
         with open(path, 'r', encoding='cp1251') as f:
             data = f.read().splitlines(True)
 
-        THREADS = 20
+        THREADS = 50
         list_len = len(data)
         interval = list_len // THREADS
         intervals = get_intervals(interval, THREADS, list_len)
+
+        # print(intervals[0])
+        # add(data, intervals[0], report_product, report_price)
 
         threads = list()
         for interval in intervals:
@@ -153,98 +157,6 @@ class ProductLoader(TemplateView):
         for thread in threads:
             thread.join()
 
-        # t0 = threading.Thread(target=add, args=(data, intervals[0], report_product, report_price))
-        # # t0.daemon = True
-        # t0.start()
-        #
-        # t1 = threading.Thread(target=add, args=(data, intervals[1], report_product, report_price))
-        # # t1.daemon = True
-        # t1.start()
-        #
-        # t2 = threading.Thread(target=add, args=(data, intervals[2], report_product, report_price))
-        # # t2.daemon = True
-        # t2.start()
-        #
-        # t3 = threading.Thread(target=add, args=(data, intervals[3], report_product, report_price))
-        # # t3.daemon = True
-        # t3.start()
-        #
-        # t4 = threading.Thread(target=add, args=(data, intervals[4], report_product, report_price))
-        # # t4.daemon = True
-        # t4.start()
-        #
-        # t5 = threading.Thread(target=add, args=(data, intervals[5], report_product, report_price))
-        # # t4.daemon = True
-        # t5.start()
-        #
-        # t6 = threading.Thread(target=add, args=(data, intervals[6], report_product, report_price))
-        # # t4.daemon = True
-        # t6.start()
-        #
-        # t7 = threading.Thread(target=add, args=(data, intervals[7], report_product, report_price))
-        # # t4.daemon = True
-        # t7.start()
-        #
-        # t8 = threading.Thread(target=add, args=(data, intervals[8], report_product, report_price))
-        # # t4.daemon = True
-        # t8.start()
-        #
-        # t9 = threading.Thread(target=add, args=(data, intervals[9], report_product, report_price))
-        # # t4.daemon = True
-        # t9.start()
-        #
-        # t0.join()
-        # t1.join()
-        # t2.join()
-        # t3.join()
-        # t4.join()
-        # t5.join()
-        # t6.join()
-        # t7.join()
-        # t8.join()
-        # t9.join()
-
-        # # products = list()
-        # # prices = list()
-        # for idx, line in enumerate(data[1:]):
-        #     try:
-        #         row = line.split(';')
-        #         part_analog = None
-        #         brand = row[1]
-        #         sku = row[0]
-        #         quantity = row[2]
-        #         prices = [row[3], row[4], row[5], row[6], row[7]]
-        #         clean_sku = clean_number(sku)
-        #         part_analog = PartAnalog.objects.filter(search_number=clean_sku)
-        #         # get_tecdoc(clean_sku, brand)
-        #         product, created = Product.objects.get_or_create(sku=sku, brand=brand)
-        #         product.quantity = quantity
-        #         # product.save()
-        #         products.append(product)
-        #         product_price = ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
-        #                      price_3=prices[3], price_4=prices[4])
-        #         prices.append(product_price)
-        #         # ProductPrice(product=product, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
-        #         #              price_3=prices[3], price_4=prices[4]).save()
-        #         if not prices[0]:
-        #             report_product_price.append('Строка № %s не указана цена товара. [%s]' % (idx, line))
-        #         # product.update(quantity, prices)
-        #         # print(brand)
-        #         # part = Part.objects.filter(sku=sku, supplier__title=brand)
-        #         if not part_analog:
-        #             report.append('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
-        #             # print('Строка № %s не найдено соответсвие в TECDOC. [%s]' % (idx, line))
-        #
-        #             # print('Строка № %s не найдено соответсвие в TECDOC! %s' % (idx, line))
-        #             # print('%s %s %s %s %s %s %s %s' % (sku, brand, quantity, retail_price, price_1, price_2, price_3, price_4))
-        #     except:
-        #         pass
-        #
-        # for product in products:
-        #     product.save()
-        # for product_price in prices:
-        #     product_price.save()
-        #
         error_file_path = 'error.log'
         with open(error_file_path, 'w+') as error_file:
             for item in report_product:
