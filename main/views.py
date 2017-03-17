@@ -45,20 +45,20 @@ def add(data, interval, report_product, report_price):
             product.quantity = quantity
             product.save()
 
-            # product_price = ProductPrice(
-            #     product=product,
-            #     retail_price=prices[0],
-            #     price_1=prices[1],
-            #     price_2=prices[2],
-            #     price_3=prices[3],
-            #     price_4=prices[4]
-            # )
-            product_price, created = ProductPrice.objects.get_or_create(product=product)
-            product_price.retail_price = prices[0]
-            product_price.price_1 = prices[1]
-            product_price.price_2 = prices[2]
-            product_price.price_3 = prices[3]
-            product_price.price_4 = prices[4]
+            product_price = ProductPrice(
+                product=product,
+                retail_price=prices[0],
+                price_1=prices[1],
+                price_2=prices[2],
+                price_3=prices[3],
+                price_4=prices[4]
+            )
+            # product_price, created = ProductPrice.objects.get_or_create(product=product)
+            # product_price.retail_price = prices[0]
+            # product_price.price_1 = prices[1]
+            # product_price.price_2 = prices[2]
+            # product_price.price_3 = prices[3]
+            # product_price.price_4 = prices[4]
             # print(product_price)
             product_price.save()
             if not prices[0]:
