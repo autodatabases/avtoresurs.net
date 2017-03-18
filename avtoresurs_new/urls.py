@@ -43,4 +43,5 @@ urlpatterns = [
                   url(r'^cart/$', CartView.as_view(), name='cart'),
                   url(r'^cart/count/$', ItemCountView.as_view(), name='item_count'),
                   url(r'^checkout/$', CheckoutView.as_view(), name='checkout'),
+                  url(r'^service/', include('service.urls', namespace='service')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
