@@ -33,7 +33,7 @@ class ProductDetailView(DetailView):
 
         raw_sql_applicability = 'select	la_id, typ_id,	mfa_brand,	des_texts7.tex_text as mod_cds_text,	des_texts.tex_text as typ_cds_text,	typ_pcon_start,	typ_pcon_end, typ_ccm,	typ_kw_from,	typ_kw_upto,	typ_hp_from,	typ_hp_upto,	typ_cylinders,	engines.eng_code,	des_texts2.tex_text as typ_engine_des_text, des_texts3.tex_text as typ_fuel_des_text, ifnull(des_texts4.tex_text, des_texts5.tex_text) as typ_body_des_text, des_texts6.tex_text as typ_axle_des_text, typ_max_weight from link_art inner join link_la_typ on lat_la_id = la_id inner join types on typ_id = lat_typ_id inner join country_designations on country_designations.cds_id = typ_cds_id inner join des_texts on des_texts.tex_id = country_designations.cds_tex_id inner join models on mod_id = typ_mod_id inner join manufacturers on mfa_id = mod_mfa_id inner join country_designations as country_designations2 on country_designations2.cds_id = mod_cds_id inner join des_texts as des_texts7 on des_texts7.tex_id = country_designations2.cds_tex_id left join designations on designations.des_id = typ_kv_engine_des_id left join des_texts as des_texts2 on des_texts2.tex_id = designations.des_tex_id left join designations as designations2 on designations2.des_id = typ_kv_fuel_des_id left join des_texts as des_texts3 on des_texts3.tex_id = designations2.des_tex_id left join link_typ_eng on lte_typ_id = typ_id left join engines on eng_id = lte_eng_id left join designations as designations3 on designations3.des_id = typ_kv_body_des_id  left join des_texts as des_texts4 on des_texts4.tex_id = designations3.des_tex_id left join designations as designations4 on designations4.des_id = typ_kv_model_des_id left join des_texts as des_texts5 on des_texts5.tex_id = designations4.des_tex_id left join designations as designations5 on designations5.des_id = typ_kv_axle_des_id left join des_texts as des_texts6 on des_texts6.tex_id = designations5.des_tex_id where	la_art_id = %s and	country_designations.cds_lng_id = %s and	country_designations2.cds_lng_id = %s and (designations.des_lng_id is null or designations.des_lng_id = %s) and (designations2.des_lng_id is null or designations2.des_lng_id = %s) and (designations3.des_lng_id is null or designations3.des_lng_id = %s) and (designations4.des_lng_id is null or designations4.des_lng_id = %s) and (designations5.des_lng_id is null or designations5.des_lng_id = %s) order by	mfa_brand,	mod_cds_text,	typ_cds_text,	typ_pcon_start,	typ_ccm;'
         car_types = PartGroup.objects.raw(raw_sql_applicability,
-                                        [part.pk, lng_id, lng_id, lng_id, lng_id, lng_id, lng_id, lng_id, ])
+                                          [part.pk, lng_id, lng_id, lng_id, lng_id, lng_id, lng_id, lng_id, ])
         if len(list(car_types)) == 0:
             car_types = None
         product.car_types = car_types
@@ -46,6 +46,8 @@ class ProductDetailView(DetailView):
         product.title = Part.objects.filter(sku=product.sku, supplier__title=product.brand)[0].designation
         parts = set()
         sku = set()
+        group = part_analogs[0].part.group.all()
+        # print(group)
         for pa in part_analogs:
             parts.add(pa.part)
             sku.add(pa.part.sku)
@@ -54,10 +56,11 @@ class ProductDetailView(DetailView):
         clean_sku = set()
         for sku_num in sku:
             clean_sku.add(clean_number(sku_num))
-        part_analogs = PartAnalog.objects.filter(search_number__in=clean_sku)
+        part_analogs = PartAnalog.objects.filter(search_number__in=clean_sku, part__group__in=group)
         parts = set()
         sku = set()
         for pa in part_analogs:
+            # if pa.part.group == group:
             parts.add(pa.part)
             sku.add(pa.part.sku)
 

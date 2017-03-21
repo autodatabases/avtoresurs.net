@@ -65,7 +65,7 @@ class Group(models.Model):
     id = models.AutoField(db_column='ga_id', primary_key=True, verbose_name='Ид')
     ga_nr = models.SmallIntegerField(db_column='ga_nr', blank='True', null='True')
     designation = models.ForeignKey(Designation, db_column='ga_des_id', verbose_name='Описание', related_name='+')
-    standart = models.ForeignKey(Designation, db_column='ga_des_id_standart', verbose_name='Стандарт', related_name='+')
+    standart = models.ForeignKey(Designation, db_column='ga_des_id_standard', verbose_name='Стандарт', related_name='+')
     assembly = models.ForeignKey(Designation, db_column='ga_des_id_assembly', verbose_name='Где устанавливается',
                                  related_name='+')
     intended = models.ForeignKey(Designation, db_column='ga_des_id_intended', verbose_name='Во что входит',
@@ -116,7 +116,7 @@ class PartAnalogManager(models.Manager):
         return super(PartAnalogManager, self). \
             get_queryset(). \
             filter(part__designation__language=tdsettings.LANG_ID). \
-            select_related('part', 'part__designation__description', 'brand')
+            select_related('part', 'part__designation__description', 'brand',).prefetch_related('part__group')
 
 
 class PartAnalog(models.Model):
