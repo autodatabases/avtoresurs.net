@@ -7,7 +7,7 @@ from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import SingleObjectMixin, DetailView
 
 from shop.models.cart import Cart, CartItem
-from shop.models.product import Product, get_price
+from shop.models.product import Product
 
 from django.contrib.auth.forms import AuthenticationForm
 # from orders.forms import GuestCheckoutForm
@@ -120,7 +120,7 @@ class CartView(SingleObjectMixin, View):
         # print(cart.cartitem_set.all())
         cart_items = cart.cartitem_set.all()
         for item in cart_items:
-            price = get_price(item.item, user)
+            price = item.item.get_price(user)
             item.item.price = price
 
         if cart_items:

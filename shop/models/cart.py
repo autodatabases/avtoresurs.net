@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.signals import pre_save, post_save, post_delete
 from django.conf import settings
 
-from shop.models.product import Product, get_price
+from shop.models.product import Product
 
 
 class CartItem(models.Model):
@@ -25,7 +25,7 @@ def cart_item_pre_save_receiver(sender, instance, *args, **kwargs):
     qty = Decimal(instance.quantity)
     if qty >= 1:
         user = instance.cart.user
-        price = get_price(instance.item, user)
+        price = instance.item.get_price(user)
         line_item_total = qty * Decimal(price)
         instance.line_item_total = line_item_total
 

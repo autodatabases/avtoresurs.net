@@ -71,10 +71,7 @@ class Product(models.Model):
         return product_title
 
     def __str__(self):
-        # product_title = Part.objects.filter(sku=self.sku, supplier__title=self.brand)[0].designation
-        # return str(product_title)
         return "%s %s" % (self.brand, self.sku)
-        return product_title
 
     def get_absolute_url(self):
         return reverse("shop:product_detail", kwargs={'pk': self.id})
@@ -85,6 +82,40 @@ class Product(models.Model):
 
     def remove_from_cart(self):
         return "%s?item=%s&delete=true" % (reverse("cart"), self.id)
+
+    def get_price(self, user=None):
+        pp = ProductPrice.objects.filter(product=self).first()
+
+        if not user:
+            try:
+                return pp.retail_price
+            except:
+                return pp.retail_price
+
+        try:
+            discount = Profile.objects.get(user=user).discount.discount
+            price = pp.retail_price - round((pp.retail_price * discount / 100), 2)
+            return price
+        except Exception:
+            pass
+
+        try:
+            group = user.groups.all()[0]
+            group = group.pk
+            if group == PriceGroup.RETAIL.value:
+                return pp.retail_price
+            elif group == PriceGroup.OPT1.value:
+                return pp.price_1
+            elif group == PriceGroup.OPT2.value:
+                return pp.price_2
+            elif group == PriceGroup.OPT3.value:
+                return pp.price_3
+            elif group == PriceGroup.OPT4.value:
+                return pp.price_4
+        except Exception:
+            pass
+
+        return -1
 
     class Meta:
         verbose_name = 'Продукт'
@@ -99,39 +130,39 @@ class PriceGroup(Enum):
     OPT4 = 5
 
 
-def get_price(product, user=None):
-    pp = ProductPrice.objects.filter(product=product).first()
-
-    if not user:
-        try:
-            return pp.retail_price
-        except:
-            return -1
-
-    try:
-        discount = Profile.objects.get(user=user).discount.discount
-        price = pp.retail_price - round((pp.retail_price * discount / 100), 2)
-        return price
-    except Exception:
-        pass
-
-    try:
-        group = user.groups.all()[0]
-        group = group.pk
-        if group == PriceGroup.RETAIL.value:
-            return pp.retail_price
-        elif group == PriceGroup.OPT1.value:
-            return pp.price_1
-        elif group == PriceGroup.OPT2.value:
-            return pp.price_2
-        elif group == PriceGroup.OPT3.value:
-            return pp.price_3
-        elif group == PriceGroup.OPT4.value:
-            return pp.price_4
-    except Exception:
-        pass
-
-    return -1
+# def get_price(product, user=None):
+#     pp = ProductPrice.objects.filter(product=product).first()
+#
+#     if not user:
+#         try:
+#             return pp.retail_price
+#         except:
+#             return -1
+#
+#     try:
+#         discount = Profile.objects.get(user=user).discount.discount
+#         price = pp.retail_price - round((pp.retail_price * discount / 100), 2)
+#         return price
+#     except Exception:
+#         pass
+#
+#     try:
+#         group = user.groups.all()[0]
+#         group = group.pk
+#         if group == PriceGroup.RETAIL.value:
+#             return pp.retail_price
+#         elif group == PriceGroup.OPT1.value:
+#             return pp.price_1
+#         elif group == PriceGroup.OPT2.value:
+#             return pp.price_2
+#         elif group == PriceGroup.OPT3.value:
+#             return pp.price_3
+#         elif group == PriceGroup.OPT4.value:
+#             return pp.price_4
+#     except Exception:
+#         pass
+#
+#     return -1
 
 
 def image_upload_to(instance, filename):
@@ -181,7 +212,7 @@ def get_part_analogs(part_analog, user):
             if clean_number(sku) == clean_number(product.sku) and brand_name == product.brand:
                 # print(product)
                 # print(group_id)
-                part.part_group.part.price = get_price(product=product, user=user)
+                part.part_group.part.price = product.get_price(user=user)
                 part.part_group.part.product_id = product.id
                 part.part_group.part.quantity = product.get_quantity()
         if not hasattr(part.part_group.part, 'price'):

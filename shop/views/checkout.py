@@ -7,7 +7,6 @@ from django.core.mail import send_mail
 
 from shop.models.cart import Cart
 from shop.models.order import Order, OrderProduct
-from shop.models.product import get_price
 
 
 class CheckoutView(TemplateView):
@@ -54,7 +53,7 @@ class CheckoutView(TemplateView):
         order.save()
         for item in cart.cartitem_set.all():
             product = item.item
-            price = get_price(product, user)
+            price = product.get_price(user)
             qty = item.quantity
             op = OrderProduct(order=order, item=product, qty=qty, price=price)
             # print(op)

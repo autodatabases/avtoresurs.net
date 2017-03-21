@@ -2,7 +2,7 @@ from collections import Set
 from django.views.generic import DetailView
 
 from profile.models import Profile
-from shop.models.product import Product, get_price, clean_number
+from shop.models.product import Product, clean_number
 from tecdoc.models import PartAnalog, Part, PartCriteria, CarType, PartGroup
 
 
@@ -12,8 +12,8 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         product = context['product']
-        product.price = get_price(product=product, user=self.request.user)
-        product.default_price = get_price(product)
+        product.price = product.get_price(user=self.request.user)
+        product.default_price = product.get_price()
 
         part = Part.objects.get(sku__iexact=product.sku, supplier__title=product.brand)
 
@@ -41,20 +41,34 @@ class ProductDetailView(DetailView):
         # for car in car_types:
         #     print("%s %s %s" % (car.mfa_brand, car.mod_cds_text, car.typ_cds_text))
 
+
         part_analogs = PartAnalog.objects.filter(search_number=clean_number(product.sku))
         product.title = Part.objects.filter(sku=product.sku, supplier__title=product.brand)[0].designation
         parts = set()
-        sku = []
+        sku = set()
         for pa in part_analogs:
             parts.add(pa.part)
-            sku.append(pa.part.sku)
+            sku.add(pa.part.sku)
+
+        # additional block to search the the second level tree cross
+        clean_sku = set()
+        for sku_num in sku:
+            clean_sku.add(clean_number(sku_num))
+        part_analogs = PartAnalog.objects.filter(search_number__in=clean_sku)
+        parts = set()
+        sku = set()
+        for pa in part_analogs:
+            parts.add(pa.part)
+            sku.add(pa.part.sku)
+
+        # print(part_analogs2)
         products = Product.objects.filter(sku__in=sku)
 
         for part in parts:
             brand_name = part.supplier.title
             for prod in products:
                 if clean_number(part.sku) == clean_number(prod.sku) and brand_name == prod.brand:
-                    part.price = get_price(product=prod, user=self.request.user)
+                    part.price = prod.get_price(user=self.request.user)
                     part.product_id = prod.id
                     part.quantity = prod.get_quantity()
             if not hasattr(part, 'price'):

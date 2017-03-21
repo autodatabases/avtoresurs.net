@@ -2,7 +2,7 @@ from distutils.command.clean import clean
 
 from django.views.generic import TemplateView
 
-from shop.models.product import get_price, Product, clean_number
+from shop.models.product import Product, clean_number
 from tecdoc.models import PartAnalog
 
 
@@ -27,7 +27,7 @@ class SearchView(TemplateView):
             sku = part.sku
             for product in products:
                 if clean_number(part.sku) == clean_number(product.sku) and brand_name == product.brand:
-                    part.price = get_price(product=product, user=self.request.user)
+                    part.price = product.get_price(user=self.request.user)
                     part.product_id = product.id
                     part.quantity = product.get_quantity()
             if not hasattr(part, 'price'):
