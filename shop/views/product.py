@@ -44,12 +44,10 @@ class ProductDetailView(DetailView):
 
         part_analogs = PartAnalog.objects.filter(search_number=clean_number(product.sku))
         product.title = Part.objects.filter(sku=product.sku, supplier__title=product.brand)[0].designation
-        parts = set()
         sku = set()
         group = part_analogs[0].part.group.all()
-        # print(group)
         for pa in part_analogs:
-            parts.add(pa.part)
+            # parts.add(pa.part)
             sku.add(pa.part.sku)
 
         # additional block to search the the second level tree cross
@@ -60,11 +58,9 @@ class ProductDetailView(DetailView):
         parts = set()
         sku = set()
         for pa in part_analogs:
-            # if pa.part.group == group:
             parts.add(pa.part)
             sku.add(pa.part.sku)
 
-        # print(part_analogs2)
         products = Product.objects.filter(sku__in=sku)
 
         for part in parts:

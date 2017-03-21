@@ -115,7 +115,7 @@ class Product(models.Model):
         except Exception:
             pass
 
-        return -1
+        return pp.retail_price
 
     class Meta:
         verbose_name = 'Продукт'
