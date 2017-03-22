@@ -50,4 +50,31 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card white no-box-shadow">
+                <div class="card-content black-text">
+                    <span class="card-title">Личные сообщения</span>
+                    {% if postman_unread_count %}
+                        <p>У Вас есть новые сообщения</p>
+                    {% else %}
+                        <p>Новых сообщений не поступало</p>
+                    {% endif %}
+                </div>
+                <div class="card-action">
+                    <a href="{% url 'postman:inbox' %}">
+                        Перейтик к личным сообщениям
+                        {% if postman_unread_count == 1 %}
+                            <span class="new badge blue" data-badge-caption="новое">{{ postman_unread_count }}</span>
+                        {% elif postman_unread_count > 1 %}
+                            <span class="new badge blue" data-badge-caption="новых">{{ postman_unread_count }}</span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
 {% endblock %}

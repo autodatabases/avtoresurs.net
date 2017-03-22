@@ -1,0 +1,37 @@
+{% extends "postman/base_folder.html" %}
+{% load i18n %}
+{% load i18n postman_tags %}
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="/profile/" class="breadcrumb">Личный кабинет</a>
+            <a href="/messages/" class="breadcrumb">Сообщения</a>
+            <a href="" class="breadcrumb">Корзина</a>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block postman_menu %}
+    <div class="collection postmenu">{% postman_unread as unread_count %}
+        <a href="{% url 'postman:inbox' %}" class="collection-item">{% trans "Входящие" %}
+            {% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
+        <a href="{% url 'postman:sent' %}" class="collection-item">{% trans "Отправленные" %}</a>
+        <a href="{% url 'postman:archives' %}" class="collection-item">{% trans "Архив" %}</a>
+        <a href="{% url 'postman:trash' %}" class="collection-item active">{% trans "Корзина" %}</a>
+        <a href="{% url 'postman:write' %}"
+           class="collection-item">{% trans "Новое сообщение" %}</a>
+    </div>
+{% endblock %}
+
+{% block pm_folder_title %}{% trans "Корзина" %}{% endblock %}
+{% block pm_delete_button %}{% endblock %}
+{% block pm_archive_button %}{% endblock %}
+{% block pm_subject %}{# no link #}
+    {% include "postman/inc_subject_ex.html" %}
+{% endblock %}
+{% block pm_footer_info %}
+    <p>{% trans "Сообщения в этой папке могут быть удалены время от времени. Для долговременного хранения используйте папку архива." %}</p>
+{% endblock %}

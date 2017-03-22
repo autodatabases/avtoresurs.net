@@ -1,0 +1,152 @@
+{% extends "postman/base.html" %}
+{% load i18n postman_tags %}{% load pagination_tags %}{% comment %}
+WARNING: 'pagination_tags' is a name from the django-pagination application.
+For convenience, the design of this template is done with the use of that application.
+Django-postman will still be working, even if that application is not installed, by providing a mock
+for the template tag library.
+If the real implementation is to be used, just make sure that 'pagination' is declared before 'postman'
+in the INSTALLED_APPS setting.
+{% endcomment %}
+{% block content %}
+
+    <div class="row white">
+        <div class="col s12">
+            <p>{% block pm_folder_title %}{% endblock %}</p>
+        </div>
+    </div>
+
+
+    <div class="row white">
+        <div class="col s12">
+            <div class="">
+                <div class="row">
+                    <div class="col m4 l3">
+                        {% block postman_menu %}{% endblock postman_menu %}
+                    </div>
+                    <div class="post-content">
+                        <div class="col m8 l9">
+                            <div id="postman">
+
+                                {% autopaginate pm_messages %}
+                                {% if invalid_page %}
+                                    <p>{% trans "Измините, номер страницы указан не верно" %}</p>
+                                {% else %}
+                                    {% if pm_messages %}
+
+                                        <form action="{% block pm_form_action %}{% endblock %}"
+                                              method="post">{% csrf_token %}
+
+                                            <table id="pm_messages" class="striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>{% trans "Выделить" %}</th>
+                                                    {% block pm_sender_header %}
+                                                        <th>
+                                                            <a href="{% postman_order_by sender %}">{% trans "Отправитель" %}</a>
+                                                        </th>{% endblock %}
+                                                    {% block pm_recipient_header %}
+                                                        <th>
+                                                            <a href="{% postman_order_by recipient %}">{% trans "Получатель" %}</a>
+                                                        </th>{% endblock %}
+                                                    <th><a href="{% postman_order_by subject %}">{% trans "Тема" %}</a>
+                                                    </th>
+                                                    <th><a href="{% postman_order_by date %}">
+                                                        {% block pm_date %}{% trans "Дата" %}{% endblock %}</a></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>{% for message in pm_messages %}
+                                                    <tr>
+                                                        <td><input type="checkbox" id="checkbox-{{ forloop.counter0 }}"
+                                                                   {% if by_conversation and message.thread_id %}name="tpks"
+                                                                   value="{{ message.thread_id }}"{% else %}name="pks"
+                                                                   value="{{ message.pk }}"{% endif %}/>
+                                                            <label for="checkbox-{{ forloop.counter0 }}">&nbsp;</label>
+                                                        </td>
+                                                        {% block pm_sender_cell %}
+                                                            <td>{{ message.obfuscated_sender|or_me:user }}
+                                                                {% if message.count %} (
+                                                                    {{ message.count }}){% endif %}</td>{% endblock %}
+                                                        {% block pm_recipient_cell %}
+                                                            <td>{{ message.obfuscated_recipient|or_me:user }}
+                                                                {% if message.count %}(
+                                                                    {{ message.count }}){% endif %}</td>{% endblock %}
+                                                        <td>{% if message.is_new %}<strong>{% endif %}
+                                                            {% if message.is_replied %}
+                                                                <em>{% endif %}
+                                                            {% block pm_subject %}
+                                                                <a href="
+
+
+
+
+
+
+
+
+
+
+
+                                                                        {% if by_conversation and message.thread_id %}{% url 'postman:view_conversation' message.thread_id %}{% else %}{% url 'postman:view' message.pk %}{% endif %}?next={{ current_url|urlencode }}">
+                                                                    {% include "postman/inc_subject_ex.html" %}
+                                                                </a>
+                                                            {% endblock %}
+                                                            {% if message.is_replied %}</em>{% endif %}
+                                                            {% if message.is_new %}
+                                                                </strong>{% endif %}</td>
+                                                        <td>{{ message.sent_at|date:"d.m.Y H:i" }}</td>
+                                                    </tr>{% endfor %}
+                                                </tbody>
+                                            </table>
+
+                                            {% block pm_by_modes %}
+                                                <div id="pm_by_modes">
+                        <span class="pm_by_mode">Группировать: {% if by_message %}
+                            <a href="{{ by_conversation_url }}">{% endif %}{% trans "по разговорам" %}
+                            {% if by_message %}</a>{% endif %}</span>
+                                                    <span class="pm_by_mode">{% if by_conversation %}
+                                                        <a href="{{ by_message_url }}">{% endif %}{% trans "по сообщениям" %}
+                                                        {% if by_conversation %}
+                                                            </a>{% endif %}</span>
+                                                </div>{% endblock pm_by_modes %}
+
+                                            {% block pm_form_buttons %}<span id="pm_buttons">
+{% block pm_delete_button %}
+
+    <button type="submit" class="waves-effect waves-light btn light-blue"
+            onclick="this.form.action='{% url 'postman:delete' %}'">{% trans "Удалить" %}</button>{% endblock %}
+                                                {% block pm_archive_button %}
+                                                    <button type="submit"
+                                                            class="waves-effect waves-light btn light-blue"
+                                                            onclick="this.form.action='{% url 'postman:archive' %}'">{% trans "Архивировать" %}</button>{% endblock %}
+                                                {% block pm_undelete_button %}
+                                                    <button type="submit"
+                                                            class="waves-effect waves-light btn light-blue"
+                                                            onclick="this.form.action='{% url 'postman:undelete' %}'">{% trans "Восстановить" %}</button>{% endblock %}
+                                                {% block pm_read_button %}
+                                                    <button type="submit"
+                                                            class="waves-effect waves-light btn light-blue"
+                                                            onclick="this.form.action='{% url 'postman:mark-read' %}'">{% trans "Отметить как прочитанное" %}</button>{% endblock %}
+                                                {% block pm_unread_button %}
+                                                    <button type="submit"
+                                                            class="waves-effect waves-light btn light-blue"
+                                                            onclick="this.form.action='{% url 'postman:mark-unread' %}'">{% trans "Отметить как новое" %}</button>{% endblock %}
+</span>{% endblock %}
+
+                                        </form>
+                                        {% paginate %}
+                                    {% else %}
+                                        <p>{% trans "Нет сообщений." %}</p>
+                                    {% endif %}
+                                {% endif %}
+                                {% block pm_footer_info %}{% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}

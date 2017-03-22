@@ -44,4 +44,5 @@ urlpatterns = [
                   url(r'^cart/count/$', ItemCountView.as_view(), name='item_count'),
                   url(r'^checkout/$', CheckoutView.as_view(), name='checkout'),
                   url(r'^service/', include('service.urls', namespace='service')),
+                  url(r'^messages/', include('postman.urls', namespace='postman', app_name='postman')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

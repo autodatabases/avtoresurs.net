@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'bonus',
     # 'products',
     'service',
+    'postman',
 ]
 
 MIDDLEWARE = [
@@ -78,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'postman.context_processors.inbox',
             ],
         },
     },
@@ -135,7 +137,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 # <<<<<<< HEAD
 # LOGGING_CONFIG = None
 # =======
@@ -165,3 +166,8 @@ EMAIL_HOST_USER = 'no-reply@avtoresurs.net'
 EMAIL_HOST_PASSWORD = 'Iddqd31337'
 DEFAULT_FROM_EMAIL = 'no-reply@avtoresurs.net'
 
+# POSTMAN CONFIG
+POSTMAN_DISALLOW_ANONYMOUS = True
+POSTMAN_DISALLOW_MULTIRECIPIENTS = True
+POSTMAN_DISALLOW_COPIES_ON_REPLY = True
+POSTMAN_AUTO_MODERATE_AS = True
