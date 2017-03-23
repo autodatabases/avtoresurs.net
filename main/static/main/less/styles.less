@@ -91,6 +91,15 @@ header {
   box-shadow: 0 1px 0 0 @color_input_text;
 }
 
+textarea.materialize-textarea:focus:not([readonly]){
+  border-bottom: 1px solid @color_input_text;
+  box-shadow: 0 1px 0 0 @color_input_text;
+}
+
+textarea.materialize-textarea:focus:not([readonly]) + label{
+  color: @color_input_text;
+}
+
 .tecdoc-table > .row > .col > a, .tecdoc-table > a > * {
   color: #0288d1;
 }
@@ -342,7 +351,7 @@ hr {
 }
 
 #postman {
-  min-height: 500px;
+  min-height: 400px;
   padding: 10px 50px 10px 0px;
 }
 
@@ -373,4 +382,8 @@ hr {
 #pm_buttons button {
   margin-right: 10px;
   margin-bottom: 15px;
+}
+
+#postman.write {
+  padding: 30px !important;
 }

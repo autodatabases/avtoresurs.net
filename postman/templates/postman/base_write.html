@@ -27,26 +27,72 @@
         </div>
     </div>
 
-    <div class="row white">
+    <div class="row">
         <div class="col s12">
             <div class="">
                 <div class="row">
-                    <div class="col m4 l3">
+                    <div class="col s4 m4 l3 white">
                         {% block postman_menu %}{% endblock postman_menu %}
                     </div>
                     <div class="post-content">
-                        <div class="col m8 l9">
+                        <div class="col s7 m7 l8 offset-s1 offset-m1 offset-l1 white">
 
-                            <div id="postman">
-
+                            <div id="postman" class="write">
+                                {{ form.non_field_errors }}
+                                {{ form.recipients.errors }}
+                                {{ form.subject.errors }}
+                                {{ form.body.errors }}
                                 <form action="{% if next_url %}?next={{ next_url|urlencode }}{% endif %}"
-                                      method="post">{% csrf_token %}
-                                    <table>
-                                        {% block pm_write_recipient %}{% endblock %}
-                                        {{ form.as_table }}
-                                    </table>
-                                    <button type="submit" class="waves-effect waves-light btn light-blue">{% trans "Отправить" %}</button>
+                                      method="post">
+                                    {% csrf_token %}
+                                    {% block pm_write_recipient %}{% endblock %}
+
+                                    {% if user.is_superuser %}
+
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <select name="recipients">
+                                                    <option value="" disabled selected>Выберите пользователя</option>
+                                                    {% for user in users %}
+                                                        <option value="{{ user }}">{{ user }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <label>Пользователь</label>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <input type="hidden" name="recipients" value="admin">
+                                    {% endif %}
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input placeholder="Введите тему сообщения"
+                                                   id="{{ form.subject.id_for_label }}" type="text"
+                                                   class="validate" name="{{ form.subject.name }}" required>
+                                            <label for="{{ form.subject.id_for_label }}">Тема сообщения</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <textarea id="{{ form.body.id_for_label }}" class="materialize-textarea"
+                                                      name="{{ form.body.name }}" required></textarea>
+                                            <label for="{{ form.body.id_for_label }}">Текст сообщения</label>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit"
+                                            class="waves-effect waves-light btn light-blue">{% trans "Отправить" %}</button>
+
+
+                                    {#                                    <table>#}
+                                    {##}
+                                    {#                                        {{ form.as_table }}#}
+                                    {#                                    </table>#}
+
+
                                 </form>
+
+
                             </div>
 
                         </div>
@@ -55,4 +101,12 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('select').material_select();
+        });
+    </script>
 {% endblock %}

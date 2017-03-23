@@ -5,6 +5,9 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+
+from profile.models import Profile
+
 try:
     from django.contrib.sites.shortcuts import get_current_site  # Django 1.7
 except ImportError:
@@ -256,6 +259,12 @@ class WriteView(ComposeMixin, FormView):
             channel = self.autocomplete_channels
         kwargs['channel'] = channel
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(WriteView,self).get_context_data()
+        users = Profile.objects.all().filter(user__is_active=True).order_by('user__username')
+        context['users'] = users
+        return context
 
 
 class ReplyView(ComposeMixin, FormView):
