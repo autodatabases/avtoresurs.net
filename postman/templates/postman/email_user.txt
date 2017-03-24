@@ -7,7 +7,7 @@
 
 {% else %}{# 'acceptance' #}
 {% if object.parent_id %}{% if object.parent.sender_id == object.recipient_id %}{% blocktrans with object.parent.sent_at|date:"DATETIME_FORMAT" as date and object.obfuscated_sender as sender %}On {{ date }}, you sent a message to the user '{{ sender }}'.{% endblocktrans %}
-{% trans "Your correspondent has given you an answer." %}
+{% trans "Вам направлен ответ на обращение." %}
 {% else %}{% blocktrans with object.obfuscated_sender as sender %}Вы получили копию ответа от пользователя '{{ sender }}'.{% endblocktrans %}
 {% endif %}
 {% else %}{% blocktrans with object.obfuscated_sender as sender %}Вы получили новое сообщение от пользователя '{{ sender }}'.{% endblocktrans %}
