@@ -59,7 +59,7 @@ class CheckoutView(TemplateView):
             product = item.item
             price = product.get_price(user)
             qty = item.quantity
-            body += '%s. %s, %s шт. x %s руб.., на общую сумму: %s руб.\r\n' % (idx+1, product, qty, price, qty*price)
+            body += '%s. %s %s, %s шт. x %s руб.., на общую сумму: %s руб.\r\n' % (idx+1, product.sku, product.brand, qty, price, qty*price)
             op = OrderProduct(order=order, item=product, qty=qty, price=price)
             # print(op)
             op.save()
