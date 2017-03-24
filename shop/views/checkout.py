@@ -4,7 +4,8 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 from django.core.mail import send_mail
-
+from django.contrib.auth.models import User
+from postman.models import Message, STATUS_ACCEPTED
 from shop.models.cart import Cart
 from shop.models.order import Order, OrderProduct
 
@@ -51,13 +52,29 @@ class CheckoutView(TemplateView):
         user = self.request.user
         order.order_total = cart.subtotal
         order.save()
-        for item in cart.cartitem_set.all():
+
+        body = 'Новый заказ от %s #%s.\r\n\r\nИнформация о заказе:\r\n' % (order.id, order.added)
+
+        for idx, item in enumerate(cart.cartitem_set.all()):
             product = item.item
             price = product.get_price(user)
             qty = item.quantity
+            body += '%s. %s, %s шт. x %s руб.., на общую сумму: %s руб.\r\n' % (idx+1, product, qty, price, qty*price)
             op = OrderProduct(order=order, item=product, qty=qty, price=price)
             # print(op)
             op.save()
+
+        body += '\r\nИтого: %s руб.' % (order.order_total)
+
+        subject = 'Сформирован новый заказ от %s № %s!' % (order.added, order.id)
+        # body = 'Новый заказ'
+        sender = User.objects.filter(username='admin').first()
+        recipient = self.request.user
+        status = STATUS_ACCEPTED
+        message_user = Message(subject=subject, body=body, sender=sender, recipient=recipient, moderation_status=status)
+        message_user.save()
+        message_admin = Message(subject=subject, body=body, sender=recipient, recipient=sender, moderation_status=status)
+        message_admin.save()
 
         send_mail(
             'Новый заказ',
