@@ -1,8 +1,8 @@
 from django.db import models
-
+from registration.signals import user_registered
 
 # Create your models here.
-
+from profile.models import Profile
 
 
 class Slider(models.Model):
@@ -21,3 +21,11 @@ class Slider(models.Model):
 
 # class About(models.Model):
 #
+
+
+def user_registered_callback(sender, user, request, **kwargs):
+    profile = Profile(user=user)
+    profile.save()
+
+
+user_registered.connect(user_registered_callback)

@@ -9,10 +9,11 @@ from django.views.generic.detail import SingleObjectMixin, DetailView
 from shop.models.cart import Cart, CartItem
 from shop.models.product import Product
 
-
 from django.contrib.auth.forms import AuthenticationForm
 # from orders.forms import GuestCheckoutForm
 from django.views.generic.edit import FormMixin
+
+# from tecdoc.models import Part
 
 
 class ItemCountView(View):
@@ -39,7 +40,9 @@ class CartView(SingleObjectMixin, View):
 
     def get_object(self, *args, **kwargs):
         self.request.session.set_expiry(259200)
+        # self.request.session["cart_id"] = None
         cart_id = self.request.session.get("cart_id")
+        print(cart_id)
         if not cart_id:
             cart = Cart()
             cart.save()
@@ -58,6 +61,7 @@ class CartView(SingleObjectMixin, View):
         flash_message = ""
         item_added = False
         cart_item = None
+        title = None
         if item_id:
             item_instance = get_object_or_404(Product, id=item_id)
             qty = request.GET.get("qty", 1)
@@ -110,6 +114,19 @@ class CartView(SingleObjectMixin, View):
             "object": self.get_object(),
         }
         template = self.template_name
+
+        user = self.request.user
+
+        # print(cart.cartitem_set.all())
+        cart_items = cart.cartitem_set.all()
+        for item in cart_items:
+            price = item.item.get_price(user)
+            item.item.price = price
+
+        if cart_items:
+            context.update({
+                "cart_items": cart_items
+            })
         return render(request, template, context)
 
 

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактирование информации о пользователе{% endblock %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'profile:profile_main' %}" class="breadcrumb">Личный кабинет</a>
+            <a href="" class="breadcrumb">Редактирование информации о пользователе</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <!-- Main content -->
+    <div class="row white">
+        <div class="col s12">
+            <p>Редактирование информации о пользователе</p>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col s12 m6">
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

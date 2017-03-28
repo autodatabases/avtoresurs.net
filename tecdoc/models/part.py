@@ -12,7 +12,7 @@ class PartManager(TecdocLanguageDesManager):
         query = query.select_related('designation__description',
                                      'supplier')
 
-        # query = query.prefetch_related('analogs', 'images')
+        query = query.prefetch_related('analogs', 'images', )
         # query = query.prefetch_related('analogs')
         return query
 
@@ -41,6 +41,16 @@ class Part(models.Model):
     # car_type = models.ManyToManyField(CarType, through='tecdoc.PartTypeGroupSupplier')
     group = models.ManyToManyField('tecdoc.Group', through='tecdoc.PartGroup', verbose_name='Группа запчастей')
 
+    images = models.ManyToManyField('tecdoc.Image', verbose_name=u'Изображения', through='tecdoc.PartImage',
+                                    related_name='parts')
+
+    # criteries = models.ManyToManyField('tecdoc.Criteria',
+    #                                    verbose_name=u'Оговорки',
+    #                                    through='tecdoc.PartCriteria',
+    #                                    related_name='parts')
+
+    # pdfs = models.ManyToManyField(PdfFile, verbose_name=u'Инструкция', through=PartPdf, related_name='parts')
+
     objects = PartManager()
 
     def __str__(self):
@@ -55,7 +65,7 @@ class Group(models.Model):
     id = models.AutoField(db_column='ga_id', primary_key=True, verbose_name='Ид')
     ga_nr = models.SmallIntegerField(db_column='ga_nr', blank='True', null='True')
     designation = models.ForeignKey(Designation, db_column='ga_des_id', verbose_name='Описание', related_name='+')
-    standart = models.ForeignKey(Designation, db_column='ga_des_id_standart', verbose_name='Стандарт', related_name='+')
+    standart = models.ForeignKey(Designation, db_column='ga_des_id_standard', verbose_name='Стандарт', related_name='+')
     assembly = models.ForeignKey(Designation, db_column='ga_des_id_assembly', verbose_name='Где устанавливается',
                                  related_name='+')
     intended = models.ForeignKey(Designation, db_column='ga_des_id_intended', verbose_name='Во что входит',
@@ -103,10 +113,10 @@ class PartAnalogManager(models.Manager):
     # use_for_related_fields = True
 
     def get_queryset(self):
-        return super(PartAnalogManager, self).\
-            get_queryset().\
-            filter(part__designation__language=tdsettings.LANG_ID).\
-            select_related('part', 'part__designation__description', 'brand')
+        return super(PartAnalogManager, self). \
+            get_queryset(). \
+            filter(part__designation__language=tdsettings.LANG_ID). \
+            select_related('part', 'part__designation__description', 'brand',).prefetch_related('part__group')
 
 
 class PartAnalog(models.Model):
@@ -117,7 +127,8 @@ class PartAnalog(models.Model):
             (5, u'штрих-код'),
             )
 
-    part = models.OneToOneField(Part, db_column='ARL_ART_ID', primary_key=True, verbose_name='Запчасть')
+    part = models.OneToOneField(Part, db_column='ARL_ART_ID', primary_key=True, verbose_name='Запчасть',
+                                related_name='analogs')
     number = models.CharField(db_column='ARL_DISPLAY_NR', max_length=105, verbose_name='Номер')
     search_number = models.CharField(db_column='ARL_SEARCH_NUMBER', max_length=105, verbose_name='Номер для поиска')
     kind = models.CharField(db_column='ARL_KIND', max_length=1, verbose_name='Тип')
@@ -160,4 +171,11 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.title.upper()
+
         # return self.title.capitalize()
+
+
+# TODO
+class PartListCriteria(models.Model):
+    class Meta:
+        db_table = tdsettings.DB_PREFIX + 'ARTICLE_LIST_CRITERIA'

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Личный кабинет пользователя{% endblock %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'profile:profile_main' %}" class="breadcrumb">Личный кабинет</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <!-- Main content -->
+    <div class="row white">
+        <div class="col s12">
+            <p>Личный кабинет пользователя</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card dark-blue no-box-shadow">
+                <div class="card-content white-text">
+                    <span class="card-title">Здравствуйте, {{ request.user }}!</span>
+                    <p>Полное имя: {{ profile.fullname }}</p>
+                    <p>Всего баллов: <strong>{{ profile.points }}</strong></p>
+                    <p>Дата последнего визита: <strong>{{ request.user.last_login|date:"d.m.Y H:i" }}</strong></p>
+                </div>
+                <div class="card-action">
+                    <a href="{% url 'profile:profile_edit' profile.pk %}">Редактировать информацию о пользователе</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m6">
+            <div class="card white no-box-shadow">
+                <div class="card-content black-text">
+                    <span class="card-title">Информация о заказах</span>
+                    <p>Полное имя: {{ profile.fullname }}</p>
+                    <p>Всего баллов: <strong>{{ profile.points }}</strong></p>
+                    <p>Дата последнего входа: {{ request.user.last_login }}</p>
+                </div>
+                <div class="card-action">
+                    <a href="#">Посмотреть заказы</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card white no-box-shadow">
+                <div class="card-content black-text">
+                    <span class="card-title">Личные сообщения</span>
+                    {% if postman_unread_count %}
+                        <p>У Вас есть новые сообщения</p>
+                    {% else %}
+                        <p>Новых сообщений не поступало</p>
+                    {% endif %}
+                </div>
+                <div class="card-action">
+                    <a href="{% url 'postman:inbox' %}">
+                        Перейтик к личным сообщениям
+                        {% if postman_unread_count == 1 %}
+                            <span class="new badge blue" data-badge-caption="новое">{{ postman_unread_count }}</span>
+                        {% elif postman_unread_count > 1 %}
+                            <span class="new badge blue" data-badge-caption="новых">{{ postman_unread_count }}</span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}

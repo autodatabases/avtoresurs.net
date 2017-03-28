@@ -2,8 +2,8 @@ from distutils.command.clean import clean
 
 from django.views.generic import TemplateView
 
-from shop.models.product import get_price
-from tecdoc.models import PartAnalog, clean_number, Product
+from shop.models.product import Product, clean_number
+from tecdoc.models import PartAnalog
 
 
 class SearchView(TemplateView):
@@ -13,18 +13,25 @@ class SearchView(TemplateView):
         context = super(SearchView, self).get_context_data()
         q = self.request.GET['q']
         context['q'] = q
-        try:
-            group_id = self.request.user.groups.all()[0].id
-        except Exception:
-            group_id = None
-        # print(clean_number(q))
-
         part_analogs = PartAnalog.objects.filter(search_number=clean_number(q))
-        parts = set()
+        group = part_analogs[0].part.group.all()
+
+        # parts = set()
         sku = []
         for pa in part_analogs:
-            parts.add(pa.part)
+            # parts.add(pa.part)
             sku.append(pa.part.sku)
+
+        clean_sku = set()
+        for sku_num in sku:
+            clean_sku.add(clean_number(sku_num))
+        part_analogs = PartAnalog.objects.filter(search_number__in=clean_sku, part__group__in=group)
+        parts = set()
+        sku = set()
+        for pa in part_analogs:
+            parts.add(pa.part)
+            sku.add(pa.part.sku)
+
         products = Product.objects.filter(sku__in=sku)
         # print(parts)
 
@@ -33,7 +40,7 @@ class SearchView(TemplateView):
             sku = part.sku
             for product in products:
                 if clean_number(part.sku) == clean_number(product.sku) and brand_name == product.brand:
-                    part.price = get_price(product, group_id)
+                    part.price = product.get_price(user=self.request.user)
                     part.product_id = product.id
                     part.quantity = product.get_quantity()
             if not hasattr(part, 'price'):

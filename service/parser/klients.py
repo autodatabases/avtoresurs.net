@@ -1,4 +1,4 @@
-from account.models import Account
+from profile.models import Profile
 
 
 def parse_klients(data):
@@ -9,7 +9,7 @@ def parse_klients(data):
         try:
             row = line.split(';')
             login = row[0].replace('ЦБ', 'cl')
-            account = Account.objects.get(user__username=login)
+            account = Profile.objects.get(user__username=login)
             account.fullname = row[1]
             account.vip_code = row[2].strip()
             point = account.get_point()

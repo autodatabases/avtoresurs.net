@@ -14,7 +14,7 @@ class CartItem(models.Model):
     line_item_total = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return self.item.title
+        return self.item.__str__()
 
     def remove(self):
         return self.item.remove_from_cart()
@@ -24,7 +24,8 @@ def cart_item_pre_save_receiver(sender, instance, *args, **kwargs):
     """ метод реализует суммарную стоимость продукта - цена * количество"""
     qty = Decimal(instance.quantity)
     if qty >= 1:
-        price = instance.item.get_price()
+        user = instance.cart.user
+        price = instance.item.get_price(user)
         line_item_total = qty * Decimal(price)
         instance.line_item_total = line_item_total
 
@@ -48,12 +49,12 @@ class Cart(models.Model):
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     items = models.ManyToManyField(Product, through=CartItem)
-    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
-    updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     subtotal = models.DecimalField(max_digits=50, decimal_places=2, default=25.00)
+    added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
 
     def __str__(self):
-        return str(self.id)
+        return "%s %s" % (str(self.id), self.user)
 
     def update_subtotal(self):
         subtotal = 0
@@ -62,3 +63,7 @@ class Cart(models.Model):
             subtotal += item.line_item_total
         self.subtotal = subtotal
         self.save()
+
+    class Meta:
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'

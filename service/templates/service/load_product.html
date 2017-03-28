@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <p>Нажмите старт</p>
+
+    <div class="row white">
+        <div class="col s12">
+            <p>Выберите файл с данными</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="file" required>
+                <button class="btn waves-effect waves-light blue darken-1 center-align" type="submit"
+                        name="action">
+                    Загрузить
+                    <i class="material-icons right">send</i>
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

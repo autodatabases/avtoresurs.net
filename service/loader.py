@@ -7,17 +7,17 @@ import sys, os, django
 os.environ["DJANGO_SETTINGS_MODULE"] = "avtoresurs_new.settings"
 django.setup()
 
-from account.models import Account
+# from profile.models import Account
 
-HOST = '195.190.127.74'
-USER = 'Oleg'
-PASSWD = 'KoxlabiruX'
+# HOST = '195.190.127.74'
+# USER = 'oleg'
+# PASSWD = 'KoxlabiruX'
 
-# HOST = '46.101.123.237'
-# USER = 'ftpuser'
-# PASSWD = 'Ufdhbrb31337'
+HOST = '46.101.123.237'
+USER = 'ftpuser'
+PASSWD = 'Ufdhbrb31337'
 
-filenames = ('Klients.csv', 'Priz.csv',)
+filenames = ('Klients.csv',)
 date = datetime.datetime.now()
 path = os.path.join('media', 'csv', 'klients', str(date.date().year))
 
@@ -27,7 +27,6 @@ class FtpFile:
         self.ftp = FTP(host=host)
         self.ftp.set_pasv(False)
         self.ftp.login(user=user, passwd=passwd)
-
 
     def get_file(self, filename):
         new_filename = os.path.join(path, str(date.date()) + '_' + filename)

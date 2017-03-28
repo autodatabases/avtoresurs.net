@@ -26,7 +26,7 @@ SECRET_KEY = 'f9vp_6q99r9gk$ptg2j@8p0eifib+64)+6+i&g-5g5#7#1tfxk'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['avtoresurs.net']
 
 # Application definition
 
@@ -43,15 +43,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account',
+    'profile',
     # 'panel',
     'news',
+    'tecdoc',
     'shop',
     # 'cart',
     # 'order',
     'bonus',
     # 'products',
-    'tecdoc',
+    'service',
+    'postman',
 ]
 
 MIDDLEWARE = [
@@ -77,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'postman.context_processors.inbox',
             ],
         },
     },
@@ -134,7 +137,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 # <<<<<<< HEAD
 # LOGGING_CONFIG = None
 # =======
@@ -164,3 +166,8 @@ EMAIL_HOST_USER = 'no-reply@avtoresurs.net'
 EMAIL_HOST_PASSWORD = 'Iddqd31337'
 DEFAULT_FROM_EMAIL = 'no-reply@avtoresurs.net'
 
+# POSTMAN CONFIG
+POSTMAN_DISALLOW_ANONYMOUS = True
+POSTMAN_DISALLOW_MULTIRECIPIENTS = True
+POSTMAN_DISALLOW_COPIES_ON_REPLY = True
+POSTMAN_AUTO_MODERATE_AS = True

@@ -1,7 +1,6 @@
 import re
 from django.db import models
 
-from shop.models.product import Product, get_price
 from tecdoc.apps import TecdocConfig as tdsettings
 
 
@@ -79,35 +78,3 @@ class Designation(models.Model):
 
     class Meta:
         db_table = tdsettings.DB_PREFIX + 'designations'
-
-
-def get_part_analogs(part_analog, group_id):
-    data = part_analog
-    sku = []
-    brand = []
-    for part in data:
-        sku.append(part.part_group.part.sku)
-    products = Product.objects.filter(sku__in=sku)
-
-    # adding price data into parttypegroupsupplier_list
-    parts_with_price = []
-    parts_without_price = []
-    for part in data:
-        brand_name = part.part_group.part.supplier.title
-        sku = part.part_group.part.sku
-        for product in products:
-            if clean_number(sku) == clean_number(product.sku) and brand_name == product.brand:
-                # print(product)
-                print(group_id)
-                part.part_group.part.price = get_price(product, group_id)
-                part.part_group.part.product_id = product.id
-                part.part_group.part.quantity = product.get_quantity()
-        if not hasattr(part.part_group.part, 'price'):
-            part.part_group.part.price = -1
-    part_analog_data = sorted(data, key=lambda x: x.part_group.part.price, reverse=True)
-    return part_analog_data
-
-number_re = re.compile('[^a-zA-Z0-9]+')
-
-def clean_number(number):
-    return number_re.sub('', number)

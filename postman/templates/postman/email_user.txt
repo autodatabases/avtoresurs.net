@@ -1,0 +1,20 @@
+{% load i18n %}{% autoescape off %}{% trans "Уважаемый пользователь," %}
+{% if action == 'rejection' %}
+{% blocktrans with object.sent_at|date:"DATETIME_FORMAT" as date and object.obfuscated_recipient as recipient %}On {{ date }}, you asked to send a message to the user '{{ recipient }}'.{% endblocktrans %}
+
+{% trans "Your message has been rejected by the moderator" %}{% if object.moderation_reason %}{% trans ", for the following reason:" %}
+    {{ object.moderation_reason }}{% else %}.{% endif %}
+
+{% else %}{# 'acceptance' #}
+{% if object.parent_id %}{% if object.parent.sender_id == object.recipient_id %}{% blocktrans with object.parent.sent_at|date:"DATETIME_FORMAT" as date and object.obfuscated_sender as sender %}On {{ date }}, you sent a message to the user '{{ sender }}'.{% endblocktrans %}
+{% trans "Вам направлен ответ на обращение." %}
+{% else %}{% blocktrans with object.obfuscated_sender as sender %}Вы получили копию ответа от пользователя '{{ sender }}'.{% endblocktrans %}
+{% endif %}
+{% else %}{% blocktrans with object.obfuscated_sender as sender %}Вы получили новое сообщение от пользователя '{{ sender }}'.{% endblocktrans %}
+{% endif %}
+{% endif %}{# 'acceptance' #}
+{% trans "Еще раз благодарим вас за интерес к нашим услугам." %}
+{% trans "Администратор сайта" %}
+
+{% blocktrans %}Примечание. Это сообщение выдается автоматизированной системой.
+Не отвечайте, это не будет принято во внимание.{% endblocktrans %}{% endautoescape %}

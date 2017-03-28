@@ -91,6 +91,19 @@ header {
   box-shadow: 0 1px 0 0 @color_input_text;
 }
 
+textarea.materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid @color_input_text;
+  box-shadow: 0 1px 0 0 @color_input_text;
+}
+
+.dropdown-content li > span {
+  color: @color_input_text;
+}
+
+textarea.materialize-textarea:focus:not([readonly]) + label {
+  color: @color_input_text;
+}
+
 .tecdoc-table > .row > .col > a, .tecdoc-table > a > * {
   color: #0288d1;
 }
@@ -147,6 +160,10 @@ a.collection-item:hover * {
   text-align: center;
 }
 
+.collapsible-body{
+  padding: 0 !important;
+}
+
 .custom_header i {
   vertical-align: baseline;
   margin: 0 10px 0 0;
@@ -178,6 +195,11 @@ button.dark-blue:hover, a.dark-blue:hover, button.dark-blue:focus, a.dark-blue:f
 .nav-wrapper ul li a:hover {
   transition: background .3s ease-in-out, border-color .3s ease-in-out, color .3s ease-in-out, box-shadow .3s ease-in-out;
   color: #039be5;
+}
+
+nav .nav-wrapper i {
+  //line-height: 16px;
+  height:0;
 }
 
 .header-cart {
@@ -333,6 +355,64 @@ hr {
   padding: 20px 50px;
 }
 
-.pagination li.active{
+.pagination li.active {
   background-color: #1565C0;
+}
+
+.tabs {
+  overflow: hidden;
+}
+
+#postman {
+  min-height: 400px;
+  padding: 10px 50px 10px 0px;
+}
+
+.postmenu {
+  margin-top: 20px;
+}
+
+.postmenu a:hover.active strong {
+  color: #eafaf9;
+}
+
+.postmenu a:hover strong {
+  color: @color_input_text;
+}
+
+.postmenu a.collection-item {
+  color: #039be5;
+}
+
+.collection a.collection-item.active {
+  background-color: #039be5 !important;
+  color: #eafaf9;
+}
+
+[type="checkbox"]:checked + label:before {
+  border-right: 2px solid #039be5;
+  border-bottom: 2px solid #039be5;
+}
+
+#pm_by_modes {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#pm_buttons button {
+  margin-right: 10px;
+  margin-bottom: 15px;
+}
+
+.pm-buttons a, .pm-buttons button {
+  margin-right: 10px;
+  margin-bottom: 15px;
+}
+
+#postman.write {
+  padding: 30px !important;
+}
+
+.pm_sender, .pm_recipient, .pm_date, .pm_subject{
+  font-weight: 600;
 }

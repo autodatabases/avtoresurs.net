@@ -1,7 +1,6 @@
 from django.db import models
 
-from tecdoc.models import TecdocLanguageManager, Designation, TecdocLanguageDesManager
-from tecdoc.apps import TecdocConfig as tdsettings
+from tecdoc.models.base import Designation, TecdocLanguageDesManager
 
 
 class Section(models.Model):

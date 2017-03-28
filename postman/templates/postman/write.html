@@ -1,0 +1,18 @@
+{% extends "postman/base_write.html" %}
+{% load i18n %}
+{% load i18n postman_tags %}
+
+
+{% block pm_write_title %}{% trans "Новое сообщение" %}{% endblock %}
+
+{% block postman_menu %}
+    <div class="collection postmenu">{% postman_unread as unread_count %}
+        <a href="{% url 'postman:inbox' %}" class="collection-item">{% trans "Входящие" %}
+            {% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
+        <a href="{% url 'postman:sent' %}" class="collection-item">{% trans "Отправленные" %}</a>
+        <a href="{% url 'postman:archives' %}" class="collection-item">{% trans "Архив" %}</a>
+        <a href="{% url 'postman:trash' %}" class="collection-item">{% trans "Корзина" %}</a>
+        <a href="{% url 'postman:write' %}"
+           class="collection-item active">{% trans "Новое сообщение" %}</a>
+    </div>
+{% endblock %}

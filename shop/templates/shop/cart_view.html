@@ -48,7 +48,7 @@
 
                         <tbody>
 
-                        {% for item in object.cartitem_set.all %}
+                        {% for item in cart_items %}
                             <tr class="cart-item-{{ item.item.id }}">
                                 <td class="cell_1">
                                     {#                        <div class="cart_item__img">#}
@@ -68,8 +68,9 @@
 
                                         <div class="cart_item__details">
                                             <p class="item_type">
-                                                <span>Производитель:</span> <strong>{{ item.item.manufacturer }}</strong>
+                                                <span>Производитель:</span> <strong>{{ item.item.brand }}</strong>
                                             </p>
+                                            <p class="item_vendor"><span>Код детали:</span> <strong>{{ item.item.get_title }}</strong></p>
                                             <p class="item_vendor"><span>Код детали:</span> <strong>{{ item.item.sku }}</strong></p>
                                         </div>
 
@@ -78,7 +79,7 @@
                                 </td>
 
                                 <td class="cell_2 cart_price">
-                                    <p class="center-align"><span class="money">{{ item.item.get_price }} <i
+                                    <p class="center-align"><span class="money">{{ item.item.price }} <i
                                             class="fa fa-rub" aria-hidden="true"></i></span></p>
 
                                 </td>
