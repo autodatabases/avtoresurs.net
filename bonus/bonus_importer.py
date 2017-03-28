@@ -8,6 +8,9 @@ from mr_csv_worker.worker import CsvWorker
 from avtoresurs_new.settings import DEFAULT_FROM_EMAIL
 
 import os
+
+from bonus.models import Bonus
+
 os.environ["DJANGO_SETTINGS_MODULE"] = "avtoresurs_new.settings"
 django.setup()
 
@@ -68,6 +71,7 @@ def import_bonuses(bonus_file_path, protocol_path=''):
                 int(item_bonus_price)
                 print(item_code, item_name, item_bonus_price)
                 # TODO write code below:
+                Bonus(id_1c=item_code, model=item_name, price=item_bonus_price)
                 # next we should create an object from this fields (django model) and save it, or return dict
             except ValueError:
                 print("Wrong format in bonus row. This will be reported.")
