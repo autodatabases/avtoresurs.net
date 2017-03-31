@@ -101,9 +101,33 @@
                 </div>
             </div>
         </div>
+        <div class="row no-margin-bot">
+            <nav class="dark-blue z-depth-0" role="navigation">
+                <div class="nav-wrapper">
+                    <ul class="right hide-on-med-and-down no-float avtoresurs-menu">
+                        {% show_menu 0 100 100 100 'main/includes/menu.html' %}
+                    </ul>
 
-        {% show_menu 1 100 100 100 'main/includes/menu.html' %}
+                    <!-- HEADER CART -->
+                    <a href="{% url 'cart' %}" class="header-cart">
+                        <i class="fa fa-shopping-cart"></i> Корзина: <span
+                            id="cart-count-badge">{{ request.session.cart_item_count }}</span> товар(ов)
+                    </a>
 
+                    <ul id="nav-mobile" class="side-nav">
+                        {% for child in children %}
+                            <li>
+                                <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                    <a href="#" data-activates="nav-mobile" class="button-collapse"><i
+                            class="material-icons">menu</i></a>
+
+                </div>
+            </nav>
+        </div>
 
     </div>
     <div>
