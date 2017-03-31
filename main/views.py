@@ -16,7 +16,7 @@ from registration.forms import User
 # Create your views here.
 
 class MainPageView(TemplateView):
-    template_name = 'main_page.html'
+    template_name = 'main/main_page.html'
 
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data()
@@ -28,7 +28,7 @@ class MainPageView(TemplateView):
 
 
 class AboutView(TemplateView):
-    template_name = 'about_view.html'
+    template_name = 'main/about_view.html'
 
 
 class BrandsView(TemplateView):

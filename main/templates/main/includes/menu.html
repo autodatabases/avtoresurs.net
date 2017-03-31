@@ -1,0 +1,69 @@
+{% load menu_tags %}
+
+
+<div class="row no-margin-bot">
+    <ul id="dropdown_nav" class="dropdown-content">
+        <li><a href="/about/">О компании</a></li>
+        <li><a href="/brands/">Бренды</a></li>
+        {#    <li class="divider"></li>#}
+        <li><a href="/assortment/">Ассортимент</a></li>
+        <li><a href="/trucks/">Запчасти для грузовиков</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+        <li><a href="/service_stations/">Для автосервисов</a></li>
+        <li><a href="/contacts/">Контакты</a></li>
+    </ul>
+
+    <nav class="dark-blue z-depth-0" role="navigation">
+        <div class="nav-wrapper">
+            <ul class="right hide-on-med-and-down no-float avtoresurs-menu">
+                {% for child in children %}
+                    <li>
+                        <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
+                    </li>
+                {% endfor %}
+
+{#                <li><a href="{% url 'news:news_page' %}">Новости</a></li>#}
+{#                <li><a href="/shop">Интернет магазин</a></li>#}
+{#                <li><a href="/bonus/">Бонусная акция</a></li>#}
+                <!-- Dropdown Trigger -->
+{#                <li><a class="dropdown-button" href="#!" data-activates="dropdown_nav">О компании<i#}
+{#                        class="material-icons right">arrow_drop_down</i></a>#}
+{#                </li>#}
+            </ul>
+
+            <!-- HEADER CART -->
+            <a href="{% url 'cart' %}" class="header-cart">
+                <i class="fa fa-shopping-cart"></i> Корзина: <span
+                    id="cart-count-badge">{{ request.session.cart_item_count }}</span> товар(ов)
+            </a>
+
+            <ul id="nav-mobile" class="side-nav">
+                <li><a href="#">Navbar Link</a></li>
+                <li><a href="#">Navbar Link</a></li>
+                <li><a href="#">Navbar Link</a></li>
+                <li><a href="#">Navbar Link</a></li>
+                <li><a href="#">Navbar Link</a></li>
+                <li><a href="#">Navbar Link</a></li>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i
+                    class="material-icons">menu</i></a>
+
+        </div>
+    </nav>
+</div>
+
+{#<ul class="right hide-on-med-and-down">#}
+{#    {% for child in children %}#}
+{#        <li>#}
+{#            <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>#}
+{#        </li>#}
+{#    {% endfor %}#}
+{##}
+{#</ul>#}
+{##}
+{#<ul class="side-nav" id="nav-mobile">#}
+{#    {% for child in children %}#}
+{#        <li><a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>#}
+{#        </li>#}
+{#    {% endfor %}#}
+{#</ul>#}

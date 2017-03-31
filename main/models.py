@@ -1,17 +1,18 @@
+from cms.models import CMSPlugin
 from django.db import models
 from registration.signals import user_registered
-
-# Create your models here.
 from profile.models import Profile
+from django.utils.translation import ugettext_lazy as _
 
 
-class Slider(models.Model):
+class Slide(models.Model):
     image = models.ImageField(verbose_name='Картинка')
     caption = models.CharField(max_length=100, verbose_name='Заголовок слайда')
     text = models.CharField(max_length=100, verbose_name='Текст на слайде')
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
     order = models.SmallIntegerField(default=0, verbose_name='Сортировка')
+    slider = models.ForeignKey("Slider")
 
     class Meta:
         ordering = ["order"]
@@ -19,8 +20,15 @@ class Slider(models.Model):
         verbose_name_plural = 'Слайды'
 
 
-# class About(models.Model):
-#
+class Slider(models.Model):
+    title = models.CharField(max_length=128, verbose_name='Название слайдера')
+
+
+class SliderPluginModel(CMSPlugin):
+    slider = models.ForeignKey(Slider)
+
+    def __str__(self):
+        return self.slider.title
 
 
 def user_registered_callback(sender, user, request, **kwargs):

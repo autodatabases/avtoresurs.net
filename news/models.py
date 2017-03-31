@@ -1,3 +1,5 @@
+# from django.core.urlresolvers import reverse
+from cms.models import CMSPlugin
 from django.db import models
 
 # Create your models here.
@@ -27,6 +29,12 @@ class Post(models.Model):
         verbose_name = 'Новость'
         verbose_name_plural = 'Публикации'
 
-
     def get_absolute_url(self):
         return reverse('news:news_detail', kwargs={'pk': self.id})
+
+
+class PostPluginModel(CMSPlugin):
+    post = models.ForeignKey(Post)
+
+    def __str__(self):
+        return self.post.title

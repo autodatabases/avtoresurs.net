@@ -1,0 +1,7 @@
+<div class="row">
+    <div class="col s12 nav-breadcrumb white">
+        {% for ancestor in ancestors %}
+            <a href="{{ ancestor.get_absolute_url }}" class="breadcrumb">{{ ancestor.get_menu_title }}</a>
+        {% endfor %}
+    </div>
+</div>

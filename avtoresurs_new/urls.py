@@ -27,8 +27,10 @@ from shop.views.checkout import CheckoutView
 
 urlpatterns = [
                   url(r'^admin/filebrowser/', include(site.urls)),
-                  url(r'^grappelli/', include('grappelli.urls')),
+                  # url(r'^grappelli/', include('grappelli.urls')),
                   url(r'^admin/', include(admin.site.urls)),
+
+                  url(r'^', include('cms.urls')),
                   url(r'^', include('main.urls', namespace='main')),
                   url(r'^accounts/register/$', RegistrationView.as_view(form_class=RegistrationFormTOSAndEmail),
                       name='registration_register'),
@@ -45,4 +47,5 @@ urlpatterns = [
                   url(r'^checkout/$', CheckoutView.as_view(), name='checkout'),
                   url(r'^service/', include('service.urls', namespace='service')),
                   url(r'^messages/', include('postman.urls', namespace='postman', app_name='postman')),
+
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

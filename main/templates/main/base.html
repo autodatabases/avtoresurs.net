@@ -1,4 +1,7 @@
+{% load cms_tags sekizai_tags %}
 {% load staticfiles %}
+{% load menu_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,9 +22,10 @@
     <link rel="stylesheet" href="{% static 'main/css/font-awesome.min.css' %}">
 
     <link rel="shortcut icon" type="image/ico" href="{% static 'main/images/favicon.ico' %}">
-
+    {% render_block "css" %}
 </head>
 <body class="grey lighten-4">
+{% cms_toolbar %}
 <!--  Scripts-->
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="{% static 'main/js/materialize.js' %}"></script>
@@ -98,129 +102,35 @@
             </div>
         </div>
 
-        <div class="row no-margin-bot">
-            <ul id="dropdown_nav" class="dropdown-content">
-                <li><a href="/about/">О компании</a></li>
-                <li><a href="/brands/">Бренды</a></li>
-                {#    <li class="divider"></li>#}
-                <li><a href="/assortment/">Ассортимент</a></li>
-                <li><a href="/trucks/">Запчасти для грузовиков</a></li>
-                <li><a href="/faq/">FAQ</a></li>
-                <li><a href="/service_stations/">Для автосервисов</a></li>
-                <li><a href="/contacts/">Контакты</a></li>
-            </ul>
+        {% show_menu 0 100 100 100 'main/includes/menu.html' %}
 
-            <nav class="dark-blue z-depth-0" role="navigation">
-                <div class="nav-wrapper">
-                    <ul class="right hide-on-med-and-down no-float avtoresurs-menu">
-                        <li><a href="{% url 'news:news_page' %}">Новости</a></li>
-                        <li><a href="/shop">Интернет магазин</a></li>
-                        <li><a href="/bonus/">Бонусная акция</a></li>
-                        <!-- Dropdown Trigger -->
-                        <li><a class="dropdown-button" href="#!" data-activates="dropdown_nav">О компании<i
-                                class="material-icons right">arrow_drop_down</i></a>
-                        </li>
-                    </ul>
 
-                    <!-- HEADER CART -->
-                    <a href="{% url 'cart' %}" class="header-cart">
-                        <i class="fa fa-shopping-cart"></i> Корзина: <span
-                            id="cart-count-badge">{{ request.session.cart_item_count }}</span> товар(ов)
-                    </a>
-
-                    <ul id="nav-mobile" class="side-nav">
-                        <li><a href="#">Navbar Link</a></li>
-                        <li><a href="#">Navbar Link</a></li>
-                        <li><a href="#">Navbar Link</a></li>
-                        <li><a href="#">Navbar Link</a></li>
-                        <li><a href="#">Navbar Link</a></li>
-                        <li><a href="#">Navbar Link</a></li>
-                    </ul>
-                    <a href="#" data-activates="nav-mobile" class="button-collapse"><i
-                            class="material-icons">menu</i></a>
-
-                </div>
-            </nav>
-        </div>
     </div>
+    <div>
+{#        {% placeholder "breadcrumbs" %}#}
+    </div>
+
 </header>
 
 <main>
     <div class="container">
-        {% block breadcrumbs %}{% endblock %}
+        {#        {% block breadcrumbs %}{% endblock %}#}
+        {% show_breadcrumb 0 "main/includes/breadcrumb.html" %}
     </div>
 
 
     <div class="container">
-        {% block content %}{% endblock %}
+        <div class="row white">
+            <div class="col s12">
+                <div class="main-content">
+                    {% placeholder "content" %}
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
     </div>
-</main>
 
-{#<div class="section no-pad-bot" id="index-banner">#}
-{#    <div class="container">#}
-{##}
-{#        <br><br>#}
-{#        <h1 class="header center orange-text">Starter Template</h1>#}
-{#        <div class="row center">#}
-{#            <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>#}
-{#        </div>#}
-{#        <div class="row center">#}
-{#            <a href="http://materializecss.com/getting-started.html" id="download-button"#}
-{#               class="btn-large waves-effect waves-light orange">Get Started</a>#}
-{#        </div>#}
-{#        <br><br>#}
-{##}
-{#    </div>#}
-{#</div>#}
-{##}
-{##}
-{#<div class="container">#}
-{#    <div class="section">#}
-{##}
-{#        <!--   Icon Section   -->#}
-{#        <div class="row">#}
-{#            <div class="col s12 m4">#}
-{#                <div class="icon-block">#}
-{#                    <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>#}
-{#                    <h5 class="center">Speeds up development</h5>#}
-{##}
-{#                    <p class="light">We did most of the heavy lifting for you to provide a default stylings that#}
-{#                        incorporate our custom components. Additionally, we refined animations and transitions to#}
-{#                        provide a smoother experience for developers.</p>#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{#            <div class="col s12 m4">#}
-{#                <div class="icon-block">#}
-{#                    <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>#}
-{#                    <h5 class="center">User Experience Focused</h5>#}
-{##}
-{#                    <p class="light">By utilizing elements and principles of Material Design, we were able to create a#}
-{#                        framework that incorporates components and animations that provide more feedback to users.#}
-{#                        Additionally, a single underlying responsive system across all platforms allow for a more#}
-{#                        unified user experience.</p>#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{#            <div class="col s12 m4">#}
-{#                <div class="icon-block">#}
-{#                    <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>#}
-{#                    <h5 class="center">Easy to work with</h5>#}
-{##}
-{#                    <p class="light">We have provided detailed documentation as well as specific code examples to help#}
-{#                        new users get started. We are also always open to feedback and can answer any questions a user#}
-{#                        may have about Materialize.</p>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#    </div>#}
-{#    <br><br>#}
-{##}
-{#    <div class="section">#}
-{##}
-{#    </div>#}
-{#</div>#}
+</main>
 
 <footer class="page-footer blue darken-3">
     <div class="container">
@@ -232,7 +142,6 @@
 
             </div>
             <div class="col l3 s12">
-                {#                <h5 class="white-text">Навигация</h5>#}
                 <ul>
                     <li><a class="white-text" href="#!">Новости</a></li>
                     <li><a class="white-text" href="#!">Интернет-магазин</a></li>
@@ -241,7 +150,6 @@
                 </ul>
             </div>
             <div class="col l3 s12">
-                {#                <h5 class="white-text">Навигация</h5>#}
                 <ul>
                     <li><a class="white-text" href="#!">Личный кабинет</a></li>
                     <li><a class="white-text" href="#!">Корзина</a></li>
@@ -282,6 +190,6 @@
 
 {% block js %}
 {% endblock %}
-
+{% render_block "js" %}
 </body>
 </html>

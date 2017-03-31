@@ -1,0 +1,54 @@
+{% load sekizai_tags %}
+
+<hr style="margin-top: 2rem; margin-bottom: 2rem; border: 0; border-top: 1px solid rgba(0,0,0,.1);">
+
+<div class="row">
+        {% for post in posts %}
+            {% if forloop.counter0|divisibleby:3 %}
+                </div>
+                <div class="row">
+            {% endif %}
+
+            <div class="col s6 m4">
+                <div class="card large z-depth-0">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img src="{{ post.image.url }}">
+                    </div>
+                    <div class="card-content">
+                        <p>{{ post.title }}</p>
+                        <p>
+                            <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>
+                        </p>
+                    </div>
+                    <div class="card-action">
+                        <a class="waves-effect waves-light btn dark-blue"
+                           href="#modal{{ forloop.counter }}">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Structure -->
+            <div id="modal{{ forloop.counter }}" class="modal">
+                <div class="modal-content">
+                    <h4>{{ post.title }}</h4>
+                    <p><img src="{{ post.image.url }}"></p>
+                    <p>{{ post.content }}</p>
+                    <p>
+                        <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a class=" modal-action modal-close waves-effect waves-green btn-flat">Закрыть</a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+
+{% addtoblock "js" %}
+    <script>
+        $(document).ready(function () {
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal').modal();
+        });
+    </script>
+{% endaddtoblock %}
