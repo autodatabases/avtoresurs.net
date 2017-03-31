@@ -33,8 +33,16 @@ class Post(models.Model):
         return reverse('news:news_detail', kwargs={'pk': self.id})
 
 
-class PostPluginModel(CMSPlugin):
-    post = models.ForeignKey(Post)
+class PostPlugin(CMSPlugin):
+    latest_articles = models.IntegerField(
+        default=6,
+        # help_text=_('The maximum number of latest articles to display.')
+    )
+    # post = models.ForeignKey(Post)
 
     def __str__(self):
-        return self.post.title
+        return str(self.latest_articles)
+
+    def get_posts(self):
+        posts = Post.objects.all()[:self.latest_articles]
+        return posts
