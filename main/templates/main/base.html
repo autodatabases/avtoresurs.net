@@ -115,14 +115,17 @@
 <main>
     <div class="container">
         {% block breadcrumbs %}
-            {% show_breadcrumb 1 "main/includes/breadcrumb.html" %}
+            {% if request.path != "/" %}
+                {% show_breadcrumb 0 "main/includes/breadcrumb.html" %}
+            {% endif %}
+
         {% endblock %}
     </div>
 
 
     <div class="container">
-            {% placeholder "content" %}
-            {% block content %}{% endblock %}
+        {% placeholder "content" %}
+        {% block content %}{% endblock %}
     </div>
 
 </main>
