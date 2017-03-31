@@ -22,6 +22,8 @@ class Slide(models.Model):
 
 class Slider(models.Model):
     title = models.CharField(max_length=128, verbose_name='Название слайдера')
+    right_caption = models.CharField(max_length=128, verbose_name='Заголовок справа', blank=True, null=True)
+    text = models.TextField(max_length=2000, verbose_name='Описание', blank=True, null=True)
 
 
 class SliderPluginModel(CMSPlugin):
