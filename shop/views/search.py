@@ -14,23 +14,13 @@ class SearchView(TemplateView):
         q = self.request.GET['q']
         context['q'] = q
         part_analogs = PartAnalog.objects.filter(search_number=clean_number(q))
-        group = part_analogs[0].part.group.all()
+        # group = part_analogs[0].part.group.all()
 
-        # parts = set()
+        parts = set()
         sku = []
         for pa in part_analogs:
-            # parts.add(pa.part)
-            sku.append(pa.part.sku)
-
-        clean_sku = set()
-        for sku_num in sku:
-            clean_sku.add(clean_number(sku_num))
-        part_analogs = PartAnalog.objects.filter(search_number__in=clean_sku, part__group__in=group)
-        parts = set()
-        sku = set()
-        for pa in part_analogs:
             parts.add(pa.part)
-            sku.add(pa.part.sku)
+            sku.append(pa.part.sku)
 
         products = Product.objects.filter(sku__in=sku)
         # print(parts)

@@ -84,7 +84,11 @@ class Product(models.Model):
         return "%s?item=%s&delete=true" % (reverse("cart"), self.id)
 
     def get_price(self, user=None):
+
         pp = ProductPrice.objects.filter(product=self).first()
+
+        if not pp:
+            pp = ProductPrice(product=self, price_1=0, price_2=0, price_3=0, price_4=0)
 
         if not user:
             try:
