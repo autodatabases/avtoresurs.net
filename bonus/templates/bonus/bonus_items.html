@@ -1,10 +1,23 @@
 {% extends 'main/base.html' %}
+{% load cms_tags menu_tags sekizai_tags %}
+
 {% load staticfiles %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="" class="breadcrumb">Бонусная акция</a>
+        </div>
+    </div>
+{% endblock %}
+
 
 {% block content %}
 
     <div class="row">
-        {% for bonus in bonuses %}
+        {% for bonus in bonus_list %}
             <div class="col s6 m4 l3 ">
                 <div class="card">
                     <div class="card-content center-align">
@@ -17,7 +30,8 @@
                         </div>
                     {% else %}
                         <div class="card-image">
-                            <img src="{% static 'main/images/no-image.png' %}" alt="item1" class="responsive-img materialboxed"
+                            <img src="{% static 'main/images/no-image.png' %}" alt="item1"
+                                 class="responsive-img materialboxed"
                                  title="{{ bonus.title }}"/>
                         </div>
                     {% endif %}
@@ -31,23 +45,52 @@
     </div>
 
 
-    <ul class="pagination center-align" style="margin-top:60px;">
-        {% if bonuses.has_previous %}
-            <li class="disabled">
-                <a href="?page={{ bonuses.previous_page_number }}" style="cursor:pointer;">
-                    <i class="material-icons black">chevron_left</i>
-                </a>
-            </li>
-        {% endif %}
+    {% if is_paginated %}
 
-        <li class="active"><a style="cursor: default;" class="blue" href="#">{{ bonuses.number }}
-            из {{ bonuses.paginator.num_pages }}</a>
-        </li>
+        <div class="row">
+            <div class="col s12">
+                <ul class="pagination center-align">
+                    {% if page_obj.has_previous %}
+                        <li class="waves-effect"><a href="{{ page_obj.previous_page_number }}"><i
+                                class="material-icons">chevron_left</i></a></li>
+                    {% else %}
+                        <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="active"><a href="">{{ i }}</a></li>
+                        {% else %}
+                            <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i
+                                class="material-icons">chevron_right</i></a></li>
+                    {% else %}
+                        <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
 
-        {% if bonuses.has_next %}
-            <li class="waves-effect"><a href="?page={{ bonuses.next_page_number }}"><i
-                    class="material-icons black">chevron_right</i></a></li>
-        {% endif %}
-    </ul>
+{#    <ul class="pagination center-align" style="margin-top:60px;">#}
+{#        {% if page_obj.has_previous %}#}
+{#            <li class="disabled">#}
+{#                <a href="?page={{ page_obj.previous_page_number }}" style="cursor:pointer;">#}
+{#                    <i class="material-icons black">chevron_left</i>#}
+{#                </a>#}
+{#            </li>#}
+{#        {% endif %}#}
+{##}
+{#        <li class="active"><a style="cursor: default;" class="blue" href="#">{{ page_obj.number }}#}
+{#            из {{ page_obj.paginator.num_pages }}</a>#}
+{#        </li>#}
+{##}
+{#        {% if page_obj.has_next %}#}
+{#            <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i#}
+{#                    class="material-icons black">chevron_right</i></a></li>#}
+{#        {% endif %}#}
+{#    </ul>#}
 
 {% endblock %}

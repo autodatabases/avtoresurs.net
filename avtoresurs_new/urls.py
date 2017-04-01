@@ -35,16 +35,13 @@ urlpatterns = [
                   url(r'^accounts/profile/$', RedirectView.as_view(url='/profile/', permanent=False),
                       name='ProfilePage'),
                   url(r'^profile/', include('profile.urls', namespace='profile')),
-                  # url(r'shop/', include('shop.urls', namespace='shop')),
-                  # url(r'parts/', include('tecdoc.urls', namespace='tecdoc')),
                   url(r'^cart/$', CartView.as_view(), name='cart'),
                   url(r'^cart/count/$', ItemCountView.as_view(), name='item_count'),
                   url(r'^checkout/$', CheckoutView.as_view(), name='checkout'),
                   url(r'^service/', include('service.urls', namespace='service')),
                   url(r'^messages/', include('postman.urls', namespace='postman', app_name='postman')),
-
-                  url(r'^', include('cms.urls')),
                   url(r'^', include('main.urls', namespace='main')),
-                  url(r'^news/', include('news.urls', namespace='news')),
+                  url(r'^', include('cms.urls')),
+                  # ALL URLS AFTER 'cms.ursl' WILL NOT WORK!!!
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
