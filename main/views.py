@@ -8,7 +8,6 @@ from django.views.generic import TemplateView
 
 from avtoresurs_new import settings
 from main.forms import ResendActivationEmailForm
-from main.models import Slider
 from news.models import Post
 from registration.forms import User
 

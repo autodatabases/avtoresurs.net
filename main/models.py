@@ -1,5 +1,6 @@
 from cms.models import CMSPlugin
 from django.db import models
+from djangocms_text_ckeditor.fields import HTMLField
 from registration.signals import user_registered
 from profile.models import Profile
 from django.utils.translation import ugettext_lazy as _
@@ -12,7 +13,7 @@ class Slide(models.Model):
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
     order = models.SmallIntegerField(default=0, verbose_name='Сортировка')
-    slider = models.ForeignKey("Slider")
+    # slider = models.ForeignKey("Slider")
 
     class Meta:
         ordering = ["order"]
@@ -20,17 +21,17 @@ class Slide(models.Model):
         verbose_name_plural = 'Слайды'
 
 
-class Slider(models.Model):
-    title = models.CharField(max_length=128, verbose_name='Название слайдера')
+
+class SliderPlugin(CMSPlugin):
     right_caption = models.CharField(max_length=128, verbose_name='Заголовок справа', blank=True, null=True)
-    text = models.TextField(max_length=2000, verbose_name='Описание', blank=True, null=True)
-
-
-class SliderPluginModel(CMSPlugin):
-    slider = models.ForeignKey(Slider)
+    text = HTMLField(max_length=2000, verbose_name='Описание', blank=True, null=True)
 
     def __str__(self):
-        return self.slider.title
+        return self.right_caption
+
+    def get_slides(self):
+        slides = Slide.objects.all()
+        return slides
 
 
 def user_registered_callback(sender, user, request, **kwargs):
