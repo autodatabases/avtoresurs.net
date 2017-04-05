@@ -116,6 +116,8 @@ class Product(models.Model):
                 return pp.price_3
             elif group == PriceGroup.OPT4.value:
                 return pp.price_4
+            elif group == PriceGroup.OPT5.value:
+                return pp.price_5
         except Exception:
             pass
 
@@ -132,6 +134,7 @@ class PriceGroup(Enum):
     OPT2 = 3
     OPT3 = 4
     OPT4 = 5
+    OPT5 = 6
 
 
 # def get_price(product, user=None):
@@ -191,6 +194,7 @@ class ProductPrice(models.Model):
     price_2 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
     price_3 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
     price_4 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
+    price_5 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
 

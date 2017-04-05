@@ -25,9 +25,11 @@ def add(data, interval, report_product, report_price):
         brand = row[1]
         sku = row[0]
         quantity = row[2]
-        prices = [row[3], row[4], row[5], row[6], row[7]]
+        prices = [row[3], row[4], row[5], row[6], row[7], row[8]]
         if not prices[4]:
             prices[4] = 0
+        if not prices[5]:
+            prices[5] = 0
         # print(prices)
         clean_sku = clean_number(sku)
         part_analog = PartAnalog.objects.filter(search_number=clean_sku)
@@ -41,7 +43,8 @@ def add(data, interval, report_product, report_price):
             price_1=prices[1],
             price_2=prices[2],
             price_3=prices[3],
-            price_4=prices[4]
+            price_4=prices[4],
+            price_5=prices[5]
         )
         # product_price, created = ProductPrice.objects.get_or_create(product=product)
         # product_price.retail_price = prices[0]
