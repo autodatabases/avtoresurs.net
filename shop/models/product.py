@@ -189,12 +189,12 @@ class ProductImage(models.Model):
 
 class ProductPrice(models.Model):
     product = models.ForeignKey(Product)
-    retail_price = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
-    price_1 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
-    price_2 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
-    price_3 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
-    price_4 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
-    price_5 = models.DecimalField(decimal_places=2, max_digits=20, default=False, blank=True, null=True)
+    retail_price = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
+    price_1 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
+    price_2 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
+    price_3 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
+    price_4 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
+    price_5 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
 
