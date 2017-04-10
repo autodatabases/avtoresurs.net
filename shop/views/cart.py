@@ -42,7 +42,7 @@ class CartView(SingleObjectMixin, View):
         self.request.session.set_expiry(259200)
         # self.request.session["cart_id"] = None
         cart_id = self.request.session.get("cart_id")
-        print(cart_id)
+        # print(cart_id)
         if not cart_id:
             cart = Cart()
             cart.save()
