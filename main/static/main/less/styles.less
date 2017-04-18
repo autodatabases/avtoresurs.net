@@ -28,6 +28,11 @@ a {
   transition: background .3s ease-in-out, border-color .3s ease-in-out, color .3s ease-in-out, box-shadow .3s ease-in-out;
 }
 
+.row > a:hover > div p {
+  color: black;
+  transition: background .3s ease-in-out, border-color .3s ease-in-out, color .3s ease-in-out, box-shadow .3s ease-in-out;
+}
+
 header {
   background-color: white;
 }
@@ -113,7 +118,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   color: #0288d1;
 }
 
-.tecdoc-table .tecdoc-header {
+.tecdoc-table .tecdoc-header, .tecdoc-table .tecdoc-header i {
   color: #757575;
   font-weight: bold;
 }
@@ -160,7 +165,7 @@ a.collection-item:hover * {
   text-align: center;
 }
 
-.collapsible-body{
+.collapsible-body {
   padding: 0 !important;
 }
 
@@ -199,7 +204,7 @@ button.dark-blue:hover, a.dark-blue:hover, button.dark-blue:focus, a.dark-blue:f
 
 nav .nav-wrapper i {
   //line-height: 16px;
-  height:0;
+  height: 0;
 }
 
 .header-cart {
@@ -413,6 +418,6 @@ hr {
   padding: 30px !important;
 }
 
-.pm_sender, .pm_recipient, .pm_date, .pm_subject{
+.pm_sender, .pm_recipient, .pm_date, .pm_subject {
   font-weight: 600;
 }

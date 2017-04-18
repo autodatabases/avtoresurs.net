@@ -1,10 +1,13 @@
 import MySQLdb
 import datetime
+
+from django.http import Http404
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from django.views.generic import DetailView
+from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 
@@ -15,6 +18,7 @@ from django.conf import settings
 
 # Create your views here.
 from django.views.generic.edit import FormMixin, UpdateView, FormView
+from django.views.generic.list import MultipleObjectMixin
 
 from profile.forms import UploadFileForm, ProfileForm
 from profile.models import Profile, Point
@@ -23,6 +27,7 @@ from avtoresurs_new.settings import BASE_DIR
 import urllib.parse
 
 from service.parser.klients import parse_klients
+from shop.models.order import Order
 
 
 class ProfileView(TemplateView):
@@ -40,9 +45,6 @@ class ProfileEdit(FormView):
     model = User
     template_name = 'profile/profile_edit.html'
     success_url = '/profile/'
-
-
-
 
 
 def user_import(row):
@@ -112,3 +114,34 @@ class PointLoader(TemplateView):
         for p in protocol[0]:
             print(p)
         return HttpResponse('OK')
+
+
+class OrderList(ListView):
+    template_name = 'profile/order_list.html'
+    paginate_by = 20
+    model = Order
+
+    def get_queryset(self):
+        user = self.request.user
+        orders = Order.objects.filter(user=user).order_by('-added')
+        return orders
+
+        # def get_context_data(self, **kwargs):
+        #     context = super(OrderList, self).get_context_data()
+        #     user = self.request.user
+        # orders = Order.objects.filter(user=user)
+        # context['orders'] = orders
+        # return context
+
+
+class OrderDetail(DetailView):
+    template_name = 'profile/order_detail.html'
+    model = Order
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user"""
+        obj = super(OrderDetail, self).get_object()
+        user = self.request.user
+        if not obj.user == user:
+            raise Http404
+        return obj

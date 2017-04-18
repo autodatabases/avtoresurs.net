@@ -44,7 +44,7 @@
                     <p>Дата последнего входа: {{ request.user.last_login }}</p>
                 </div>
                 <div class="card-action">
-                    <a href="#">Посмотреть заказы</a>
+                    <a href="{% url 'profile:orders' 1 %}">Посмотреть заказы</a>
                 </div>
             </div>
         </div>

@@ -1,0 +1,80 @@
+{% extends 'main/base.html' %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'profile:profile_main' %}" class="breadcrumb">Личный кабинет</a>
+            <a href="" class="breadcrumb">Информация о заказах</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row white">
+        <div class="col s12">
+            <p>Информация о заказах</p>
+        </div>
+    </div>
+
+
+    <!-- Main content -->
+    <div class="collection tecdoc-table row">
+        <div class="collection-item">
+            <div class="row">
+                <div class="col s1 tecdoc-header">#</div>
+                <div class="col s4 tecdoc-header">Дата и номер заказа</div>
+                <div class="col s5 tecdoc-header">Товары</div>
+                <div class="col s2 tecdoc-header">
+                    Общая сумма заказа<br>(<i class="fa fa-rub" aria-hidden="true"></i>)
+                </div>
+            </div>
+        </div>
+        {% for order in order_list %}
+            <a href="{% url 'profile:order_detail' order.id %}" class="collection-item">
+                <div class="row" style="margin-bottom: 0">
+                    <div class="col s1">{{ forloop.counter }}</div>
+                    <div class="col s4">Заказ от {{ order.added }} № {{ order.id }}</div>
+                    <div class="col s5">
+                        {% for item in order.items.all %}
+                            <span>{{ forloop.counter }}. {{ item }}</span><br>
+                        {% endfor %}
+                    </div>
+                    <div class="col s2">{{ order.order_total }}</div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+
+        <div class="row">
+            <div class="col s12">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="waves-effect"><a href="{{ page_obj.previous_page_number }}"><i
+                                class="material-icons">chevron_left</i></a></li>
+                    {% else %}
+                        <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="active"><a href="">{{ i }}</a></li>
+                        {% else %}
+                            <li class="waves-effect"><a href="{% url 'profile:orders' i %}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i
+                                class="material-icons">chevron_right</i></a></li>
+                    {% else %}
+                        <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
