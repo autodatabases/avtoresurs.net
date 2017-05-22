@@ -44,7 +44,9 @@ class ProfileEdit(FormView):
     form_class = ProfileForm
     model = Profile
     template_name = 'profile/profile_edit.html'
-    success_url = '/profile/'
+
+    def get_success_url(self):
+        return self.request.path
 
     def get_context_data(self, **kwargs):
         context = super(ProfileEdit, self).get_context_data()
@@ -55,7 +57,12 @@ class ProfileEdit(FormView):
         return context
 
     def post(self, request, *args, **kwargs):
-        print(request)
+        form = ProfileForm(self.request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            profile = Profile.objects.get(user=self.request.user)
+            profile.fullname = form.cleaned_data['fullname']
+            profile.save()
         return super().post(request, *args, **kwargs)
 
 
