@@ -5,6 +5,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
+from django.views.generic.list import MultipleObjectMixin, MultipleObjectTemplateResponseMixin
 
 from profile.models import Profile
 
@@ -18,6 +20,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_text
+
 try:
     from django.utils.six.moves.urllib.parse import urlsplit, urlunsplit  # Django 1.4.11, 1.5.5
 except ImportError:
@@ -80,6 +83,7 @@ class FolderMixin(NamespaceMixin, object):
         msgs = getattr(Message.objects, self.folder_name)(self.request.user, **params)
         viewname = 'postman:' + self.view_name
         current_instance = self.request.resolver_match.namespace
+
         context.update({
             'pm_messages': msgs,  # avoid 'messages', already used by contrib.messages
             'by_conversation': option is None,
@@ -89,7 +93,19 @@ class FolderMixin(NamespaceMixin, object):
             'current_url': self.request.get_full_path(),
             'gets': self.request.GET,  # useful to postman_order_by template tag
         })
+
+        paginator = Paginator(context['pm_messages'], 20)
+        page = 1
+        if self.request.GET.get('page'):
+            page = self.request.GET.get('page')
+        pm_messages = paginator.page(page)
+        context['pm_messages'] = pm_messages
+        # for pagination
+        context['page_obj'] = pm_messages
+        context['paginator'] = paginator
+
         return context
+
 
 
 class InboxView(FolderMixin, TemplateView):
@@ -245,7 +261,8 @@ class WriteView(ComposeMixin, FormView):
                 name_user_as = getattr(settings, 'POSTMAN_NAME_USER_AS', user_model.USERNAME_FIELD)
                 usernames = list(user_model.objects.values_list(name_user_as, flat=True).filter(
                     is_active=True,
-                    **{'{0}__in'.format(name_user_as): [r.strip() for r in recipients.split(':') if r and not r.isspace()]}
+                    **{'{0}__in'.format(name_user_as): [r.strip() for r in recipients.split(':') if
+                                                        r and not r.isspace()]}
                 ).order_by(name_user_as))
                 if usernames:
                     initial['recipients'] = ', '.join(map(force_text, usernames))
@@ -261,7 +278,7 @@ class WriteView(ComposeMixin, FormView):
         return kwargs
 
     def get_context_data(self, **kwargs):
-        context = super(WriteView,self).get_context_data()
+        context = super(WriteView, self).get_context_data()
         users = Profile.objects.all().filter(user__is_active=True).order_by('user__username')
         context['users'] = users
         return context
@@ -366,7 +383,8 @@ class DisplayMixin(NamespaceMixin, object):
             'archived': archived,
             'reply_to_pk': received.pk if received else None,
             'form': self.form_class(initial=received.quote(*self.formatters)) if received else None,
-            'next_url': self.request.GET.get('next') or reverse('postman:inbox', current_app=self.request.resolver_match.namespace),
+            'next_url': self.request.GET.get('next') or reverse('postman:inbox',
+                                                                current_app=self.request.resolver_match.namespace),
         })
         return context
 
@@ -425,14 +443,14 @@ class UpdateMessageMixin(object):
 
 class UpdateDualMixin(UpdateMessageMixin):
     def _action(self, user, filter):
-        (criteria_key, criteria_val) = ('', not(self.field_value)) if isinstance(self.field_value, bool)\
-                else ('__isnull', bool(self.field_value))
-        recipient_rows = Message.objects.as_recipient(user, filter)\
-                .filter(**{'recipient_{0}{1}'.format(self.field_bit, criteria_key): criteria_val})\
-                .update(**{'recipient_{0}'.format(self.field_bit): self.field_value})
-        sender_rows = Message.objects.as_sender(user, filter)\
-                .filter(**{'sender_{0}{1}'.format(self.field_bit, criteria_key): criteria_val})\
-                .update(**{'sender_{0}'.format(self.field_bit): self.field_value})
+        (criteria_key, criteria_val) = ('', not (self.field_value)) if isinstance(self.field_value, bool) \
+            else ('__isnull', bool(self.field_value))
+        recipient_rows = Message.objects.as_recipient(user, filter) \
+            .filter(**{'recipient_{0}{1}'.format(self.field_bit, criteria_key): criteria_val}) \
+            .update(**{'recipient_{0}'.format(self.field_bit): self.field_value})
+        sender_rows = Message.objects.as_sender(user, filter) \
+            .filter(**{'sender_{0}{1}'.format(self.field_bit, criteria_key): criteria_val}) \
+            .update(**{'sender_{0}'.format(self.field_bit): self.field_value})
         if not (recipient_rows or sender_rows):
             raise Http404  # abnormal enough, like forged ids
 
@@ -459,9 +477,9 @@ class UndeleteView(UpdateDualMixin, View):
 
 class UpdateRecipientMixin(UpdateMessageMixin):
     def _action(self, user, filter):
-        recipient_rows = Message.objects.as_recipient(user, filter)\
-                .filter(**{'{0}__isnull'.format(self.field_bit): bool(self.field_value)})\
-                .update(**{self.field_bit: self.field_value})
+        recipient_rows = Message.objects.as_recipient(user, filter) \
+            .filter(**{'{0}__isnull'.format(self.field_bit): bool(self.field_value)}) \
+            .update(**{self.field_bit: self.field_value})
         # an empty set cannot be estimated as an error, it may be just a badly chosen selection
 
 

@@ -75,17 +75,6 @@ in the INSTALLED_APPS setting.
                                                                 <em>{% endif %}
                                                             {% block pm_subject %}
                                                                 <a href="
-
-
-
-
-
-
-
-
-
-
-
                                                                         {% if by_conversation and message.thread_id %}{% url 'postman:view_conversation' message.thread_id %}{% else %}{% url 'postman:view' message.pk %}{% endif %}?next={{ current_url|urlencode }}">
                                                                     {% include "postman/inc_subject_ex.html" %}
                                                                 </a>
@@ -133,6 +122,34 @@ in the INSTALLED_APPS setting.
 </span>{% endblock %}
 
                                         </form>
+
+                                        <ul class="pagination">
+                                            {% if page_obj.has_previous %}
+                                                <li class="waves-effect"><a
+                                                        href="?page={{ page_obj.previous_page_number }}"><i
+                                                        class="material-icons">chevron_left</i></a></li>
+                                            {% else %}
+                                                <li class="disabled"><a><i class="material-icons">chevron_left</i></a>
+                                                </li>
+                                            {% endif %}
+                                            {% for i in paginator.page_range %}
+                                                {% if page_obj.number == i %}
+                                                    <li class="active"><a href="">{{ i }}</a></li>
+                                                {% else %}
+                                                    <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if page_obj.has_next %}
+                                                <li class="waves-effect"><a
+                                                        href="?page={{ page_obj.next_page_number }}"><i
+                                                        class="material-icons">chevron_right</i></a></li>
+                                            {% else %}
+                                                <li class="disabled"><a><i class="material-icons">chevron_right</i></a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+
+
                                         {% paginate %}
                                     {% else %}
                                         <p>{% trans "Нет сообщений." %}</p>

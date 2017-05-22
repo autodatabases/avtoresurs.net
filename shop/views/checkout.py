@@ -108,8 +108,8 @@ def order_notification(cart, order, user):
         'Новый заказ',
         body,
         'no-reply@avtoresurs.net',
-        ['o.artemov@gov39.ru', 'avtoresurs@mail.ru'],
-        ['o.artemov@gov39.ru'],
+        ['avtoresurs@mail.ru'],
+        ['oleg_a@outlook.com'],
         reply_to=['no-reply@avtoresurs.net'],
         headers={'Message-ID': 'foo'},
     )

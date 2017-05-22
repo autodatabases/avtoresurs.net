@@ -59,20 +59,24 @@
                                     {#                        </div>#}
 
                                     <div class="cart_item__info">
-                                        <h5 class="cart_item__name product_name">
-                                            <a href="{{ item.item.get_absolute_url }}" class="link">
-                                                {{ item.item.title }}
-                                            </a>
-                                        </h5>
+
+                                            <h5 class="cart_item__name product_name">
+
+                                                {#                                                {{ item.item.title }}#}
+
+                                            </h5>
 
 
-                                        <div class="cart_item__details">
-                                            <p class="item_type">
-                                                <span>Производитель:</span> <strong>{{ item.item.brand }}</strong>
-                                            </p>
-                                            <p class="item_vendor"><span>Код детали:</span> <strong>{{ item.item.get_title }}</strong></p>
-                                            <p class="item_vendor"><span>Код детали:</span> <strong>{{ item.item.sku }}</strong></p>
-                                        </div>
+                                            <div class="cart_item__details">
+                                                <p class="item_type">
+                                                    <span>Производитель:</span> <strong>{{ item.item.brand }}</strong>
+                                                </p>
+                                                <p class="item_vendor"><span>Код детали:</span>
+                                                    <strong>{{ item.item.get_title }}</strong></p>
+                                                <p class="item_vendor"><span>Код детали:</span>
+                                                    <strong>{{ item.item.sku }}</strong></p>
+                                                <p><a href="{{ item.item.get_absolute_url }}" class="link">Перейти к описанию</a></p>
+                                            </div>
 
 
                                     </div>
@@ -141,7 +145,8 @@
 
                                 <div class="cart_summary__checkout">
                                     {#                                    <button name="checkout" class="btn btn-alt">#}
-                                    <a href="{% url 'checkout' %}" class="btn btn-alt lighten-blue">Перейти к оформлению заказа</a>
+                                    <a href="{% url 'checkout' %}" class="btn btn-alt lighten-blue">Перейти к оформлению
+                                        заказа</a>
                                     {#                                    </button>#}
                                 </div>
                             </td>

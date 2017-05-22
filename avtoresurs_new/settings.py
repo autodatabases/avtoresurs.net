@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'djangocms_snippet',
     'djangocms_style',
     'djangocms_column',
+    # 'pagination',
 
     'profile',
     # 'panel',
@@ -90,7 +91,9 @@ MIDDLEWARE = [
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
     'cms.middleware.language.LanguageCookieMiddleware',
-    'cms.middleware.utils.ApphookReloadMiddleware'
+    'cms.middleware.utils.ApphookReloadMiddleware',
+    # 'pagination.middleware.PaginationMiddleware',
+
 ]
 
 ROOT_URLCONF = 'avtoresurs_new.urls'
@@ -109,6 +112,7 @@ TEMPLATES = [
                 'postman.context_processors.inbox',
                 'sekizai.context_processors.sekizai',
                 'cms.context_processors.cms_settings',
+
             ],
         },
     },
