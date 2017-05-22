@@ -19,7 +19,7 @@ PASSWD = 'Ufdhbrb31337'
 
 filenames = ('Klients.csv',)
 date = datetime.datetime.now()
-path = os.path.join('..', 'media', 'csv', 'klients', str(date.date().year))
+path = os.path.join('media', 'csv', 'klients', str(date.date().year))
 
 
 class FtpFile:

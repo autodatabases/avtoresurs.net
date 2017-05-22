@@ -4,7 +4,7 @@ import datetime
 from django.http import Http404
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from django.views.generic import DetailView
 from django.views.generic import ListView
@@ -42,9 +42,21 @@ class ProfileView(TemplateView):
 
 class ProfileEdit(FormView):
     form_class = ProfileForm
-    model = User
+    model = Profile
     template_name = 'profile/profile_edit.html'
     success_url = '/profile/'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileEdit, self).get_context_data()
+        profile = get_object_or_404(Profile, user=self.request.user)
+        fullname = profile.fullname
+        form = ProfileForm({'fullname': fullname})
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        print(request)
+        return super().post(request, *args, **kwargs)
 
 
 def user_import(row):

@@ -23,11 +23,13 @@
 
 
     <div class="row">
-        <div class="col s12 m6">
+        <div class="col m12 l6 offset-l3 white">
             <form action="" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <input type="submit">
+                <p class="center-align">
+                    <button type="submit" class="btn lighten-blue ">Изменить учетные данные</button>
+                </p>
             </form>
         </div>
     </div>

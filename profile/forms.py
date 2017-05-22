@@ -14,11 +14,6 @@ class ProfileForm(forms.Form):
     password1 = forms.CharField(widget=forms.PasswordInput, required=False)
     password2 = forms.CharField(widget=forms.PasswordInput, required=False)
 
-    # class Meta:
-    #     model = Profile
-    #     fields = '__all__'
-
-
     def clean(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
