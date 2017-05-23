@@ -25,7 +25,7 @@ def as_text(value):
 
 
 def order_notification(cart, order, user):
-    body = 'Новый заказ от %s #%s.\r\n\r\nИнформация о заказе:\r\n' % (order.id, order.added)
+    body = 'Новый заказ от %s #%s.\r\n\r\nИнформация о заказе:\r\n' % (order.added.strftime('%d.%m.%Y %H:%M'), order.id)
 
     for idx, item in enumerate(cart.cartitem_set.all()):
         product = item.item
@@ -38,7 +38,7 @@ def order_notification(cart, order, user):
 
     body += '\r\nИтого: %s руб.' % (order.order_total)
 
-    subject = 'Сформирован новый заказ от %s № %s!' % (order.added, order.id)
+    subject = 'Сформирован новый заказ от %s № %s!' % (order.added.strftime("%d.%m.%Y %H:%M"), order.id)
     sender = User.objects.filter(username='admin').first()
     recipient = user
     status = STATUS_ACCEPTED
@@ -105,7 +105,7 @@ def order_notification(cart, order, user):
     # )
 
     email = EmailMessage(
-        'Новый заказ',
+        subject,
         body,
         'no-reply@avtoresurs.net',
         ['avtoresurs@mail.ru'],
