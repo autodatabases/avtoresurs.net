@@ -1,7 +1,29 @@
-
 {% extends "main/base.html" %}
 {% load i18n %}
 
+{% block title %}Аутентицикация{% endblock %}
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="/accounts/login/" class="breadcrumb">Аутентификация</a>
+            <a href="" class="breadcrumb">Выход</a>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
-<p>{% trans "Logged out" %}</p>
+    <div class="row white">
+        <div class="col s12">
+            <p>Выход из аккаунта</p>
+        </div>
+    </div>
+
+    <div class="row white">
+        <div class="col s12 offset-s1">
+            <p>Вы успешно вышли из аккаунта!</p>
+            <p><a href="/accounts/login/">Перейти к форме аутентификации</a></p>
+            </div>
+    </div>
 {% endblock %}

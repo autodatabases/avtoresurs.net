@@ -1,6 +1,7 @@
 import MySQLdb
 import datetime
 
+from django.contrib.auth import update_session_auth_hash
 from django.http import Http404
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -53,17 +54,25 @@ class ProfileEdit(FormView):
         profile = get_object_or_404(Profile, user=self.request.user)
         fullname = profile.fullname
         form = ProfileForm({'fullname': fullname})
+        if self.request.POST:
+            # print("post")
+            form = self.get_form()
         context['form'] = form
         return context
 
     def post(self, request, *args, **kwargs):
-        form = ProfileForm(self.request.POST)
+        form = self.get_form()
         if form.is_valid():
-            print(form.cleaned_data)
             profile = Profile.objects.get(user=self.request.user)
             profile.fullname = form.cleaned_data['fullname']
+            user = self.request.user
+            user.set_password(form.cleaned_data['password1'])
+            print(form.cleaned_data['password1'])
             profile.save()
-        return super().post(request, *args, **kwargs)
+            user.save()
+
+        update_session_auth_hash(self.request, user)
+        return HttpResponseRedirect('/profile/')
 
 
 def user_import(row):

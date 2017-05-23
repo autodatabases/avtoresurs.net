@@ -23,13 +23,37 @@
 
 
     <div class="row">
-        <div class="col m12 l6 offset-l3 white">
+        <div class="col m12 l6 offset-l3 white profile-form">
             <form action="" method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {% if form.non_field_errors %}
+                    <blockquote>{{ form.non_field_errors }}</blockquote>
+                {% endif %}
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="id_fullname" type="text" class="validate" name="fullname" required
+                               value="{{ form.fullname.value }}">
+                        <label for="id_fullname">Ваше имя</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="id_password1" type="password" class="validate" name="password1">
+                        <label for="id_password1">Пароль</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="id_password2" type="password" class="validate" name="password2">
+                        <label for="id_password2">Повторите пароль</label>
+                    </div>
+                </div>
+
+{#                                                {{ form.as_p }}#}
                 <p class="center-align">
                     <button type="submit" class="btn lighten-blue ">Изменить учетные данные</button>
                 </p>
+
             </form>
         </div>
     </div>

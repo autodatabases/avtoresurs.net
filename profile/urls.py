@@ -1,9 +1,10 @@
 from django.conf.urls import url
+from django.contrib.auth.decorators import login_required
 
 from profile.views import ProfileView, ProfileEdit, ProfileImport, PointLoader, OrderList, OrderDetail
 
 urlpatterns = [
-    url(r'^$', ProfileView.as_view(), name='profile_main'),
+    url(r'^$', login_required(ProfileView.as_view()), name='profile_main'),
     url(r'^edit/(?P<pk>[0-9]+)/$', ProfileEdit.as_view(), name='profile_edit'),
     url(r'^load/$', ProfileImport.as_view(), name='profile_importer'),
     url(r'^point_load/$', PointLoader.as_view(), name='point_importer'),
