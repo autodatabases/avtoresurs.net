@@ -154,13 +154,6 @@ class OrderList(ListView):
         orders = Order.objects.filter(user=user).order_by('-added')
         return orders
 
-        # def get_context_data(self, **kwargs):
-        #     context = super(OrderList, self).get_context_data()
-        #     user = self.request.user
-        # orders = Order.objects.filter(user=user)
-        # context['orders'] = orders
-        # return context
-
 
 class OrderDetail(DetailView):
     template_name = 'profile/order_detail.html'

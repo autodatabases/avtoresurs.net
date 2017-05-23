@@ -23,7 +23,7 @@ from avtoresurs_new import settings
 
 from main.forms import RegistrationFormTOSAndEmail
 from shop.views.cart import CartView, ItemCountView
-from shop.views.checkout import CheckoutView
+from shop.views.checkout import CheckoutView, CheckoutSuccessView
 
 urlpatterns = [
                   url(r'^admin/filebrowser/', include(site.urls)),
@@ -38,6 +38,7 @@ urlpatterns = [
                   url(r'^cart/$', CartView.as_view(), name='cart'),
                   url(r'^cart/count/$', ItemCountView.as_view(), name='item_count'),
                   url(r'^checkout/$', CheckoutView.as_view(), name='checkout'),
+                  url(r'^checkout/success/$', CheckoutSuccessView.as_view(), name='checkout_success'),
                   url(r'^service/', include('service.urls', namespace='service')),
                   url(r'^messages/', include('postman.urls', namespace='postman', app_name='postman')),
                   url(r'^', include('main.urls', namespace='main')),

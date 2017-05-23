@@ -155,7 +155,12 @@ class CheckoutView(TemplateView):
 
         order_notification(cart=cart, order=order, user=self.request.user)
 
-        return HttpResponseRedirect('/checkout/')
+        self.request.session['cart_id'] = None
+
+        return HttpResponseRedirect('/checkout/success/')
+
+class CheckoutSuccessView(TemplateView):
+    template_name = "shop/checkout_success_view.html"
 
 
 def get_success_url(self):
