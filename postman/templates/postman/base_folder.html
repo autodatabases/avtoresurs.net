@@ -39,24 +39,28 @@ in the INSTALLED_APPS setting.
                                             <table id="pm_messages" class="striped">
                                                 <thead>
                                                 <tr>
-                                                    <th>{% trans "Выделить" %}</th>
+                                                    <th>
+                                                        <input type="checkbox" id="id_toggle" onClick="toggle(this)">
+                                                        <label for="id_toggle"></label>
+                                                    </th>
                                                     {% block pm_sender_header %}
-                                                        <th>
+                                                        <th class="center-align">
                                                             <a href="{% postman_order_by sender %}">{% trans "Отправитель" %}</a>
                                                         </th>{% endblock %}
                                                     {% block pm_recipient_header %}
-                                                        <th>
+                                                        <th class="center-align">
                                                             <a href="{% postman_order_by recipient %}">{% trans "Получатель" %}</a>
                                                         </th>{% endblock %}
-                                                    <th><a href="{% postman_order_by subject %}">{% trans "Тема" %}</a>
+                                                    <th class="center-align"><a href="{% postman_order_by subject %}">{% trans "Тема" %}</a>
                                                     </th>
-                                                    <th><a href="{% postman_order_by date %}">
+                                                    <th class="center-align"><a href="{% postman_order_by date %}">
                                                         {% block pm_date %}{% trans "Дата" %}{% endblock %}</a></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>{% for message in pm_messages %}
                                                     <tr>
-                                                        <td><input type="checkbox" id="checkbox-{{ forloop.counter0 }}"
+                                                        <td><input name="message" type="checkbox"
+                                                                   id="checkbox-{{ forloop.counter0 }}"
                                                                    {% if by_conversation and message.thread_id %}name="tpks"
                                                                    value="{{ message.thread_id }}"{% else %}name="pks"
                                                                    value="{{ message.pk }}"{% endif %}/>
@@ -75,6 +79,9 @@ in the INSTALLED_APPS setting.
                                                                 <em>{% endif %}
                                                             {% block pm_subject %}
                                                                 <a href="
+
+
+
                                                                         {% if by_conversation and message.thread_id %}{% url 'postman:view_conversation' message.thread_id %}{% else %}{% url 'postman:view' message.pk %}{% endif %}?next={{ current_url|urlencode }}">
                                                                     {% include "postman/inc_subject_ex.html" %}
                                                                 </a>
@@ -167,3 +174,15 @@ in the INSTALLED_APPS setting.
 
 
 {% endblock content %}
+
+{% block js %}
+    <script>
+        function toggle(source) {
+            checkboxes = document.getElementsByName('message');
+            console.log(checkboxes.length);
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+    </script>
+{% endblock %}

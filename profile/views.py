@@ -38,6 +38,8 @@ class ProfileView(TemplateView):
         context = super(ProfileView, self).get_context_data()
         profile = Profile.objects.all().filter(user=self.request.user).first()
         context['profile'] = profile
+        orders_count = Order.objects.filter(user=self.request.user).count()
+        context['orders_count'] = orders_count
         return context
 
 

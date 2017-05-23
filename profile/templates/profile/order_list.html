@@ -58,7 +58,7 @@
             <div class="col s12">
                 <ul class="pagination">
                     {% if page_obj.has_previous %}
-                        <li class="waves-effect"><a href="{{ page_obj.previous_page_number }}"><i
+                        <li class="waves-effect"><a href="?page={{ page_obj.previous_page_number }}"><i
                                 class="material-icons">chevron_left</i></a></li>
                     {% else %}
                         <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
@@ -67,7 +67,7 @@
                         {% if page_obj.number == i %}
                             <li class="active"><a href="">{{ i }}</a></li>
                         {% else %}
-                            <li class="waves-effect"><a href="{% url 'profile:orders' i %}">{{ i }}</a></li>
+                            <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
                         {% endif %}
                     {% endfor %}
                     {% if page_obj.has_next %}

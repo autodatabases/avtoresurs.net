@@ -36,15 +36,13 @@
         </div>
 
         <div class="col s12 m6">
-            <div class="card white no-box-shadow">
-                <div class="card-content black-text">
+            <div class="card blue-grey darken-1 no-box-shadow">
+                <div class="card-content white-text">
                     <span class="card-title">Информация о заказах</span>
-                    <p>Полное имя: {{ profile.fullname }}</p>
-                    <p>Всего баллов: <strong>{{ profile.points }}</strong></p>
-                    <p>Дата последнего входа: {{ request.user.last_login }}</p>
+                    <p>Всего заказов: <strong>{{ orders_count }}</strong></p>
                 </div>
                 <div class="card-action">
-                    <a href="{% url 'profile:orders' 1 %}">Посмотреть заказы</a>
+                    <a href="{% url 'profile:orders' %}">Посмотреть заказы</a>
                 </div>
             </div>
         </div>
@@ -52,8 +50,8 @@
 
     <div class="row">
         <div class="col s12 m6">
-            <div class="card white no-box-shadow">
-                <div class="card-content black-text">
+            <div class="card blue-grey darken-1 no-box-shadow">
+                <div class="card-content white-text">
                     <span class="card-title">Личные сообщения</span>
                     {% if postman_unread_count %}
                         <p>У Вас есть новые сообщения</p>
