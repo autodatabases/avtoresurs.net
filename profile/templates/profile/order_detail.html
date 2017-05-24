@@ -8,7 +8,7 @@
         <div class="col s12 nav-breadcrumb white">
             <a href="/" class="breadcrumb">Главная</a>
             <a href="{% url 'profile:profile_main' %}" class="breadcrumb">Личный кабинет</a>
-            <a href="{% url 'profile:orders' 1 %}" class="breadcrumb">Информация о заказах</a>
+            <a href="{% url 'profile:orders' %}" class="breadcrumb">Информация о заказах</a>
             <a href="" class="breadcrumb">Детальная информация о заказе {{ order.added }} № {{ order.id }}</a>
 
         </div>
