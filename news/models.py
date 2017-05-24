@@ -26,7 +26,7 @@ class Post(models.Model):
         return self.title
 
     class Meta:
-        ordering = ["-updated"]
+        ordering = ["-added"]
         verbose_name = 'Новость'
         verbose_name_plural = 'Публикации'
 
