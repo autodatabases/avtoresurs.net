@@ -2,6 +2,11 @@
 {% load cms_tags menu_tags sekizai_tags %}
 
 {% load staticfiles %}
+{% block extra_scripts %}
+    <script src="{% static 'bonus/js/angular/angular.js' %}" type="text/javascript"></script>
+    <script>var bonusApp = angular.module('bonusApp', []);</script>
+    <script src="{% static 'bonus/js/controllers/bonus_card_controller.js' %}" type="text/javascript"></script>
+{% endblock %}
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
@@ -15,35 +20,45 @@
 
 
 {% block content %}
-
-    <div class="row">
-        {% for bonus in bonus_list %}
-            <div class="col s6 m4 l3 ">
-                <div class="card">
-                    <div class="card-content center-align">
-                        <h4 style="color:#0D47A1;">{{ bonus.title }}</h4>
-                    </div>
-                    {% if bonus.image %}
-                        <div class="card-image" style="max-height: 300px;">
-                            <img src="{{ bonus.image.url }}" alt="item1" class="responsive-img materialboxed"
-                                 title="{{ bonus.title }}"/>
+    <div ng-app="bonusApp">
+        <div class="row" ng-controller="BonusCardController">
+            {% for bonus in bonus_list %}
+                <div class="col s6 m4 l3 ">
+                    <div class="card z-depth-3" ng-click="BonusCardClick('{{ bonus.title }}', '{{ bonus.price }}')">
+                        <div class="card-content center-align">
+                            <h5 style="color:#0D47A1;"><b>{{ bonus.title }} {{ user }}</b></h5>
                         </div>
-                    {% else %}
-                        <div class="card-image">
-                            <img src="{% static 'main/images/no-image.png' %}" alt="item1"
-                                 class="responsive-img materialboxed"
-                                 title="{{ bonus.title }}"/>
+                        {% if bonus.image %}
+                            <div class="card-image" style="max-height: 300px;">
+                                <img src="{{ bonus.image.url }}" alt="item1" class="responsive-img materialboxed"
+                                     title="{{ bonus.title }}"/>
+                            </div>
+                        {% else %}
+                            <div class="card-image">
+                                <img src="{% static 'main/images/no-image.png' %}" alt="item1"
+                                     class="responsive-img materialboxed"
+                                     title="{{ bonus.title }}"/>
+                            </div>
+                        {% endif %}
+                        <div class="card-action center-align card-footer">
+                            <div class="bonus-prise">{{ bonus.price }} <span style="color: #1565C0">баллов</span></div>
                         </div>
-                    {% endif %}
-                    <div class="card-action center-align card-footer">
-                        <div class="bonus-prise">{{ bonus.price }} <span style="color: #1565C0">баллов</span></div>
                     </div>
                 </div>
+            {% endfor %}
+            <!-- Modal Structure -->
+            <div id="bonus-modal" class="modal bottom-sheet">
+                <div class="modal-content">
+                    <h4 id="bonus-title"></h4>
+                    <p id="bonus-price"></p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Отмена</a>
+                    <a href="#!" ng-click="GetBonusClick()" class="btn-flat">Получить</a>
+                </div>
             </div>
-        {% endfor %}
-
+        </div>
     </div>
-
 
     {% if is_paginated %}
 
@@ -92,5 +107,9 @@
 {#                    class="material-icons black">chevron_right</i></a></li>#}
 {#        {% endif %}#}
 {#    </ul>#}
-
+<script>
+  $(document).ready(function(){
+    $('.modal').modal();
+  });
+</script>
 {% endblock %}
