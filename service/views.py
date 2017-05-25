@@ -201,4 +201,4 @@ class PointLoad(TemplateView):
 
         # print(protocol_file)
         # print('Загружено - %s, не загружено - %s' % (protocol[1], protocol[2]))
-        return protocol_path
+        return '/media/' + protocol_path
