@@ -1,14 +1,14 @@
-.bonus-prise {
+.bonus-price {
   font-size: 19pt;
   font-weight: 600;
   cursor: pointer;
-  color: #26A0D7;
+  color: #d72240;
 }
-.card {
+.bonus-app .card {
   cursor: pointer;
-  height: 550px;
+  height: 560px;
 }
-.card-image {
+.bonus-app .card-image {
   margin: 7%;
   cursor: pointer;
 }
