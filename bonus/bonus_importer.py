@@ -71,8 +71,10 @@ def import_bonuses(bonus_file_path, protocol_path=''):
                 int(item_bonus_price)
                 print(item_code, item_name, item_bonus_price)
                 # TODO write code below:
-                Bonus(id_1c=item_code, model=item_name, price=item_bonus_price)
                 # next we should create an object from this fields (django model) and save it, or return dict
+                bonus = Bonus(id_1c=item_code, model=item_name, price=item_bonus_price)
+                bonus.save()
+
             except ValueError:
                 print("Wrong format in bonus row. This will be reported.")
                 error_rows.append(row)

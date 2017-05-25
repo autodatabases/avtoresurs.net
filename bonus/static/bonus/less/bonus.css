@@ -1,0 +1,19 @@
+.bonus-prise {
+  font-size: 19pt;
+  font-weight: 600;
+  cursor: pointer;
+  color: #26A0D7;
+}
+.card {
+  cursor: pointer;
+  height: 550px;
+}
+.card-image {
+  margin: 7%;
+  cursor: pointer;
+}
+.card-footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}

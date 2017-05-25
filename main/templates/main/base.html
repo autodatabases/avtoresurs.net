@@ -15,8 +15,9 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{% static 'main/css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link rel="stylesheet/less" type="text/css" href="{% static 'main/less/styles.less' %}"/>
-    <link rel="stylesheet/less" type="text/css" href="{% static 'bonus/less/bonus.less' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'bonus/less/bonus.css' %}"/>
     <script src="{% static 'main/js/less.min.js' %}" type="text/javascript"></script>
+    {% block extra_scripts %}{% endblock %}
     {#    <link href="{% static 'main/js/less.min.js' %}" type="text/css" rel="stylesheet" media="screen,projection"/>#}
     {#    <link href="{% static 'main/css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>#}
     <link rel="stylesheet" href="{% static 'main/css/font-awesome.min.css' %}">
