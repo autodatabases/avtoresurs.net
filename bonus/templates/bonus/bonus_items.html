@@ -20,7 +20,7 @@
 
 
 {% block content %}
-    <div ng-app="bonusApp">
+    <div class="bonus-app" ng-app="bonusApp">
         <div class="row" ng-controller="BonusCardController">
             {% for bonus in bonus_list %}
                 <div class="col s6 m4 l3 ">
@@ -41,7 +41,7 @@
                             </div>
                         {% endif %}
                         <div class="card-action center-align card-footer">
-                            <div class="bonus-prise">{{ bonus.price }} <span style="color: #1565C0">баллов</span></div>
+                            <div class="bonus-price">{{ bonus.price }} <span style="color: #1565C0">баллов</span></div>
                         </div>
                     </div>
                 </div>
