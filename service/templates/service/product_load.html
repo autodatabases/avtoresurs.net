@@ -1,17 +1,26 @@
 {% extends 'main/base.html' %}
 
-{% block content %}
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'service:main' %}" class="breadcrumb">Сервис</a>
+            <a href="" class="breadcrumb">Загрузка файла с даннами из 1С</a>
+        </div>
+    </div>
+{% endblock %}
 
-    <p>Нажмите старт</p>
+{% block content %}
 
     <div class="row white">
         <div class="col s12">
-            <p>Выберите файл с данными</p>
+            <p>Выберите файл с даннами из 1С</p>
         </div>
     </div>
 
     <div class="row">
-        <div class="col s12">
+        <div class="col s12 white">
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="file" name="file" required>

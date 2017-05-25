@@ -213,6 +213,8 @@ CMS_TEMPLATES = [
     ('main/base.html', 'Home page template'),
 ]
 
+CMS_PERMISSION = True
+
 THUMBNAIL_HIGH_RESOLUTION = True
 
 THUMBNAIL_PROCESSORS = (

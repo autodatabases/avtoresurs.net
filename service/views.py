@@ -1,5 +1,6 @@
 import datetime
 import os
+import pickle
 import threading
 
 from django.core.files.base import ContentFile
@@ -9,9 +10,17 @@ from django.http import HttpResponseRedirect
 
 # Create your views here.
 from django.views.generic import TemplateView
+from io import BytesIO, StringIO
 
+from avtoresurs_new.settings import MEDIA_ROOT
+from service.parser.klients import parse_klients
 from shop.models.product import clean_number, Product, ProductPrice
 from tecdoc.models import PartAnalog
+from filer.models import Folder, File
+
+
+class ServiceMainViev(TemplateView):
+    template_name = 'service/service_main.html'
 
 
 def add(data, interval, report_product, report_price):
@@ -74,11 +83,8 @@ def get_intervals(interval, THREADS, end_idx):
     return intervals
 
 
-class ProductLoader(TemplateView):
-    template_name = 'service/load_product.html'
-
-    # def get(self, request):
-    #     pass
+class ProductLoad(TemplateView):
+    template_name = 'service/product_load.html'
 
     def post(self, request):
         # file = 'NewsAuto2.csv'
@@ -89,7 +95,7 @@ class ProductLoader(TemplateView):
         try:
             file = self.request.FILES['file']
         except KeyError as ke:
-            return HttpResponseRedirect('/profile/point_load/')
+            return HttpResponseRedirect('/service/product_load/')
 
         date = datetime.datetime.now()
         year = date.strftime('%Y')
@@ -148,3 +154,50 @@ class ProductLoader(TemplateView):
         #         error_file_price.write('\r\n%s' % item)
 
         return HttpResponse('OK')
+
+
+class PointLoad(TemplateView):
+    template_name = 'service/point_load.html'
+
+    def post(self, request):
+        try:
+            file = self.request.FILES['file']
+        except KeyError as ke:
+            return HttpResponseRedirect('/service/point_load/')
+        self.point_loader(file)
+        return HttpResponse('/admin/filer/folder/')
+
+    def point_loader(self, file):
+        date = datetime.datetime.now()
+        filename = os.path.join('csv', 'klients', date.strftime('%Y'), date.strftime('%m'),
+                                self.request.FILES['file'].name)
+
+        path = default_storage.save(filename, ContentFile(file.read()))
+        file.close()
+
+        with open('media/' + path, 'r', encoding='cp1251') as fin:
+            data = fin.read().splitlines(True)
+
+        protocol = parse_klients(data)
+
+        protocol_filename = os.path.join('csv', 'klients', 'logs', date.strftime('%Y'), date.strftime('%m'),
+                                         'protokol.txt')
+
+        protocol_string = 'Загружено - %s, не загружено - %s\n\n' % (protocol[1], protocol[2])
+        protocol_string += "\n".join(str(x) for x in protocol[0])
+        protocol_path = default_storage.save(protocol_filename, ContentFile(protocol_string.encode('utf-8')))
+
+        folder, created = Folder.objects.get_or_create(name='Klients')
+        subfolder_year, created = Folder.objects.get_or_create(name=date.strftime('%Y'), parent=folder)
+        subfolder_month, created = Folder.objects.get_or_create(name=date.strftime('%m'), parent=subfolder_year)
+        protocol_file = File(file=protocol_path)
+        protocol_file.name = 'protokol_%s_%s_%s_%s_%s.txt' % (
+            date.strftime('%Y'), date.strftime('%m'), date.strftime('%d'), date.strftime('%H'), date.strftime('%M'))
+        protocol_file.folder = subfolder_month
+        print(protocol_file)
+        protocol_file.save()
+
+        print('Загружено - %s, не загружено - %s' % (protocol[1], protocol[2]))
+
+        for p in protocol[0]:
+            print(p)
