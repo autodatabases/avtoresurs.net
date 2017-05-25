@@ -153,7 +153,7 @@ class ProductLoad(TemplateView):
         #     for item in report_price:
         #         error_file_price.write('\r\n%s' % item)
 
-        return HttpResponse('OK')
+        return HttpResponseR('OK')
 
 
 class PointLoad(TemplateView):
@@ -164,8 +164,8 @@ class PointLoad(TemplateView):
             file = self.request.FILES['file']
         except KeyError as ke:
             return HttpResponseRedirect('/service/point_load/')
-        self.point_loader(file)
-        return HttpResponse('/admin/filer/folder/')
+        url = self.point_loader(file)
+        return HttpResponseRedirect(url)
 
     def point_loader(self, file):
         date = datetime.datetime.now()
@@ -185,19 +185,20 @@ class PointLoad(TemplateView):
 
         protocol_string = 'Загружено - %s, не загружено - %s\n\n' % (protocol[1], protocol[2])
         protocol_string += "\n".join(str(x) for x in protocol[0])
-        protocol_path = default_storage.save(protocol_filename, ContentFile(protocol_string.encode('utf-8')))
+        protocol_string = protocol_string.encode('utf-8')
+        protocol_path = default_storage.save(protocol_filename, ContentFile(protocol_string))
 
         folder, created = Folder.objects.get_or_create(name='Klients')
         subfolder_year, created = Folder.objects.get_or_create(name=date.strftime('%Y'), parent=folder)
         subfolder_month, created = Folder.objects.get_or_create(name=date.strftime('%m'), parent=subfolder_year)
+
         protocol_file = File(file=protocol_path)
         protocol_file.name = 'protokol_%s_%s_%s_%s_%s.txt' % (
             date.strftime('%Y'), date.strftime('%m'), date.strftime('%d'), date.strftime('%H'), date.strftime('%M'))
         protocol_file.folder = subfolder_month
-        print(protocol_file)
+
         protocol_file.save()
 
-        print('Загружено - %s, не загружено - %s' % (protocol[1], protocol[2]))
-
-        for p in protocol[0]:
-            print(p)
+        # print(protocol_file)
+        # print('Загружено - %s, не загружено - %s' % (protocol[1], protocol[2]))
+        return protocol_path
