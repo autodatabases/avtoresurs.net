@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="" class="breadcrumb">Сервис</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row white">
+        <div class="col s12">
+            <p>Выберите действие</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 white">
+            <p><a href="{% url 'service:product_load' %}">Перейти к загрузке файлов из 1С</a></p>
+            <p><a href="{% url 'service:point_load' %}">Перейти к загрузке файлов с бонусами клиентов</a></p>
+            <p><a href="{% url 'service:point_load' %}">Перейти к загрузке файлов с каталогом бонусных товаров</a></p>
+        </div>
+    </div>
+{% endblock %}
