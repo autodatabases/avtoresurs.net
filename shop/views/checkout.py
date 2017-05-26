@@ -12,6 +12,8 @@ from openpyxl.styles import Border
 from openpyxl.styles import Side
 from openpyxl.utils import get_column_letter
 
+from avtoresurs_new.settings import EMAIL_NOREPLY, EMAIL_BCC, EMAIL_NOREPLY_LIST
+from avtoresurs_new.settings import EMAIL_TO
 from postman.models import Message, STATUS_ACCEPTED
 from shop.models.cart import Cart
 from shop.models.order import Order, OrderProduct
@@ -107,10 +109,10 @@ def order_notification(cart, order, user):
     email = EmailMessage(
         subject,
         body,
-        'no-reply@avtoresurs.net',
-        ['avtoresurs@mail.ru'],
-        ['oleg_a@outlook.com'],
-        reply_to=['no-reply@avtoresurs.net'],
+        EMAIL_NOREPLY,
+        EMAIL_TO,
+        EMAIL_BCC,
+        reply_to=EMAIL_NOREPLY_LIST,
         headers={'Message-ID': 'foo'},
     )
 

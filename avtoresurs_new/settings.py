@@ -200,6 +200,11 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = 'no-reply@avtoresurs.net'
 EMAIL_HOST_PASSWORD = 'Iddqd31337'
 DEFAULT_FROM_EMAIL = 'no-reply@avtoresurs.net'
+EMAIL_NOREPLY = 'no-reply@avtoresurs.net'
+EMAIL_NOREPLY_LIST = ['no-reply@avtoresurs.net']
+EMAIL_TO = ['avtoresurs@mail.ru']
+EMAIL_BCC = ['oleg_a@outlook.com']
+
 
 # POSTMAN CONFIG
 POSTMAN_DISALLOW_ANONYMOUS = True
@@ -226,3 +231,5 @@ THUMBNAIL_PROCESSORS = (
 
 TEXT_ADDITIONAL_TAGS = ('iframe',)
 TEXT_ADDITIONAL_ATTRIBUTES = ('scrolling', 'allowfullscreen', 'frameborder', 'src', 'height', 'width')
+
+
