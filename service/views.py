@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 from filer.models import Folder, File
 
+from avtoresurs_new.settings import MEDIA_ROOT
 from service.parser.clients import parse_clients
 from shop.models.product import clean_number, Product, ProductPrice
 from tecdoc.models import PartAnalog
@@ -151,6 +152,42 @@ class ProductLoad(TemplateView):
         return HttpResponseR('OK')
 
 
+def point_load(filename):
+    date = datetime.datetime.now()
+
+    with open(filename, 'r', encoding='cp1251') as fin:
+        data = fin.read().splitlines(True)
+
+    protocol = parse_clients(data)
+
+    protocol_filename = os.path.join('csv', 'klients', 'logs', date.strftime('%Y'), date.strftime('%m'),
+                                     'protokol.txt')
+
+    protocol_string = 'Загружено - %s, не загружено - %s\n\n' % (protocol[1], protocol[2])
+    protocol_string += "\n".join(str(x) for x in protocol[0])
+    protocol_string = protocol_string.encode('utf-8')
+    protocol_path = default_storage.save(protocol_filename, ContentFile(protocol_string))
+
+    folder, created = Folder.objects.get_or_create(name='Klients')
+    subfolder_year, created = Folder.objects.get_or_create(name=date.strftime('%Y'), parent=folder)
+    subfolder_month, created = Folder.objects.get_or_create(name=date.strftime('%m'), parent=subfolder_year)
+
+    protocol_file = File(file=protocol_path)
+    protocol_file.name = 'protokol_%s_%s_%s_%s_%s.txt' % (
+        date.strftime('%Y'), date.strftime('%m'), date.strftime('%d'), date.strftime('%H'), date.strftime('%M'))
+    protocol_file.folder = subfolder_month
+
+    protocol_file.save()
+
+    return '/media/' + protocol_path
+
+
+def get_clients_filename(filename):
+    date = datetime.datetime.now()
+    clients_filename = os.path.join(MEDIA_ROOT, 'csv', 'klients', date.strftime('%Y'), date.strftime('%m'), date.strftime('%d'), filename)
+    return clients_filename
+
+
 class PointLoad(TemplateView):
     template_name = 'service/point_load.html'
 
@@ -159,41 +196,10 @@ class PointLoad(TemplateView):
             file = self.request.FILES['file']
         except KeyError as ke:
             return HttpResponseRedirect('/service/point_load/')
-        url = self.point_loader(file)
-        return HttpResponseRedirect(url)
 
-    def point_loader(self, file):
-        date = datetime.datetime.now()
-        filename = os.path.join('csv', 'klients', date.strftime('%Y'), date.strftime('%m'),
-                                self.request.FILES['file'].name)
-
-        path = default_storage.save(filename, ContentFile(file.read()))
+        post_filename = get_clients_filename(self.request.FILES['file'].name)
+        filename = default_storage.save(post_filename, ContentFile(file.read()))
         file.close()
 
-        with open('media/' + path, 'r', encoding='cp1251') as fin:
-            data = fin.read().splitlines(True)
-
-        protocol = parse_clients(data)
-
-        protocol_filename = os.path.join('csv', 'klients', 'logs', date.strftime('%Y'), date.strftime('%m'),
-                                         'protokol.txt')
-
-        protocol_string = 'Загружено - %s, не загружено - %s\n\n' % (protocol[1], protocol[2])
-        protocol_string += "\n".join(str(x) for x in protocol[0])
-        protocol_string = protocol_string.encode('utf-8')
-        protocol_path = default_storage.save(protocol_filename, ContentFile(protocol_string))
-
-        folder, created = Folder.objects.get_or_create(name='Klients')
-        subfolder_year, created = Folder.objects.get_or_create(name=date.strftime('%Y'), parent=folder)
-        subfolder_month, created = Folder.objects.get_or_create(name=date.strftime('%m'), parent=subfolder_year)
-
-        protocol_file = File(file=protocol_path)
-        protocol_file.name = 'protokol_%s_%s_%s_%s_%s.txt' % (
-            date.strftime('%Y'), date.strftime('%m'), date.strftime('%d'), date.strftime('%H'), date.strftime('%M'))
-        protocol_file.folder = subfolder_month
-
-        protocol_file.save()
-
-        # print(protocol_file)
-        # print('Загружено - %s, не загружено - %s' % (protocol[1], protocol[2]))
-        return '/media/' + protocol_path
+        url = point_load(filename)
+        return HttpResponseRedirect(url)
