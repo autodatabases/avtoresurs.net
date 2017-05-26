@@ -51,10 +51,25 @@
                 <div class="modal-content">
                     <h4 id="bonus-title"></h4>
                     <p id="bonus-price"></p>
+
+                    <div id="preloader" class="preloader-wrapper big active center">
+                        <div class="spinner-layer spinner-blue-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
-                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Отмена</a>
-                    <a href="#!" ng-click="GetBonusClick('{{ points }}')" class="btn-flat">Получить</a>
+                    <a id="cancel-btn" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Отмена</a>
+                    <a id="get-btn" href="#!" ng-click="GetBonusClick('{{ points }}')" class="btn-flat">Получить</a>
                 </div>
             </div>
         </div>

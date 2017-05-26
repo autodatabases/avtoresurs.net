@@ -1,3 +1,4 @@
+import json
 import traceback
 
 from django.http import HttpResponse
@@ -33,19 +34,28 @@ class BonusObtainView(View):
     """ view for post request to add user bonuses """
 
     def post(self, *args, **kwargs):
+        error_redirect = HttpResponse("Во время получения бонуса произошла ошибка!", status=503)
         try:
             bonus_id = self.request.GET.get('bonus_id')
-            user_id = self.request.POST.get('uid')
-            key = self.request.POST.get('key')
+            print(self.request.body)
+            encoded_data = json.loads(self.request.body.decode('utf8'))
+            user_id = encoded_data['id']
+            key = encoded_data['key']
             bonus = Bonus.objects.get(pk=bonus_id)
             user = User.objects.get(pk=user_id)
             if key == PROTECTED_KEY:
                 profile = Profile.objects.get(user=user)
+                print(profile.points)
+                print(bonus.price)
                 if profile.points >= bonus.price:
                     profile.points -= bonus.price
                     profile.save()
                     UserBonus.objects.create(user=user, bonus=bonus)
+                else:
+                    return error_redirect
+            else:
+                return error_redirect
         except Exception as e:
             traceback.print_tb(e)
-            return HttpResponse("Во время получения бонуса произошла ошибка", status=503)
-        return HttpResponse("Вы успешно получили %s!" % bonus.title, status=200)
+            return error_redirect
+        return HttpResponse("Вы успешно получили '%s'!" % bonus.title, status=200)
