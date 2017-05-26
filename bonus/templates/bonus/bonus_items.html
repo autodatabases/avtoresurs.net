@@ -24,7 +24,7 @@
         <div class="row" ng-controller="BonusCardController">
             {% for bonus in bonus_list %}
                 <div class="col s6 m4 l3 ">
-                    <div class="card z-depth-3" ng-click="BonusCardClick('{{ bonus.title }}', '{{ bonus.price }}')">
+                    <div class="card z-depth-3" ng-click="BonusCardClick('{{ bonus.title }}', '{{ bonus.price }}', '{{ points }}', '{{ bonus.id }}', '{{ user.id }}')">
                         <div class="card-content center-align">
                             <h5 style="color:#0D47A1;"><b>{{ bonus.title }} {{ user }}</b></h5>
                         </div>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Отмена</a>
-                    <a href="#!" ng-click="GetBonusClick()" class="btn-flat">Получить</a>
+                    <a href="#!" ng-click="GetBonusClick('{{ points }}')" class="btn-flat">Получить</a>
                 </div>
             </div>
         </div>

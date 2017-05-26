@@ -1,11 +1,17 @@
 @logo-color: #d72240;
 @default-margin: 7%;
+@def-font-size: 19pt;
 
 .bonus-price {
-    font-size: 19pt;
+    font-size: @def-font-size;
     font-weight: 600;
     cursor: pointer;
     color: @logo-color;
+}
+
+#bonus-price{
+  font-size: @def-font-size;
+  color: darkcyan;
 }
 
 .bonus-app .card {

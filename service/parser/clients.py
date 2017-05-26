@@ -14,7 +14,6 @@ def parse_clients(data):
             profile = Profile.objects.get(user__username=login)
             profile.fullname = row[1]
             profile.vip_code = row[2].strip()
-            # todo may be we need to += here to increment points not overwrite?
             profile.points = float(row[3].replace(',', '.'))
             profile.save()
 

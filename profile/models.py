@@ -17,7 +17,7 @@ class Profile(models.Model):
     created = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена', blank=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена', blank=True)
     discount = models.ForeignKey('Discount', blank=True, null=True, verbose_name='Скидка')
-    points = models.PositiveIntegerField(default=0, verbose_name='Очки')
+    points = models.PositiveIntegerField(default=0, verbose_name='Баллы')
 
     objects = ProfileManager()
 

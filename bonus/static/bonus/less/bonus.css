@@ -4,6 +4,10 @@
   cursor: pointer;
   color: #d72240;
 }
+#bonus-price {
+  font-size: 19pt;
+  color: darkcyan;
+}
 .bonus-app .card {
   cursor: pointer;
   height: 560px;

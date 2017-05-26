@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -19,3 +20,15 @@ class Bonus(models.Model):
 
     def __str__(self):
         return "%s, %s (%s)" % (self.id_1c, self.model, self.brand)
+
+
+class UserBonus(models.Model):
+    user = models.ForeignKey(User)
+    bonus = models.ForeignKey(Bonus)
+
+    class Meta:
+        verbose_name = 'Бонусы пользователя'
+        verbose_name_plural = 'Бонусы пользователя'
+
+    def __str__(self):
+        return "%s, %s" % (self.user, self.bonus)
