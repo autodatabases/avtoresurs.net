@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from profile.models import Profile, Point, Discount
+from profile.models import Profile,  Discount
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -9,5 +9,4 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Point)
 admin.site.register(Discount)

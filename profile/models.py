@@ -17,6 +17,7 @@ class Profile(models.Model):
     created = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена', blank=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена', blank=True)
     discount = models.ForeignKey('Discount', blank=True, null=True, verbose_name='Скидка')
+    points = models.PositiveIntegerField(default=0, verbose_name='Очки')
 
     objects = ProfileManager()
 
@@ -26,28 +27,6 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'Профиль'
         verbose_name_plural = 'Профили'
-
-    def get_user_points(self):
-        points = Point.objects.filter(profile=self)
-        print(points)
-        user_points = 0
-        for point in points:
-            user_points += point.point
-        return user_points
-
-    def get_point(self):
-        return Point.objects.filter(profile=self).first()
-
-
-class Point(models.Model):
-    profile = models.ForeignKey(Profile)
-    point = models.DecimalField(max_digits=12, decimal_places=2)
-    created = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
-    updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
-
-    class Meta:
-        verbose_name = 'Балл'
-        verbose_name_plural = 'Баллы'
 
 
 class Discount(models.Model):

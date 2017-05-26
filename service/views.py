@@ -1,22 +1,17 @@
 import datetime
 import os
-import pickle
 import threading
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-
 # Create your views here.
 from django.views.generic import TemplateView
-from io import BytesIO, StringIO
+from filer.models import Folder, File
 
-from avtoresurs_new.settings import MEDIA_ROOT
-from service.parser.klients import parse_klients
+from service.parser.clients import parse_clients
 from shop.models.product import clean_number, Product, ProductPrice
 from tecdoc.models import PartAnalog
-from filer.models import Folder, File
 
 
 class ServiceMainViev(TemplateView):
@@ -178,7 +173,7 @@ class PointLoad(TemplateView):
         with open('media/' + path, 'r', encoding='cp1251') as fin:
             data = fin.read().splitlines(True)
 
-        protocol = parse_klients(data)
+        protocol = parse_clients(data)
 
         protocol_filename = os.path.join('csv', 'klients', 'logs', date.strftime('%Y'), date.strftime('%m'),
                                          'protokol.txt')
