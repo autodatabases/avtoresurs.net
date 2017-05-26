@@ -1,12 +1,14 @@
 import json
 import traceback
 
+from django.core.mail import EmailMessage
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.views import View
 from django.views.generic import ListView
 
 from bonus.models import Bonus, UserBonus
+from postman.models import STATUS_ACCEPTED, Message
 from profile.models import Profile
 
 UNREGISTERED_USER_POINTS = 0
@@ -33,6 +35,29 @@ class BonusPageView(ListView):
 class BonusObtainView(View):
     """ view for post request to add user bonuses """
 
+    @staticmethod
+    def _send_email(subject, body):
+        email = EmailMessage(
+            subject,
+            body,
+            'no-reply@avtoresurs.net',
+            ['avtoresurs@mail.ru'],
+            ['oleg_a@outlook.com'],
+            reply_to=['no-reply@avtoresurs.net'],
+            headers={'Message-ID': 'foo'},
+        )
+        email.send()
+
+    @staticmethod
+    def _send_private_messages_recipient_and_admin(subject, body, recipient):
+        status = STATUS_ACCEPTED
+        sender = User.objects.filter(username='admin').first()
+        message_user = Message(subject=subject, body=body, sender=sender, recipient=recipient, moderation_status=status)
+        message_user.save()
+        message_admin = Message(subject=subject, body=body, sender=recipient, recipient=sender,
+                                moderation_status=status)
+        message_admin.save()
+
     def post(self, *args, **kwargs):
         error_redirect = HttpResponse("Во время получения бонуса произошла ошибка!", status=503)
         try:
@@ -51,6 +76,10 @@ class BonusObtainView(View):
                     profile.points -= bonus.price
                     profile.save()
                     UserBonus.objects.create(user=user, bonus=bonus)
+                    subject = 'Получение товаров по бонусной акции'
+                    body = 'Пользователь %s получил %s по бонусной акции.' % (user.username, bonus.title)
+                    self._send_email(subject=subject, body=body)
+                    self._send_private_messages_recipient_and_admin(subject=subject, body=body, recipient=user)
                 else:
                     return error_redirect
             else:
