@@ -1,33 +1,15 @@
-import MySQLdb
-import datetime
-
 from django.contrib.auth import update_session_auth_hash
 from django.http import Http404
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
-
+from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
-from django.contrib.auth.models import User
-
-import os
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
-from django.conf import settings
-
 # Create your views here.
-from django.views.generic.edit import FormMixin, UpdateView, FormView
-from django.views.generic.list import MultipleObjectMixin
+from django.views.generic.edit import FormView
 
-from profile.forms import UploadFileForm, ProfileForm
-from profile.models import Profile, Point
-from avtoresurs_new.settings import BASE_DIR
-
-import urllib.parse
-
-from service.parser.klients import parse_klients
+from profile.forms import ProfileForm
+from profile.models import Profile
 from shop.models.order import Order
 
 

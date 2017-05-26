@@ -27,7 +27,7 @@ class Profile(models.Model):
         verbose_name = 'Профиль'
         verbose_name_plural = 'Профили'
 
-    def points(self):
+    def get_user_points(self):
         points = Point.objects.filter(profile=self)
         print(points)
         user_points = 0
