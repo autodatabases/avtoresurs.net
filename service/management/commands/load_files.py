@@ -9,17 +9,20 @@ from django.core.files.storage import default_storage
 from django.core.management.base import BaseCommand, CommandError
 
 from avtoresurs_new.settings import MEDIA_ROOT
-from service.views import point_load, get_clients_filename
+from service.views import point_load, get_filename, price_load
 
+# REAL FTP
 # HOST = '195.190.127.74'
 # USER = 'oleg'
 # PASSWD = 'KoxlabiruX'
 
+# TEST FTP
 HOST = '46.101.123.237'
 USER = 'ftpuser'
 PASSWD = 'Ufdhbrb31337'
 
-filenames = ('Klients.csv',)
+# filenames = ('Klients.csv', )
+filenames = ('Klients.csv', 'NewsAuto.csv')
 
 
 class FtpFile:
@@ -29,12 +32,15 @@ class FtpFile:
         self.ftp.login(user=user, passwd=passwd)
 
     def get_file(self, filename):
-        new_file = get_clients_filename(filename)
+        new_file = get_filename(filename)
         file = BytesIO()
         self.ftp.retrbinary('RETR %s' % filename, file.write)
         file.seek(0)
         default_storage.save(new_file, ContentFile(file.read()))
-        point_load(new_file)
+        if filename == 'Klients.csv':
+            point_load(new_file)
+        elif filename == 'NewsAuto.csv':
+            price_load(new_file)
 
 
 class Command(BaseCommand):
