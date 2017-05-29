@@ -1,8 +1,11 @@
 import datetime
+from io import BytesIO
 import os
 import threading
 from ftplib import FTP
 
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.core.management.base import BaseCommand, CommandError
 
 from avtoresurs_new.settings import MEDIA_ROOT
@@ -26,11 +29,12 @@ class FtpFile:
         self.ftp.login(user=user, passwd=passwd)
 
     def get_file(self, filename):
-        new_filename = get_clients_filename(filename)
-        file = open(new_filename, 'wb')
+        new_file = get_clients_filename(filename)
+        file = BytesIO()
         self.ftp.retrbinary('RETR %s' % filename, file.write)
-        file.close()
-        point_load(new_filename)
+        file.seek(0)
+        default_storage.save(new_file, ContentFile(file.read()))
+        point_load(new_file)
 
 
 class Command(BaseCommand):

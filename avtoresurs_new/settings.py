@@ -205,7 +205,6 @@ EMAIL_NOREPLY_LIST = ['no-reply@avtoresurs.net']
 EMAIL_TO = ['avtoresurs@mail.ru']
 EMAIL_BCC = ['oleg_a@outlook.com']
 
-
 # POSTMAN CONFIG
 POSTMAN_DISALLOW_ANONYMOUS = True
 POSTMAN_DISALLOW_MULTIRECIPIENTS = True
@@ -232,4 +231,7 @@ THUMBNAIL_PROCESSORS = (
 TEXT_ADDITIONAL_TAGS = ('iframe',)
 TEXT_ADDITIONAL_ATTRIBUTES = ('scrolling', 'allowfullscreen', 'frameborder', 'src', 'height', 'width')
 
-
+DIRS = {
+    'CSV': 'csv',
+    'KLIENTS': 'klients',
+}

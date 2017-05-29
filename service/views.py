@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 from filer.models import Folder, File
 
-from avtoresurs_new.settings import MEDIA_ROOT
+from avtoresurs_new.settings import MEDIA_ROOT, DIRS
 from service.parser.clients import parse_clients
 from shop.models.product import clean_number, Product, ProductPrice
 from tecdoc.models import PartAnalog
@@ -184,7 +184,17 @@ def point_load(filename):
 
 def get_clients_filename(filename):
     date = datetime.datetime.now()
-    clients_filename = os.path.join(MEDIA_ROOT, 'csv', 'klients', date.strftime('%Y'), date.strftime('%m'), date.strftime('%d'), filename)
+    year = date.strftime('%Y')
+    month = year, date.strftime('%m')
+    if not os.path.exists(DIRS['CSV']):
+        os.makedirs(DIRS['CSV'])
+    if not os.path.exists(DIRS['KLIENTS']):
+        os.makedirs(DIRS['KLIENTS'])
+    if not os.path.exists(DIRS['KLIENTS']):
+        os.makedirs(DIRS['KLIENTS'])
+    if not os.path.exists(DIRS['KLIENTS']):
+        os.makedirs(DIRS['KLIENTS'])
+    clients_filename = os.path.join(MEDIA_ROOT, 'csv', 'klients', year, date.strftime('%m'), date.strftime('%d'), filename)
     return clients_filename
 
 
