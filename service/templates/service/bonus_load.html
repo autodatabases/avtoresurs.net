@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Загрузка файла с каталогом бонусных призов{% endblock %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'service:main' %}" class="breadcrumb">Сервис</a>
+            <a href="" class="breadcrumb">Загрузка файла с каталогом бонусных призов</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row white">
+        <div class="col s12">
+            <p>Выберите файл с каталогом бонусных призов</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 white">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="file" required>
+                <button class="btn waves-effect waves-light blue darken-1 center-align" type="submit"
+                        name="action">
+                    Загрузить
+                    <i class="material-icons right">send</i>
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
