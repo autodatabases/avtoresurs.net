@@ -12,14 +12,14 @@ from avtoresurs_new.settings import MEDIA_ROOT
 from service.views import point_load, get_filename, price_load
 
 # REAL FTP
-HOST = '195.190.127.74'
-USER = 'oleg'
-PASSWD = 'KoxlabiruX'
+# HOST = '195.190.127.74'
+# USER = 'oleg'
+# PASSWD = 'KoxlabiruX'
 
 # TEST FTP
-# HOST = '46.101.123.237'
-# USER = 'ftpuser'
-# PASSWD = 'Ufdhbrb31337'
+HOST = '46.101.123.237'
+USER = 'ftpuser'
+PASSWD = 'Ufdhbrb31337'
 
 # filenames = ('Klients.csv', )
 filenames = ('Klients.csv', 'NewsAuto.csv')
