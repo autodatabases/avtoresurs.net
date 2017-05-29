@@ -1,21 +1,23 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 
 # Create your models here.
+
+
 class ProfileManager(models.Manager):
     def get_queryset(self):
         qs = super(ProfileManager, self).get_queryset().select_related('user')
         return qs
 
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    vip_code = models.CharField(max_length=50, blank=True, null=True)
+    vip_code = models.CharField(max_length=50, blank=True, null=True, verbose_name='Номер карты клиента')
     fullname = models.CharField(max_length=255, blank=True, null=True, verbose_name='Полное имя')
     created = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена', blank=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена', blank=True)
+    group = models.ForeignKey(Group, blank=True, default=None, verbose_name='Группа для скидки')
     discount = models.ForeignKey('Discount', blank=True, null=True, verbose_name='Скидка')
     points = models.PositiveIntegerField(default=0, verbose_name='Баллы')
 
