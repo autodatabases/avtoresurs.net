@@ -158,7 +158,10 @@ def add_product(data, interval, report_product, report_price):
         part_analog = PartAnalog.objects.filter(search_number=clean_sku)
         product, created = Product.objects.get_or_create(sku=sku, brand=brand)
         product.quantity = quantity
-        product.save()
+        try:
+            product.save()
+        except Exception as e:
+            report_product.append(e)
 
         product_price = ProductPrice(
             product=product,
@@ -179,7 +182,7 @@ def add_product(data, interval, report_product, report_price):
         try:
             product_price.save()
         except Exception as e:
-            report_product.append(e)
+            report_price.append(e)
 
         if not prices[0]:
             report_price.append('Строка № %s не указана цена товара. [%s]' % (line_number, line))
