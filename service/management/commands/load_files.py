@@ -37,13 +37,13 @@ class FtpFile:
         file = BytesIO()
         self.ftp.retrbinary('RETR %s' % filename, file.write)
         file.seek(0)
-        default_storage.save(new_file, ContentFile(file.read()))
+        new_file_path = default_storage.save(new_file, ContentFile(file.read()))
         if filename == 'Klients.csv':
-            point_load(new_file)
+            point_load(new_file_path)
         elif filename == 'NewsAuto.csv':
-            price_load(new_file)
+            price_load(new_file_path)
         elif filename == 'Priz.csv':
-            bonus_load(new_file)
+            bonus_load(new_file_path)
 
 
 class Command(BaseCommand):
