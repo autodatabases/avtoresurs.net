@@ -176,7 +176,10 @@ def add_product(data, interval, report_product, report_price):
         # product_price.price_3 = prices[3]
         # product_price.price_4 = prices[4]
         # print(product_price)
-        product_price.save()
+        try:
+            product_price.save()
+        except Exception as e:
+            report_product.append(e)
 
         if not prices[0]:
             report_price.append('Строка № %s не указана цена товара. [%s]' % (line_number, line))
