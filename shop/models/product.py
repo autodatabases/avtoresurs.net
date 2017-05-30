@@ -104,7 +104,7 @@ class Product(models.Model):
             pass
 
         try:
-            group = user.groups.all()[0]
+            group = Profile.objects.get(user=user).group
             group = group.pk
             if group == PriceGroup.RETAIL.value:
                 return pp.retail_price

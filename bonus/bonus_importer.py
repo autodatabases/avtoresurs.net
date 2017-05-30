@@ -14,7 +14,6 @@ from bonus.models import Bonus
 os.environ["DJANGO_SETTINGS_MODULE"] = "avtoresurs_new.settings"
 django.setup()
 
-
 PROTOCOL_REPORTS_EMAIL = 'shaman@born2fish.ru'
 
 csv_worker = CsvWorker()
@@ -23,7 +22,7 @@ csv_worker = CsvWorker()
 def send_bonus_error_protocol(protocol):
     """ :param protocol: is csv error bonuses protocol """
     try:
-        email = EmailMessage (
+        email = EmailMessage(
             '[АВТОРЕСУРС] Бонусы, которые не получилось импортировать',
             '%s' % timezone.now(),
             DEFAULT_FROM_EMAIL,
@@ -60,30 +59,29 @@ def import_bonuses(bonus_file_path, protocol_path=''):
     """ import bonuses from csv file """
     rows = csv_worker.get_rows_list_from_csv(csv_file_path=bonus_file_path, encoding='cp1251', delimiter=';')
     error_rows = []
-    for row in rows:
-        try:
-            # try to get data from row
-            item_code = row[0]
-            item_name = row[1]
-            item_bonus_price = row[2]
-            # try to int price and generate report protocol on error
-            try:
-                int(item_bonus_price)
-                print(item_code, item_name, item_bonus_price)
-                # TODO write code below:
-                # next we should create an object from this fields (django model) and save it, or return dict
-                bonus = Bonus(id_1c=item_code, model=item_name, price=item_bonus_price)
-                bonus.save()
+    for row in rows[1:]:
+        # try to get data from row
+        item_code = row[0]
+        item_name = row[1]
+        item_bonus_price = row[2]
+        # try to int price and generate report protocol on error
+        # try:
+        int(item_bonus_price)
+        # print(item_code, item_name, item_bonus_price)
+        # TODO write code below:
+        # next we should get_or_create an object from this fields (django model) and save it, or return dict
+        bonus = Bonus.objects.get_or_create(id_1c=item_code)
+        bonus.title = item_name
+        bonus.price = item_bonus_price
+        print(bonus.price)
+        # bonus.save()
+        # except Exception:
+        #     print("Wrong format in bonus row. This will be reported.")
+        #     error_rows.append(row)
 
-            except ValueError:
-                print("Wrong format in bonus row. This will be reported.")
-                error_rows.append(row)
-
-        except IndexError:
-            error_rows.append(row)
-            print("File '%s': wrong columns markup. This will be reported.\nrow=%s" % (bonus_file_path, row))
-
+    protocol = ''
     if error_rows:
         protocol = generate_protocol(path_to_file=protocol_path, error_rows=error_rows)
         if protocol:
             send_bonus_error_protocol(protocol=protocol)
+            # return protocol

@@ -3,23 +3,23 @@ from django.db import models
 
 
 class Bonus(models.Model):
-    id_1c = models.IntegerField(default=None, null=False)
-    model = models.CharField(max_length=150, default='')
-    brand = models.CharField(max_length=100, default='')
-    price = models.IntegerField(default=None, null=False)
-    image = models.ImageField(default=None, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    id_1c = models.CharField(default=None, null=False, max_length=10, verbose_name='ИД бонусного товара')
+    title = models.CharField(max_length=255, default='', verbose_name='Название')
+    brand = models.CharField(max_length=100, default='', verbose_name='brand')
+    price = models.IntegerField(default=None, null=True, verbose_name='Цена в баллах')
+    image = models.ImageField(default=None, blank=True, null=True, verbose_name='Картинка')
+    created_at = models.DateTimeField(auto_now=True, verbose_name='Создана')
+    updated_at = models.DateTimeField(auto_now_add=True, verbose_name='Изменена')
 
     sku = models.CharField(max_length=50)
-    title = models.CharField(max_length=255)
+    # title = models.CharField(max_length=255)
 
     class Meta:
         verbose_name = 'Бонус'
         verbose_name_plural = 'Бонусы'
 
     def __str__(self):
-        return "%s, %s (%s)" % (self.id_1c, self.model, self.brand)
+        return "%s, %s (%s)" % (self.id_1c, self.title, self.brand)
 
 
 class UserBonus(models.Model):

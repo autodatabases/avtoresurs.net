@@ -6,10 +6,11 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
-from djangocms_file.models import Folder, File
+from filer.models import File
+from filer.models.foldermodels import Folder
 
 from avtoresurs_new.settings import DIR, EMAIL_NOREPLY, EMAIL_TO, EMAIL_BCC, EMAIL_NOREPLY_LIST, MEDIA_URL, MEDIA_ROOT
-from bonus.bonus_importer import csv_worker
+
 from bonus.models import Bonus
 from profile.models import Profile
 from shop.models.product import clean_number, Product, ProductPrice
@@ -28,8 +29,40 @@ def get_filename(filename):
     year = date.strftime('%Y')
     month = date.strftime('%m')
     day = date.strftime('%d')
-    clients_filename = os.path.join(MEDIA_ROOT, DIR['CSV'], dir, year, month, day, filename)
-    return clients_filename
+    new_filename = os.path.join(MEDIA_ROOT, DIR['CSV'], dir, year, month, day, filename)
+    return new_filename
+
+
+def save_protocol(folder_name, protocol_path, protocol_filename, protocol_string):
+    date = datetime.datetime.now()
+    year = date.strftime('%Y')
+    month = date.strftime('%m')
+    day = date.strftime('%d')
+    hour = date.strftime('%H')
+    minute = date.strftime('%M')
+
+    folder, created = Folder.objects.get_or_create(name=folder_name)
+    subfolder_year, created = Folder.objects.get_or_create(name=date.strftime('%Y'), parent=folder)
+    subfolder_month, created = Folder.objects.get_or_create(name=date.strftime('%m'), parent=subfolder_year)
+
+    protocol_file = File(file=protocol_path)
+    protocol_file.name = protocol_filename
+    protocol_file.folder = subfolder_month
+
+    subject = 'Протокол загрузки каталога бонусов от %s.%s.%s %s:%s' % (year, month, day, hour, minute)
+    body = 'Протокол загрузки каталога бонусов в приложении'
+    email = EmailMessage(
+        subject,
+        body,
+        EMAIL_NOREPLY,
+        EMAIL_TO,
+        EMAIL_BCC,
+        reply_to=EMAIL_NOREPLY_LIST,
+        headers={},
+    )
+
+    email.attach('Priz.txt', protocol_string, 'text/plain')
+    email.send()
 
 
 def parse_clients(data):
@@ -203,14 +236,14 @@ def price_load(filename):
     for thread in threads:
         thread.join()
 
-    error_file = 'error_%s_%s_%s_%s_%s.txt' % (year, month, day, hour, minute)
-    error_file = os.path.join(DIR['CSV'], DIR['PRICE'], DIR['LOG'], year, month, day, error_file)
+    error_filename = '%s_%s_%s_%s_%s_error.txt' % (year, month, day, hour, minute)
+    error_file = os.path.join(DIR['CSV'], DIR['PRICE'], DIR['LOG'], year, month, day, error_filename)
     for item in report_product:
         report_product_str += '\r\n%s' % item
     error_file_path = default_storage.save(error_file, ContentFile(report_product_str))
 
-    error_price_file = 'error_price_%s_%s_%s_%s_%s.txt' % (year, month, day, hour, minute)
-    error_price_file = os.path.join(DIR['CSV'], DIR['PRICE'], DIR['LOG'], year, month, day, error_price_file)
+    error_price_filename = '%s_%s_%s_%s_%s_error_price.txt' % (year, month, day, hour, minute)
+    error_price_file = os.path.join(DIR['CSV'], DIR['PRICE'], DIR['LOG'], year, month, day, error_price_filename)
     for item in report_price:
         report_price_str += '\r\n%s' % item
     error_price_file_path = default_storage.save(error_price_file, ContentFile(report_price_str))
@@ -220,12 +253,12 @@ def price_load(filename):
     subfolder_month, created = Folder.objects.get_or_create(name=month, parent=subfolder_year)
 
     error_file = File(file=error_file_path)
-    error_file.name = 'error_%s_%s_%s_%s_%s.txt' % (year, month, day, hour, minute)
+    error_file.name = error_filename
     error_file.folder = subfolder_month
     error_file.save()
 
     error_price = File(file=error_price_file_path)
-    error_price.name = 'error_price_%s_%s_%s_%s_%s.txt' % (year, month, day, hour, minute)
+    error_price.name = error_price_filename
     error_price.folder = subfolder_month
     error_price.save()
 
@@ -241,45 +274,87 @@ def price_load(filename):
         headers={'Message-ID': 'foo'},
     )
 
-    email.attach('error.txt', report_product_str, 'text/plain')
-    email.attach('error_price.txt', report_price_str, 'text/plain')
+    email.attach(error_filename, report_product_str, 'text/plain')
+    email.attach(error_price_filename, report_price_str, 'text/plain')
     email.send()
 
     return MEDIA_URL + error_file_path
 
 
-def bonus_load(filename):
-    """ import bonuses from csv file """
-    rows = csv_worker.get_rows_list_from_csv(csv_file_path=filename, encoding='cp1251', delimiter=';')
-    error_rows = []
-    data = None
-    with open(filename, 'r', encoding='cp1251') as fin:
-        data = fin.read().splitlines(True)
-    for row in data[1:]:
-        print('%s' % row)
-    exit()
-    for row in data[1:]:
-        # print(row)
-        try:
-            # try to get data from row
-            item_code = row[0]
-            item_name = row[1]
-            item_bonus_price = row[2]
-            print('item_bonus_price: %s' % item_bonus_price)
-            # try:
-            int(item_bonus_price)
-            print(item_code, item_name, item_bonus_price)
-            # TODO write code below:
-            # next we should create an object from this fields (django model) and save it, or return dict
-            bonus, created = Bonus.objects.get_or_create(id_1c=item_code)
-            bonus.model = item_name
-            bonus.price = item_bonus_price
-            bonus.save()
-            # except ValueError:
-            #     print("Wrong format in bonus row. This will be reported.")
-            #     error_rows.append(row)
+def import_bonuses(filename):
+    date = datetime.datetime.now()
+    year = date.strftime('%Y')
+    month = date.strftime('%m')
+    day = date.strftime('%d')
+    hour = date.strftime('%H')
+    minute = date.strftime('%M')
 
-        except IndexError:
-            error_rows.append(row)
-            print("File '%s': wrong columns markup. This will be reported.\nrow=%s" % (filename, row))
-    return HttpResponseRedirect('/service/bonus_load/')
+    with open(filename, 'r', encoding='cp1251') as file_price:
+        data = file_price.read().splitlines(True)
+    file_price.close()
+
+    good = 0
+    bad = 0
+    protocol_bad = ''
+    protocol_good = ''
+    for line in data[1:]:
+        row = line.split(';')
+        try:
+            bonus_code = row[0]
+            bonus_title = row[1]
+            print(bonus_title)
+            bonus_price = int(row[2])
+            print(bonus_price)
+            bonus, created = Bonus.objects.get_or_create(id_1c=bonus_code)
+            bonus.title = bonus_title
+            bonus.price = bonus_price
+            bonus.save()
+            good += 1
+            protocol_good += '%s %s\n' % (line, 'Принят')
+        except Exception as error:
+            bad += 1
+            protocol_bad += '%s %s (%s)\n' % (line, 'Возникла ошибка', error)
+
+
+    protocol = 'Протокол приема каталога бонусов от %s.%s.%s %s:%s\n' % (day, month, year, hour, minute)
+    protocol += 'Всего обработано - %s, из них принято - %s, с ошибкой - %s\n\n' % (good + bad, good, bad)
+    protocol += protocol_good
+    protocol += protocol_bad
+
+    protocol_filename = '%s_%s_%s_%s_%s_priz.txt' % (year, month, day, hour, minute)
+    protocol_path = os.path.join(DIR['CSV'], DIR['BONUS'], DIR['LOG'], year, month, protocol_filename)
+    # print(protocol_path)
+    protocol_path = default_storage.save(protocol_path, ContentFile(protocol.encode('utf-8')))
+
+    folder, created = Folder.objects.get_or_create(name='Priz')
+    subfolder_year, created = Folder.objects.get_or_create(name=date.strftime('%Y'), parent=folder)
+    subfolder_month, created = Folder.objects.get_or_create(name=date.strftime('%m'), parent=subfolder_year)
+
+    protocol_file = File(file=protocol_path)
+    protocol_file.name = protocol_filename
+    protocol_file.folder = subfolder_month
+
+    protocol_file.save()
+
+    subject = 'Протокол загрузки бонусного каталога от %s.%s.%s %s:%s' % (year, month, day, hour, minute)
+    body = 'Протокол загрузки бонусного каталога в приложении'
+    email = EmailMessage(
+        subject,
+        body,
+        EMAIL_NOREPLY,
+        EMAIL_TO,
+        EMAIL_BCC,
+        reply_to=EMAIL_NOREPLY_LIST,
+        headers={},
+    )
+
+    email.attach(protocol_filename, protocol, 'text/plain')
+    email.send()
+
+    return protocol
+
+
+def bonus_load(filename):
+    protocol = import_bonuses(filename)
+
+    return '/service/bonus_load/'

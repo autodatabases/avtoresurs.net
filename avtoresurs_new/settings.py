@@ -235,6 +235,6 @@ DIR = {
     'CSV': 'csv',
     'KLIENTS': 'klients',
     'PRICE': 'price',
-    'BONUS': 'bonus',
+    'BONUS': 'priz',
     'LOG': 'log'
 }

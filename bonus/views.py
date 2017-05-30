@@ -19,7 +19,7 @@ class BonusPageView(ListView):
     """ This view response for bonus items page and return page with all items """
     template_name = 'bonus/bonus_items.html'
     model = Bonus
-    paginate_by = 4
+    paginate_by = 24
 
     def get_context_data(self, **kwargs):
         context = super(BonusPageView, self).get_context_data()
