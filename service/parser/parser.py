@@ -159,10 +159,7 @@ def add_product(data, interval, report_product, report_price):
             part_analog = PartAnalog.objects.filter(search_number=clean_sku)
             product, created = Product.objects.get_or_create(sku=sku, brand=brand)
             product.quantity = quantity
-            try:
-                product.save()
-            except Exception as e:
-                report_product.append(e)
+            product.save()
 
             product_price = ProductPrice(
                 product=product,
@@ -173,17 +170,7 @@ def add_product(data, interval, report_product, report_price):
                 price_4=prices[4],
                 price_5=prices[5]
             )
-            # product_price, created = ProductPrice.objects.get_or_create(product=product)
-            # product_price.retail_price = prices[0]
-            # product_price.price_1 = prices[1]
-            # product_price.price_2 = prices[2]
-            # product_price.price_3 = prices[3]
-            # product_price.price_4 = prices[4]
-            # print(product_price)
-            try:
-                product_price.save()
-            except Exception as e:
-                report_price.append(e)
+            product_price.save()
 
             if not prices[0]:
                 report_price.append('Строка № %s не указана цена товара. [%s]' % (line_number, line))
@@ -228,7 +215,7 @@ def price_load(filename):
     # print(data[0:50])
     # exit()
 
-    THREADS = 60
+    THREADS = 40
     list_len = len(data)
     interval = list_len // THREADS
     intervals = get_intervals(interval, THREADS, list_len)
