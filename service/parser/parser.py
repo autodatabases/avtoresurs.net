@@ -145,52 +145,55 @@ def add_product(data, interval, report_product, report_price):
         row = line.split(';')
         part_analog = None
 
-        sku = row[0]
-        brand = row[1]
-        quantity = row[2]
-        prices = [row[3], row[4], row[5], row[6], row[7], row[8]]
-        if not prices[4]:
-            prices[4] = 0
-        if not prices[5]:
-            prices[5] = 0
-        # print(prices)
-        clean_sku = clean_number(sku)
-        part_analog = PartAnalog.objects.filter(search_number=clean_sku)
-        product, created = Product.objects.get_or_create(sku=sku, brand=brand)
-        product.quantity = quantity
         try:
-            product.save()
-        except Exception as e:
-            report_product.append(e)
+            sku = row[0]
+            brand = row[1]
+            quantity = row[2]
+            prices = [row[3], row[4], row[5], row[6], row[7], row[8]]
+            if not prices[4]:
+                prices[4] = 0
+            if not prices[5]:
+                prices[5] = 0
+            # print(prices)
+            clean_sku = clean_number(sku)
+            part_analog = PartAnalog.objects.filter(search_number=clean_sku)
+            product, created = Product.objects.get_or_create(sku=sku, brand=brand)
+            product.quantity = quantity
+            try:
+                product.save()
+            except Exception as e:
+                report_product.append(e)
 
-        product_price = ProductPrice(
-            product=product,
-            retail_price=prices[0],
-            price_1=prices[1],
-            price_2=prices[2],
-            price_3=prices[3],
-            price_4=prices[4],
-            price_5=prices[5]
-        )
-        # product_price, created = ProductPrice.objects.get_or_create(product=product)
-        # product_price.retail_price = prices[0]
-        # product_price.price_1 = prices[1]
-        # product_price.price_2 = prices[2]
-        # product_price.price_3 = prices[3]
-        # product_price.price_4 = prices[4]
-        # print(product_price)
-        try:
-            product_price.save()
-        except Exception as e:
-            report_price.append(e)
+            product_price = ProductPrice(
+                product=product,
+                retail_price=prices[0],
+                price_1=prices[1],
+                price_2=prices[2],
+                price_3=prices[3],
+                price_4=prices[4],
+                price_5=prices[5]
+            )
+            # product_price, created = ProductPrice.objects.get_or_create(product=product)
+            # product_price.retail_price = prices[0]
+            # product_price.price_1 = prices[1]
+            # product_price.price_2 = prices[2]
+            # product_price.price_3 = prices[3]
+            # product_price.price_4 = prices[4]
+            # print(product_price)
+            try:
+                product_price.save()
+            except Exception as e:
+                report_price.append(e)
 
-        if not prices[0]:
-            report_price.append('Строка № %s не указана цена товара. [%s]' % (line_number, line))
-        if not part_analog:
-            report_product.append(
-                'Строка № %s не найдено соответсвие в TECDOC. [%s]' % (line_number, line.split()))
-            # except:
-            #     report_product.append('Строка № %s КРИТИЧЕСКАЯ ОШИБКА. [%s]' % (line_number, line.split()))
+            if not prices[0]:
+                report_price.append('Строка № %s не указана цена товара. [%s]' % (line_number, line))
+            if not part_analog:
+                report_product.append(
+                    'Строка № %s не найдено соответсвие в TECDOC. [%s]' % (line_number, line.split()))
+                # except:
+                #     report_product.append('Строка № %s КРИТИЧЕСКАЯ ОШИБКА. [%s]' % (line_number, line.split()))
+        except Exception as e:
+            report_product.append("Строка № %s. Проверьте корректность строки [%s]" % (line_number, line.split()))
 
 
 def get_intervals(interval, THREADS, end_idx):
@@ -225,7 +228,7 @@ def price_load(filename):
     # print(data[0:50])
     # exit()
 
-    THREADS = 40
+    THREADS = 60
     list_len = len(data)
     interval = list_len // THREADS
     intervals = get_intervals(interval, THREADS, list_len)
@@ -320,7 +323,6 @@ def import_bonuses(filename):
         except Exception as error:
             bad += 1
             protocol_bad += '%s %s (%s)\n' % (line, 'Возникла ошибка', error)
-
 
     protocol = 'Протокол приема каталога бонусов от %s.%s.%s %s:%s\n' % (day, month, year, hour, minute)
     protocol += 'Всего обработано - %s, из них принято - %s, с ошибкой - %s\n\n' % (good + bad, good, bad)
