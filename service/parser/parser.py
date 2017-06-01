@@ -139,144 +139,6 @@ def point_load(filename):
     return MEDIA_URL + protocol_path
 
 
-def add_product(data, interval, report_product, report_price):
-    for idx, line in enumerate(data[interval[0]:interval[1]]):
-        line_number = idx + interval[0] + 1
-        row = line.split(';')
-        part_analog = None
-
-        try:
-            sku = row[0]
-            brand = row[1]
-            quantity = row[2]
-            prices = [row[3], row[4], row[5], row[6], row[7], row[8]]
-            if not prices[4]:
-                prices[4] = 0
-            if not prices[5]:
-                prices[5] = 0
-            # print(prices)
-            clean_sku = clean_number(sku)
-            part_analog = PartAnalog.objects.filter(search_number=clean_sku)
-            product, created = Product.objects.get_or_create(sku=sku, brand=brand)
-            product.quantity = quantity
-            product.save()
-
-            product_price = ProductPrice(
-                product=product,
-                retail_price=prices[0],
-                price_1=prices[1],
-                price_2=prices[2],
-                price_3=prices[3],
-                price_4=prices[4],
-                price_5=prices[5]
-            )
-            product_price.save()
-
-            if not prices[0]:
-                report_price.append('Строка № %s не указана цена товара. [%s]' % (line_number, line))
-            if not part_analog:
-                report_product.append(
-                    'Строка № %s не найдено соответсвие в TECDOC. [%s]' % (line_number, line.split()))
-                # except:
-                #     report_product.append('Строка № %s КРИТИЧЕСКАЯ ОШИБКА. [%s]' % (line_number, line.split()))
-        except Exception as e:
-            report_product.append("Строка № %s. Проверьте корректность строки [%s]" % (line_number, line.split()))
-
-
-def get_intervals(interval, THREADS, end_idx):
-    intervals = list()
-    intervals.append([1, interval])
-    for idx in range(1, THREADS + 1):
-        intervals.append([interval * idx, interval * (idx + 1)])
-    intervals[0][0] = 1
-    intervals[THREADS - 1][1] = end_idx
-    return intervals
-
-
-def price_load(filename):
-    date = datetime.datetime.now()
-    year = date.strftime('%Y')
-    month = date.strftime('%m')
-    day = date.strftime('%d')
-    hour = date.strftime('%H')
-    minute = date.strftime('%M')
-
-    with open(filename, 'r', encoding='cp1251') as file_price:
-        data = file_price.read().splitlines(True)
-    file_price.close()
-
-    report_product_str = ''
-
-    report_product_str += ('Прококол загрузки файла товаров от %s\r\n' % date)
-    report_product = list()
-    report_price_str = 'Прококол загрузки цен от %s\r\n' % date
-    report_price = list()
-
-    # print(data[0:50])
-    # exit()
-
-    THREADS = 40
-    list_len = len(data)
-    interval = list_len // THREADS
-    intervals = get_intervals(interval, THREADS, list_len)
-
-    # print(intervals[0])
-    # add(data, intervals[0], report_product, report_price)
-
-    threads = list()
-    for interval in intervals:
-        thread = threading.Thread(target=add_product, args=(data, interval, report_product, report_price))
-        thread.start()
-        threads.append(thread)
-
-    for thread in threads:
-        thread.join()
-
-    error_filename = '%s_%s_%s_%s_%s_error.txt' % (year, month, day, hour, minute)
-    error_file = os.path.join(DIR['CSV'], DIR['PRICE'], DIR['LOG'], year, month, day, error_filename)
-    for item in report_product:
-        report_product_str += '\r\n%s' % item
-    error_file_path = default_storage.save(error_file, ContentFile(report_product_str))
-
-    error_price_filename = '%s_%s_%s_%s_%s_error_price.txt' % (year, month, day, hour, minute)
-    error_price_file = os.path.join(DIR['CSV'], DIR['PRICE'], DIR['LOG'], year, month, day, error_price_filename)
-    for item in report_price:
-        report_price_str += '\r\n%s' % item
-    error_price_file_path = default_storage.save(error_price_file, ContentFile(report_price_str))
-
-    folder, created = Folder.objects.get_or_create(name='NewsAuto')
-    subfolder_year, created = Folder.objects.get_or_create(name=year, parent=folder)
-    subfolder_month, created = Folder.objects.get_or_create(name=month, parent=subfolder_year)
-
-    error_file = File(file=error_file_path)
-    error_file.name = error_filename
-    error_file.folder = subfolder_month
-    error_file.save()
-
-    error_price = File(file=error_price_file_path)
-    error_price.name = error_price_filename
-    error_price.folder = subfolder_month
-    error_price.save()
-
-    subject = 'Протокол загрузки файлов с ценами от %s.%s.%s %s:%s' % (year, month, day, hour, minute)
-    body = 'Протоколы в приложении'
-    email = EmailMessage(
-        subject,
-        body,
-        EMAIL_NOREPLY,
-        EMAIL_TO,
-        EMAIL_BCC,
-        reply_to=EMAIL_NOREPLY_LIST,
-        headers={'Message-ID': 'foo'},
-    )
-
-    email.attach(error_filename, report_product_str, 'text/plain')
-    email.attach(error_price_filename, report_price_str, 'text/plain')
-    email.send()
-
-    return MEDIA_URL + error_file_path
-
-
 def import_bonuses(filename):
     date = datetime.datetime.now()
     year = date.strftime('%Y')
@@ -353,3 +215,219 @@ def bonus_load(filename):
     protocol = import_bonuses(filename)
 
     return '/service/bonus_load/'
+
+
+class ProductLoader:
+    """ class for parsing and loading NewsAuto.csv file from 1C """
+
+    # number of threads that will be adding information in DB
+    THREADS = 60
+    report = list()
+    report_text = ''
+
+    def __init__(self, filename):
+        print('get_date')
+        self.date = self.get_date()
+        print('parse_file')
+        self.data = self.parse_file(filename)
+        print('product_load')
+        self.product_load()
+        print('get_report')
+        self.report_text = self.get_report()
+        print('save_report')
+        self.save_report()
+
+    def get_date(self):
+        """ get date and formatting string"""
+        date = datetime.datetime.now()
+        year = date.strftime('%Y')
+        month = date.strftime('%m')
+        day = date.strftime('%d')
+        hour = date.strftime('%H')
+        minute = date.strftime('%M')
+        date = {
+            'year': year,
+            'month': month,
+            'day': day,
+            'hour': hour,
+            'minute': minute
+        }
+        return date
+
+    def parse_file(self, filename):
+        """ parsing NewsAuto.csv and returning list """
+        with open(filename, 'r', encoding='cp1251') as file_price:
+            data = file_price.read().splitlines(True)
+        file_price.close()
+        return data[1:]
+
+    def get_intervals(self):
+        """ method for generating intervals depending of the value SELF.THREADS """
+        end_idx = len(self.data)
+        interval = end_idx // self.THREADS
+        # print(interval)
+        # print(end_idx)
+        intervals = list()
+        # intervals.append([0, interval])
+        for idx in range(0, self.THREADS):
+            start = (interval * idx + idx)
+            end = interval * (idx + 1) + idx
+            if end >= end_idx:
+                intervals.append([start, end_idx])
+                break
+            intervals.append([start, end])
+
+        # last_interval_start = 0
+        # intervals.append([last_interval_start, end_idx])
+        # print(intervals)
+        return intervals
+
+    def product_load(self):
+        """ method for splitting DATA in threads"""
+        intervals = self.get_intervals()
+        threads = list()
+
+        # self.add_product([0, len(self.data)])
+
+        for interval in intervals:
+            thread = threading.Thread(target=self.add_product, args=(self.data, interval))
+            thread.start()
+            threads.append(thread)
+
+        for thread in threads:
+            thread.join()
+
+    def add_product(self, data, interval, offset=2):
+        """ main logic of searching and inserting product and product price """
+        for idx, line in enumerate(data[interval[0]:(interval[1])]):
+            range = interval[1] - interval[0]
+            # print(range)
+            line_number = interval[0] + offset + idx
+            # line_number = (range * idx) + idx
+            try:
+                # try:
+                row = line.split(';')
+                sku = row[0]
+                brand = row[1]
+                quantity = row[2]
+                prices = [
+                    row[3].replace(',', '.'),
+                    row[4].replace(',', '.'),
+                    row[5].replace(',', '.'),
+                    row[6].replace(',', '.'),
+                    row[7].replace(',', '.'),
+                    # row[8].replace(',', '.'),
+                ]
+                try:
+                    prices[1]
+                except:
+                    prices.append(0)
+                try:
+                    prices[2]
+                except:
+                    prices.append(0)
+                try:
+                    prices[3]
+                except:
+                    prices.append(0)
+                try:
+                    prices[4]
+                except:
+                    prices.append(0)
+                # try:
+                #     prices[5]
+                # except:
+                #     prices.append(0)
+                # print(prices)
+                clean_sku = clean_number(sku)
+                part_analog = PartAnalog.objects.filter(search_number=clean_sku)
+                product, created = Product.objects.get_or_create(sku=sku, brand=brand)
+                product.quantity = quantity
+                product.save()
+
+                product_price = ProductPrice(
+                    product=product,
+                    retail_price=prices[0],
+                    price_1=prices[1],
+                    price_2=prices[2],
+                    price_3=prices[3],
+                    price_4=prices[4],
+                    # price_5=prices[5]
+                )
+                product_price.save()
+
+                if not prices[0]:
+                    self.report.append('%s. не указана цена товара в рознице. %s' % (line_number, line))
+                if not part_analog:
+                    self.report.append(
+                        '%s. не найдено соответсвие в TECDOC. %s' % (line_number, line))
+            except Exception as e:
+                print("%s. Проверьте корректность строки [%s]" % (line_number, line))
+                self.report.append("%s. Проверьте корректность строки [%s]" % (line_number, line))
+
+    def get_report(self):
+        """ method for generating report """
+        self.report = sorted(self.report)
+        report = ('Прококол загрузки файла товаров от %s.%s.%s %s:%s\r\n' % (
+            self.date['day'],
+            self.date['month'],
+            self.date['year'],
+            self.date['hour'],
+            self.date['minute'],
+        ))
+        total_products = len(self.data)
+        bad = len(self.report)
+        good = total_products - bad
+        report += 'Всего обработано - %s, из них принято - %s, с ошибкой - %s\r\n' % (total_products, good, bad)
+        for item in self.report:
+            report += item
+        return report
+
+    def save_report(self):
+        """ method for saving report to server, to DB and sending to admins email"""
+        report_filename = '%s_%s_%s_%s_%s_NewsAuto.txt' % (
+            self.date['year'],
+            self.date['month'],
+            self.date['day'],
+            self.date['hour'],
+            self.date['minute'])
+        report_file = os.path.join(
+            DIR['CSV'],
+            DIR['PRICE'],
+            DIR['LOG'],
+            self.date['year'],
+            self.date['month'],
+            self.date['day'],
+            report_filename)
+        report_file_path = default_storage.save(report_file, ContentFile(self.report_text))
+
+        folder, created = Folder.objects.get_or_create(name='NewsAuto')
+        subfolder_year, created = Folder.objects.get_or_create(name=self.date['year'], parent=folder)
+        subfolder_month, created = Folder.objects.get_or_create(name=self.date['month'], parent=subfolder_year)
+        report_file = File(file=report_file_path)
+        report_file.name = report_filename
+        report_file.folder = subfolder_month
+        report_file.save()
+        self.send_email(report_filename)
+
+    def send_email(self, report_filename):
+        subject = 'Протокол загрузки файла NewsAuto.csv из 1С от %s.%s.%s %s:%s' % (
+            self.date['year'],
+            self.date['month'],
+            self.date['day'],
+            self.date['hour'],
+            self.date['minute']
+        )
+        body = 'Протокол в приложении'
+        email = EmailMessage(
+            subject,
+            body,
+            EMAIL_NOREPLY,
+            EMAIL_TO,
+            EMAIL_BCC,
+            reply_to=EMAIL_NOREPLY_LIST,
+            headers={'Message-ID': 'foo'},
+        )
+
+        email.attach(report_filename, self.report_text, 'text/plain')
+        email.send()

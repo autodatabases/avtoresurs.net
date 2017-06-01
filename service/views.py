@@ -2,7 +2,7 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
-from service.parser.parser import get_filename, price_load, bonus_load, parse_clients, point_load
+from service.parser.parser import get_filename, bonus_load, parse_clients, point_load, ProductLoader
 
 
 class ServiceMainViev(TemplateView):
@@ -39,8 +39,8 @@ class ProductLoad(TemplateView):
         filename = default_storage.save(post_filename, ContentFile(file.read()))
         file.close()
 
-        url = price_load(filename)
-        return HttpResponseRedirect(url)
+        ProductLoader(filename)
+        return HttpResponseRedirect('/service/product_load/')
 
 
 class BonusLoad(TemplateView):
