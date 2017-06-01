@@ -62,7 +62,6 @@ class BonusObtainView(View):
         error_redirect = HttpResponse("Во время получения бонуса произошла ошибка!", status=503)
         try:
             bonus_id = self.request.GET.get('bonus_id')
-            print(self.request.body)
             encoded_data = json.loads(self.request.body.decode('utf8'))
             user_id = encoded_data['id']
             key = encoded_data['key']
@@ -70,8 +69,6 @@ class BonusObtainView(View):
             user = User.objects.get(pk=user_id)
             if key == PROTECTED_KEY:
                 profile = Profile.objects.get(user=user)
-                print(profile.points)
-                print(bonus.price)
                 if profile.points >= bonus.price:
                     profile.points -= bonus.price
                     profile.save()
