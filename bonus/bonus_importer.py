@@ -65,19 +65,13 @@ def import_bonuses(bonus_file_path, protocol_path=''):
         item_name = row[1]
         item_bonus_price = row[2]
         # try to int price and generate report protocol on error
-        # try:
         int(item_bonus_price)
-        # print(item_code, item_name, item_bonus_price)
-        # TODO write code below:
         # next we should get_or_create an object from this fields (django model) and save it, or return dict
         bonus = Bonus.objects.get_or_create(id_1c=item_code)
         bonus.title = item_name
         bonus.price = item_bonus_price
         print(bonus.price)
         # bonus.save()
-        # except Exception:
-        #     print("Wrong format in bonus row. This will be reported.")
-        #     error_rows.append(row)
 
     protocol = ''
     if error_rows:
