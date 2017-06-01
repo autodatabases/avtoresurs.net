@@ -10,7 +10,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from avtoresurs_new.settings import MEDIA_ROOT
 from service.parser.parser import bonus_load
-from service.views import point_load, get_filename, price_load
+from service.views import point_load, get_filename
 
 # REAL FTP
 HOST = '195.190.127.74'
@@ -41,7 +41,8 @@ class FtpFile:
         if filename == 'Klients.csv':
             point_load(new_file_path)
         elif filename == 'NewsAuto.csv':
-            price_load(new_file_path)
+            pass
+            # price_load(new_file_path)
         elif filename == 'Priz.csv':
             bonus_load(new_file_path)
 
