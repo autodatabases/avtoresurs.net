@@ -192,6 +192,7 @@ nav .nav-wrapper i {
 }
 .icon-left {
   position: absolute;
+  line-height: 0;
   left: 10px;
   top: 25px !important;
 }
@@ -200,6 +201,12 @@ nav .nav-wrapper i {
   line-height: 0;
   right: 10px;
   top: 25px !important;
+}
+.icon-menu {
+  position: absolute;
+  line-height: 0 !important;
+  left: 10px;
+  top: 31px !important;
 }
 .dropdown-button i {
   margin-top: 25px;
