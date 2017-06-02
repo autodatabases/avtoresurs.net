@@ -1,5 +1,8 @@
 from __future__ import unicode_literals
 import hashlib
+
+from profile.models import Profile
+
 try:
     from importlib import import_module
 except ImportError:
@@ -81,27 +84,32 @@ def get_order_by(query_dict):
 def get_user_representation(user):
     """
     Return a User representation for display, configurable through an optional setting.
+    If profile.vip_code exists, return vip_code, otherwise return username
     """
-    show_user_as = getattr(settings, 'POSTMAN_SHOW_USER_AS', None)
-    if isinstance(show_user_as, six.string_types):
-        if '.' in show_user_as:
-            mod_path, _, attr_name = show_user_as.rpartition('.')
+    profile = Profile.objects.get(user=user)
+    if profile.vip_code:
+        return profile.vip_code
+    else:
+        show_user_as = getattr(settings, 'POSTMAN_SHOW_USER_AS', None)
+        if isinstance(show_user_as, six.string_types):
+            if '.' in show_user_as:
+                mod_path, _, attr_name = show_user_as.rpartition('.')
+                try:
+                    return force_text(getattr(import_module(mod_path), attr_name)(user))
+                except:  # ImportError, AttributeError, TypeError (not callable)
+                    pass
+            else:
+                attr = getattr(user, show_user_as, None)
+                if callable(attr):
+                    attr = attr()
+                if attr:
+                    return force_text(attr)
+        elif callable(show_user_as):
             try:
-                return force_text(getattr(import_module(mod_path), attr_name)(user))
-            except:  # ImportError, AttributeError, TypeError (not callable)
+                return force_text(show_user_as(user))
+            except:
                 pass
-        else:
-            attr = getattr(user, show_user_as, None)
-            if callable(attr):
-                attr = attr()
-            if attr:
-                return force_text(attr)
-    elif callable(show_user_as):
-        try:
-            return force_text(show_user_as(user))
-        except:
-            pass
-    return force_text(user)  # default value, or in case of empty attribute or exception
+        return force_text(user)  # default value, or in case of empty attribute or exception
 
 
 def get_user_name(user):
