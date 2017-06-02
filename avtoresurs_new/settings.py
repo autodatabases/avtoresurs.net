@@ -239,3 +239,13 @@ DIR = {
     'BONUS': 'priz',
     'LOG': 'log'
 }
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'main.validators.EasyPasswordValidator',
+        'OPTIONS': {
+            'min_length': 5,
+
+        }
+    },
+]
