@@ -190,6 +190,9 @@ nav .nav-wrapper i {
   line-height: 16px;
   height: 0;
 }
+.dropdown-button i {
+  margin-top: 25px;
+}
 .header-cart {
   padding-left: 25px;
   padding-right: 25px;
