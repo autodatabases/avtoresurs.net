@@ -17,7 +17,7 @@ class Profile(models.Model):
     fullname = models.CharField(max_length=255, blank=True, null=True, verbose_name='Полное имя')
     created = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена', blank=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена', blank=True)
-    group = models.ForeignKey(Group, blank=True, default=None, verbose_name='Группа для скидки')
+    group = models.ForeignKey(Group, blank=True, default=1, verbose_name='Группа для скидки')
     discount = models.ForeignKey('Discount', blank=True, null=True, verbose_name='Скидка')
     points = models.PositiveIntegerField(default=0, verbose_name='Баллы')
 
