@@ -190,6 +190,17 @@ nav .nav-wrapper i {
   line-height: 16px;
   height: 0;
 }
+.icon-left {
+  position: absolute;
+  left: 10px;
+  top: 25px !important;
+}
+.icon-right {
+  position: absolute;
+  line-height: 0;
+  right: 10px;
+  top: 25px !important;
+}
 .dropdown-button i {
   margin-top: 25px;
 }
