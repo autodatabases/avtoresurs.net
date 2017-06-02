@@ -187,6 +187,7 @@ a.dark-blue:active {
   color: #039be5;
 }
 nav .nav-wrapper i {
+  line-height: 16px;
   height: 0;
 }
 .header-cart {
