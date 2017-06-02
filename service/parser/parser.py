@@ -226,15 +226,10 @@ class ProductLoader:
     report_text = ''
 
     def __init__(self, filename):
-        print('get_date')
         self.date = self.get_date()
-        print('parse_file')
         self.data = self.parse_file(filename)
-        print('product_load')
         self.product_load()
-        print('get_report')
         self.report_text = self.get_report()
-        print('save_report')
         self.save_report()
 
     def get_date(self):
@@ -362,7 +357,7 @@ class ProductLoader:
                     self.report.append(
                         '%s. не найдено соответсвие в TECDOC. %s' % (line_number, line))
             except Exception as e:
-                print("%s. Проверьте корректность строки [%s]" % (line_number, line))
+                # print("%s. Проверьте корректность строки [%s]" % (line_number, line))
                 self.report.append("%s. Проверьте корректность строки [%s]" % (line_number, line))
 
     def get_report(self):

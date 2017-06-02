@@ -9,7 +9,7 @@ from django.core.files.storage import default_storage
 from django.core.management.base import BaseCommand, CommandError
 
 from avtoresurs_new.settings import MEDIA_ROOT
-from service.parser.parser import bonus_load
+from service.parser.parser import bonus_load, ProductLoader
 from service.views import point_load, get_filename
 
 # REAL FTP
@@ -39,12 +39,22 @@ class FtpFile:
         file.seek(0)
         new_file_path = default_storage.save(new_file, ContentFile(file.read()))
         if filename == 'Klients.csv':
-            point_load(new_file_path)
+            try:
+                point_load(new_file_path)
+            except:
+                pass
         elif filename == 'NewsAuto.csv':
-            pass
+            try:
+                ProductLoader(new_file_path)
+            except:
+                pass
+            # pass
             # price_load(new_file_path)
         elif filename == 'Priz.csv':
-            bonus_load(new_file_path)
+            try:
+                bonus_load(new_file_path)
+            except:
+                pass
 
 
 class Command(BaseCommand):
