@@ -24,6 +24,7 @@ PASSWD = 'KoxlabiruX'
 
 # filenames = ('Klients.csv', )
 filenames = ('Klients.csv', 'NewsAuto.csv', 'Priz.csv')
+# filenames = ('Klients.csv', 'Priz.csv')
 
 
 class FtpFile:
@@ -35,6 +36,7 @@ class FtpFile:
     def get_file(self, filename):
         new_file = get_filename(filename)
         file = BytesIO()
+        print(filename)
         self.ftp.retrbinary('RETR %s' % filename, file.write)
         file.seek(0)
         new_file_path = default_storage.save(new_file, ContentFile(file.read()))

@@ -121,8 +121,8 @@ def point_load(filename):
 
     protocol_file.save()
 
-    subject = 'Протокол загрузки клиентских бонусов от %s.%s.%s %s:%s' % (year, month, day, hour, minute)
-    body = 'Протокол загрузки клиентских бонусов в приложении'
+    subject = 'Протокол загрузки файла Klients.csv от %s.%s.%s %s:%s' % (year, month, day, hour, minute)
+    body = 'Протокол загрузки клиентских бонусов Klients.csv в приложении'
     email = EmailMessage(
         subject,
         body,
@@ -173,7 +173,7 @@ def import_bonuses(filename):
             bad += 1
             protocol_bad += '%s %s (%s)\n' % (line, 'Возникла ошибка', error)
 
-    protocol = 'Протокол приема каталога бонусов от %s.%s.%s %s:%s\n' % (day, month, year, hour, minute)
+    protocol = 'Протокол приема файла Priz.csv от %s.%s.%s %s:%s\n' % (day, month, year, hour, minute)
     protocol += 'Всего обработано - %s, из них принято - %s, с ошибкой - %s\n\n' % (good + bad, good, bad)
     protocol += protocol_good
     protocol += protocol_bad
@@ -193,8 +193,8 @@ def import_bonuses(filename):
 
     protocol_file.save()
 
-    subject = 'Протокол загрузки бонусного каталога от %s.%s.%s %s:%s' % (year, month, day, hour, minute)
-    body = 'Протокол загрузки бонусного каталога в приложении'
+    subject = 'Протокол загрузки файла Priz.csv от %s.%s.%s %s:%s' % (year, month, day, hour, minute)
+    body = 'Протокол загрузки бонусного каталога Priz.csv в приложении'
     email = EmailMessage(
         subject,
         body,
