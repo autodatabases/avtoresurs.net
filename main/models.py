@@ -13,13 +13,13 @@ class Slide(models.Model):
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
     order = models.SmallIntegerField(default=0, verbose_name='Сортировка')
+
     # slider = models.ForeignKey("Slider")
 
     class Meta:
         ordering = ["order"]
         verbose_name = 'Слайд'
         verbose_name_plural = 'Слайды'
-
 
 
 class SliderPlugin(CMSPlugin):
@@ -32,6 +32,17 @@ class SliderPlugin(CMSPlugin):
     def get_slides(self):
         slides = Slide.objects.all()
         return slides
+
+
+class PhonePlugin(CMSPlugin):
+    phone_text = HTMLField(max_length=2000, verbose_name='Телефоны', blank=True, null=True)
+    # head_text = models.CharField(max_length=500, verbose_name='Заголовок')
+    # main_text = HTMLField(max_length=2000, null=True, blank=True, verbose_name='Основной текст')
+
+    # phones = models.ManyToManyField(Phone, verbose_name='Телефоны', blank=True, null=True)
+
+    # def copy_relations(self, oldinstance):
+    #     self.phones = oldinstance.phones.all()
 
 
 def user_registered_callback(sender, user, request, **kwargs):
