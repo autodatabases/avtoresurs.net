@@ -51,8 +51,7 @@ in the INSTALLED_APPS setting.
                                                         <th class="center-align">
                                                             <a href="{% postman_order_by recipient %}">{% trans "Получатель" %}</a>
                                                         </th>{% endblock %}
-                                                    <th class="center-align"><a
-                                                            href="{% postman_order_by subject %}">{% trans "Тема" %}</a>
+                                                    <th class="center-align"><a href="{% postman_order_by subject %}">{% trans "Тема" %}</a>
                                                     </th>
                                                     <th class="center-align"><a href="{% postman_order_by date %}">
                                                         {% block pm_date %}{% trans "Дата" %}{% endblock %}</a></th>
@@ -60,13 +59,11 @@ in the INSTALLED_APPS setting.
                                                 </thead>
                                                 <tbody>{% for message in pm_messages %}
                                                     <tr>
-                                                        <td><input type="checkbox"
+                                                        <td><input name="message" type="checkbox"
                                                                    id="checkbox-{{ forloop.counter0 }}"
-                                                                {% if by_conversation and message.thread_id %}
-                                                                   name="tpks" value="{{ message.thread_id }}"
-                                                                {% else %}
-                                                                   name="pks" value="{{ message.pk }}"
-                                                                {% endif %}/>
+                                                                   {% if by_conversation and message.thread_id %}name="tpks"
+                                                                   value="{{ message.thread_id }}"{% else %}name="pks"
+                                                                   value="{{ message.pk }}"{% endif %}/>
                                                             <label for="checkbox-{{ forloop.counter0 }}">&nbsp;</label>
                                                         </td>
                                                         {% block pm_sender_cell %}
@@ -82,10 +79,6 @@ in the INSTALLED_APPS setting.
                                                                 <em>{% endif %}
                                                             {% block pm_subject %}
                                                                 <a href="
-
-
-
-
 
 
 
@@ -185,12 +178,9 @@ in the INSTALLED_APPS setting.
 {% block js %}
     <script>
         function toggle(source) {
-            checkboxName = {% if by_conversation and message.thread_id %} "tpks" {% else %} "pks" {% endif %};
-{#            checkboxes = document.getElementsByName('/pks^/');#}
-            checkboxes = document.querySelectorAll('[id^="checkbox-"]');
-            console.log(checkboxes);
+            checkboxes = document.getElementsByName('message');
+            console.log(checkboxes.length);
             for (var i = 0, n = checkboxes.length; i < n; i++) {
-                console.log(checkboxes[i]);
                 checkboxes[i].checked = source.checked;
             }
         }

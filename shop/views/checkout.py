@@ -15,6 +15,7 @@ from openpyxl.utils import get_column_letter
 from avtoresurs_new.settings import EMAIL_NOREPLY, EMAIL_BCC, EMAIL_NOREPLY_LIST
 from avtoresurs_new.settings import EMAIL_TO
 from postman.models import Message, STATUS_ACCEPTED
+from profile.models import Profile
 from shop.models.cart import Cart
 from shop.models.order import Order, OrderProduct
 from openpyxl import Workbook
@@ -28,6 +29,9 @@ def as_text(value):
 
 def order_notification(cart, order, user):
     body = 'Новый заказ от %s #%s.\r\n\r\nИнформация о заказе:\r\n' % (order.added.strftime('%d.%m.%Y %H:%M'), order.id)
+    profile = Profile.objects.get(user=user)
+    body += 'Заказчик: %s \r\n' % (profile.fullname or profile)
+    body += 'Код заказчика: %s\r\n' % (profile.vip_code or 'код заказчика отсутствует')
 
     for idx, item in enumerate(cart.cartitem_set.all()):
         product = item.item
@@ -160,6 +164,7 @@ class CheckoutView(TemplateView):
         # self.request.session['cart_id'] = None
 
         return HttpResponseRedirect('/checkout/success/')
+
 
 class CheckoutSuccessView(TemplateView):
     template_name = "shop/checkout_success_view.html"
