@@ -23,7 +23,7 @@ PASSWD = 'KoxlabiruX'
 # PASSWD = 'Ufdhbrb31337'
 
 # filenames = ('Klients.csv', )
-filenames = ('Klients.csv', 'NewsAuto.csv', 'Priz.csv')
+filenames = ('Priz.csv', 'Klients.csv', 'NewsAuto.csv')`
 # filenames = ('Klients.csv', 'Priz.csv')
 
 
