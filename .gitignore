@@ -1,7 +1,7 @@
 .idea*
 *.pyc
 migrations*
-local_settings.py
+avtoresurs_new/local_settings.py
 media/*
 db.sqlite3
 logs/cronjob.log
