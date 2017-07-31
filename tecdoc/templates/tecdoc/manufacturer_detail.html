@@ -21,9 +21,9 @@
             <div class="row">
                 <div class="col s1 tecdoc-header">#</div>
                 <div class="col s2 tecdoc-header">Марка</div>
-                <div class="col s5 tecdoc-header">Модель</div>
-                <div class="col s2 tecdoc-header">Начало выпуска</div>
-                <div class="col s2 tecdoc-header">Окончание выпуска</div>
+                <div class="col s7 tecdoc-header">Модель</div>
+                <div class="col s2 tecdoc-header">Дата производства</div>
+{#                <div class="col s2 tecdoc-header">Окончание выпуска</div>#}
             </div>
         </div>
         {% for model in manufacturer.carmodel_set.all %}
@@ -32,10 +32,10 @@
                 <div class="row" style="margin-bottom: 0">
                     <div class="col s1">{{ forloop.counter }}</div>
                     <div class="col s2">{{ model.manufacturer }}</div>
-                    <div class="col s5">{{ model.designation }}</div>
+                    <div class="col s7">{{ model.title }}</div>
                     {#                        <div class="col s5">{{ model.description }}</div>#}
-                    <div class="col s2">{{ model.get_datestart }}</div>
-                    <div class="col s2">{{ model.get_dateend }}</div>
+                    <div class="col s2">{{ model.construct_interval }}</div>
+{#                    <div class="col s2">{{ model.get_dateend }}</div>#}
                 </div>
             </a>
         {% endfor %}
