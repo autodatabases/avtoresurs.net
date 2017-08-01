@@ -18,25 +18,27 @@ class CarModelManager(models.Manager):
     use_for_related_fields = True
 
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset().filter(ispassengercar=True, canbedisplayed=True).select_related('manufacturer')
+        qs = super(CarModelManager, self).get_queryset(*args, **kwargs)
+        qs = qs.filter(passenger_car='True', can_display='True').select_related('manufacturer')
+        return qs
 
 class CarModel(models.Model):
     id = models.BigIntegerField(db_column='id', primary_key=True, verbose_name='Ид')
-    canbedisplayed = models.CharField(db_column='canbedisplayed', max_length=512, blank=True, null=True)
-    construct_interval = models.CharField(db_column='constructioninterval', max_length=512, blank=True, null=True)
+    can_display = models.CharField(db_column='canbedisplayed', max_length=512, blank=True, null=True)
+    construction_interval = models.CharField(db_column='constructioninterval', max_length=512, blank=True, null=True)
     title = models.CharField(db_column='description', max_length=512, blank=True, null=True)
-    fulldescription = models.CharField(db_column='fulldescription', max_length=512, blank=True, null=True)
-    haslink = models.CharField(db_column='haslink', max_length=512, blank=True, null=True)
-    isaxle = models.CharField(db_column='isaxle', max_length=512, blank=True, null=True)
-    iscommercialvehicle = models.CharField(db_column='iscommercialvehicle', max_length=512, blank=True, null=True)
-    iscvmanufacturerid = models.CharField(db_column='iscvmanufacturerid', max_length=512, blank=True, null=True)
-    isengine = models.CharField(db_column='isengine', max_length=512, blank=True, null=True)
-    ismotorbike = models.CharField(db_column='ismotorbike', max_length=512, blank=True, null=True)
-    ispassengercar = models.CharField(db_column='ispassengercar', max_length=512, blank=True, null=True)
-    istransporter = models.CharField(db_column='istransporter', max_length=512, blank=True, null=True)
-    isvalidforcurrentcountry = models.CharField(db_column='isvalidforcurrentcountry', max_length=512, blank=True,
+    description = models.CharField(db_column='fulldescription', max_length=512, blank=True, null=True)
+    link = models.CharField(db_column='haslink', max_length=512, blank=True, null=True)
+    axle = models.CharField(db_column='isaxle', max_length=512, blank=True, null=True)
+    commercial_vehicle = models.CharField(db_column='iscommercialvehicle', max_length=512, blank=True, null=True)
+    cv_manufacturer_id = models.CharField(db_column='iscvmanufacturerid', max_length=512, blank=True, null=True)
+    engine = models.CharField(db_column='isengine', max_length=512, blank=True, null=True)
+    motorbike = models.CharField(db_column='ismotorbike', max_length=512, blank=True, null=True)
+    passenger_car = models.CharField(db_column='ispassengercar', max_length=512, blank=True, null=True)
+    transporter = models.CharField(db_column='istransporter', max_length=512, blank=True, null=True)
+    valid_for_current_country = models.CharField(db_column='isvalidforcurrentcountry', max_length=512, blank=True,
                                                 null=True)
-    linkitemtype = models.CharField(db_column='linkitemtype', max_length=512, blank=True, null=True)
+    link_item_type = models.CharField(db_column='linkitemtype', max_length=512, blank=True, null=True)
     manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerid', verbose_name='Производитель')
 
     class Meta:
