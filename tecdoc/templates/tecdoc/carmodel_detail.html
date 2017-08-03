@@ -1,6 +1,6 @@
 {% extends 'main/base.html' %}
 
-{% block title %}{{ carmodel.manufacturer }} - {{ carmodel }}{% endblock %}
+{% block title %}{{ carmodel.get_manufacturer }} - {{ carmodel }}{% endblock %}
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
@@ -8,9 +8,8 @@
         <div class="col s12 nav-breadcrumb white">
             <a href="/" class="breadcrumb">Главная</a>
             <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-            <a href="{% url 'tecdoc:manufacturer' carmodel.manufacturer.id %}"
-                    {#                        <a href="#"#}
-               class="breadcrumb">{{ carmodel.manufacturer }}</a>
+            <a href="{% url 'tecdoc:manufacturer' carmodel.get_manufacturer.id %}"
+               class="breadcrumb">{{ carmodel.get_manufacturer }}</a>
             <a href="" class="breadcrumb">{{ carmodel.designation }}</a>
         </div>
     </div>
@@ -18,15 +17,6 @@
 
 {% block content %}
 
-
-
-
-    <!-- Header -->
-    {#        <div class="row card-panel blue-grey lighten-3">#}
-    {#            <div class="col s12">#}
-    {#                <h5 class="white-text">{{ carmodel }}</h5>#}
-    {#            </div>#}
-    {#        </div>#}
 
     <!-- Main content -->
     <div class="row">
@@ -36,7 +26,7 @@
                     <div class="row">
                         <div class="col s1 tecdoc-header">№ п/п</div>
                         <div class="col s2 tecdoc-header">Марка автомобиля</div>
-                        <div class="col s3 tecdoc-header">Модель автомобиля</div>
+                        <div class="col s3 tecdoc-header">Модификация</div>
                         <div class="col s2 tecdoc-header">Дата производства</div>
                         <div class="col s1 tecdoc-header">Объем двигателя (куб.см.)</div>
                         <div class="col s1 tecdoc-header">Мощность двигателя (кВт/л.с.)</div>
@@ -44,25 +34,30 @@
                         <div class="col s1 tecdoc-header">Тип кузова</div>
                     </div>
                 </div>
-                {% for car_type in carmodel.cartypes.all %}
-                    {#                        <a href="#"#}
-                    <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}"
+                {% for car_type in carmodel.cartypes.cartypes %}
+                    <a href="{% url 'tecdoc:section_list' carmodel.get_manufacturer.id carmodel.id car_type.id %}"
                        class="collection-item">
                         <div class="row" style="margin-bottom: 0">
                             <div class="col s1">{{ forloop.counter }}</div>
-                            <div class="col s2">{{ carmodel.manufacturer }}</div>
-                            <div class="col s3">{{ car_type.full_designation }}</div>
-                            <div class="col s2">{{ car_type.get_production_start }}
-                                - {{ car_type.get_production_end }}</div>
-                            <div class="col s1">{{ car_type.eng_volume }}</div>
-                            <div class="col s1">{{ car_type.power_kw_from }}/{{ car_type.power_hp_from }}</div>
-                            <div class="col s1">{{ car_type.cylinders }}</div>
-                            <div class="col s1">{{ car_type.body_des }}</div>
+                            <div class="col s2">{{ carmodel.get_manufacturer }}</div>
+                            <div class="col s3">{{ car_type.description }}</div>
+                            <div class="col s2">{{ car_type.construction_interval }}</div>
+                            <div class="col s1">{{ car_type.car_specs.eng_volume }}</div>
+                            <div class="col s1">{{ car_type.car_specs.kw }} / {{ car_type.car_specs.ps }}</div>
+                            <div class="col s1">{{ car_type.car_specs.cylinders }}</div>
+                            <div class="col s1">{{ car_type.car_specs.body_type }}</div>
                         </div>
                     </a>
                 {% endfor %}
             </div>
         </div>
     </div>
+
+
+    {% for car_type in carmodel.cartypes.cartypes %}
+        {% for attr in car_type.attributes %}
+            <p>{{ attr }}</p>
+        {% endfor %}
+    {% endfor %}
 
 {% endblock %}

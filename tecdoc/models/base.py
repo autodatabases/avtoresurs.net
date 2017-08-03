@@ -4,6 +4,13 @@ from django.db import models
 from tecdoc.apps import TecdocConfig as tdsettings
 
 
+class TecdocManager(models.Manager):
+    def get_queryset(self):
+        qs = super(TecdocManager, self).get_queryset()
+        qs = qs.filter(passenger_car='True', can_display='True')
+        return qs
+
+
 class TecdocLanguageManager(models.Manager):
     use_for_related_fields = True
 
