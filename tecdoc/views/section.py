@@ -1,12 +1,24 @@
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView
 from django.views.generic import ListView
 from collections import OrderedDict
 
 from tecdoc.models import Section, CarType
+from tecdoc.models.tree import CarTree
 
 
 class SectionList(ListView):
-    model = Section
+    model = CarTree
+    pk_url_kwarg = 'type_id'
+
+    # def get_queryset(self, *args, **kwargs):
+        # print(kwargs)
+        # car_type_id = kwargs['type_id']
+        # print('car_Type_id: %s' % car_type_id)
+        # qs = CarTree.objects.all().filter(car_type__id=car_type_id)
+        # for ct in qs:
+        #     print(ct)
+        # return qs
+
 
     def get_context_data(self, **kwargs):
         context = super(SectionList, self).get_context_data()
@@ -15,19 +27,24 @@ class SectionList(ListView):
         # for section in sections:
         #     print(section)
 
-        parts = context['section_list']
+
+
+        parts = context['cartree_list']
+        print(parts)
         parts_dict = {part.id: part for part in parts}
         for part in parts:
             if part.parent_id:
                 parent = parts_dict[part.parent_id]
                 if hasattr(parent, 'children'):
                     parent.children.update({part.id: part})
-                    parent.children = OrderedDict(sorted(parent.children.items(), key=lambda part: part[1].designation))
+                    parent.children = OrderedDict(sorted(parent.children.items(), key=lambda part: part[1].title))
                 else:
                     parent.children = OrderedDict({part.id: part})
         parts = [part for part in parts if not part.parent_id]
         parts = parts[0].children
         context['parts'] = parts
+
+        print(parts)
 
         type_id = self.kwargs['type_id']
         car_type = CarType.objects.get(id=type_id)
