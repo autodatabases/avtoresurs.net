@@ -1,14 +1,21 @@
 from django.db import models
 from tecdoc.apps import TecdocConfig as tdsettings
+from tecdoc.models import TecdocManager
+
+
+class ManfufacturerQuerySet(models.QuerySet):
+    def manufacturers(self):
+        return self.filter(passenger_car='True', can_display='True')
 
 
 class ManufacturerManager(models.Manager):
     use_for_related_fields = True
 
     def get_queryset(self):
-        qs = super(ManufacturerManager, self).get_queryset()
-        qs = qs.filter(passenger_car='True', can_display='True')
-        return qs
+        return ManfufacturerQuerySet(self.model, using=self._db)
+
+    def manufacturers(self):
+        return self.get_queryset().manufacturers()
 
 
 class Manufacturer(models.Model):
@@ -25,7 +32,7 @@ class Manufacturer(models.Model):
     passenger_car = models.CharField(db_column='ispassengercar', max_length=512, blank=True, null=True)
     transporter = models.CharField(db_column='istransporter', max_length=512, blank=True, null=True)
     valid_for_current_country = models.CharField(db_column='isvalidforcurrentcountry', max_length=512, blank=True,
-                                                null=True)
+                                                 null=True)
     vgl = models.CharField(db_column='isvgl', max_length=512, blank=True, null=True)
     link_item_type = models.CharField(db_column='linkitemtype', max_length=512, blank=True, null=True)
     match_code = models.CharField(db_column='matchcode', max_length=512, blank=True, null=True)
@@ -37,6 +44,8 @@ class Manufacturer(models.Model):
         ordering = ['title']
         verbose_name = 'Производитель автомобилей'
         verbose_name_plural = 'Производители автомобилей'
+        # base_manager_name = 'manufacturer'
+        # manager_inheritance_from_future = True
 
     def __str__(self):
         return self.title.upper()

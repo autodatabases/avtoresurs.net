@@ -1,6 +1,6 @@
 from django.db import models
 from tecdoc.apps import TecdocConfig as tdsettings
-from tecdoc.models import TecdocLanguageDesManager, Manufacturer, CountryDesignation
+from tecdoc.models import TecdocLanguageDesManager, Manufacturer, CountryDesignation, TecdocManager
 
 
 # class CarModelManager(TecdocLanguageDesManager):
@@ -14,13 +14,29 @@ from tecdoc.models import TecdocLanguageDesManager, Manufacturer, CountryDesigna
 #                 .distinct()
 #                 )
 
-class CarModelManager(models.Manager):
-    use_for_related_fields = True
+# class CarModelManager(TecdocManager):
+#     def get_queryset(self, *args, **kwargs):
+#         qs = super(CarModelManager, self).get_queryset()
+#         qs = qs.select_related('manufacturer')
+#         return qs
 
-    def get_queryset(self, *args, **kwargs):
-        qs = super(CarModelManager, self).get_queryset(*args, **kwargs)
-        qs = qs.filter(passenger_car='True', can_display='True').select_related('manufacturer')
-        return qs
+class CarModelQuerySet(models.QuerySet):
+    def carmodels(self):
+        return self.filter(
+            passenger_car='True',
+            can_display='True',
+            manufacturer__passenger_car='True',
+            manufacturer__can_display='True',
+        )
+
+
+class CarModelManager(models.Manager):
+    def get_queryset(self):
+        return CarModelQuerySet(self.model)
+
+    def carmodels(self):
+        return self.get_queryset().carmodels()
+
 
 class CarModel(models.Model):
     id = models.BigIntegerField(db_column='id', primary_key=True, verbose_name='Ид')
@@ -37,15 +53,29 @@ class CarModel(models.Model):
     passenger_car = models.CharField(db_column='ispassengercar', max_length=512, blank=True, null=True)
     transporter = models.CharField(db_column='istransporter', max_length=512, blank=True, null=True)
     valid_for_current_country = models.CharField(db_column='isvalidforcurrentcountry', max_length=512, blank=True,
-                                                null=True)
+                                                 null=True)
     link_item_type = models.CharField(db_column='linkitemtype', max_length=512, blank=True, null=True)
     manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerid', verbose_name='Производитель')
+
+    objects = CarModelManager()
 
     class Meta:
         db_table = tdsettings.DB_PREFIX + 'models'
         verbose_name = 'Модель автомобиля'
         verbose_name_plural = 'Модели автомобилей'
         ordering = ['title']
+        # base_manager_name = 'carmodel_manager'
+
+    def get_manufacturer(self):
+        manufacturer = CarModel.objects.filter(
+            id=self.id,
+            manufacturer__passenger_car='True',
+            manufacturer__can_display='True',
+        ).first()
+        return manufacturer
+
+    def __str__(self):
+        return self.title
 
 # class CarModel(models.Model):
 #     id = models.AutoField(db_column='MOD_ID', primary_key=True, verbose_name='Ид')

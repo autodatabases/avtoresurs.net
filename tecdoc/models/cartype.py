@@ -1,25 +1,55 @@
+import re
+
 from django.db import models
 from django.db.models import Q
 
 from tecdoc.apps import TecdocConfig as tdsettings
+from tecdoc.models import TecdocManager
 from tecdoc.models.carmodel import CarModel
 
 
-# from tecdoc.models import Manufacturer, CountryDesignation, CarModel, Designation, \
-#     TecdocLanguageDesManager
-#
-#
+# class CarTypeManager(TecdocManager):
+#     def get_query_set(self):
+#         qs = super(CarTypeManager, self).get_queryset()
+#         qs = qs.select_related('model', 'model__manufacturer')
+#         return qs
+
+class CarTypeQuerySet(models.QuerySet):
+    def cartypes(self):
+        return self.filter(passenger_car='True', can_display='True')
+
 
 class CarTypeManager(models.Manager):
-    use_for_related_fields = True
+    def get_queryset(self):
+        return CarTypeQuerySet(self.model)
 
-    def get_query_set(self):
-        qs = super(CarTypeManager, self).get_queryset()
-        qs = qs.filter(can_display='True', passenger_car='True').select_related('model', 'model__manufacturer')
-        return qs
+    def cartypes(self):
+        return self.get_queryset().cartypes()
+
+
+class CarTypeAttributes(models.Model):
+    class Meta:
+        db_table = 'passanger_car_attributes'
+
+    car_type = models.ForeignKey('CarType', db_column='passangercarid', primary_key=True)
+    group = models.CharField(db_column='attributegroup', max_length=512, blank=True, null=True)
+    type = models.CharField(db_column='attributetype', max_length=512, blank=True, null=True)
+    title = models.CharField(db_column='displaytitle', max_length=512, blank=True, null=True)
+    value = models.CharField(db_column='displayvalue', max_length=2048, blank=True, null=True)
+
+    # objects = CarTypeAttributesManager()
+
+    def __str__(self):
+        return "%s %s %s %s" % (self.group, self.type, self.title, self.value)
 
 
 class CarType(models.Model):
+    class Meta:
+        # managed = False
+        ordering = ['title']
+        db_table = tdsettings.DB_PREFIX + 'passanger_cars'
+        # base_manager_name = 'objects'
+
     id = models.BigIntegerField(db_column='id', primary_key=True)
     can_display = models.CharField(db_column='canbedisplayed', max_length=512, blank=True, null=True)
     construction_interval = models.CharField(db_column='constructioninterval', max_length=512, blank=True, null=True)
@@ -41,33 +71,51 @@ class CarType(models.Model):
 
     objects = CarTypeManager()
 
-    class Meta:
-        # managed = False
-        ordering = ['title']
-        db_table = tdsettings.DB_PREFIX + 'passanger_cars'
-
-
-class CarTypeAttributesManager(models.Manager):
-    def get_queryset(self):
-        qs = super(CarTypeAttributesManager, self).get_queryset().filter(
-            Q(type='Power') | Q(type='EngineType'),
+    def car_specs(self):
+        attributes = CarTypeAttributes.objects.all().filter(car_type=self).filter(
+            Q(type='Power') |
+            Q(type='FuelType') |
+            Q(type='BodyType') |
+            Q(type='Capacity_Technical') |
+            Q(type='BodyType') |
+            Q(type='NumberOfCylinders')
         )
+        car_specs = dict()
+        for attr in attributes:
+            if attr.type == 'Power':
+                power = attr.value
+                if 'kw' in power.lower():
+                    power = re.sub('\D', '', power)
+                    car_specs['kw'] = power
+                else:
+                    power = re.sub('\D', '', power)
+                    car_specs['ps'] = power
+            if attr.type == 'FuelType':
+                car_specs['fuel'] = attr.value
+            if attr.type == 'BodyType':
+                car_specs['body_type'] = attr.value
+            if attr.type == 'Capacity_Technical':
+                car_specs['eng_volume'] =  re.sub('\D', '', attr.value)
+            if attr.type == 'BodyType':
+                car_specs['body_type'] = attr.value
+            if attr.type=='NumberOfCylinders':
+                car_specs['cylinders'] = attr.value
+        return car_specs
 
-        return qs
+    def __str__(self):
+        return self.description
+
+# class CarTypeAttributesManager(models.Manager):
+#
+#     def get_queryset(self):
+#         qs = super(CarTypeAttributesManager, self).get_queryset().filter(
+#             Q(type='Power') | Q(type='EngineType'),
+#         )
+#         print(qs)
+#         return qs
 
 
-class CarTypeAttributes(models.Model):
-    passangercarid = models.ForeignKey(CarType, db_column='passangercarid')
-    group = models.CharField(db_column='attributegroup', max_length=512, blank=True, null=True)
-    type = models.CharField(db_column='attributetype', max_length=512, blank=True, null=True)
-    title = models.CharField(db_column='displaytitle', max_length=512, blank=True, null=True)
-    value = models.CharField(db_column='displayvalue', max_length=2048, blank=True, null=True)
 
-    objects = CarTypeAttributesManager()
-
-    class Meta:
-        managed = False
-        db_table = 'passanger_car_attributes'
 
 # class CarTypeManager(TecdocLanguageDesManager):
 #     use_for_related_fields = True
