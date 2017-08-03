@@ -6,6 +6,9 @@ from tecdoc.models.tree import CarTree
 
 
 class CarModelView(DetailView):
+    model = CarModel
+    pk_url_kwarg = 'model_id'
+
 
     def get_context_data(self, **kwargs):
         context = super(CarModelView, self).get_context_data()
