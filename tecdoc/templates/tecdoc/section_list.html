@@ -22,11 +22,11 @@
 {% block content %}
 
     <!-- Header -->
-    {#        <div class="row card-panel blue-grey lighten-3">#}
-    {#            <div class="col s12">#}
-    {#                <h5 class="white-text">{{ car_type.model }}</h5>#}
-    {#            </div>#}
+    {#    <div class="row card-panel blue-grey lighten-3">#}
+    {#        <div class="col s12">#}
+    {#            <h5 class="white-text">{{ car_type.model }}</h5>#}
     {#        </div>#}
+    {#    </div>#}
 
     <!-- Main content -->
     <div class="row">
@@ -135,17 +135,17 @@
     <script>
         $(document).ready(function () {
             $('.collapsible').collapsible({
-                        //accordion: false, // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-                        onOpen: function (el) {
-                            {#                            console.log(el.find("i"));#}
-                            console.log(el.find("i.fa-plus:first"));
-                            el.find("i.fa-plus:first").toggleClass("fa-plus", false).toggleClass("fa-minus", true);
-                        }, // Callback for Collapsible open
-                        onClose: function (el) {
-                            console.log(el.find("i.fa-plus:first"));
-                            el.find("i.fa-minus:first").toggleClass("fa-minus", false).toggleClass("fa-plus", true);
-                        } // Callback for Collapsible close
-                    }
+                    //accordion: false, // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+                    onOpen: function (el) {
+                        {#                            console.log(el.find("i"));#}
+                        console.log(el.find("i.fa-plus:first"));
+                        el.find("i.fa-plus:first").toggleClass("fa-plus", false).toggleClass("fa-minus", true);
+                    }, // Callback for Collapsible open
+                    onClose: function (el) {
+                        console.log(el.find("i.fa-plus:first"));
+                        el.find("i.fa-minus:first").toggleClass("fa-minus", false).toggleClass("fa-plus", true);
+                    } // Callback for Collapsible close
+                }
             );
         });
     </script>

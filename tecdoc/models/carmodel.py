@@ -32,13 +32,29 @@ class CarModelQuerySet(models.QuerySet):
 
 class CarModelManager(models.Manager):
     def get_queryset(self):
-        return CarModelQuerySet(self.model)
+        # return CarModelQuerySet(self.model)
+        qs = super(CarModelManager, self).get_queryset()
+        qs = qs.filter(
+            passenger_car='True',
+            can_display='True',
+            # manufacturer__passenger_car='True',
+            # manufacturer__can_display='True',
+        ).sele
+        return qs
 
     def carmodels(self):
         return self.get_queryset().carmodels()
 
 
 class CarModel(models.Model):
+    class Meta:
+        db_table = tdsettings.DB_PREFIX + 'models'
+        verbose_name = 'Модель автомобиля'
+        verbose_name_plural = 'Модели автомобилей'
+        ordering = ['title']
+        # base_manager_name = 'carmodel_manager'
+        manager_inheritance_from_future = True
+
     id = models.BigIntegerField(db_column='id', primary_key=True, verbose_name='Ид')
     can_display = models.CharField(db_column='canbedisplayed', max_length=512, blank=True, null=True)
     construction_interval = models.CharField(db_column='constructioninterval', max_length=512, blank=True, null=True)
@@ -58,13 +74,6 @@ class CarModel(models.Model):
     manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerid', verbose_name='Производитель')
 
     objects = CarModelManager()
-
-    class Meta:
-        db_table = tdsettings.DB_PREFIX + 'models'
-        verbose_name = 'Модель автомобиля'
-        verbose_name_plural = 'Модели автомобилей'
-        ordering = ['title']
-        # base_manager_name = 'carmodel_manager'
 
     def get_manufacturer(self):
         manufacturer = CarModel.objects.filter(

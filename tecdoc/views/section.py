@@ -9,6 +9,7 @@ from tecdoc.models.tree import CarTree
 class SectionList(ListView):
     model = CarTree
     pk_url_kwarg = 'type_id'
+    template_name = 'tecdoc/section_list.html'
 
     # def get_queryset(self, *args, **kwargs):
         # print(kwargs)
@@ -30,21 +31,22 @@ class SectionList(ListView):
 
 
         parts = context['cartree_list']
-        print(parts)
-        parts_dict = {part.id: part for part in parts}
         for part in parts:
-            if part.parent_id:
-                parent = parts_dict[part.parent_id]
-                if hasattr(parent, 'children'):
-                    parent.children.update({part.id: part})
-                    parent.children = OrderedDict(sorted(parent.children.items(), key=lambda part: part[1].title))
-                else:
-                    parent.children = OrderedDict({part.id: part})
-        parts = [part for part in parts if not part.parent_id]
-        parts = parts[0].children
-        context['parts'] = parts
-
-        print(parts)
+            print(part)
+        # parts_dict = {part.id: part for part in parts}
+        # for part in parts:
+        #     if part.parent_id:
+        #         parent = parts_dict[part.parent_id]
+        #         if hasattr(parent, 'children'):
+        #             parent.children.update({part.id: part})
+        #             parent.children = OrderedDict(sorted(parent.children.items(), key=lambda part: part[1].title))
+        #         else:
+        #             parent.children = OrderedDict({part.id: part})
+        # parts = [part for part in parts if not part.parent_id]
+        # parts = parts[0].children
+        # context['parts'] = parts
+        #
+        # print(parts)
 
         type_id = self.kwargs['type_id']
         car_type = CarType.objects.get(id=type_id)

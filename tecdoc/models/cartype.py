@@ -14,17 +14,8 @@ from tecdoc.models.carmodel import CarModel
 #         qs = qs.select_related('model', 'model__manufacturer')
 #         return qs
 
-class CarTypeQuerySet(models.QuerySet):
-    def cartypes(self):
-        return self.filter(passenger_car='True', can_display='True')
 
 
-class CarTypeManager(models.Manager):
-    def get_queryset(self):
-        return CarTypeQuerySet(self.model)
-
-    def cartypes(self):
-        return self.get_queryset().cartypes()
 
 
 class CarTypeAttributes(models.Model):
@@ -37,10 +28,17 @@ class CarTypeAttributes(models.Model):
     title = models.CharField(db_column='displaytitle', max_length=512, blank=True, null=True)
     value = models.CharField(db_column='displayvalue', max_length=2048, blank=True, null=True)
 
-    # objects = CarTypeAttributesManager()
 
     def __str__(self):
         return "%s %s %s %s" % (self.group, self.type, self.title, self.value)
+
+
+class CarTypeManager(models.Manager):
+    def get_queryset(self):
+        # return CarTypeQuerySet(self.model)
+        qs = super(CarTypeManager, self).get_queryset()
+        qs = qs.filter(passenger_car='True', can_display='True')
+        return qs
 
 
 class CarType(models.Model):
@@ -49,6 +47,9 @@ class CarType(models.Model):
         ordering = ['title']
         db_table = tdsettings.DB_PREFIX + 'passanger_cars'
         # base_manager_name = 'objects'
+        manager_inheritance_from_future = True
+
+    objects = CarTypeManager()
 
     id = models.BigIntegerField(db_column='id', primary_key=True)
     can_display = models.CharField(db_column='canbedisplayed', max_length=512, blank=True, null=True)
@@ -68,8 +69,6 @@ class CarType(models.Model):
     link_item_type = models.CharField(db_column='linkitemtype', max_length=512, blank=True, null=True)
 
     model = models.ForeignKey(CarModel, db_column='modelid', blank=True, null=True, related_name='cartypes')
-
-    objects = CarTypeManager()
 
     def car_specs(self):
         attributes = CarTypeAttributes.objects.all().filter(car_type=self).filter(
@@ -95,10 +94,10 @@ class CarType(models.Model):
             if attr.type == 'BodyType':
                 car_specs['body_type'] = attr.value
             if attr.type == 'Capacity_Technical':
-                car_specs['eng_volume'] =  re.sub('\D', '', attr.value)
+                car_specs['eng_volume'] = re.sub('\D', '', attr.value)
             if attr.type == 'BodyType':
                 car_specs['body_type'] = attr.value
-            if attr.type=='NumberOfCylinders':
+            if attr.type == 'NumberOfCylinders':
                 car_specs['cylinders'] = attr.value
         return car_specs
 

@@ -26,7 +26,7 @@
 {#                <div class="col s2 tecdoc-header">Окончание выпуска</div>#}
             </div>
         </div>
-        {% for model in manufacturer.carmodel_set.carmodels %}
+        {% for model in manufacturer.carmodel_set.all %}
             <a href="{% url 'tecdoc:model' manufacturer.id model.id %}" class="collection-item">
                 {#                <a href="#" class="collection-item">#}
                 <div class="row" style="margin-bottom: 0">

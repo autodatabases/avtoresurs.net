@@ -12,13 +12,26 @@ class ManufacturerManager(models.Manager):
     use_for_related_fields = True
 
     def get_queryset(self):
-        return ManfufacturerQuerySet(self.model, using=self._db)
+        # return ManfufacturerQuerySet(self.model, using=self._db)
+        qs = super(ManufacturerManager, self).get_queryset()
+        qs = qs.filter(can_display='True', passenger_car='True')
+        return qs
 
     def manufacturers(self):
         return self.get_queryset().manufacturers()
 
 
 class Manufacturer(models.Model):
+    objects = ManufacturerManager()
+
+    class Meta:
+        db_table = tdsettings.DB_PREFIX + 'manufacturers'
+        ordering = ['title']
+        verbose_name = 'Производитель автомобилей'
+        verbose_name_plural = 'Производители автомобилей'
+        # manager_inheritance_from_future = True
+        # base_manager_name = 'manufacturer'
+
     id = models.BigIntegerField(db_column='id', primary_key=True, verbose_name='Ид')
     can_display = models.CharField(db_column='canbedisplayed', max_length=512, blank=True, null=True)
     title = models.CharField(db_column='description', max_length=512, blank=True, null=True)
@@ -36,16 +49,6 @@ class Manufacturer(models.Model):
     vgl = models.CharField(db_column='isvgl', max_length=512, blank=True, null=True)
     link_item_type = models.CharField(db_column='linkitemtype', max_length=512, blank=True, null=True)
     match_code = models.CharField(db_column='matchcode', max_length=512, blank=True, null=True)
-
-    objects = ManufacturerManager()
-
-    class Meta:
-        db_table = tdsettings.DB_PREFIX + 'manufacturers'
-        ordering = ['title']
-        verbose_name = 'Производитель автомобилей'
-        verbose_name_plural = 'Производители автомобилей'
-        # base_manager_name = 'manufacturer'
-        # manager_inheritance_from_future = True
 
     def __str__(self):
         return self.title.upper()
