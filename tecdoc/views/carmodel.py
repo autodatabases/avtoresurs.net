@@ -2,7 +2,6 @@ from django.views.generic import DetailView
 
 from tecdoc.models import CarType, CarTypeAttributes
 from tecdoc.models.carmodel import CarModel
-from tecdoc.models.tree import CarTree
 
 
 class CarModelView(DetailView):

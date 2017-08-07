@@ -3,43 +3,17 @@ from tecdoc.apps import TecdocConfig as tdsettings
 from tecdoc.models import TecdocLanguageDesManager, Manufacturer, CountryDesignation, TecdocManager
 
 
-# class CarModelManager(TecdocLanguageDesManager):
-#     use_for_related_fields = True
-#
-#     def get_queryset(self, *args, **kwargs):
-#         return (super(CarModelManager, self)
-#                 .get_queryset(*args, **kwargs)
-#                 .select_related('manufacturer', 'designation__description')
-#                 .order_by('designation__description__text')
-#                 .distinct()
-#                 )
-
-# class CarModelManager(TecdocManager):
-#     def get_queryset(self, *args, **kwargs):
-#         qs = super(CarModelManager, self).get_queryset()
-#         qs = qs.select_related('manufacturer')
-#         return qs
-
-class CarModelQuerySet(models.QuerySet):
-    def carmodels(self):
-        return self.filter(
-            passenger_car='True',
-            can_display='True',
-            manufacturer__passenger_car='True',
-            manufacturer__can_display='True',
-        )
-
-
 class CarModelManager(models.Manager):
+    use_for_related_fields = True
+
     def get_queryset(self):
-        # return CarModelQuerySet(self.model)
         qs = super(CarModelManager, self).get_queryset()
         qs = qs.filter(
             passenger_car='True',
             can_display='True',
-            # manufacturer__passenger_car='True',
-            # manufacturer__can_display='True',
-        ).sele
+            manufacturer__passenger_car='True',
+            manufacturer__can_display='True',
+        ).select_related('manufacturer')
         return qs
 
     def carmodels(self):
@@ -52,7 +26,6 @@ class CarModel(models.Model):
         verbose_name = 'Модель автомобиля'
         verbose_name_plural = 'Модели автомобилей'
         ordering = ['title']
-        # base_manager_name = 'carmodel_manager'
         manager_inheritance_from_future = True
 
     id = models.BigIntegerField(db_column='id', primary_key=True, verbose_name='Ид')

@@ -8,16 +8,6 @@ from tecdoc.models import TecdocManager
 from tecdoc.models.carmodel import CarModel
 
 
-# class CarTypeManager(TecdocManager):
-#     def get_query_set(self):
-#         qs = super(CarTypeManager, self).get_queryset()
-#         qs = qs.select_related('model', 'model__manufacturer')
-#         return qs
-
-
-
-
-
 class CarTypeAttributes(models.Model):
     class Meta:
         db_table = 'passanger_car_attributes'
@@ -28,26 +18,26 @@ class CarTypeAttributes(models.Model):
     title = models.CharField(db_column='displaytitle', max_length=512, blank=True, null=True)
     value = models.CharField(db_column='displayvalue', max_length=2048, blank=True, null=True)
 
-
     def __str__(self):
         return "%s %s %s %s" % (self.group, self.type, self.title, self.value)
 
 
 class CarTypeManager(models.Manager):
+    use_for_related_fields = True
+
     def get_queryset(self):
-        # return CarTypeQuerySet(self.model)
         qs = super(CarTypeManager, self).get_queryset()
-        qs = qs.filter(passenger_car='True', can_display='True')
+        qs = qs.filter(
+            passenger_car='True',
+            can_display='True',
+        )
         return qs
 
 
 class CarType(models.Model):
     class Meta:
-        # managed = False
         ordering = ['title']
         db_table = tdsettings.DB_PREFIX + 'passanger_cars'
-        # base_manager_name = 'objects'
-        manager_inheritance_from_future = True
 
     objects = CarTypeManager()
 

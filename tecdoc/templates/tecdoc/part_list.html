@@ -10,12 +10,12 @@
         <div class="col s12 nav-breadcrumb white">
             <a href="/" class="breadcrumb">Главная</a>
             <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-            <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
-               class="breadcrumb">{{ car_type.model.manufacturer }}</a>
-            <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
-               class="breadcrumb">{{ car_type.model.designation }}</a>
-            <a href="" class="breadcrumb">{{ car_type }}</a>
-            <a href="" class="breadcrumb">{{ section.designation }}</a>
+{#            <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"#}
+{#               class="breadcrumb">{{ car_type.model.manufacturer }}</a>#}
+{#            <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"#}
+{#               class="breadcrumb">{{ car_type.model.designation }}</a>#}
+{#            <a href="" class="breadcrumb">{{ car_type }}</a>#}
+{#            <a href="" class="breadcrumb">{{ section.designation }}</a>#}
         </div>
     </div>
 {% endblock %}
@@ -43,31 +43,31 @@
                         <div class="col s1 tecdoc-header">Цена</div>
                     </div>
                 </div>
-                {% for part in part_analogs %}
-                    {% if part.part_group.part.product_id %}
-                        <a href="{% url 'shop:product_detail' part.part_group.part.product_id %}"
+                {% for part in parts %}
+                    {% if part.product_id %}
+                        <a href="{% url 'shop:product_detail' part.product_id %}"
                            class="collection-item">
                         {#                                                        <a href="#" class="collection-item">#}
                     {% else %}
-                        <div class="collection-item{% if part.part_group.part.price == -1 %} noactive {% endif %}">
+                        <div class="collection-item{% if part.price == -1 %} noactive {% endif %}">
                     {% endif %}
                 <div class="row no-margin-bot">
                     <div class="col s1">{{ forloop.counter }}</div>
-                    <div class="col s2">{{ part.part_group.part.sku }}</div>
-                    <div class="col s2">{{ part.supplier }}</div>
-                    <div class="col s5">{{ part.part_group.part }}</div>
-                    <div class="col s1"><strong>{{ part.part_group.part.quantity }}</strong></div>
+                    <div class="col s2">{{ part.part_number }}</div>
+                    <div class="col s2">{{ part.supplier_name }}</div>
+                    <div class="col s5">{{ part.product_name }}</div>
+                    <div class="col s1"><strong>{{ part.qty }}</strong></div>
                     <div class="col s1">
                         <strong>
-                            {% if part.part_group.part.price > 0 %}
-                                {{ part.part_group.part.price }}
+                            {% if part.price > 0 %}
+                                {{ part.price }}
                             {% else %}
                                 -
                             {% endif %}
                         </strong>
                     </div>
                 </div>
-                {% if part.part_group.part.product_id %}
+                {% if part.product_id %}
                     </a>
                 {% else %}
                     </div>

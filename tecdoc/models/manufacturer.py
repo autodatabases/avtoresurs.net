@@ -3,22 +3,13 @@ from tecdoc.apps import TecdocConfig as tdsettings
 from tecdoc.models import TecdocManager
 
 
-class ManfufacturerQuerySet(models.QuerySet):
-    def manufacturers(self):
-        return self.filter(passenger_car='True', can_display='True')
-
-
 class ManufacturerManager(models.Manager):
     use_for_related_fields = True
 
     def get_queryset(self):
-        # return ManfufacturerQuerySet(self.model, using=self._db)
         qs = super(ManufacturerManager, self).get_queryset()
         qs = qs.filter(can_display='True', passenger_car='True')
         return qs
-
-    def manufacturers(self):
-        return self.get_queryset().manufacturers()
 
 
 class Manufacturer(models.Model):
@@ -29,7 +20,7 @@ class Manufacturer(models.Model):
         ordering = ['title']
         verbose_name = 'Производитель автомобилей'
         verbose_name_plural = 'Производители автомобилей'
-        # manager_inheritance_from_future = True
+        manager_inheritance_from_future = True
         # base_manager_name = 'manufacturer'
 
     id = models.BigIntegerField(db_column='id', primary_key=True, verbose_name='Ид')

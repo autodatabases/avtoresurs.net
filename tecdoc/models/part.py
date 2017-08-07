@@ -4,6 +4,58 @@ from tecdoc.apps import TecdocConfig as tdsettings
 from tecdoc.models import Section, Designation, CarType, Supplier, TecdocLanguageDesManager
 
 
+class PartCross(models.Model):
+    supplier = models.ForeignKey('Supplier', db_column='supplierid')
+    part = models.ForeignKey('Part', db_column='productid')
+    linkage_type = models.BigIntegerField(db_column='linkagetypeid')
+    car_type = models.ForeignKey('CarType', db_column='linkageid')
+    part_number = models.CharField(db_column='datasupplierarticlenumber', max_length=128, blank=True,
+                                   null=True)
+
+    class Meta:
+        db_table = 'article_links'
+
+
+class PartGroup(models.Model):
+    car_type = models.ForeignKey(CarType, db_column='passangercarid')
+    section = models.ForeignKey(Section, db_column='nodeid')
+    part = models.ForeignKey('Part', db_column='productid', primary_key=True)
+    supplier = models.ForeignKey('Supplier', db_column='supplierid')
+
+    class Meta:
+        db_table = 'passanger_car_pds'
+        unique_together = ('car_type', 'section', 'part', 'supplier')
+
+
+class Part(models.Model):
+    id = models.BigIntegerField(db_column='id', primary_key=True)
+    assemblygroupdescription = models.CharField(db_column='assemblygroupdescription', max_length=256)
+    title = models.CharField(db_column='description', max_length=256)
+    normalizeddescription = models.CharField(db_column='normalizeddescription', max_length=256)
+    usagedescription = models.CharField(db_column='usagedescription', max_length=256)
+
+    class Meta:
+        db_table = 'passanger_car_prd'
+
+
+class Image(models.Model):
+    supplier = models.ForeignKey(Supplier, db_column='supplierId')  # Field name made lowercase.
+    part_number = models.CharField(db_column='DataSupplierArticleNumber',
+                                   max_length=128)  # Field name made lowercase.
+    additionaldescription = models.CharField(db_column='AdditionalDescription',
+                                             max_length=128)  # Field name made lowercase.
+    title = models.CharField(db_column='Description', max_length=128, primary_key=True)  # Field name made lowercase.
+    documentname = models.CharField(db_column='DocumentName', max_length=128)  # Field name made lowercase.
+    documenttype = models.CharField(db_column='DocumentType', max_length=128)  # Field name made lowercase.
+    normeddescriptionid = models.CharField(db_column='NormedDescriptionID',
+                                           max_length=128)  # Field name made lowercase.
+    picture = models.CharField(db_column='PictureName', max_length=128)  # Field name made lowercase.
+    showimmediately = models.CharField(db_column='ShowImmediately', max_length=128)  # Field name made lowercase.
+
+    class Meta:
+        db_table = 'article_images'
+
+
 class PartManager(TecdocLanguageDesManager):
     use_for_related_fields = True
 
@@ -17,48 +69,48 @@ class PartManager(TecdocLanguageDesManager):
         return query
 
 
-class Part(models.Model):
-    id = models.AutoField(db_column='ART_ID', primary_key=True)
-    sku = models.CharField(db_column='ART_ARTICLE_NR', max_length=66)
-    supplier = models.ForeignKey(Supplier, db_column='ART_SUP_ID', blank=True, null=True)
-    art_des_id = models.IntegerField(db_column='ART_DES_ID', blank=True, null=True)
-    designation = models.ForeignKey(Designation, db_column='ART_COMPLETE_DES_ID', blank=True,
-                                    null=True)
-    # groups = models.ManyToManyField('tecdoc.Group', through='tecdoc.PartGroup', related_name='parts')
-
-    art_pack_selfservice = models.SmallIntegerField(db_column='ART_PACK_SELFSERVICE', blank=True,
-                                                    null=True)
-    art_material_mark = models.SmallIntegerField(db_column='ART_MATERIAL_MARK', blank=True,
-                                                 null=True)
-    art_replacement = models.SmallIntegerField(db_column='ART_REPLACEMENT', blank=True,
-                                               null=True)
-    art_accessory = models.SmallIntegerField(db_column='ART_ACCESSORY', blank=True,
-                                             null=True)
-    art_batch_size1 = models.IntegerField(db_column='ART_BATCH_SIZE1', blank=True,
-                                          null=True)
-    art_batch_size2 = models.IntegerField(db_column='ART_BATCH_SIZE2', blank=True,
-                                          null=True)
-    # car_type = models.ManyToManyField(CarType, through='tecdoc.PartTypeGroupSupplier')
-    group = models.ManyToManyField('tecdoc.Group', through='tecdoc.PartGroup', verbose_name='Группа запчастей')
-
-    images = models.ManyToManyField('tecdoc.Image', verbose_name=u'Изображения', through='tecdoc.PartImage',
-                                    related_name='parts')
-
-    # criteries = models.ManyToManyField('tecdoc.Criteria',
-    #                                    verbose_name=u'Оговорки',
-    #                                    through='tecdoc.PartCriteria',
-    #                                    related_name='parts')
-
-    # pdfs = models.ManyToManyField(PdfFile, verbose_name=u'Инструкция', through=PartPdf, related_name='parts')
-
-    objects = PartManager()
-
-    def __str__(self):
-        return "%s %s %s" % (self.designation.description.text, self.supplier, self.sku)
-
-    class Meta:
-        managed = False
-        db_table = tdsettings.DB_PREFIX + 'articles'
+# class Part(models.Model):
+#     id = models.AutoField(db_column='ART_ID', primary_key=True)
+#     sku = models.CharField(db_column='ART_ARTICLE_NR', max_length=66)
+#     supplier = models.ForeignKey(Supplier, db_column='ART_SUP_ID', blank=True, null=True)
+#     art_des_id = models.IntegerField(db_column='ART_DES_ID', blank=True, null=True)
+#     designation = models.ForeignKey(Designation, db_column='ART_COMPLETE_DES_ID', blank=True,
+#                                     null=True)
+#     # groups = models.ManyToManyField('tecdoc.Group', through='tecdoc.PartGroup', related_name='parts')
+#
+#     art_pack_selfservice = models.SmallIntegerField(db_column='ART_PACK_SELFSERVICE', blank=True,
+#                                                     null=True)
+#     art_material_mark = models.SmallIntegerField(db_column='ART_MATERIAL_MARK', blank=True,
+#                                                  null=True)
+#     art_replacement = models.SmallIntegerField(db_column='ART_REPLACEMENT', blank=True,
+#                                                null=True)
+#     art_accessory = models.SmallIntegerField(db_column='ART_ACCESSORY', blank=True,
+#                                              null=True)
+#     art_batch_size1 = models.IntegerField(db_column='ART_BATCH_SIZE1', blank=True,
+#                                           null=True)
+#     art_batch_size2 = models.IntegerField(db_column='ART_BATCH_SIZE2', blank=True,
+#                                           null=True)
+#     # car_type = models.ManyToManyField(CarType, through='tecdoc.PartTypeGroupSupplier')
+#     group = models.ManyToManyField('tecdoc.Group', through='tecdoc.PartGroup', verbose_name='Группа запчастей')
+#
+#     images = models.ManyToManyField('tecdoc.Image', verbose_name=u'Изображения', through='tecdoc.PartImage',
+#                                     related_name='parts')
+#
+#     # criteries = models.ManyToManyField('tecdoc.Criteria',
+#     #                                    verbose_name=u'Оговорки',
+#     #                                    through='tecdoc.PartCriteria',
+#     #                                    related_name='parts')
+#
+#     # pdfs = models.ManyToManyField(PdfFile, verbose_name=u'Инструкция', through=PartPdf, related_name='parts')
+#
+#     objects = PartManager()
+#
+#     def __str__(self):
+#         return "%s %s %s" % (self.designation.description.text, self.supplier, self.sku)
+#
+#     class Meta:
+#         managed = False
+#         db_table = tdsettings.DB_PREFIX + 'articles'
 
 
 class Group(models.Model):
@@ -87,15 +139,15 @@ class SectionGroup(models.Model):
         # unique_together = (("car_section", "group"),)
 
 
-class PartGroup(models.Model):
-    id = models.AutoField(db_column='la_id', primary_key=True, verbose_name='Ид')
-    part = models.ForeignKey(Part, db_column='la_art_id', verbose_name='Запчасть')
-    group = models.ForeignKey(Group, db_column='la_ga_id', verbose_name='Группа запчастей')
-    sorting = models.IntegerField(db_column='la_sort', verbose_name='Порядок')
-    car_type = models.ManyToManyField(CarType, through='tecdoc.PartTypeGroupSupplier', verbose_name='')
-
-    class Meta:
-        db_table = tdsettings.DB_PREFIX + 'link_art'
+# class PartGroup(models.Model):
+#     id = models.AutoField(db_column='la_id', primary_key=True, verbose_name='Ид')
+#     part = models.ForeignKey(Part, db_column='la_art_id', verbose_name='Запчасть')
+#     group = models.ForeignKey(Group, db_column='la_ga_id', verbose_name='Группа запчастей')
+#     sorting = models.IntegerField(db_column='la_sort', verbose_name='Порядок')
+#     car_type = models.ManyToManyField(CarType, through='tecdoc.PartTypeGroupSupplier', verbose_name='')
+#
+#     class Meta:
+#         db_table = tdsettings.DB_PREFIX + 'link_art'
 
 
 class PartTypeGroupSupplier(models.Model):
@@ -116,7 +168,7 @@ class PartAnalogManager(models.Manager):
         return super(PartAnalogManager, self). \
             get_queryset(). \
             filter(part__designation__language=tdsettings.LANG_ID). \
-            select_related('part', 'part__designation__description', 'brand',).prefetch_related('part__group')
+            select_related('part', 'part__designation__description', 'brand', ).prefetch_related('part__group')
 
 
 class PartAnalog(models.Model):
