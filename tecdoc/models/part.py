@@ -1,11 +1,11 @@
 import re
 from django.db import models
 from tecdoc.apps import TecdocConfig as tdsettings
-from tecdoc.models import Section, Designation, CarType, Supplier, TecdocLanguageDesManager
+from tecdoc.models import Section, Designation, CarType, Supplier, TecdocLanguageDesManager, Manufacturer
 
 
-class PartCross(models.Model):
-    supplier = models.ForeignKey('Supplier', db_column='supplierid')
+class PartGroup(models.Model):
+    supplier = models.ForeignKey('Supplier', db_column='supplierid', primary_key=True)
     part = models.ForeignKey('Part', db_column='productid')
     linkage_type = models.BigIntegerField(db_column='linkagetypeid')
     car_type = models.ForeignKey('CarType', db_column='linkageid')
@@ -16,7 +16,7 @@ class PartCross(models.Model):
         db_table = 'article_links'
 
 
-class PartGroup(models.Model):
+class PartTypeGroup(models.Model):
     car_type = models.ForeignKey(CarType, db_column='passangercarid')
     section = models.ForeignKey(Section, db_column='nodeid')
     part = models.ForeignKey('Part', db_column='productid', primary_key=True)
@@ -56,17 +56,66 @@ class Image(models.Model):
         db_table = 'article_images'
 
 
-class PartManager(TecdocLanguageDesManager):
-    use_for_related_fields = True
+class PartApplicability(models.Model):
+    supplier = models.ForeignKey(Supplier, db_column='supplierId', primary_key=True)  # Field name made lowercase.
+    part_number = models.CharField(db_column='DataSupplierArticleNumber',
+                                   max_length=128)  # Field name made lowercase.
+    linkage_type = models.CharField(db_column='linkageTypeId', max_length=128)  # Field name made lowercase.
+    car_type = models.ForeignKey(CarType, db_column='linkageId')  # Field name made lowercase.
 
-    def get_queryset(self, *args, **kwargs):
-        query = super(PartManager, self).get_queryset(*args, **kwargs)
-        query = query.select_related('designation__description',
-                                     'supplier')
+    class Meta:
+        db_table = 'article_li'
 
-        query = query.prefetch_related('analogs', 'images', )
-        # query = query.prefetch_related('analogs')
-        return query
+
+class PartAttribute(models.Model):
+    supplier = models.ForeignKey(Supplier, db_column='supplierid')
+    part_number = models.CharField(db_column='datasupplierarticlenumber', max_length=128)
+    id = models.BigIntegerField(db_column='id', primary_key=True)
+    attributeinformationtype = models.CharField(db_column='attributeinformationtype', max_length=512)
+    description = models.CharField(db_column='description', max_length=512, blank=True, null=True)
+    displaytitle = models.CharField(db_column='displaytitle', max_length=512, blank=True, null=True)
+    displayvalue = models.CharField(db_column='displayvalue', max_length=4096)
+
+    class Meta:
+        managed = False
+        db_table = 'article_attributes'
+
+
+class PartAnalog(models.Model):
+    supplier = models.ForeignKey(Supplier, db_column='supplierid')
+    part_number = models.CharField(db_column='datasupplierarticlenumber', max_length=128, primary_key=True)
+    isadditive = models.CharField(db_column='IsAdditive', max_length=128)  # Field name made lowercase.
+    oenbr = models.ForeignKey('PartCross', db_column='OENbr', max_length=128)  # Field name made lowercase.
+    manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'article_oe'
+
+
+class PartCross(models.Model):
+    manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId')  # Field name made lowercase.
+    oenbr = models.CharField(primary_key=True, db_column='OENbr', max_length=128)  # Field name made lowercase.
+    supplier = models.ForeignKey(Supplier, db_column='SupplierId')  # Field name made lowercase.
+    part_number = models.CharField(db_column='PartsDataSupplierArticleNumber',
+                                   max_length=128)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'article_cross'
+
+
+# class PartManager(TecdocLanguageDesManager):
+#     use_for_related_fields = True
+#
+#     def get_queryset(self, *args, **kwargs):
+#         query = super(PartManager, self).get_queryset(*args, **kwargs)
+#         query = query.select_related('designation__description',
+#                                      'supplier')
+#
+#         query = query.prefetch_related('analogs', 'images', )
+#         # query = query.prefetch_related('analogs')
+#         return query
 
 
 # class Part(models.Model):
@@ -171,43 +220,43 @@ class PartAnalogManager(models.Manager):
             select_related('part', 'part__designation__description', 'brand', ).prefetch_related('part__group')
 
 
-class PartAnalog(models.Model):
-    KIND = ((1, u'не оригинал'),
-            (2, u'торговый'),
-            (3, u'оригинал'),
-            (4, u'номер замен'),
-            (5, u'штрих-код'),
-            )
-
-    part = models.OneToOneField(Part, db_column='ARL_ART_ID', primary_key=True, verbose_name='Запчасть',
-                                related_name='analogs')
-    number = models.CharField(db_column='ARL_DISPLAY_NR', max_length=105, verbose_name='Номер')
-    search_number = models.CharField(db_column='ARL_SEARCH_NUMBER', max_length=105, verbose_name='Номер для поиска')
-    kind = models.CharField(db_column='ARL_KIND', max_length=1, verbose_name='Тип')
-    brand = models.ForeignKey('tecdoc.Brand', db_column='ARL_BRA_ID', null=True, blank=True,
-                              verbose_name=u'Производитель', )
-    sorting = models.IntegerField(db_column='ARL_SORT', verbose_name='Порядок')
-
-    objects = PartAnalogManager()
-
-    def __str__(self):
-        return u'%s %s %s' % (self.kind, self.get_manufacturer(), self.get_sku())
-
-    class Meta:
-        db_table = tdsettings.DB_PREFIX + 'art_lookup'
-
-    def get_manufacturer(self):
-        if self.kind in ['3', '4']:
-            return self.brand
-        else:
-            return self.part.supplier
-
-    def get_sku(self):
-        # return self.search_number
-        if self.kind in ['2', '3']:
-            return self.number
-        else:
-            return self.part.sku
+# class PartAnalog(models.Model):
+#     KIND = ((1, u'не оригинал'),
+#             (2, u'торговый'),
+#             (3, u'оригинал'),
+#             (4, u'номер замен'),
+#             (5, u'штрих-код'),
+#             )
+#
+#     part = models.OneToOneField(Part, db_column='ARL_ART_ID', primary_key=True, verbose_name='Запчасть',
+#                                 related_name='analogs')
+#     number = models.CharField(db_column='ARL_DISPLAY_NR', max_length=105, verbose_name='Номер')
+#     search_number = models.CharField(db_column='ARL_SEARCH_NUMBER', max_length=105, verbose_name='Номер для поиска')
+#     kind = models.CharField(db_column='ARL_KIND', max_length=1, verbose_name='Тип')
+#     brand = models.ForeignKey('tecdoc.Brand', db_column='ARL_BRA_ID', null=True, blank=True,
+#                               verbose_name=u'Производитель', )
+#     sorting = models.IntegerField(db_column='ARL_SORT', verbose_name='Порядок')
+#
+#     objects = PartAnalogManager()
+#
+#     def __str__(self):
+#         return u'%s %s %s' % (self.kind, self.get_manufacturer(), self.get_sku())
+#
+#     class Meta:
+#         db_table = tdsettings.DB_PREFIX + 'art_lookup'
+#
+#     def get_manufacturer(self):
+#         if self.kind in ['3', '4']:
+#             return self.brand
+#         else:
+#             return self.part.supplier
+#
+#     def get_sku(self):
+#         # return self.search_number
+#         if self.kind in ['2', '3']:
+#             return self.number
+#         else:
+#             return self.part.sku
 
 
 class Brand(models.Model):

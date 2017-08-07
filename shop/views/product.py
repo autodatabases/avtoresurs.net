@@ -2,8 +2,45 @@ from collections import Set
 from django.views.generic import DetailView
 
 from profile.models import Profile
-from shop.models.product import Product, clean_number
-from tecdoc.models import PartAnalog, Part, PartCriteria, CarType, PartGroup, Image, Supplier
+from shop.models.product import Product, clean_number, get_part_analogs
+from tecdoc.models import PartAnalog, Part, PartCriteria, CarType, PartGroup, Image, Supplier, PartApplicability, \
+    PartAttribute
+
+
+def get_product_analogs(supplier, part_number, user):
+    raw = "SELECT DISTINCT a.datasupplierarticlenumber, s.description supplier_name, c.PartsDataSupplierArticleNumber part_number FROM article_oe a JOIN manufacturers m ON m.id=a.manufacturerId JOIN article_cross c ON c.OENbr=a.OENbr JOIN suppliers s ON s.id=c.SupplierId WHERE a.datasupplierarticlenumber='%s' AND a.supplierid='%s'" % (
+        part_number, supplier.id)
+    part_analogs = PartAnalog.objects.raw(raw)
+    data = []
+    for part in part_analogs:
+        data.append(part)
+
+    sku = []
+    for part in data:
+        sku.append(clean_number(part.part_number))
+        part.price = -1
+        part.product_id = ''
+        part.qty = ''
+    products = Product.objects.filter(sku__in=sku)
+
+    for part in data:
+        pg = PartGroup.objects.filter(supplier=supplier, part_number=part_number).first()
+        part.title = pg.part.title
+        print(part.title)
+        brand_name = part.supplier_name
+        sku = clean_number(part.part_number)
+        for product in products:
+            if sku == clean_number(product.sku) and brand_name == product.brand:
+                part.price = product.get_price(user=user)
+                part.product_id = product.id
+                part.qty = product.get_quantity()
+
+        if not hasattr(part, 'price'):
+            part.price = -1
+
+    data = sorted(data, key=lambda x: x.price, reverse=True)
+
+    return data
 
 
 class ProductDetailView(DetailView):
@@ -15,11 +52,34 @@ class ProductDetailView(DetailView):
         product.price = product.get_price(user=self.request.user)
         product.default_price = product.get_price()
 
+        # product.title =
+
+
 
         supplier = Supplier.objects.get(title=product.brand)
         part_number = product.sku
+
+        pg = PartGroup.objects.filter(supplier=supplier, part_number=part_number).first()
+        title = pg.part.title
+        product.title = title
+        # print(title)
+
         image = Image.objects.filter(supplier=supplier, part_number=part_number).first()
         product.image = image.picture
+
+        part_applicability = PartApplicability.objects.filter(supplier=supplier,
+                                                              part_number=part_number).select_related(
+            'car_type', 'car_type__model', 'car_type__model__manufacturer'
+        )
+        product.part_applicability = part_applicability
+
+        part_attributes = PartAttribute.objects.filter(supplier=supplier, part_number=part_number)
+        product.part_attributes = part_attributes
+
+        print(supplier.id)
+        print(part_number)
+
+        context['part_analogs'] = get_product_analogs(supplier, part_number, user=self.request.user)
 
         # images = list()
         # for image in part.images.all():

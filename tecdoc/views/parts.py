@@ -1,7 +1,7 @@
 from django.views.generic import ListView, DetailView
 
 from shop.models.product import Product, get_part_analogs, clean_number
-from tecdoc.models import Part, PartTypeGroupSupplier, CarType, Section, PartCross, PartGroup, Supplier
+from tecdoc.models import Part, PartTypeGroupSupplier, CarType, Section, PartCross, PartGroup, Supplier, PartTypeGroup
 
 
 # SET @TYP_ID = 3822; /* ALFA ROMEO 145 (930) 1.4 i.e. [1994/07-1996/12] */
@@ -48,13 +48,12 @@ def get_price(parts, user):
 
 
 class PartGroupList(ListView):
-    model = PartGroup
+    model = PartTypeGroup
     template_name = 'tecdoc/part_list.html'
 
     def get_queryset(self):
         car_type = self.kwargs['type_id']
         section = self.kwargs['section_id']
-        # print('HELLO')
 
         raw = "SELECT prd.id, al.datasupplierarticlenumber part_number, s.description supplier_name, prd.description product_name FROM article_links al JOIN passanger_car_pds pds ON al.supplierid = pds.supplierid JOIN suppliers s ON s.id = al.supplierid JOIN passanger_car_prd prd ON prd.id = al.productid WHERE al.productid = pds.productid AND al.linkageid = pds.passangercarid AND al.linkageid = %s AND pds.nodeid = %s AND al.linkagetypeid = 2 ORDER BY s.description , al.datasupplierarticlenumber" % (
             car_type,
@@ -63,9 +62,6 @@ class PartGroupList(ListView):
 
         qs = Part.objects.raw(raw)
 
-        # for part in qs:
-        #     print(part)
-        # print(len(qs))
         return qs
 
     def get_context_data(self, **kwargs):

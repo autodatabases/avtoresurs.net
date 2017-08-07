@@ -53,33 +53,33 @@
                                     </ul>
                                 </div>
                                 <div id="tab1" class="col s12">
-                                    {% if product.part_criteria %}
-                                        {% for pc in product.part_criteria %}
-                                            <p>{{ pc.text1 }}: <strong>{{ pc.text2 }}</strong></p>
+                                    {% if product.part_attributes %}
+                                        {% for pa in product.part_attributes %}
+                                            <p>{{ pa.displaytitle }}: <strong>{{ pa.displayvalue }}</strong></p>
                                         {% endfor %}
                                     {% else %}
                                         <p>Описание отсутствует</p>
                                     {% endif %}
                                 </div>
                                 <div id="tab2" class="col s12">
-                                    {% if product.car_types %}
+                                    {% if product.part_applicability %}
                                         <table class="striped">
                                             <thead>
                                             <tr>
-                                                <th data-field="id">МОДЕЛЬ</th>
-                                                <th data-field="name">МОДИЦИКАЦИЯ</th>
-                                                <th data-field="price">ДВИГАТЕЛЬ</th>
-                                                <th data-field="price">МОЩНОСТЬ</th>
+                                                <th data-field="id">МАРКА</th>
+                                                <th data-field="name">МОДЕЛЬ</th>
+                                                <th data-field="price">ДАТА ПРОИЗВОДСТВА</th>
+                                                <th data-field="price">ТИП</th>
                                             </tr>
                                             </thead>
                                             <tbody>
 
-                                            {% for car in product.car_types %}
+                                            {% for pa in product.part_applicability %}
                                                 <tr>
-                                                    <td>{{ car.mfa_brand }} {{ car.mod_cds_text }}</td>
-                                                    <td>{{ car.typ_cds_text }}</td>
-                                                    <td>{{ car.eng_code }} {{ car.typ_fuel_des_text }}</td>
-                                                    <td>{{ car.typ_hp_from }}</td>
+                                                    <td>{{ pa.car_type.model.manufacturer.title }} </td>
+                                                    <td>{{ pa.car_type.model.title }}</td>
+                                                    <td>{{ pa.car_type.construction_interval }} </td>
+                                                    <td>{{ pa.car_type.title }}</td>
                                                 </tr>
                                             {% endfor %}
 
@@ -178,12 +178,12 @@
 
                 <div class="row no-margin-bot">
                     <div class="col s1">{{ forloop.counter }}</div>
-                    <div class="col s2">{{ part_analog.sku }}</div>
-                    <div class="col s2">{{ part_analog.supplier }}</div>
-                    <div class="col s5">{{ part_analog }}</div>
+                    <div class="col s2">{{ part_analog.part_number }}</div>
+                    <div class="col s2">{{ part_analog.supplier_name }}</div>
+                    <div class="col s5">{{ part_analog.title }} {{ part_analog.supplier_name }} {{ part_analog.part_number }}</div>
                     <div class="col s1">
                         <strong>
-                            {{ part_analog.quantity }}
+                            {{ part_analog.qty }}
                         </strong>
                     </div>
                     <div class="col s1">
