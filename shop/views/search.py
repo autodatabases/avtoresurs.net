@@ -21,8 +21,9 @@ def search_parts(q, user):
 
         for product in products:
             pg = PartGroup.objects.filter(supplier__title=brand_name, part_number=part.part_number).first()
-            title = pg.part.title
-            part.title = title
+            if (pg):
+                title = pg.part.title
+                part.title = title
             if clean_number(part.part_number) == clean_number(product.sku) and brand_name == product.brand:
                 part.price = product.get_price(user=user)
                 part.product_id = product.id
