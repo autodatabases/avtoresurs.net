@@ -274,7 +274,7 @@ class ProductLoader:
 
         # last_interval_start = 0
         # intervals.append([last_interval_start, end_idx])
-        # print(intervals)
+        print(intervals)
         return intervals
 
     def product_load(self):
