@@ -3,7 +3,7 @@ from distutils.command.clean import clean
 from django.views.generic import TemplateView
 
 from shop.models.product import Product, clean_number
-from tecdoc.models import PartAnalog, PartGroup
+from tecdoc.models import PartAnalog, PartGroup, Q
 
 
 def search_parts(q, user):
@@ -13,15 +13,14 @@ def search_parts(q, user):
     for p in pa:
         parts.add(p)
 
-
-    products = Product.objects.filter(sku__iexact=q)
+    products = Product.objects.filter(Q(sku__iexact=clean_number(q)) | Q(sku__iexact=q))
 
     for part in parts:
         brand_name = part.supplier.title
 
         for product in products:
             pg = PartGroup.objects.filter(supplier__title=brand_name, part_number=part.part_number).first()
-            if (pg):
+            if pg:
                 title = pg.part.title
                 part.title = title
             if clean_number(part.part_number) == clean_number(product.sku) and brand_name == product.brand:

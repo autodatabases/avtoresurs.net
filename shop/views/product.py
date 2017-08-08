@@ -17,6 +17,7 @@ def get_product_analogs(supplier, part_number, user):
 
     sku = []
     for part in data:
+        sku.append(part.part_number)
         sku.append(clean_number(part.part_number))
         part.price = -1
         part.product_id = ''
@@ -25,7 +26,8 @@ def get_product_analogs(supplier, part_number, user):
 
     for part in data:
         pg = PartGroup.objects.filter(supplier=supplier, part_number=part_number).first()
-        part.title = pg.part.title
+        if pg:
+            part.title = pg.part.title
         brand_name = part.supplier_name
         sku = clean_number(part.part_number)
         for product in products:
@@ -59,12 +61,12 @@ class ProductDetailView(DetailView):
         part_number = product.sku
 
         pg = PartGroup.objects.filter(supplier=supplier, part_number=part_number).first()
-        title = pg.part.title
-        product.title = title
-        # print(title)
+        if pg:
+            title = pg.part.title
+            product.title = title
 
-        image = Image.objects.filter(supplier=supplier, part_number=part_number).first()
-        product.image = image.picture
+        # image = Image.objects.filter(supplier=supplier, part_number=part_number).first()
+        # product.image = image.picture
 
         part_applicability = PartApplicability.objects.filter(supplier=supplier,
                                                               part_number=part_number).select_related(

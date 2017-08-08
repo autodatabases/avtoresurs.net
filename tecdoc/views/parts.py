@@ -24,6 +24,7 @@ def get_price(parts, user):
     sku = []
     for part in data:
         sku.append(clean_number(part.part_number))
+        sku.append(part.part_number)
         part.price = -1
         part.product_id = ''
         part.qty = ''
