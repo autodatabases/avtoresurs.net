@@ -41,9 +41,9 @@
 
                 <div class="row no-margin-bot">
                     <div class="col s1">{{ forloop.counter }}</div>
-                    <div class="col s2">{{ part_analog.sku }}</div>
-                    <div class="col s2">{{ part_analog.supplier }}</div>
-                    <div class="col s5">{{ part_analog }}</div>
+                    <div class="col s2">{{ part_analog.part_number }}</div>
+                    <div class="col s2">{{ part_analog.supplier.title }}</div>
+                    <div class="col s5">{{ part_analog.title }}</div>
                     <div class="col s1">
                         <strong>
                             {{ part_analog.quantity }}

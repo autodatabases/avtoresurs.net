@@ -26,7 +26,6 @@ def get_product_analogs(supplier, part_number, user):
     for part in data:
         pg = PartGroup.objects.filter(supplier=supplier, part_number=part_number).first()
         part.title = pg.part.title
-        print(part.title)
         brand_name = part.supplier_name
         sku = clean_number(part.part_number)
         for product in products:
@@ -75,9 +74,6 @@ class ProductDetailView(DetailView):
 
         part_attributes = PartAttribute.objects.filter(supplier=supplier, part_number=part_number)
         product.part_attributes = part_attributes
-
-        print(supplier.id)
-        print(part_number)
 
         context['part_analogs'] = get_product_analogs(supplier, part_number, user=self.request.user)
 
