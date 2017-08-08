@@ -1,6 +1,7 @@
 import datetime
 import os
 import threading
+import time
 
 import collections
 from django.core.files.base import ContentFile
@@ -222,7 +223,7 @@ class ProductLoader:
     """ class for parsing and loading NewsAuto.csv file from 1C """
 
     # number of threads that will be adding information in DB
-    THREADS = 1
+    THREADS = 60
     report = {}
     report_text = ''
 
@@ -287,11 +288,15 @@ class ProductLoader:
 
         for interval in intervals:
             thread = threading.Thread(target=self.add_product, args=(self.data, interval))
-            thread.start()
             threads.append(thread)
+
+            # time.sleep(1)
+        for thread in threads:
+            thread.start()
 
         for thread in threads:
             thread.join()
+        # return time.sleep(5)
 
     def add_product(self, data, interval, offset=2):
         """ main logic of searching and inserting product and product price """
@@ -299,7 +304,7 @@ class ProductLoader:
         for idx, line in enumerate(data[interval[0]:(interval[1])]):
             range = interval[1] - interval[0]
             # print(range)
-            line_number = interval[0] + offset + idx
+            line_number = interval[0] + idx + offset
             # line_number = (range * idx) + idx
             try:
                 # try:
@@ -356,7 +361,7 @@ class ProductLoader:
                 product.quantity = quantity
                 product.save()
 
-                print("Prices: %s %s %s %s %s" % (prices[0], prices[1], prices[2], prices[3], prices[4]))
+                # print("Prices: %s %s %s %s %s" % (prices[0], prices[1], prices[2], prices[3], prices[4]))
 
                 product_price = ProductPrice(
                     product=product,
@@ -365,19 +370,22 @@ class ProductLoader:
                     price_2=prices.get(2),
                     price_3=prices.get(3),
                     price_4=prices.get(4),
-                    # price_5=prices[5]
                 )
                 product_price.save()
 
                 if not prices[0]:
                     self.report[line_number] = 'не указана цена товара в рознице. %s' % line
-                if not part_analog:
+                elif not part_analog:
                     self.report[line_number] = 'не найдено соответсвие в TECDOC. %s' % line
+                else:
+                    self.report[line_number] = 'Успешно добавлен. %s' % line
+
             except Exception as e:
                 # print(e)
                 # print("%s. Проверьте корректность строки [%s]" % (line_number, line))
                 self.report[line_number] = "Проверьте корректность строки [%s] [%s]" % (line, e)
-            # print('Product loaded: %s' % line)
+
+            print("%s. Loaded" % line_number)
 
     def get_report(self):
         """ method for generating report """

@@ -22,8 +22,8 @@ PASSWD = 'KoxlabiruX'
 # USER = 'ftpuser'
 # PASSWD = 'Ufdhbrb31337'
 
-filenames = ('NewsAuto.csv', )
-# filenames = ('Priz.csv', 'Klients.csv', 'NewsAuto.csv')
+# filenames = ('NewsAuto.csv', )
+filenames = ('Priz.csv', 'Klients.csv', 'NewsAuto.csv')
 # filenames = ('Klients.csv', 'Priz.csv')
 
 
@@ -50,8 +50,6 @@ class FtpFile:
                 ProductLoader(new_file_path)
             except:
                 pass
-            # pass
-            # price_load(new_file_path)
         elif filename == 'Priz.csv':
             try:
                 bonus_load(new_file_path)
