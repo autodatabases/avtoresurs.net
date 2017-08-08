@@ -222,7 +222,7 @@ class ProductLoader:
     """ class for parsing and loading NewsAuto.csv file from 1C """
 
     # number of threads that will be adding information in DB
-    THREADS = 60
+    THREADS = 1
     report = {}
     report_text = ''
 
@@ -308,89 +308,80 @@ class ProductLoader:
                 brand = row[1]
                 quantity = row[2]
 
-                prices = list()
+                prices = {}
                 try:
-                    prices.append(row[3])
+                    prices[0] = row[3]
                     if ',' in row[3]:
                         prices[0] = row[3].replace(',', '.')
+                    else:
+                        prices[0] = float(row[3])
                 except:
-                    prices.append(0.0)
+                    prices[0] = 0
                 try:
-                    prices.append(row[4])
+                    prices[1] = row[4]
                     if ',' in row[4]:
                         prices[1] = row[4].replace(',', '.')
+                    else:
+                        prices[1] = float(row[4])
                 except:
-                    prices.append(0.0)
+                    prices[1] = 0
                 try:
-                    prices.append(row[5])
+                    prices[2] = row[5]
                     if ',' in row[5]:
                         prices[2] = row[5].replace(',', '.')
+                    else:
+                        prices[2] = float(row[5])
                 except:
-                    prices.append(0.0)
+                    prices[2] = 0
                 try:
-                    prices.append(row[6])
+                    prices[3] = row[6]
                     if ',' in row[6]:
                         prices[3] = row[6].replace(',', '.')
+                    else:
+                        prices[3] = float(row[6])
                 except:
-                    prices.append(0.0)
+                    prices[3] = 0
                 try:
-                    prices.append(row[7])
+                    prices[4] = row[7]
                     if ',' in row[7]:
                         prices[4] = row[7].replace(',', '.')
+                    else:
+                        prices[4] = float(row[7])
                 except:
-                    prices.append(0.0)
+                    prices[4] = 0
 
-                # try:
-                #     prices.get(1)
-                # except:
-                #     prices[1](0)
-                # try:
-                #     prices[2]
-                # except:
-                #     prices.append(0)
-                # try:
-                #     prices[3]
-                # except:
-                #     prices.append(0)
-                # try:
-                #     prices[4]
-                # except:
-                #     prices.append(0)
-                # try:
-                #     prices[5]
-                # except:
-                #     prices.append(0)
-                # print(prices)
                 clean_sku = clean_number(sku)
                 part_analog = PartGroup.objects.filter(Q(part_number=clean_sku) | Q(part_number=sku))
                 product, created = Product.objects.get_or_create(sku=sku, brand=brand)
                 product.quantity = quantity
                 product.save()
 
+                print("Prices: %s %s %s %s %s" % (prices[0], prices[1], prices[2], prices[3], prices[4]))
+
                 product_price = ProductPrice(
                     product=product,
-                    retail_price=prices[0],
-                    price_1=prices[1],
-                    price_2=prices[2],
-                    price_3=prices[3],
-                    price_4=prices[4],
+                    retail_price=prices.get(0),
+                    price_1=prices.get(1),
+                    price_2=prices.get(2),
+                    price_3=prices.get(3),
+                    price_4=prices.get(4),
                     # price_5=prices[5]
                 )
                 product_price.save()
 
                 if not prices[0]:
-                    self.report[line_number]('не указана цена товара в рознице. %s' % line)
+                    self.report[line_number] = 'не указана цена товара в рознице. %s' % line
                 if not part_analog:
-                    self.report[line_number](
-                        'не найдено соответсвие в TECDOC. %s' % line)
+                    self.report[line_number] = 'не найдено соответсвие в TECDOC. %s' % line
             except Exception as e:
-                print(e)
+                # print(e)
                 # print("%s. Проверьте корректность строки [%s]" % (line_number, line))
-                self.report[line_number]("Проверьте корректность строки [%s] [%s]" % (line, e))
+                self.report[line_number] = "Проверьте корректность строки [%s] [%s]" % (line, e)
+            # print('Product loaded: %s' % line)
 
     def get_report(self):
         """ method for generating report """
-        # self.report = collections.OrderedDict(sorted(self.report.items()))
+        self.report = collections.OrderedDict(sorted(self.report.items()))
         report = ('Прококол загрузки файла товаров от %s.%s.%s %s:%s\r\n' % (
             self.date['day'],
             self.date['month'],
