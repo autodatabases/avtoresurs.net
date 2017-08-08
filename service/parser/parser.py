@@ -298,13 +298,19 @@ class ProductLoader:
             thread.join()
         # return time.sleep(5)
 
-    def add_product(self, data, interval, offset=2):
+    def add_product(self, data, interval):
         """ main logic of searching and inserting product and product price """
-        print("INTERVALS: [0] - %s, [1] - %s" % (interval[0], interval[1]))
+        offset = -1
+        if interval[0] == 0:
+            offset = 2
+
+        print(offset)
+        # print("INTERVALS: [0] - %s, [1] - %s" % (interval[0], interval[1]))
         for idx, line in enumerate(data[interval[0]:(interval[1])]):
+            line = line.strip()
             range = interval[1] - interval[0]
             # print(range)
-            line_number = interval[0] + idx + offset
+            line_number = interval[0] + idx
             # line_number = (range * idx) + idx
             try:
                 # try:
@@ -383,9 +389,10 @@ class ProductLoader:
             except Exception as e:
                 # print(e)
                 # print("%s. Проверьте корректность строки [%s]" % (line_number, line))
-                self.report[line_number] = "Проверьте корректность строки [%s] [%s]" % (line, e)
+                self.report[line_number] = "Проверьте корректность строки (Exception: %s) [%s]" % (e, line)
 
-            print("%s. Loaded" % line_number)
+
+            # print("%s. Loaded %s" % (line_number, line))
 
     def get_report(self):
         """ method for generating report """
@@ -402,7 +409,7 @@ class ProductLoader:
         good = total_products - bad
         report += 'Всего обработано - %s, из них принято - %s, с ошибкой - %s\r\n' % (total_products, good, bad)
         for key, item in self.report.items():
-            report += '%s. %s' % (key, item)
+            report += '%s. %s\n' % (key, item)
         return report
 
     def save_report(self):

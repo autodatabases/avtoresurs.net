@@ -22,8 +22,8 @@ PASSWD = 'KoxlabiruX'
 # USER = 'ftpuser'
 # PASSWD = 'Ufdhbrb31337'
 
-# filenames = ('NewsAuto.csv', )
-filenames = ('Priz.csv', 'Klients.csv', 'NewsAuto.csv')
+filenames = ('NewsAuto.csv', )
+# filenames = ('Priz.csv', 'Klients.csv', 'NewsAuto.csv')
 # filenames = ('Klients.csv', 'Priz.csv')
 
 
