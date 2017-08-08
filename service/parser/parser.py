@@ -2,6 +2,7 @@ import datetime
 import os
 import threading
 
+import collections
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.mail import EmailMessage
@@ -222,7 +223,7 @@ class ProductLoader:
 
     # number of threads that will be adding information in DB
     THREADS = 60
-    report = list()
+    report = {}
     report_text = ''
 
     def __init__(self, filename):
@@ -294,6 +295,7 @@ class ProductLoader:
 
     def add_product(self, data, interval, offset=2):
         """ main logic of searching and inserting product and product price """
+        print("INTERVALS: [0] - %s, [1] - %s" % (interval[0], interval[1]))
         for idx, line in enumerate(data[interval[0]:(interval[1])]):
             range = interval[1] - interval[0]
             # print(range)
@@ -305,30 +307,55 @@ class ProductLoader:
                 sku = row[0]
                 brand = row[1]
                 quantity = row[2]
-                prices = [
-                    row[3].replace(',', '.'),
-                    row[4].replace(',', '.'),
-                    row[5].replace(',', '.'),
-                    row[6].replace(',', '.'),
-                    row[7].replace(',', '.'),
-                    # row[8].replace(',', '.'),
-                ]
+
+                prices = list()
                 try:
-                    prices[1]
+                    prices.append(row[3])
+                    if ',' in row[3]:
+                        prices[0] = row[3].replace(',', '.')
                 except:
-                    prices.append(0)
+                    prices.append(0.0)
                 try:
-                    prices[2]
+                    prices.append(row[4])
+                    if ',' in row[4]:
+                        prices[1] = row[4].replace(',', '.')
                 except:
-                    prices.append(0)
+                    prices.append(0.0)
                 try:
-                    prices[3]
+                    prices.append(row[5])
+                    if ',' in row[5]:
+                        prices[2] = row[5].replace(',', '.')
                 except:
-                    prices.append(0)
+                    prices.append(0.0)
                 try:
-                    prices[4]
+                    prices.append(row[6])
+                    if ',' in row[6]:
+                        prices[3] = row[6].replace(',', '.')
                 except:
-                    prices.append(0)
+                    prices.append(0.0)
+                try:
+                    prices.append(row[7])
+                    if ',' in row[7]:
+                        prices[4] = row[7].replace(',', '.')
+                except:
+                    prices.append(0.0)
+
+                # try:
+                #     prices.get(1)
+                # except:
+                #     prices[1](0)
+                # try:
+                #     prices[2]
+                # except:
+                #     prices.append(0)
+                # try:
+                #     prices[3]
+                # except:
+                #     prices.append(0)
+                # try:
+                #     prices[4]
+                # except:
+                #     prices.append(0)
                 # try:
                 #     prices[5]
                 # except:
@@ -352,17 +379,18 @@ class ProductLoader:
                 product_price.save()
 
                 if not prices[0]:
-                    self.report.append('%s. не указана цена товара в рознице. %s' % (line_number, line))
+                    self.report[line_number]('не указана цена товара в рознице. %s' % line)
                 if not part_analog:
-                    self.report.append(
-                        '%s. не найдено соответсвие в TECDOC. %s' % (line_number, line))
+                    self.report[line_number](
+                        'не найдено соответсвие в TECDOC. %s' % line)
             except Exception as e:
+                print(e)
                 # print("%s. Проверьте корректность строки [%s]" % (line_number, line))
-                self.report.append("%s. Проверьте корректность строки [%s]" % (line_number, line))
+                self.report[line_number]("Проверьте корректность строки [%s] [%s]" % (line, e))
 
     def get_report(self):
         """ method for generating report """
-        self.report = sorted(self.report)
+        # self.report = collections.OrderedDict(sorted(self.report.items()))
         report = ('Прококол загрузки файла товаров от %s.%s.%s %s:%s\r\n' % (
             self.date['day'],
             self.date['month'],
@@ -374,8 +402,8 @@ class ProductLoader:
         bad = len(self.report)
         good = total_products - bad
         report += 'Всего обработано - %s, из них принято - %s, с ошибкой - %s\r\n' % (total_products, good, bad)
-        for item in self.report:
-            report += item
+        for key, item in self.report.items():
+            report += '%s. %s' % (key, item)
         return report
 
     def save_report(self):
