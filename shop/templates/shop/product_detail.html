@@ -253,11 +253,9 @@
                     url: '{{ product.image }}',
                     type: 'HEAD',
                     error: function () {
-                        console.log('error');
                         document.getElementById("product-image").src = '/static/main/images/no-image.png';
                     },
                     success: function () {
-                        console.log('exist');
                         document.getElementById("product-image").src = '{{ product.image }}';
                     }
                 });
