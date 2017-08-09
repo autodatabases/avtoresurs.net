@@ -65,9 +65,11 @@ class ProductDetailView(DetailView):
             title = pg.part.title
             product.title = title
 
-        # image = Image.objects.filter(supplier=supplier, part_number=part_number).first()
-        # product.image = image.picture
+        image = Image.objects.filter(supplier=supplier, part_number=part_number).first()
+        image_name = image.picture.split('.')
 
+        product.image = '%s.%s' % (image_name[0], image_name[1].lower())
+        print(product.image)
         part_applicability = PartApplicability.objects.filter(supplier=supplier,
                                                               part_number=part_number).select_related(
             'car_type', 'car_type__model', 'car_type__model__manufacturer'

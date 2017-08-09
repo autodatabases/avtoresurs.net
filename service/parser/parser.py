@@ -223,8 +223,8 @@ class ProductLoader:
     """ class for parsing and loading NewsAuto.csv file from 1C """
 
     # number of threads that will be adding information in DB
-    THREADS = 60
-    report = {}
+    THREADS = 5
+    report = {'report': {}, 'bad': 0, 'good': 0}
     report_text = ''
 
     def __init__(self, filename):
@@ -296,20 +296,16 @@ class ProductLoader:
 
         for thread in threads:
             thread.join()
-        # return time.sleep(5)
+            # return time.sleep(5)
 
     def add_product(self, data, interval):
         """ main logic of searching and inserting product and product price """
-        offset = -1
-        if interval[0] == 0:
-            offset = 2
 
-        print(offset)
-        # print("INTERVALS: [0] - %s, [1] - %s" % (interval[0], interval[1]))
         for idx, line in enumerate(data[interval[0]:(interval[1])]):
             line = line.strip()
             range = interval[1] - interval[0]
             # print(range)
+            # offset = 2
             line_number = interval[0] + idx
             # line_number = (range * idx) + idx
             try:
@@ -380,11 +376,14 @@ class ProductLoader:
                 product_price.save()
 
                 if not prices[0]:
-                    self.report[line_number] = 'не указана цена товара в рознице. %s' % line
+                    self.report['report'][line_number] = 'не указана цена товара в рознице. %s' % line
+                    self.report['bad'] = self.report['bad'] + 1
                 elif not part_analog:
                     self.report[line_number] = 'не найдено соответсвие в TECDOC. %s' % line
+                    self.report['bad'] = self.report['bad'] + 1
                 else:
                     self.report[line_number] = 'Успешно добавлен. %s' % line
+                    self.report['good'] = self.report['bad'] + 1
 
             except Exception as e:
                 # print(e)
@@ -392,7 +391,7 @@ class ProductLoader:
                 self.report[line_number] = "Проверьте корректность строки (Exception: %s) [%s]" % (e, line)
 
 
-            # print("%s. Loaded %s" % (line_number, line))
+                # print("%s. Loaded %s" % (line_number, line))
 
     def get_report(self):
         """ method for generating report """
@@ -404,11 +403,12 @@ class ProductLoader:
             self.date['hour'],
             self.date['minute'],
         ))
-        total_products = len(self.data)
-        bad = len(self.report)
-        good = total_products - bad
+        total_products = len(self.report.report.items())
+        bad = len(self.report.bad.items())
+        good = len(self.report.good.items())
+        print('total: %s, bad: %s, good: %s' % (total_products, bad, good))
         report += 'Всего обработано - %s, из них принято - %s, с ошибкой - %s\r\n' % (total_products, good, bad)
-        for key, item in self.report.items():
+        for key, item in self.report.report.items():
             report += '%s. %s\n' % (key, item)
         return report
 
