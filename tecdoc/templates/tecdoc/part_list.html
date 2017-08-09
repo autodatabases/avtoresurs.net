@@ -10,12 +10,13 @@
         <div class="col s12 nav-breadcrumb white">
             <a href="/" class="breadcrumb">Главная</a>
             <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-{#            <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"#}
-{#               class="breadcrumb">{{ car_type.model.manufacturer }}</a>#}
-{#            <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"#}
-{#               class="breadcrumb">{{ car_type.model.designation }}</a>#}
-{#            <a href="" class="breadcrumb">{{ car_type }}</a>#}
-{#            <a href="" class="breadcrumb">{{ section.designation }}</a>#}
+            <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
+               class="breadcrumb">{{ car_type.model.manufacturer }}</a>
+            <a href="{% url 'tecdoc:model' car_type.model.manufacturer.id car_type.model.id %}"
+               class="breadcrumb">{{ car_type.model.title }}</a>
+            <a href="{% url 'tecdoc:section_list' car_type.model.manufacturer.id car_type.model.id car_type.id %}"
+               class="breadcrumb">{{ car_type.title }}</a>
+            <a href="" class="breadcrumb">{{ section }}</a>
         </div>
     </div>
 {% endblock %}

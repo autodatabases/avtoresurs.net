@@ -69,9 +69,12 @@ class PartGroupList(ListView):
         context = super(PartGroupList, self).get_context_data()
         parts = context['object_list']
         context['parts'] = get_price(parts, user=self.request.user)
-        # print(context['parts'])
-        # for part in parts:
-        #     print(part)
+
+        type_id = self.kwargs['type_id']
+        car_type = CarType.objects.get(id=type_id)
+        context['car_type'] = car_type
+        context['section'] = Section.objects.get(id=self.kwargs['section_id'], car_type=car_type)
+
         return context
 
 
@@ -95,6 +98,7 @@ class PartTypeGroupSupplierList(ListView):
         type_id = self.kwargs['type_id']
         car_type = CarType.objects.get(id=type_id)
         context['car_type'] = car_type
-        context['section'] = Section.objects.get(id=self.kwargs['section_id'])
+        # context['section'] = Section.objects.get(id=self.kwargs['section_id'])
+        print("section_id %s" % self.kwargs['section_id'])
 
         return context

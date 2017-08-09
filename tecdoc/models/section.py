@@ -41,3 +41,6 @@ class Section(models.Model):
 
     def __gt__(self, other):
         return self.title > other.title
+
+    def __str__(self):
+        return self.title

@@ -9,8 +9,8 @@
             <a href="/" class="breadcrumb">Главная</a>
             <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
             <a href="{% url 'tecdoc:manufacturer' carmodel.manufacturer.id %}"
-               class="breadcrumb">{{ carmodel.get_manufacturer }}</a>
-            <a href="" class="breadcrumb">{{ carmodel.designation }}</a>
+               class="breadcrumb">{{ carmodel.manufacturer }}</a>
+            <a href="" class="breadcrumb">{{ carmodel.title }}</a>
         </div>
     </div>
 {% endblock %}
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 {% for car_type in carmodel.cartypes.all %}
-                    <a href="{% url 'tecdoc:section_list' carmodel.get_manufacturer.id carmodel.id car_type.id %}"
+                    <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}"
                        class="collection-item">
                         <div class="row" style="margin-bottom: 0">
                             <div class="col s1">{{ forloop.counter }}</div>
