@@ -70,6 +70,8 @@ class ProductDetailView(DetailView):
         image = Image.objects.filter(supplier=supplier, part_number=part_number).first()
         try:
             base, ext = os.path.splitext(image.picture)
+            if ext == 'BMP':
+                ext = 'jpg'
             product.image = '%s%s%s' % (tecdoc_image_path, base, ext.lower())
         except Exception as exc:
             product.image = '/static/main/images/no-image.png'
