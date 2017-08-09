@@ -29,7 +29,8 @@
             <div class="col s6">
                 <div class="row">
                     <div class="col s12">
-                        <img src="{{ product.image }}" alt="" class="responsive-img materialboxed"
+                        <img src="/static/main/images/no-image.png" alt="" class="responsive-img materialboxed"
+                             id="product-image"
                              data-caption="{{ product|upper }}">
 
                     </div>
@@ -244,5 +245,23 @@
             $('ul.tabs').tabs();
         });
 
+    </script>
+
+    <script>
+        $(document).ready(function () {
+                $.ajax({
+                    url: '{{ product.image }}',
+                    type: 'HEAD',
+                    error: function () {
+                        console.log('error');
+                        document.getElementById("product-image").src = '/static/main/images/no-image.png';
+                    },
+                    success: function () {
+                        console.log('exist');
+                        document.getElementById("product-image").src = '{{ product.image }}';
+                    }
+                });
+            }
+        );
     </script>
 {% endblock %}
