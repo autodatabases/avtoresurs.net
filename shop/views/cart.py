@@ -3,17 +3,12 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, Http404, redirect
-from django.views.generic.base import View, TemplateView
-from django.views.generic.detail import SingleObjectMixin, DetailView
+from django.views.generic.base import View
+from django.views.generic.detail import SingleObjectMixin
 
 from shop.models.cart import Cart, CartItem
 from shop.models.product import Product
 
-from django.contrib.auth.forms import AuthenticationForm
-# from orders.forms import GuestCheckoutForm
-from django.views.generic.edit import FormMixin
-
-# from tecdoc.models import Part
 
 
 class ItemCountView(View):
