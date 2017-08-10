@@ -7,13 +7,20 @@ from tecdoc.models import PartAnalog, PartGroup, Q
 
 
 def search_parts(q, user):
-    pa = PartAnalog.objects.filter(part_number__iexact=q)
+    query = q
+    clean_query = clean_number(query)
+    pa = PartAnalog.objects.filter(Q(part_number__iexact=clean_query) | Q(part_number__iexact=query))
     parts = set()
 
     for p in pa:
         parts.add(p)
 
-    products = Product.objects.filter(Q(sku__iexact=clean_number(q)) | Q(sku__iexact=q))
+    products = Product.objects.filter(Q(sku__iexact=clean_query) | Q(sku__iexact=query))
+    print(query)
+    print(clean_query)
+    print(products)
+
+    no_product = True
 
     for part in parts:
         brand_name = part.supplier.title
@@ -27,11 +34,14 @@ def search_parts(q, user):
                 part.price = product.get_price(user=user)
                 part.product_id = product.id
                 part.quantity = product.get_quantity()
+                no_product = False
         if not hasattr(part, 'price'):
             part.price = -1
 
     part_analogs = sorted(parts, key=lambda part: part.price, reverse=True)
-    return part_analogs
+
+    if not no_product:
+        return part_analogs
 
 
 class SearchView(TemplateView):
