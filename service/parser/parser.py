@@ -16,7 +16,7 @@ from avtoresurs_new.settings import DIR, EMAIL_NOREPLY, EMAIL_TO, EMAIL_BCC, EMA
 from bonus.models import Bonus
 from profile.models import Profile
 from shop.models.product import clean_number, Product, ProductPrice
-from tecdoc.models import PartAnalog, PartGroup, Q
+from tecdoc.models import PartAnalog, Q
 
 
 def get_filename(filename):

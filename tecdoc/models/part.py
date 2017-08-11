@@ -3,31 +3,104 @@ from django.db import models
 from tecdoc.apps import TecdocConfig as tdsettings
 from tecdoc.models import Section, Designation, CarType, Supplier, TecdocLanguageDesManager, Manufacturer
 
+class PartSection(models.Model):
+    class Meta:
+        db_table = 'article_links'
 
-class PartGroup(models.Model):
     supplier = models.ForeignKey('Supplier', db_column='supplierid', primary_key=True)
-    part = models.ForeignKey('Part', db_column='productid')
+    part_description = models.ForeignKey('PartDescription', db_column='productid')
     linkage_type = models.BigIntegerField(db_column='linkagetypeid')
     car_type = models.ForeignKey('CarType', db_column='linkageid')
     part_number = models.CharField(db_column='datasupplierarticlenumber', max_length=128, blank=True,
                                    null=True)
 
+class Part(models.Model):
     class Meta:
-        db_table = 'article_links'
+        managed = False
+        db_table = 'articles'
+        unique_together = ('supplier', 'part_number')
+
+    supplier = models.ForeignKey(Supplier, db_column='supplierId', primary_key=True)  # Field name made lowercase.
+    part_number = models.CharField(db_column='DataSupplierArticleNumber',
+                                   max_length=128, primary_key=True)  # Field name made lowercase.
+    clean_part_number = models.CharField(db_column='FoundString', max_length=128)  # Field name made lowercase.
+    title = models.CharField(db_column='NormalizedDescription',
+                             max_length=128)  # Field name made lowercase.
+
+    state = models.CharField(db_column='ArticleStateDisplayTitle',
+                             max_length=128)  # Field name made lowercase.
+    state_title = models.CharField(db_column='ArticleStateDisplayValue',
+                                   max_length=128)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=128)  # Field name made lowercase.
+    flagaccessory = models.CharField(db_column='FlagAccessory', max_length=128)  # Field name made lowercase.
+    flagmaterialcertification = models.CharField(db_column='FlagMaterialCertification',
+                                                 max_length=128)  # Field name made lowercase.
+    flagremanufactured = models.CharField(db_column='FlagRemanufactured',
+                                          max_length=128)  # Field name made lowercase.
+    flagselfservicepacking = models.CharField(db_column='FlagSelfServicePacking',
+                                              max_length=128)  # Field name made lowercase.
+    foundby = models.CharField(db_column='FoundBy', max_length=128)  # Field name made lowercase.
+
+    hasaxle = models.CharField(db_column='HasAxle', max_length=128)  # Field name made lowercase.
+    hascommercialvehicle = models.CharField(db_column='HasCommercialVehicle',
+                                            max_length=128)  # Field name made lowercase.
+    hascvmanuid = models.CharField(db_column='HasCVManuID', max_length=128)  # Field name made lowercase.
+    hasengine = models.CharField(db_column='HasEngine', max_length=128)  # Field name made lowercase.
+    haslinkitems = models.CharField(db_column='HasLinkitems', max_length=128)  # Field name made lowercase.
+    hasmotorbike = models.CharField(db_column='HasMotorbike', max_length=128)  # Field name made lowercase.
+    haspassengercar = models.CharField(db_column='HasPassengerCar', max_length=128)  # Field name made lowercase.
+    isvalid = models.CharField(db_column='IsValid', max_length=128)  # Field name made lowercase.
+    lotsize1 = models.CharField(db_column='LotSize1', max_length=128)  # Field name made lowercase.
+    lotsize2 = models.CharField(db_column='LotSize2', max_length=128)  # Field name made lowercase.
+
+    packingunit = models.CharField(db_column='PackingUnit', max_length=128)  # Field name made lowercase.
+    quantityperpackingunit = models.CharField(db_column='QuantityPerPackingUnit',
+                                              max_length=128)  # Field name made lowercase.
 
 
-class PartTypeGroup(models.Model):
+class PartAnalog(models.Model):
+    supplier = models.ForeignKey(Supplier, db_column='supplierid')
+    part_number = models.CharField(db_column='datasupplierarticlenumber', max_length=128, primary_key=True)
+    isadditive = models.CharField(db_column='IsAdditive', max_length=128)  # Field name made lowercase.
+    oenbr = models.ForeignKey('PartCross', db_column='OENbr')  # Field name made lowercase.
+    manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'article_oe'
+
+    def __eq__(self, other):
+        return self.supplier.title == other.supplier.title and self.part_number == other.part_number
+
+    def __hash__(self):
+        return hash(('part_number', self.part_number,
+                     'supplier', self.supplier.title))
+
+
+class PartCross(models.Model):
+    manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId')  # Field name made lowercase.
+    oenbr = models.CharField(primary_key=True, db_column='OENbr', max_length=128)  # Field name made lowercase.
+    supplier = models.ForeignKey(Supplier, db_column='SupplierId')  # Field name made lowercase.
+    part_number = models.CharField(db_column='PartsDataSupplierArticleNumber',
+                                   max_length=128)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'article_cross'
+
+
+class PartTypeGroupSupplier(models.Model):
     car_type = models.ForeignKey(CarType, db_column='passangercarid')
     section = models.ForeignKey(Section, db_column='nodeid')
-    part = models.ForeignKey('Part', db_column='productid', primary_key=True)
+    part_description = models.ForeignKey('PartDescription', db_column='productid', primary_key=True)
     supplier = models.ForeignKey('Supplier', db_column='supplierid')
 
     class Meta:
         db_table = 'passanger_car_pds'
-        unique_together = ('car_type', 'section', 'part', 'supplier')
+        unique_together = ('car_type', 'section', 'part_description', 'supplier')
 
 
-class Part(models.Model):
+class PartDescription(models.Model):
     id = models.BigIntegerField(db_column='id', primary_key=True)
     assemblygroupdescription = models.CharField(db_column='assemblygroupdescription', max_length=256)
     title = models.CharField(db_column='description', max_length=256)
@@ -81,35 +154,10 @@ class PartAttribute(models.Model):
         db_table = 'article_attributes'
 
 
-class PartAnalog(models.Model):
-    supplier = models.ForeignKey(Supplier, db_column='supplierid')
-    part_number = models.CharField(db_column='datasupplierarticlenumber', max_length=128, primary_key=True)
-    isadditive = models.CharField(db_column='IsAdditive', max_length=128)  # Field name made lowercase.
-    oenbr = models.ForeignKey('PartCross', db_column='OENbr')  # Field name made lowercase.
-    manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'article_oe'
-
-    def __eq__(self, other):
-        return self.supplier.title == other.supplier.title and self.part_number == other.part_number
-
-    def __hash__(self):
-        return hash(('part_number', self.part_number,
-                     'supplier', self.supplier.title))
 
 
-class PartCross(models.Model):
-    manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId')  # Field name made lowercase.
-    oenbr = models.CharField(primary_key=True, db_column='OENbr', max_length=128)  # Field name made lowercase.
-    supplier = models.ForeignKey(Supplier, db_column='SupplierId')  # Field name made lowercase.
-    part_number = models.CharField(db_column='PartsDataSupplierArticleNumber',
-                                   max_length=128)  # Field name made lowercase.
 
-    class Meta:
-        managed = False
-        db_table = 'article_cross'
+
 
 
 # class PartManager(TecdocLanguageDesManager):
@@ -169,29 +217,29 @@ class PartCross(models.Model):
 #         db_table = tdsettings.DB_PREFIX + 'articles'
 
 
-class Group(models.Model):
-    id = models.AutoField(db_column='ga_id', primary_key=True, verbose_name='Ид')
-    ga_nr = models.SmallIntegerField(db_column='ga_nr', blank='True', null='True')
-    designation = models.ForeignKey(Designation, db_column='ga_des_id', verbose_name='Описание', related_name='+')
-    standart = models.ForeignKey(Designation, db_column='ga_des_id_standard', verbose_name='Стандарт', related_name='+')
-    assembly = models.ForeignKey(Designation, db_column='ga_des_id_assembly', verbose_name='Где устанавливается',
-                                 related_name='+')
-    intended = models.ForeignKey(Designation, db_column='ga_des_id_intended', verbose_name='Во что входит',
-                                 related_name='+')
-    ga_universal = models.SmallIntegerField(db_column='ga_universal')
-    section = models.ManyToManyField(Section, through='tecdoc.SectionGroup', verbose_name='Категории')
-
-    #
-    class Meta:
-        db_table = tdsettings.DB_PREFIX + 'generic_articles'
-
-
-class SectionGroup(models.Model):
-    car_section = models.OneToOneField(Section, db_column='lgs_str_id', primary_key=True)
-    group = models.OneToOneField(Group, db_column='lgs_ga_id', primary_key=True)
-
-    class Meta:
-        db_table = tdsettings.DB_PREFIX + 'link_ga_str'
+# class Group(models.Model):
+#     id = models.AutoField(db_column='ga_id', primary_key=True, verbose_name='Ид')
+#     ga_nr = models.SmallIntegerField(db_column='ga_nr', blank='True', null='True')
+#     designation = models.ForeignKey(Designation, db_column='ga_des_id', verbose_name='Описание', related_name='+')
+#     standart = models.ForeignKey(Designation, db_column='ga_des_id_standard', verbose_name='Стандарт', related_name='+')
+#     assembly = models.ForeignKey(Designation, db_column='ga_des_id_assembly', verbose_name='Где устанавливается',
+#                                  related_name='+')
+#     intended = models.ForeignKey(Designation, db_column='ga_des_id_intended', verbose_name='Во что входит',
+#                                  related_name='+')
+#     ga_universal = models.SmallIntegerField(db_column='ga_universal')
+#     section = models.ManyToManyField(Section, through='tecdoc.SectionGroup', verbose_name='Категории')
+#
+#     #
+#     class Meta:
+#         db_table = tdsettings.DB_PREFIX + 'generic_articles'
+#
+#
+# class SectionGroup(models.Model):
+#     car_section = models.OneToOneField(Section, db_column='lgs_str_id', primary_key=True)
+#     group = models.OneToOneField(Group, db_column='lgs_ga_id', primary_key=True)
+#
+#     class Meta:
+#         db_table = tdsettings.DB_PREFIX + 'link_ga_str'
         # unique_together = (("car_section", "group"),)
 
 
@@ -206,25 +254,25 @@ class SectionGroup(models.Model):
 #         db_table = tdsettings.DB_PREFIX + 'link_art'
 
 
-class PartTypeGroupSupplier(models.Model):
-    car_type = models.OneToOneField(CarType, db_column='lat_typ_id', primary_key=True)
-    group = models.OneToOneField(Group, db_column='lat_ga_id', primary_key=True)
-    part_group = models.OneToOneField(PartGroup, db_column='lat_la_id', primary_key=True)
-    supplier = models.OneToOneField(Supplier, db_column='lat_sup_id')
-    sorting = models.IntegerField(db_column='lat_sort', verbose_name='Порядок', primary_key=True)
-
-    class Meta:
-        db_table = tdsettings.DB_PREFIX + 'link_la_typ'
-
-
-class PartAnalogManager(models.Manager):
-    # use_for_related_fields = True
-
-    def get_queryset(self):
-        return super(PartAnalogManager, self). \
-            get_queryset(). \
-            filter(part__designation__language=tdsettings.LANG_ID). \
-            select_related('part', 'part__designation__description', 'brand', ).prefetch_related('part__group')
+# class PartTypeGroupSupplier(models.Model):
+#     car_type = models.OneToOneField(CarType, db_column='lat_typ_id', primary_key=True)
+#     group = models.OneToOneField(Group, db_column='lat_ga_id', primary_key=True)
+#     part_group = models.OneToOneField(PartGroup, db_column='lat_la_id', primary_key=True)
+#     supplier = models.OneToOneField(Supplier, db_column='lat_sup_id')
+#     sorting = models.IntegerField(db_column='lat_sort', verbose_name='Порядок', primary_key=True)
+#
+#     class Meta:
+#         db_table = tdsettings.DB_PREFIX + 'link_la_typ'
+#
+#
+# class PartAnalogManager(models.Manager):
+#     # use_for_related_fields = True
+#
+#     def get_queryset(self):
+#         return super(PartAnalogManager, self). \
+#             get_queryset(). \
+#             filter(part__designation__language=tdsettings.LANG_ID). \
+#             select_related('part', 'part__designation__description', 'brand', ).prefetch_related('part__group')
 
 
 # class PartAnalog(models.Model):
@@ -265,25 +313,25 @@ class PartAnalogManager(models.Manager):
 #         else:
 #             return self.part.sku
 
-
-class Brand(models.Model):
-    id = models.AutoField(db_column='BRA_ID', primary_key=True, verbose_name='Ид')
-    title = models.CharField(db_column='BRA_BRAND', max_length=60, verbose_name='Название', blank=True, null=True)
-    code = models.CharField(db_column='BRA_MFC_CODE', max_length=30, blank=True, null=True, verbose_name='Название')
-
-    class Meta:
-        db_table = tdsettings.DB_PREFIX + 'brands'
-        ordering = ['title']
-        verbose_name = u'Бренд'
-        verbose_name_plural = u'Бренды'
-
-    def __str__(self):
-        return self.title.upper()
-
-        # return self.title.capitalize()
-
-
-# TODO
-class PartListCriteria(models.Model):
-    class Meta:
-        db_table = tdsettings.DB_PREFIX + 'ARTICLE_LIST_CRITERIA'
+#
+# class Brand(models.Model):
+#     id = models.AutoField(db_column='BRA_ID', primary_key=True, verbose_name='Ид')
+#     title = models.CharField(db_column='BRA_BRAND', max_length=60, verbose_name='Название', blank=True, null=True)
+#     code = models.CharField(db_column='BRA_MFC_CODE', max_length=30, blank=True, null=True, verbose_name='Название')
+#
+#     class Meta:
+#         db_table = tdsettings.DB_PREFIX + 'brands'
+#         ordering = ['title']
+#         verbose_name = u'Бренд'
+#         verbose_name_plural = u'Бренды'
+#
+#     def __str__(self):
+#         return self.title.upper()
+#
+#         # return self.title.capitalize()
+#
+#
+# # TODO
+# class PartListCriteria(models.Model):
+#     class Meta:
+#         db_table = tdsettings.DB_PREFIX + 'ARTICLE_LIST_CRITERIA'

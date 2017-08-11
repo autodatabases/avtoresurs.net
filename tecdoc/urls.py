@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from tecdoc.views.carmodel import CarModelView
-from tecdoc.views.parts import PartTypeGroupSupplierList, PartGroupList
+from tecdoc.views.parts import PartGroupList
 from tecdoc.views.section import SectionList
 from tecdoc.views.manufacturer import ManufacturerList, ManufacturerView
 

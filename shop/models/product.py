@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.utils.text import slugify
 
 from profile.models import Profile
-from tecdoc.models.part import Part, PartGroup
+from tecdoc.models.part import Part
 
 
 class ProductQuerySet(models.query.QuerySet):
@@ -67,7 +67,7 @@ class Product(models.Model):
         return self.quantity
 
     def get_title(self):
-        pg = PartGroup.objects.filter(part_number=self.sku, supplier__title=self.brand).first()
+        pg = 'title here...'
         product_title = pg.part.title
         return product_title
 

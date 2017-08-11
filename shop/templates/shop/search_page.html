@@ -32,7 +32,7 @@
                         <div class="col s1 tecdoc-header">Цена</div>
                     </div>
                 </div>
-                {% for part_analog in part_analogs %}
+                {% for part_analog in object_list %}
                     {% if part_analog.product_id %}
                         <a href="{% url 'shop:product_detail' part_analog.product_id %}" class="collection-item">
                     {% else %}

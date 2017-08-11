@@ -1,8 +1,7 @@
 from django.views.generic import ListView, DetailView
 
 from shop.models.product import Product, get_part_analogs, clean_number
-from tecdoc.models import Part, PartTypeGroupSupplier, CarType, Section, PartCross, PartGroup, Supplier, PartTypeGroup
-
+from tecdoc.models import Part, PartTypeGroupSupplier, CarType, Section, PartCross, Supplier
 
 # SET @TYP_ID = 3822; /* ALFA ROMEO 145 (930) 1.4 i.e. [1994/07-1996/12] */
 # SET @STR_ID = 10630; /* Поршень в сборе; Можете использовать NULL для вывода ВСЕХ запчастей к автомобилю */
@@ -49,7 +48,7 @@ def get_price(parts, user):
 
 
 class PartGroupList(ListView):
-    model = PartTypeGroup
+
     template_name = 'tecdoc/part_list.html'
 
     def get_queryset(self):
@@ -78,27 +77,27 @@ class PartGroupList(ListView):
         return context
 
 
-class PartTypeGroupSupplierList(ListView):
-    model = PartTypeGroupSupplier
-    template_name = 'tecdoc/part_list.html'
-
-    def get_queryset(self, *args, **kwargs):
-        car_type_id = self.kwargs['type_id']
-        car_type = CarType.objects.get(id=car_type_id)
-        section_id = self.kwargs['section_id']
-        section = Section.objects.get(id=section_id)
-        qs = super(PartTypeGroupSupplierList, self). \
-            get_queryset(). \
-            filter(car_type=car_type, group__section=section)
-        return qs
-
-    def get_context_data(self, **kwargs):
-        context = super(PartTypeGroupSupplierList, self).get_context_data(**kwargs)
-        context['part_analogs'] = get_part_analogs(context['parttypegroupsupplier_list'], user=self.request.user)
-        type_id = self.kwargs['type_id']
-        car_type = CarType.objects.get(id=type_id)
-        context['car_type'] = car_type
-        # context['section'] = Section.objects.get(id=self.kwargs['section_id'])
-        print("section_id %s" % self.kwargs['section_id'])
-
-        return context
+# class PartTypeGroupSupplierList(ListView):
+#     model = PartTypeGroupSupplier
+#     template_name = 'tecdoc/part_list.html'
+#
+#     def get_queryset(self, *args, **kwargs):
+#         car_type_id = self.kwargs['type_id']
+#         car_type = CarType.objects.get(id=car_type_id)
+#         section_id = self.kwargs['section_id']
+#         section = Section.objects.get(id=section_id)
+#         qs = super(PartTypeGroupSupplierList, self). \
+#             get_queryset(). \
+#             filter(car_type=car_type, group__section=section)
+#         return qs
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(PartTypeGroupSupplierList, self).get_context_data(**kwargs)
+#         context['part_analogs'] = get_part_analogs(context['parttypegroupsupplier_list'], user=self.request.user)
+#         type_id = self.kwargs['type_id']
+#         car_type = CarType.objects.get(id=type_id)
+#         context['car_type'] = car_type
+#         # context['section'] = Section.objects.get(id=self.kwargs['section_id'])
+#         print("section_id %s" % self.kwargs['section_id'])
+#
+#         return context

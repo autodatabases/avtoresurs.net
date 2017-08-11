@@ -4,7 +4,7 @@ from django.views.generic import DetailView
 
 from profile.models import Profile
 from shop.models.product import Product, clean_number, get_part_analogs
-from tecdoc.models import PartAnalog, Part, PartCriteria, CarType, PartGroup, Image, Supplier, PartApplicability, \
+from tecdoc.models import PartAnalog, Part, PartCriteria, CarType, Image, Supplier, PartApplicability, \
     PartAttribute, Q
 
 
@@ -26,7 +26,8 @@ def get_product_analogs(supplier, part_number, user):
     products = Product.objects.filter(sku__in=sku)
 
     for part in data:
-        pg = PartGroup.objects.filter(supplier=supplier).filter(Q(part_number=part_number) | Q(part_number=clean_number(part_number))).first()
+        # pg = PartGroup.objects.filter(supplier=supplier).filter(Q(part_number=part_number) | Q(part_number=clean_number(part_number))).first()
+        pf = object
         if pg:
             part.title = pg.part.title
         brand_name = part.supplier_name
