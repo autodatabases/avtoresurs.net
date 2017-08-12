@@ -28,43 +28,25 @@
                         <div class="col s2 tecdoc-header">Артикул</div>
                         <div class="col s2 tecdoc-header">Производитель</div>
                         <div class="col s5 tecdoc-header">Название</div>
-                        <div class="col s1 tecdoc-header">Кол-во</div>
-                        <div class="col s1 tecdoc-header">Цена</div>
+                        <div class="col s1 tecdoc-header">Описание</div>
+                        <div class="col s1 tecdoc-header"></div>
                     </div>
                 </div>
-                {% for part_analog in object_list %}
-                    {% if part_analog.product_id %}
-                        <a href="{% url 'shop:product_detail' part_analog.product_id %}" class="collection-item">
-                    {% else %}
-                        <div class="collection-item noactive">
-                    {% endif %}
-
-                <div class="row no-margin-bot">
-                    <div class="col s1">{{ forloop.counter }}</div>
-                    <div class="col s2">{{ part_analog.part_number }}</div>
-                    <div class="col s2">{{ part_analog.supplier.title }}</div>
-                    <div class="col s5">{{ part_analog.title }}</div>
-                    <div class="col s1">
-                        <strong>
-                            {{ part_analog.quantity }}
-                        </strong>
-                    </div>
-                    <div class="col s1">
-                        <strong>
-                            {% if part_analog.price > 0 %}
-                                {{ part_analog.price }}
-                            {% else %}
-                                -
-                            {% endif %}
-                        </strong>
-                    </div>
-                </div>
-                {% if part_analog.product_id %}
+                {% for part in part_list %}
+                    <a href="{% url 'shop:search_detail' %}?part={{ part.part_number }}&brand={{ part.supplier }}"
+                       class="collection-item">
+                        <div class="row no-margin-bot">
+                            <div class="col s1">{{ forloop.counter }}</div>
+                            <div class="col s2">{{ part.part_number }}</div>
+                            <div class="col s2">{{ part.supplier.title }}</div>
+                            <div class="col s5">{{ part.title }} {{ part.supplier }} {{ part.part_number }}</div>
+                            <div class="col s1">
+                                <img class="materialboxed" width="35px" src="{{ part.image }}">
+                            </div>
+                            <div class="col s1"> >>> </div>
+                        </div>
                     </a>
-                {% else %}
-                    </div>
-                {% endif %}
                 {% endfor %}
+            </div>
         </div>
-    </div>
 {% endblock %}

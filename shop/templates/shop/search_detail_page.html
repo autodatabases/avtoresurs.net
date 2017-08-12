@@ -1,7 +1,69 @@
 {% extends 'main/base.html' %}
 
-{% block title %}Предложения для ...{% endblock %}
+{% block title %}Предложения для {{ brand }} {{ part_number }}{% endblock %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <div class="row">
+        <div class="col s12 nav-breadcrumb white">
+            <a href="/" class="breadcrumb">Главная</a>
+            <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
+            <a href="" class="breadcrumb">Поиск</a>
+        </div>
+    </div>
+{% endblock %}
+
 
 {% block content %}
-    content here
-{% endblock content %}
+    <div class="row">
+        <h5 class="card-panel z-depth-0">Аналоги-заменители для {{ brand }} {{ part_number }}</h5>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="collection tecdoc-table row card-panel z-depth-0 no-border">
+                <div class="collection-item">
+                    <div class="row">
+                        <div class="col s1 tecdoc-header">№ п/п</div>
+                        <div class="col s2 tecdoc-header">Артикул</div>
+                        <div class="col s2 tecdoc-header">Производитель</div>
+                        <div class="col s5 tecdoc-header">Название</div>
+                        <div class="col s1 tecdoc-header">Кол-во</div>
+                        <div class="col s1 tecdoc-header">Цена</div>
+                    </div>
+                </div>
+                {% for part in partproduct_list %}
+                    {% if part.product %}
+                        <a href="{% url 'shop:product_detail' part.product %}" class="collection-item">
+                    {% else %}
+                        <div class="collection-item noactive">
+                    {% endif %}
+                <div class="row no-margin-bot">
+                    <div class="col s1">{{ forloop.counter }}</div>
+                    <div class="col s2">{{ part.sku }}</div>
+                    <div class="col s2">{{ part.supplier }}</div>
+                    <div class="col s5">{{ part.title }} {{ part.supplier }} {{ part.part_number }}</div>
+                    <div class="col s1">
+                        {% if part.quantity > -1 %}
+                            {{ part.quantity }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </div>
+                    <div class="col s1">
+                        {% if part.price > -1 %}
+                            {{ part.price }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </div>
+                </div>
+                {% if part.product %}
+                    </a>
+                {% else %}
+                    </div>
+                {% endif %}
+                {% endfor %}
+        </div>
+    </div>
+{% endblock %}
