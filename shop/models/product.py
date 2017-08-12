@@ -260,6 +260,8 @@ def get_prices(analogs, user):
     supplier_ids = list()
     for analog in analogs:
         sku_list.append(analog['part_number'])
+        if analog['part_number'] == 'A71004MT':
+            print(analog['part_number'])
         supplier_ids.append(analog['supplier'])
     suppliers = Supplier.objects.filter(id__in=supplier_ids)
     products = Product.objects.filter(sku__in=sku_list)
@@ -279,7 +281,7 @@ def get_prices(analogs, user):
         part_product = PartProduct(supplier=brand.title, part_number=part_number, price=price, quantity=quantity,
                                    product_id=product_id, title=title)
         for product in products:
-            if product.sku == part_number and product.brand == brand.title:
+            if product.sku == part_number and product.brand.upper() == brand.title.upper():
                 part_product.price = product.get_price(user=user)
                 part_product.product_id = product.id
                 part_product.quantity = product.get_quantity()

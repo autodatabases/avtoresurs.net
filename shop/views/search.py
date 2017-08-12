@@ -37,6 +37,7 @@ class SearchDetailView(ListView):
         supplier = Supplier.objects.get(title=brand)
 
         analogs = get_analogs(part_number=part_number, supplier=supplier, user=self.request.user)
+        print('%s %s' %(supplier, part_number))
         if analogs:
             return analogs
 
