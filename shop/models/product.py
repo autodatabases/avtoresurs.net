@@ -138,8 +138,6 @@ class Product(models.Model):
         except Exception as exc:
             return '/static/main/images/no-image.png'
 
-
-
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
@@ -299,3 +297,26 @@ def get_analogs(part_number, supplier, user):
     if analogs:
         return sorted(analogs, reverse=True)
     return {}
+
+
+def get_products(supplier, part_number):
+    products = Product.objects.filter(brand=supplier.title, sku=part_number)
+    part_products = list()
+    for product in products:
+        price = product.get_price()
+        quantity = product.get_quantity()
+        title = Part.objects.filter(supplier__title=product.brand, part_number=product.sku).first().title
+        supplier = product.brand
+        part_number = product.sku
+        product_id = product.id
+        part_product = PartProduct(
+            supplier=supplier,
+            part_number=part_number,
+            product_id=product_id,
+            price=price,
+            quantity=quantity,
+            title=title
+
+        )
+        part_products.append(part_product)
+    return sorted(part_products, reverse=True)

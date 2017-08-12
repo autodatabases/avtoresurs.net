@@ -3,8 +3,9 @@ from distutils.command.clean import clean
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.list import MultipleObjectMixin
 
-from shop.models.product import Product, clean_number, get_analogs
+from shop.models.product import Product, clean_number, get_analogs, get_products
 from tecdoc.models import Part, Q, PartAnalog, PartCross, Supplier, PartProduct
+import urllib.parse
 
 
 class SearchView(ListView):
@@ -23,29 +24,6 @@ class SearchView(ListView):
         q = self.request.GET['q']
         context['q'] = q
         return context
-
-
-def get_products(supplier, part_number):
-    products = Product.objects.filter(brand=supplier.title, sku=part_number)
-    part_products = list()
-    for product in products:
-        price = product.get_price()
-        quantity = product.get_quantity()
-        title = Part.objects.filter(supplier__title=product.brand, part_number=product.sku).first().title
-        supplier = product.brand
-        part_number = product.sku
-        product_id = product.id
-        part_product = PartProduct(
-            supplier=supplier,
-            part_number=part_number,
-            product_id=product_id,
-            price=price,
-            quantity=quantity,
-            title=title
-
-        )
-        part_products.append(part_product)
-    return sorted(part_products, reverse=True)
 
 
 class SearchDetailView(ListView):

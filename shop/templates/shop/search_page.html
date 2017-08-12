@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 {% for part in part_list %}
-                    <a href="{% url 'shop:search_detail' %}?part={{ part.part_number }}&brand={{ part.supplier }}"
+                    <a href="{% url 'shop:search_detail' %}?{{ part.url }}"
                        class="collection-item">
                         <div class="row no-margin-bot">
                             <div class="col s1">{{ forloop.counter }}</div>

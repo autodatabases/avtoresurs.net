@@ -1,5 +1,7 @@
 import os
 import re
+import urllib
+
 from django.db import models
 from tecdoc.apps import TecdocConfig as tdsettings
 from tecdoc.models import Section, Designation, CarType, Supplier, TecdocLanguageDesManager, Manufacturer
@@ -59,6 +61,13 @@ class Part(models.Model):
     packingunit = models.CharField(db_column='PackingUnit', max_length=128)  # Field name made lowercase.
     quantityperpackingunit = models.CharField(db_column='QuantityPerPackingUnit',
                                               max_length=128)  # Field name made lowercase.
+
+    def url(self):
+        brand = self.supplier.title
+        part = self.part_number
+        url = {'brand': brand, 'part': part}
+        url = urllib.parse.urlencode(url)
+        return url
 
     def image(self):
         tecdoc_image_path = '/static/main/images/tecdoc/'

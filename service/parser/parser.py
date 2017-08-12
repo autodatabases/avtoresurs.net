@@ -16,7 +16,7 @@ from avtoresurs_new.settings import DIR, EMAIL_NOREPLY, EMAIL_TO, EMAIL_BCC, EMA
 from bonus.models import Bonus
 from profile.models import Profile
 from shop.models.product import clean_number, Product, ProductPrice
-from tecdoc.models import PartAnalog, Q
+from tecdoc.models import PartAnalog, Q, Part
 
 
 def get_filename(filename):
@@ -288,19 +288,15 @@ class ProductLoader:
         intervals = self.get_intervals()
         threads = list()
 
-        # self.add_product([0, len(self.data)])
-
         for interval in intervals:
             thread = threading.Thread(target=self.add_product, args=(self.data, interval))
             threads.append(thread)
 
-            # time.sleep(1)
         for thread in threads:
             thread.start()
 
         for thread in threads:
             thread.join()
-            # return time.sleep(5)
 
     def add_product(self, data, interval):
         """ main logic of searching and inserting product and product price """
@@ -308,13 +304,8 @@ class ProductLoader:
         end_idx = interval[1] + self.ONE_MORE
         for idx, line in enumerate(data[start_idx:end_idx]):
             line = line.strip()
-            range = interval[1] - interval[0]
-            # print(range)
-            # offset = 2
             line_number = interval[0] + idx
-            # line_number = (range * idx) + idx
             try:
-                # try:
                 row = line.split(';')
                 sku = row[0]
                 brand = row[1]
@@ -362,41 +353,34 @@ class ProductLoader:
                 except:
                     prices[4] = 0
 
-                clean_sku = clean_number(sku)
-                part_analog = PartGroup.objects.filter(Q(part_number=clean_sku) | Q(part_number=sku))
-                product, created = Product.objects.get_or_create(sku=sku, brand=brand)
-                product.quantity = quantity
-                product.save()
+                part_tecdoc = Part.objects.filter(part_number=sku, supplier__title=brand)
 
-                # print("Prices: %s %s %s %s %s" % (prices[0], prices[1], prices[2], prices[3], prices[4]))
-
-                product_price = ProductPrice(
-                    product=product,
-                    retail_price=prices.get(0),
-                    price_1=prices.get(1),
-                    price_2=prices.get(2),
-                    price_3=prices.get(3),
-                    price_4=prices.get(4),
-                )
-                product_price.save()
+                if part_tecdoc:
+                    product, created = Product.objects.get_or_create(sku=sku, brand=brand)
+                    product.quantity = quantity
+                    product.save()
+                    product_price = ProductPrice(
+                        product=product,
+                        retail_price=prices.get(0),
+                        price_1=prices.get(1),
+                        price_2=prices.get(2),
+                        price_3=prices.get(3),
+                        price_4=prices.get(4),
+                    )
+                    product_price.save()
+                else:
+                    self.report[line_number] = 'не найдено соответсвие в TECDOC. %s' % line
+                    self.bad = self.bad + 1
 
                 if not prices[0]:
                     self.report[line_number] = 'не указана цена товара в рознице. %s' % line
-                    self.bad = self.bad + 1
-                elif not part_analog:
-                    self.report[line_number] = 'не найдено соответсвие в TECDOC. %s' % line
                     self.bad = self.bad + 1
                 else:
                     self.report[line_number] = 'Успешно добавлен. %s' % line
                     self.good = self.good + 1
             except Exception as e:
-                # print(e)
-                # print("%s. Проверьте корректность строки [%s]" % (line_number, line))
                 self.report[line_number] = "Проверьте корректность строки (Exception: %s) [%s]" % (e, line)
                 self.bad = self.bad + 1
-
-
-                # print("%s. Loaded %s" % (line_number, line))
 
     def get_report(self):
         """ method for generating report """
