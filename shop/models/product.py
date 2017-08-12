@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.utils.text import slugify
 
 from profile.models import Profile
-from tecdoc.models import Supplier
+from tecdoc.models import Supplier, Image
 from tecdoc.models.part import Part, PartAnalog, PartCross, PartProduct
 
 
