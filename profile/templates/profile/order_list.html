@@ -43,7 +43,7 @@
                     <div class="col s5">
 {#                        {% for item in order.items.all %}#}
                         {% for op in order.orderproduct_set.all %}
-                            <span>{{ forloop.counter }}. {{ op.item.get_title }} {{ op.item }} ({{ op.qty }} шт.)</span><br>
+                            <span>{{ forloop.counter }}. {{ op.item.title }} {{ op.item }} ({{ op.qty }} шт.)</span><br>
                         {% endfor %}
                     </div>
                     <div class="col s2">{{ order.order_total }}</div>

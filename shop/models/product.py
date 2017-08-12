@@ -138,6 +138,8 @@ class Product(models.Model):
         except Exception as exc:
             return '/static/main/images/no-image.png'
 
+
+
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'

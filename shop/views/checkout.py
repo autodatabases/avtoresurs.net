@@ -37,8 +37,8 @@ def order_notification(cart, order, user):
         product = item.item
         price = product.get_price(user)
         qty = item.quantity
-        body += '%s. %s %s, %s шт. x %s руб.., на общую сумму: %s руб.\r\n' % (
-            idx + 1, product.sku, product.brand, qty, price, qty * price)
+        body += '%s. %s %s %s, %s шт. x %s руб.., на общую сумму: %s руб.\r\n' % (
+            idx + 1, product.title(), product.sku, product.brand, qty, price, qty * price)
         op = OrderProduct(order=order, item=product, qty=qty, price=price)
         op.save()
 
@@ -76,7 +76,7 @@ def order_notification(cart, order, user):
         price = product.get_price(user)
         qty = item.quantity
         coordinate = 'B' + str(idx)
-        data.append([idx + 1, product.sku, product.brand, qty, price, qty * price])
+        data.append([idx + 1, product.title(), product.sku, product.brand, qty, price, qty * price])
 
     # print(data)
     ws.append(['#', 'Товар', 'Брэнд', 'Количество', 'Цена за единицу', 'Цена (общая)'])
