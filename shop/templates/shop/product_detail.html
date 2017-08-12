@@ -180,21 +180,25 @@
                 <div class="row no-margin-bot">
                     <div class="col s1">{{ forloop.counter }}</div>
                     <div class="col s2">{{ part_analog.part_number }}</div>
-                    <div class="col s2">{{ part_analog.supplier_name }}</div>
-                    <div class="col s5">{{ part_analog.title }} {{ part_analog.supplier_name }} {{ part_analog.part_number }}</div>
+                    <div class="col s2">{{ part_analog.supplier }}</div>
+                    <div class="col s5">{{ part_analog.title }} {{ part_analog.supplier }} {{ part_analog.part_number }}</div>
                     <div class="col s1">
-                        <strong>
-                            {{ part_analog.qty }}
-                        </strong>
+
+                        {% if part_analog.quantity > -1 %}
+                            <strong>{{ part_analog.quantity }}</strong>
+                        {% else %}
+                            -
+                        {% endif %}
+
                     </div>
                     <div class="col s1">
-                        <strong>
-                            {% if part_analog.price > 0 %}
-                                {{ part_analog.price }}
-                            {% else %}
-                                -
-                            {% endif %}
-                        </strong>
+
+                        {% if part_analog.price > -1 %}
+                            <strong>{{ part_analog.price }}</strong>
+                        {% else %}
+                            -
+                        {% endif %}
+
                     </div>
                 </div>
                 {% if part_analog.product_id %}

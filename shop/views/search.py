@@ -3,7 +3,7 @@ from distutils.command.clean import clean
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.list import MultipleObjectMixin
 
-from shop.models.product import Product, clean_number
+from shop.models.product import Product, clean_number, get_analogs
 from tecdoc.models import Part, Q, PartAnalog, PartCross, Supplier, PartProduct
 
 
@@ -25,39 +25,27 @@ class SearchView(ListView):
         return context
 
 
-def get_prices(analogs, user):
-    if not analogs:
-        return False
-    sku_list = list()
-    supplier_ids = list()
-    for analog in analogs:
-        sku_list.append(analog['part_number'])
-        supplier_ids.append(analog['supplier'])
-    suppliers = Supplier.objects.filter(id__in=supplier_ids)
-    products = Product.objects.filter(sku__in=sku_list)
-    parts = Part.objects.filter(part_number__in=sku_list, supplier__in=suppliers)
-
+def get_products(supplier, part_number):
+    products = Product.objects.filter(brand=supplier.title, sku=part_number)
     part_products = list()
-    for analog in analogs:
-        brand = suppliers.get(id=analog['supplier'])
-        sku = analog['part_number']
-        price = -1
-        quantity = -1
-        product_id = None
+    for product in products:
+        price = product.get_price()
+        quantity = product.get_quantity()
+        title = Part.objects.filter(supplier__title=product.brand, part_number=product.sku).first().title
+        supplier = product.brand
+        part_number = product.sku
+        product_id = product.id
+        part_product = PartProduct(
+            supplier=supplier,
+            part_number=part_number,
+            product_id=product_id,
+            price=price,
+            quantity=quantity,
+            title=title
 
-        try:
-            title = parts.filter(part_number=sku, supplier=brand).first().title
-        except:
-            title = None
-        part_product = PartProduct(supplier=brand.title, sku=sku, price=price, quantity=quantity,
-                                   product=product_id, title=title)
-        for product in products:
-            if product.sku == sku and product.brand == brand.title:
-                part_product.price = product.get_price(user=user)
-                part_product.product = product.id
-                part_product.quantity = product.get_quantity()
+        )
         part_products.append(part_product)
-    return part_products
+    return sorted(part_products, reverse=True)
 
 
 class SearchDetailView(ListView):
@@ -66,17 +54,16 @@ class SearchDetailView(ListView):
 
     def get_queryset(self):
         part_number = self.request.GET['part']
+
         brand = self.request.GET['brand']
-        part_analogs = PartAnalog.objects.filter(part_number=part_number, supplier__title=brand)
-        crosses = list()
-        for part_analog in part_analogs:
-            crosses.append(part_analog.oenbr)
+        supplier = Supplier.objects.get(title=brand)
 
-        analogs = PartCross.objects.values('supplier', 'part_number').filter(oenbr__in=crosses).distinct()
+        analogs = get_analogs(part_number=part_number, supplier=supplier, user=self.request.user)
+        if analogs:
+            return analogs
 
-        analogs = get_prices(analogs, self.request.user)
-
-        return sorted(analogs, reverse=True)
+        # if we are here, than we have not analogs, try to search directly in productss
+        return get_products(supplier=supplier, part_number=part_number)
 
     def get_context_data(self, **kwargs):
         context = super(SearchDetailView, self).get_context_data()

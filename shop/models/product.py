@@ -8,7 +8,8 @@ from django.core.urlresolvers import reverse
 from django.utils.text import slugify
 
 from profile.models import Profile
-from tecdoc.models.part import Part
+from tecdoc.models import Supplier
+from tecdoc.models.part import Part, PartAnalog, PartCross, PartProduct
 
 
 class ProductQuerySet(models.query.QuerySet):
@@ -66,10 +67,11 @@ class Product(models.Model):
             self.quantity = 0
         return self.quantity
 
-    def get_title(self):
-        pg = 'title here...'
-        product_title = pg.part.title
-        return product_title
+    def title(self):
+        title = Part.objects.filter(part_number=self.sku, supplier__title=self.brand).first().title
+        if title:
+            return title
+        return ''
 
     def __str__(self):
         return "%s %s" % (self.brand, self.sku)
@@ -237,3 +239,49 @@ number_re = re.compile('[^a-zA-Z0-9]+')
 
 def clean_number(number):
     return number_re.sub('', number)
+
+
+def get_prices(analogs, user):
+    if not analogs:
+        return False
+    sku_list = list()
+    supplier_ids = list()
+    for analog in analogs:
+        sku_list.append(analog['part_number'])
+        supplier_ids.append(analog['supplier'])
+    suppliers = Supplier.objects.filter(id__in=supplier_ids)
+    products = Product.objects.filter(sku__in=sku_list)
+    parts = Part.objects.filter(part_number__in=sku_list, supplier__in=suppliers)
+
+    part_products = list()
+    for analog in analogs:
+        brand = suppliers.get(id=analog['supplier'])
+        part_number = analog['part_number']
+        price = -1
+        quantity = -1
+        product_id = None
+        try:
+            title = parts.filter(part_number=part_number, supplier=brand).first().title
+        except:
+            title = None
+        part_product = PartProduct(supplier=brand.title, part_number=part_number, price=price, quantity=quantity,
+                                   product_id=product_id, title=title)
+        for product in products:
+            if product.sku == part_number and product.brand == brand.title:
+                part_product.price = product.get_price(user=user)
+                part_product.product_id = product.id
+                part_product.quantity = product.get_quantity()
+        part_products.append(part_product)
+    return part_products
+
+
+def get_analogs(part_number, supplier, user):
+    part_analogs = PartAnalog.objects.filter(part_number=part_number, supplier=supplier)
+    crosses = list()
+    for part_analog in part_analogs:
+        crosses.append(part_analog.oenbr)
+    analogs = PartCross.objects.values('supplier', 'part_number').filter(oenbr__in=crosses).distinct()
+    analogs = get_prices(analogs, user)
+    if analogs:
+        return sorted(analogs, reverse=True)
+    return {}

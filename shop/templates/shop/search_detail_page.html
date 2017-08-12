@@ -33,14 +33,14 @@
                     </div>
                 </div>
                 {% for part in partproduct_list %}
-                    {% if part.product %}
-                        <a href="{% url 'shop:product_detail' part.product %}" class="collection-item">
+                    {% if part.product_id %}
+                        <a href="{% url 'shop:product_detail' part.product_id %}" class="collection-item">
                     {% else %}
                         <div class="collection-item noactive">
                     {% endif %}
                 <div class="row no-margin-bot">
                     <div class="col s1">{{ forloop.counter }}</div>
-                    <div class="col s2">{{ part.sku }}</div>
+                    <div class="col s2">{{ part.part_number }}</div>
                     <div class="col s2">{{ part.supplier }}</div>
                     <div class="col s5">{{ part.title }} {{ part.supplier }} {{ part.part_number }}</div>
                     <div class="col s1">
@@ -58,7 +58,7 @@
                         {% endif %}
                     </div>
                 </div>
-                {% if part.product %}
+                {% if part.product_id %}
                     </a>
                 {% else %}
                     </div>

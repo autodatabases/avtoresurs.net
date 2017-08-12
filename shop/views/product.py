@@ -3,9 +3,12 @@ from collections import Set
 from django.views.generic import DetailView
 
 from profile.models import Profile
-from shop.models.product import Product, clean_number, get_part_analogs
+from shop.models.product import Product, clean_number, get_analogs
 from tecdoc.models import PartAnalog, Part, PartCriteria, CarType, Image, Supplier, PartApplicability, \
-    PartAttribute, Q
+    PartAttribute, Q, PartCross
+
+
+
 
 
 class ProductDetailView(DetailView):
@@ -20,6 +23,6 @@ class ProductDetailView(DetailView):
         supplier = Supplier.objects.get(title=product.brand)
         part_number = product.sku
 
-
+        context['part_analogs'] = get_analogs(part_number=part_number, supplier=supplier, user=self.request.user)
 
         return context

@@ -168,18 +168,18 @@ class PartAttribute(models.Model):
         db_table = 'article_attributes'
 
 class PartProduct:
-    sku = 0
+    part_number = 0
     supplier = 0
     price = 0
-    product = 0
+    product_id = 0
     quatity = 0
 
-    def __init__(self, supplier, sku, price, quantity, product, title):
+    def __init__(self, supplier, part_number, price, quantity, product_id, title):
         self.supplier = supplier
-        self.sku = sku
+        self.part_number = part_number
         self.price = price
         self.quantity = quantity
-        self.product = product
+        self.product_id = product_id
         self.title = title
 
     def __gt__(self, other):
