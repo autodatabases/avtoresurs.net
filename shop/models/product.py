@@ -1,3 +1,4 @@
+import os
 from enum import Enum
 
 import re
@@ -125,6 +126,17 @@ class Product(models.Model):
             pass
 
         return pp.retail_price
+
+    def image(self):
+        tecdoc_image_path = '/static/main/images/tecdoc/'
+        image = Image.objects.filter(supplier__title=self.brand, part_number=self.sku).first()
+        try:
+            base, ext = os.path.splitext(image.picture)
+            if ext == '.BMP':
+                ext = ext.replace('BMP', 'jpg')
+            return '%s%s%s' % (tecdoc_image_path, base, ext.lower())
+        except Exception as exc:
+            return '/static/main/images/no-image.png'
 
     class Meta:
         verbose_name = 'Продукт'
