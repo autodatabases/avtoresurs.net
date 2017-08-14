@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tecdoc.models import Supplier, Part, Manufacturer, CarModel, CarType
+from tecdoc.models import Supplier, Part, Manufacturer, CarModel, CarType, PartAnalog, PartCross
 
 
 # Register your models here.
@@ -44,6 +44,7 @@ class CarModelAdmin(admin.ModelAdmin):
     search_fields = ('id', 'manufacturer__title', 'title', 'description')
 
 
+
 class CarTypeAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'get_manufacturer', 'model', 'description', 'construction_interval', 'can_display', 'link', 'axle',
@@ -55,9 +56,21 @@ class CarTypeAdmin(admin.ModelAdmin):
         'valid_for_current_country', 'link_item_type')
     search_fields = ('id', 'model__title', 'title', 'description', 'model__manufacturer__title')
 
+class PartAnalogAdmin(admin.ModelAdmin):
+    list_display =('supplier', 'part_number', 'oenbr', 'manufacturer', 'isadditive')
+    list_display_links = ('supplier', 'part_number', 'oenbr', 'manufacturer', 'isadditive')
+    search_fields = ('oenbr', 'part_number')
+
+
+class PartCrossAdmin(admin.ModelAdmin):
+    list_display = ('supplier', 'part_number', 'oenbr', 'manufacturer')
+    list_display_links = ('supplier', 'part_number', 'oenbr', 'manufacturer')
+    search_fields = ('oenbr', 'part_number')
 
 admin.site.register(Supplier, SupplierAdmin)
 admin.site.register(Part, PartAdmin)
 admin.site.register(Manufacturer, ManufacturerAdmin)
 admin.site.register(CarModel, CarModelAdmin)
 admin.site.register(CarType, CarTypeAdmin)
+admin.site.register(PartAnalog, PartAnalogAdmin)
+admin.site.register(PartCross, PartCrossAdmin)
