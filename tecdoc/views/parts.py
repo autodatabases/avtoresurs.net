@@ -1,7 +1,8 @@
 from django.views.generic import ListView, DetailView
 
 from shop.models.product import Product, get_part_analogs, clean_number
-from tecdoc.models import Part, PartTypeGroupSupplier, CarType, Section, PartCross, Supplier
+from tecdoc.models import Part, PartTypeGroupSupplier, CarType, Section, PartCross, Supplier, PartSection
+
 
 # SET @TYP_ID = 3822; /* ALFA ROMEO 145 (930) 1.4 i.e. [1994/07-1996/12] */
 # SET @STR_ID = 10630; /* Поршень в сборе; Можете использовать NULL для вывода ВСЕХ запчастей к автомобилю */
@@ -55,12 +56,13 @@ class PartGroupList(ListView):
         car_type = self.kwargs['type_id']
         section = self.kwargs['section_id']
 
-        raw = "SELECT prd.id, al.datasupplierarticlenumber part_number, s.description supplier_name, prd.description product_name FROM article_links al JOIN passanger_car_pds pds ON al.supplierid = pds.supplierid JOIN suppliers s ON s.id = al.supplierid JOIN passanger_car_prd prd ON prd.id = al.productid WHERE al.productid = pds.productid AND al.linkageid = pds.passangercarid AND al.linkageid = %s AND pds.nodeid = %s AND al.linkagetypeid = 2 ORDER BY s.description , al.datasupplierarticlenumber" % (
+        raw = "SELECT al.supplierid, al.datasupplierarticlenumber part_number, s.description supplier_name, prd.description product_name FROM article_links al JOIN passanger_car_pds pds ON al.supplierid = pds.supplierid JOIN suppliers s ON s.id = al.supplierid JOIN passanger_car_prd prd ON prd.id = al.productid WHERE al.productid = pds.productid AND al.linkageid = pds.passangercarid AND al.linkageid = %s AND pds.nodeid = %s AND al.linkagetypeid = 2 ORDER BY s.description , al.datasupplierarticlenumber" % (
             car_type,
             section
         )
 
-        qs = Part.objects.raw(raw)
+
+        qs = PartSection.objects.raw(raw)
 
         return qs
 
