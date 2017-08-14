@@ -368,16 +368,16 @@ class ProductLoader:
                         price_4=prices.get(4),
                     )
                     product_price.save()
+                    self.report[line_number] = 'Успешно добавлен. %s' % line
+                    self.good = self.good + 1
                 else:
-                    self.report[line_number] = 'не найдено соответсвие в TECDOC. %s' % line
+                    self.report[line_number] = 'Ошибка! не найдено соответсвие в TECDOC. %s' % line
                     self.bad = self.bad + 1
 
                 if not prices[0]:
-                    self.report[line_number] = 'не указана цена товара в рознице. %s' % line
+                    self.report[line_number] = 'Ошибка! Товар добавлен без указании цены товара в рознице. %s' % line
                     self.bad = self.bad + 1
-                else:
-                    self.report[line_number] = 'Успешно добавлен. %s' % line
-                    self.good = self.good + 1
+
             except Exception as e:
                 self.report[line_number] = "Проверьте корректность строки (Exception: %s) [%s]" % (e, line)
                 self.bad = self.bad + 1
