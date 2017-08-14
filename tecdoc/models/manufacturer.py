@@ -2,6 +2,13 @@ from django.db import models
 from tecdoc.apps import TecdocConfig as tdsettings
 from tecdoc.models import TecdocManager
 
+YES = 'True'
+NO = 'False'
+CAN_DISPLAY = (
+    (YES, 'True'),
+    (NO, 'False')
+)
+
 
 class ManufacturerManager(models.Manager):
     use_for_related_fields = True
@@ -24,7 +31,14 @@ class Manufacturer(models.Model):
         # base_manager_name = 'manufacturer'
 
     id = models.BigIntegerField(db_column='id', primary_key=True, verbose_name='Ид')
-    can_display = models.CharField(db_column='canbedisplayed', max_length=512, blank=True, null=True)
+    can_display = models.CharField(
+        db_column='canbedisplayed',
+        max_length=512,
+        blank=True,
+        null=True,
+        choices=CAN_DISPLAY,
+        default=YES,
+    )
     title = models.CharField(db_column='description', max_length=512, blank=True, null=True)
     description = models.CharField(db_column='fulldescription', max_length=512, blank=True, null=True)
     link = models.CharField(db_column='haslink', max_length=512, blank=True, null=True)
