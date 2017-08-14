@@ -18,6 +18,12 @@ class ManufacturerManager(models.Manager):
         qs = qs.filter(can_display='True', passenger_car='True')
         return qs
 
+    def all(self):
+        qs = super(ManufacturerManager, self).get_queryset()
+        qs = qs.filter(passenger_car='True')
+        return qs
+
+
 
 class Manufacturer(models.Model):
     objects = ManufacturerManager()

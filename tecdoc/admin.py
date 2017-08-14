@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tecdoc.models import Supplier, Part, Manufacturer, CarModel, CarType, PartAnalog, PartCross
+from tecdoc.models import Supplier, Part, Manufacturer, CarModel, CarType, PartAnalog, PartCross, ManufacturerManager
 
 
 # Register your models here.
@@ -30,6 +30,10 @@ class ManufacturerAdmin(admin.ModelAdmin):
         'id', 'title', 'can_display', 'description', 'link', 'axle', 'commercial_vehicle', 'cv_manufacturer', 'engine',
         'motorbike', 'passenger_car', 'transporter', 'valid_for_current_country', 'vgl', 'link_item_type', 'match_code')
     search_fields = ('id', 'title', 'description')
+
+    def get_queryset(self, request):
+        qs = self.model.objects.all()
+        return qs
 
 
 class CarModelAdmin(admin.ModelAdmin):
