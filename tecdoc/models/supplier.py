@@ -7,13 +7,16 @@ from tecdoc.models import Language
 class Supplier(models.Model):
     id = models.BigIntegerField(db_column='id', primary_key=True)
     dataversion = models.CharField(db_column='dataversion', max_length=512, blank=True, null=True)
-    title = models.CharField(db_column='description', max_length=512, blank=True, null=True)
+    title = models.CharField(db_column='description', max_length=512, blank=True, null=True, verbose_name='Название брэнда')
     matchcode = models.CharField(db_column='matchcode', max_length=512, blank=True, null=True)
     nbrofarticles = models.CharField(db_column='nbrofarticles', max_length=512, blank=True, null=True)
     hasnewversionarticles = models.CharField(db_column='hasnewversionarticles', max_length=512, blank=True, null=True)
 
     class Meta:
         db_table = 'suppliers'
+        ordering = ['title']
+        verbose_name = 'Брэнд'
+        verbose_name_plural = 'Брэнды'
 
     def __str__(self):
         return self.title

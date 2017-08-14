@@ -18,8 +18,8 @@ class Manufacturer(models.Model):
     class Meta:
         db_table = tdsettings.DB_PREFIX + 'manufacturers'
         ordering = ['title']
-        verbose_name = 'Производитель автомобилей'
-        verbose_name_plural = 'Производители автомобилей'
+        verbose_name = 'Производитель'
+        verbose_name_plural = 'Производители'
         manager_inheritance_from_future = True
         # base_manager_name = 'manufacturer'
 

@@ -24,6 +24,9 @@ class Part(models.Model):
         managed = False
         db_table = 'articles'
         unique_together = ('supplier', 'part_number')
+        verbose_name = 'Изделие'
+        verbose_name_plural = 'Изделия'
+        ordering = ['supplier__title']
 
     supplier = models.ForeignKey(Supplier, db_column='supplierId', primary_key=True)  # Field name made lowercase.
     part_number = models.CharField(db_column='DataSupplierArticleNumber',

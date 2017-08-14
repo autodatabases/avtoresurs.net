@@ -38,6 +38,8 @@ class CarType(models.Model):
     class Meta:
         ordering = ['title']
         db_table = tdsettings.DB_PREFIX + 'passanger_cars'
+        verbose_name = 'Тип модели автомобиля'
+        verbose_name_plural = 'Типы моделей автомобиля'
 
     objects = CarTypeManager()
 
@@ -59,6 +61,10 @@ class CarType(models.Model):
     link_item_type = models.CharField(db_column='linkitemtype', max_length=512, blank=True, null=True)
 
     model = models.ForeignKey(CarModel, db_column='modelid', blank=True, null=True, related_name='cartypes')
+
+    def get_manufacturer(self):
+        manufacturer_title = self.model.manufacturer.title
+        return manufacturer_title
 
     def car_specs(self):
         attributes = CarTypeAttributes.objects.all().filter(car_type=self).filter(
