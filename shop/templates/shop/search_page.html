@@ -29,12 +29,13 @@
                         <div class="col s2 tecdoc-header">Производитель</div>
                         <div class="col s5 tecdoc-header">Название</div>
                         <div class="col s1 tecdoc-header">Описание</div>
-                        <div class="col s1 tecdoc-header"></div>
+                        <div class="col s1 tecdoc-header">Ссылка</div>
                     </div>
                 </div>
                 {% for part in part_list %}
-                    <a href="{% url 'shop:search_detail' %}?{{ part.url }}"
-                       class="collection-item">
+                    <div class="collection-item-part">
+                        {#                    <a href="{% url 'shop:search_detail' %}?{{ part.url }}"#}
+                        {#                       class="collection-item">#}
                         <div class="row no-margin-bot">
                             <div class="col s1">{{ forloop.counter }}</div>
                             <div class="col s2">{{ part.part_number }}</div>
@@ -43,10 +44,13 @@
                             <div class="col s1">
                                 <img class="materialboxed" width="35px" src="{{ part.image }}">
                             </div>
-                            <div class="col s1"> >>> </div>
+                            <div class="col s1"><a href="{% url 'shop:search_detail' %}?{{ part.url }}" class="secondary-content"><i class="material-icons">send</i></a></div>
                         </div>
-                    </a>
+                        {#                    </a>#}
+                    </div>
                 {% endfor %}
             </div>
         </div>
+    </div>
+
 {% endblock %}

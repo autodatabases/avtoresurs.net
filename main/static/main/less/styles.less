@@ -33,7 +33,7 @@ a {
   transition: background .3s ease-in-out, border-color .3s ease-in-out, color .3s ease-in-out, box-shadow .3s ease-in-out;
 }
 
-td > a:hover, td > strong > a:hover {
+td > a:hover, td > strong > a:hover, .collection-item-part:hover {
   color: black;
   transition: background .3s ease-in-out, border-color .3s ease-in-out, color .3s ease-in-out, box-shadow .3s ease-in-out;
 }
@@ -165,11 +165,11 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   padding: 15px;
 }
 
-a.collection-item:hover * {
-  //transition: top 5s ease-out 5.5s;
-  color: #212121;
-  //font-weight: bold;
-}
+//a.collection-item:hover * {
+//  //transition: top 5s ease-out 5.5s;
+//  color: #212121;
+//  //font-weight: bold;
+//}
 
 .noactive div {
   color: #9e9e9e;
@@ -454,8 +454,21 @@ hr {
 }
 
 .collection a.collection-item.active {
-  background-color: #039be5 !important;
+  background-color: #eafaf9 !important;
   color: #eafaf9;
+}
+
+.collection-item-part{
+  padding: 10px 20px;
+}
+
+.collection a.collection-item:not(.active):hover{
+  background-color: #eafaf9;
+}
+
+.collection-item-part:hover {
+  background-color: #eafaf9;
+  //color: #eafaf9;
 }
 
 [type="checkbox"]:checked + label:before {
