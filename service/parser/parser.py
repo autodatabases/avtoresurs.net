@@ -307,7 +307,7 @@ class ProductLoader:
             line_number = interval[0] + idx
             try:
                 row = line.split(';')
-                clear_sku = row[0]
+                clear_sku = clean_number(row[0])
                 brand = row[1]
                 quantity = row[2]
 
