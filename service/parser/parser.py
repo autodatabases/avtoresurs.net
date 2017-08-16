@@ -307,7 +307,8 @@ class ProductLoader:
             line_number = interval[0] + idx
             try:
                 row = line.split(';')
-                clear_sku = clean_number(row[0])
+                sku = row[0]
+                clear_sku = clean_number(sku)
                 brand = row[1]
                 quantity = row[2]
 
@@ -353,7 +354,7 @@ class ProductLoader:
                 except:
                     prices[4] = 0
 
-                part_tecdoc = Part.objects.filter(part_number=clear_sku, supplier__title=brand)
+                part_tecdoc = Part.objects.filter(clean_part_number=clear_sku, supplier__title=brand)
 
                 if part_tecdoc:
                     product, created = Product.objects.get_or_create(sku=clear_sku, brand=brand)
