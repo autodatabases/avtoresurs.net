@@ -133,7 +133,8 @@ class Product(models.Model):
 
     def image(self):
         tecdoc_image_path = '/static/main/images/tecdoc/'
-        image = Image.objects.filter(supplier__title=self.brand, part_number=self.sku).first()
+        part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
+        image = Image.objects.filter(supplier__title=self.brand, part_number=part.part_number.first())
         try:
             base, ext = os.path.splitext(image.picture)
             if ext == '.BMP':
