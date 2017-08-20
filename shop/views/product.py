@@ -21,8 +21,8 @@ class ProductDetailView(DetailView):
         product.default_price = product.get_price()
 
         supplier = Supplier.objects.get(title=product.brand)
-        part_number = product.sku
+        clean_part_number = product.sku
 
-        context['part_analogs'] = get_analogs(part_number=part_number, supplier=supplier, user=self.request.user)
+        context['part_analogs'] = get_analogs(clean_part_number=clean_part_number, supplier=supplier, user=self.request.user)
 
         return context

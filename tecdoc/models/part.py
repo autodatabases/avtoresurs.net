@@ -193,9 +193,10 @@ class PartProduct:
     product_id = 0
     quatity = 0
 
-    def __init__(self, supplier, part_number, price, quantity, product_id, title):
+    def __init__(self, supplier, part_number, clean_part_number, price, quantity, product_id, title):
         self.supplier = supplier
         self.part_number = part_number
+        self.clean_part_number = clean_part_number
         self.price = price
         self.quantity = quantity
         self.product_id = product_id

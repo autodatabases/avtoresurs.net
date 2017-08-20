@@ -32,17 +32,18 @@ class SearchDetailView(ListView):
 
     def get_queryset(self):
         part_number = self.request.GET['part']
+        clean_part_number = clean_number(part_number)
 
         brand = self.request.GET['brand']
         supplier = Supplier.objects.get(title=brand)
 
-        analogs = get_analogs(part_number=part_number, supplier=supplier, user=self.request.user)
-        print('%s %s' %(supplier, part_number))
+        analogs = get_analogs(clean_part_number=clean_part_number, supplier=supplier, user=self.request.user)
+        print('%s %s' % (supplier, part_number))
         if analogs:
             return analogs
 
         # if we are here, than we have not analogs, try to search directly in productss
-        return get_products(supplier=supplier, part_number=part_number)
+        return get_products(supplier=supplier, clean_part_number=clean_part_number)
 
     def get_context_data(self, **kwargs):
         context = super(SearchDetailView, self).get_context_data()

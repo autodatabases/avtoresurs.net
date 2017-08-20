@@ -51,6 +51,10 @@ class Product(models.Model):
     # slug
     objects = ProductManager()
 
+    def get_sku(self):
+        part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
+        return part.part_number
+
     def update(self, quantity, prices):
         self.quantity = quantity
         self.save()
@@ -69,13 +73,13 @@ class Product(models.Model):
         return self.quantity
 
     def title(self):
-        title = Part.objects.filter(part_number=self.sku, supplier__title=self.brand).first().title
+        title = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first().title
         if title:
             return title
         return ''
 
     def __str__(self):
-        return "%s %s" % (self.brand, self.sku)
+        return "%s %s" % (self.brand, self.get_sku())
 
     def get_absolute_url(self):
         return reverse("shop:product_detail", kwargs={'pk': self.id})
@@ -259,29 +263,28 @@ def get_prices(analogs, user):
     sku_list = list()
     supplier_ids = list()
     for analog in analogs:
-        sku_list.append(analog['part_number'])
-        if analog['part_number'] == 'A71004MT':
-            print(analog['part_number'])
+        sku_list.append(analog['clean_part_number'])
         supplier_ids.append(analog['supplier'])
     suppliers = Supplier.objects.filter(id__in=supplier_ids)
     products = Product.objects.filter(sku__in=sku_list)
-    parts = Part.objects.filter(part_number__in=sku_list, supplier__in=suppliers)
+    parts = Part.objects.filter(clean_part_number__in=sku_list, supplier__in=suppliers)
 
     part_products = list()
     for analog in analogs:
         brand = suppliers.get(id=analog['supplier'])
         part_number = analog['part_number']
+        clean_part_number = analog['clean_part_number']
         price = -1
         quantity = -1
         product_id = None
         try:
-            title = parts.filter(part_number=part_number, supplier=brand).first().title
+            title = parts.filter(clean_part_number=clean_part_number, supplier=brand).first().title
         except:
             title = None
-        part_product = PartProduct(supplier=brand.title, part_number=part_number, price=price, quantity=quantity,
-                                   product_id=product_id, title=title)
+        part_product = PartProduct(supplier=brand.title, part_number=part_number, clean_part_number=clean_part_number,
+                                   price=price, quantity=quantity, product_id=product_id, title=title)
         for product in products:
-            if product.sku == part_number and product.brand.upper() == brand.title.upper():
+            if product.sku == clean_part_number and product.brand.upper() == brand.title.upper():
                 part_product.price = product.get_price(user=user)
                 part_product.product_id = product.id
                 part_product.quantity = product.get_quantity()
@@ -289,31 +292,36 @@ def get_prices(analogs, user):
     return part_products
 
 
-def get_analogs(part_number, supplier, user):
+def get_analogs(clean_part_number, supplier, user):
+    part = Part.objects.filter(clean_part_number=clean_part_number, supplier=supplier).first()
+    part_number = part.part_number
     part_analogs = PartAnalog.objects.filter(part_number=part_number, supplier=supplier)
     crosses = list()
     for part_analog in part_analogs:
         crosses.append(part_analog.oenbr)
     analogs = PartCross.objects.values('supplier', 'part_number').filter(oenbr__in=crosses).distinct()
+    for analog in analogs:
+        analog['clean_part_number'] = clean_number(analog['part_number'])
     analogs = get_prices(analogs, user)
     if analogs:
         return sorted(analogs, reverse=True)
     return {}
 
 
-def get_products(supplier, part_number):
-    products = Product.objects.filter(brand=supplier.title, sku=part_number)
+def get_products(supplier, clean_part_number):
+    products = Product.objects.filter(brand=supplier.title, sku=clean_part_number)
     part_products = list()
     for product in products:
         price = product.get_price()
         quantity = product.get_quantity()
-        title = Part.objects.filter(supplier__title=product.brand, part_number=product.sku).first().title
+        title = Part.objects.filter(supplier__title=product.brand, clean_part_number=product.sku).first().title
         supplier = product.brand
         part_number = product.sku
         product_id = product.id
         part_product = PartProduct(
             supplier=supplier,
             part_number=part_number,
+            clean_part_number=clean_part_number,
             product_id=product_id,
             price=price,
             quantity=quantity,

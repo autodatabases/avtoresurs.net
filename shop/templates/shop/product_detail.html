@@ -111,7 +111,7 @@
                                 class="blue-text"><strong>{{ product.title|upper }}</strong></span>
                         </p>
                         <p class="flow-text">Код детали: <span
-                                class="blue-text"><strong>{{ product.sku|upper }}</strong></span>
+                                class="blue-text"><strong>{{ product.get_sku|upper }}</strong></span>
                         </p>
                         <p class="flow-text">Количество на складе: <span
                                 class="blue-text"><strong>{{ product.get_quantity }}</strong></span></p>
