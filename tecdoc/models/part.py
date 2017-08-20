@@ -108,7 +108,8 @@ class PartAnalog(models.Model):
 
 class PartCross(models.Model):
     manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId')  # Field name made lowercase.
-    oenbr = models.CharField(primary_key=True, db_column='OENbr', max_length=128, verbose_name='cross')  # Field name made lowercase.
+    oenbr = models.CharField(primary_key=True, db_column='OENbr', max_length=128,
+                             verbose_name='cross')  # Field name made lowercase.
     supplier = models.ForeignKey(Supplier, db_column='SupplierId')  # Field name made lowercase.
     part_number = models.CharField(db_column='PartsDataSupplierArticleNumber',
                                    max_length=128)  # Field name made lowercase.
@@ -119,7 +120,6 @@ class PartCross(models.Model):
         verbose_name = 'Таблица кросс -> изделия'
         verbose_name_plural = 'Таблица кросс -> изделия'
         ordering = ['part_number']
-
 
 
 class PartTypeGroupSupplier(models.Model):
@@ -162,12 +162,24 @@ class Image(models.Model):
         db_table = 'article_images'
 
 
+class PartApplicabilityManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        return (super(PartApplicabilityManager, self).get_queryset(*args, **kwargs)
+                .select_related('car_type', 'car_type__model', 'car_type__model__manufacturer')
+                )
+
+
 class PartApplicability(models.Model):
     supplier = models.ForeignKey(Supplier, db_column='supplierId', primary_key=True)  # Field name made lowercase.
     part_number = models.CharField(db_column='DataSupplierArticleNumber',
                                    max_length=128)  # Field name made lowercase.
     linkage_type = models.CharField(db_column='linkageTypeId', max_length=128)  # Field name made lowercase.
     car_type = models.ForeignKey(CarType, db_column='linkageId')  # Field name made lowercase.
+
+    objects = PartApplicabilityManager()
+
+    def __gt__(self, other):
+        return self.car_type.model.manufacturer.title > other.car_type.model.manufacturer.title
 
     class Meta:
         db_table = 'article_li'
@@ -185,6 +197,7 @@ class PartAttribute(models.Model):
     class Meta:
         managed = False
         db_table = 'article_attributes'
+
 
 class PartProduct:
     part_number = 0
@@ -208,87 +221,87 @@ class PartProduct:
 
 
 
-    # class PartManager(TecdocLanguageDesManager):
-    #     use_for_related_fields = True
-    #
-    #     def get_queryset(self, *args, **kwargs):
-    #         query = super(PartManager, self).get_queryset(*args, **kwargs)
-    #         query = query.select_related('designation__description',
-    #                                      'supplier')
-    #
-    #         query = query.prefetch_related('analogs', 'images', )
-    #         # query = query.prefetch_related('analogs')
-    #         return query
+        # class PartManager(TecdocLanguageDesManager):
+        #     use_for_related_fields = True
+        #
+        #     def get_queryset(self, *args, **kwargs):
+        #         query = super(PartManager, self).get_queryset(*args, **kwargs)
+        #         query = query.select_related('designation__description',
+        #                                      'supplier')
+        #
+        #         query = query.prefetch_related('analogs', 'images', )
+        #         # query = query.prefetch_related('analogs')
+        #         return query
 
 
-    # class Part(models.Model):
-    #     id = models.AutoField(db_column='ART_ID', primary_key=True)
-    #     sku = models.CharField(db_column='ART_ARTICLE_NR', max_length=66)
-    #     supplier = models.ForeignKey(Supplier, db_column='ART_SUP_ID', blank=True, null=True)
-    #     art_des_id = models.IntegerField(db_column='ART_DES_ID', blank=True, null=True)
-    #     designation = models.ForeignKey(Designation, db_column='ART_COMPLETE_DES_ID', blank=True,
-    #                                     null=True)
-    #     # groups = models.ManyToManyField('tecdoc.Group', through='tecdoc.PartGroup', related_name='parts')
-    #
-    #     art_pack_selfservice = models.SmallIntegerField(db_column='ART_PACK_SELFSERVICE', blank=True,
-    #                                                     null=True)
-    #     art_material_mark = models.SmallIntegerField(db_column='ART_MATERIAL_MARK', blank=True,
-    #                                                  null=True)
-    #     art_replacement = models.SmallIntegerField(db_column='ART_REPLACEMENT', blank=True,
-    #                                                null=True)
-    #     art_accessory = models.SmallIntegerField(db_column='ART_ACCESSORY', blank=True,
-    #                                              null=True)
-    #     art_batch_size1 = models.IntegerField(db_column='ART_BATCH_SIZE1', blank=True,
-    #                                           null=True)
-    #     art_batch_size2 = models.IntegerField(db_column='ART_BATCH_SIZE2', blank=True,
-    #                                           null=True)
-    #     # car_type = models.ManyToManyField(CarType, through='tecdoc.PartTypeGroupSupplier')
-    #     group = models.ManyToManyField('tecdoc.Group', through='tecdoc.PartGroup', verbose_name='Группа запчастей')
-    #
-    #     images = models.ManyToManyField('tecdoc.Image', verbose_name=u'Изображения', through='tecdoc.PartImage',
-    #                                     related_name='parts')
-    #
-    #     # criteries = models.ManyToManyField('tecdoc.Criteria',
-    #     #                                    verbose_name=u'Оговорки',
-    #     #                                    through='tecdoc.PartCriteria',
-    #     #                                    related_name='parts')
-    #
-    #     # pdfs = models.ManyToManyField(PdfFile, verbose_name=u'Инструкция', through=PartPdf, related_name='parts')
-    #
-    #     objects = PartManager()
-    #
-    #     def __str__(self):
-    #         return "%s %s %s" % (self.designation.description.text, self.supplier, self.sku)
-    #
-    #     class Meta:
-    #         managed = False
-    #         db_table = tdsettings.DB_PREFIX + 'articles'
+        # class Part(models.Model):
+        #     id = models.AutoField(db_column='ART_ID', primary_key=True)
+        #     sku = models.CharField(db_column='ART_ARTICLE_NR', max_length=66)
+        #     supplier = models.ForeignKey(Supplier, db_column='ART_SUP_ID', blank=True, null=True)
+        #     art_des_id = models.IntegerField(db_column='ART_DES_ID', blank=True, null=True)
+        #     designation = models.ForeignKey(Designation, db_column='ART_COMPLETE_DES_ID', blank=True,
+        #                                     null=True)
+        #     # groups = models.ManyToManyField('tecdoc.Group', through='tecdoc.PartGroup', related_name='parts')
+        #
+        #     art_pack_selfservice = models.SmallIntegerField(db_column='ART_PACK_SELFSERVICE', blank=True,
+        #                                                     null=True)
+        #     art_material_mark = models.SmallIntegerField(db_column='ART_MATERIAL_MARK', blank=True,
+        #                                                  null=True)
+        #     art_replacement = models.SmallIntegerField(db_column='ART_REPLACEMENT', blank=True,
+        #                                                null=True)
+        #     art_accessory = models.SmallIntegerField(db_column='ART_ACCESSORY', blank=True,
+        #                                              null=True)
+        #     art_batch_size1 = models.IntegerField(db_column='ART_BATCH_SIZE1', blank=True,
+        #                                           null=True)
+        #     art_batch_size2 = models.IntegerField(db_column='ART_BATCH_SIZE2', blank=True,
+        #                                           null=True)
+        #     # car_type = models.ManyToManyField(CarType, through='tecdoc.PartTypeGroupSupplier')
+        #     group = models.ManyToManyField('tecdoc.Group', through='tecdoc.PartGroup', verbose_name='Группа запчастей')
+        #
+        #     images = models.ManyToManyField('tecdoc.Image', verbose_name=u'Изображения', through='tecdoc.PartImage',
+        #                                     related_name='parts')
+        #
+        #     # criteries = models.ManyToManyField('tecdoc.Criteria',
+        #     #                                    verbose_name=u'Оговорки',
+        #     #                                    through='tecdoc.PartCriteria',
+        #     #                                    related_name='parts')
+        #
+        #     # pdfs = models.ManyToManyField(PdfFile, verbose_name=u'Инструкция', through=PartPdf, related_name='parts')
+        #
+        #     objects = PartManager()
+        #
+        #     def __str__(self):
+        #         return "%s %s %s" % (self.designation.description.text, self.supplier, self.sku)
+        #
+        #     class Meta:
+        #         managed = False
+        #         db_table = tdsettings.DB_PREFIX + 'articles'
 
 
-    # class Group(models.Model):
-    #     id = models.AutoField(db_column='ga_id', primary_key=True, verbose_name='Ид')
-    #     ga_nr = models.SmallIntegerField(db_column='ga_nr', blank='True', null='True')
-    #     designation = models.ForeignKey(Designation, db_column='ga_des_id', verbose_name='Описание', related_name='+')
-    #     standart = models.ForeignKey(Designation, db_column='ga_des_id_standard', verbose_name='Стандарт', related_name='+')
-    #     assembly = models.ForeignKey(Designation, db_column='ga_des_id_assembly', verbose_name='Где устанавливается',
-    #                                  related_name='+')
-    #     intended = models.ForeignKey(Designation, db_column='ga_des_id_intended', verbose_name='Во что входит',
-    #                                  related_name='+')
-    #     ga_universal = models.SmallIntegerField(db_column='ga_universal')
-    #     section = models.ManyToManyField(Section, through='tecdoc.SectionGroup', verbose_name='Категории')
-    #
-    #     #
-    #     class Meta:
-    #         db_table = tdsettings.DB_PREFIX + 'generic_articles'
-    #
-    #
-    # class SectionGroup(models.Model):
-    #     car_section = models.OneToOneField(Section, db_column='lgs_str_id', primary_key=True)
-    #     group = models.OneToOneField(Group, db_column='lgs_ga_id', primary_key=True)
-    #
-    #     class Meta:
-    #         db_table = tdsettings.DB_PREFIX + 'link_ga_str'
-    # unique_together = (("car_section", "group"),)
+        # class Group(models.Model):
+        #     id = models.AutoField(db_column='ga_id', primary_key=True, verbose_name='Ид')
+        #     ga_nr = models.SmallIntegerField(db_column='ga_nr', blank='True', null='True')
+        #     designation = models.ForeignKey(Designation, db_column='ga_des_id', verbose_name='Описание', related_name='+')
+        #     standart = models.ForeignKey(Designation, db_column='ga_des_id_standard', verbose_name='Стандарт', related_name='+')
+        #     assembly = models.ForeignKey(Designation, db_column='ga_des_id_assembly', verbose_name='Где устанавливается',
+        #                                  related_name='+')
+        #     intended = models.ForeignKey(Designation, db_column='ga_des_id_intended', verbose_name='Во что входит',
+        #                                  related_name='+')
+        #     ga_universal = models.SmallIntegerField(db_column='ga_universal')
+        #     section = models.ManyToManyField(Section, through='tecdoc.SectionGroup', verbose_name='Категории')
+        #
+        #     #
+        #     class Meta:
+        #         db_table = tdsettings.DB_PREFIX + 'generic_articles'
+        #
+        #
+        # class SectionGroup(models.Model):
+        #     car_section = models.OneToOneField(Section, db_column='lgs_str_id', primary_key=True)
+        #     group = models.OneToOneField(Group, db_column='lgs_ga_id', primary_key=True)
+        #
+        #     class Meta:
+        #         db_table = tdsettings.DB_PREFIX + 'link_ga_str'
+        # unique_together = (("car_section", "group"),)
 
 # class PartGroup(models.Model):
 #     id = models.AutoField(db_column='la_id', primary_key=True, verbose_name='Ид')

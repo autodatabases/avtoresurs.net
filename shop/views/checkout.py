@@ -38,7 +38,7 @@ def order_notification(cart, order, user):
         price = product.get_price(user)
         qty = item.quantity
         body += '%s. %s %s %s, %s шт. x %s руб.., на общую сумму: %s руб.\r\n' % (
-            idx + 1, product.title(), product.sku, product.brand, qty, price, qty * price)
+            idx + 1, product.title(), product.brand, product.get_sku(), qty, price, qty * price)
         op = OrderProduct(order=order, item=product, qty=qty, price=price)
         op.save()
 
@@ -76,7 +76,8 @@ def order_notification(cart, order, user):
         price = product.get_price(user)
         qty = item.quantity
         coordinate = 'B' + str(idx)
-        data.append([idx + 1, product.title(), product.sku, product.brand, qty, price, qty * price])
+        article = '%s %s' % (product.brand, product.get_sku())
+        data.append([idx + 1, product.title(), article, qty, price, qty * price])
 
     # print(data)
     ws.append(['#', 'Товар', 'Брэнд', 'Количество', 'Цена за единицу', 'Цена (общая)'])
@@ -161,7 +162,7 @@ class CheckoutView(TemplateView):
 
         order_notification(cart=cart, order=order, user=self.request.user)
 
-        # self.request.session['cart_id'] = None
+        self.request.session['cart_id'] = None
 
         return HttpResponseRedirect('/checkout/success/')
 

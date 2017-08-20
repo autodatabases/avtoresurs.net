@@ -54,8 +54,8 @@
                                     </ul>
                                 </div>
                                 <div id="tab1" class="col s12">
-                                    {% if product.part_attributes %}
-                                        {% for pa in product.part_attributes %}
+                                    {% if product.get_part_attributes %}
+                                        {% for pa in product.get_part_attributes %}
                                             <p>{{ pa.displaytitle }}: <strong>{{ pa.displayvalue }}</strong></p>
                                         {% endfor %}
                                     {% else %}
@@ -63,7 +63,7 @@
                                     {% endif %}
                                 </div>
                                 <div id="tab2" class="col s12">
-                                    {% if product.part_applicability %}
+                                    {% if product.get_part_applicability %}
                                         <table class="striped">
                                             <thead>
                                             <tr>
@@ -75,7 +75,7 @@
                                             </thead>
                                             <tbody>
 
-                                            {% for pa in product.part_applicability %}
+                                            {% for pa in product.get_part_applicability %}
                                                 <tr>
                                                     <td>{{ pa.car_type.model.manufacturer.title }} </td>
                                                     <td>{{ pa.car_type.model.title }}</td>

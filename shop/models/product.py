@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.utils.text import slugify
 
 from profile.models import Profile
-from tecdoc.models import Supplier, Image
+from tecdoc.models import Supplier, Image, PartAttribute, PartApplicability
 from tecdoc.models.part import Part, PartAnalog, PartCross, PartProduct
 
 
@@ -77,6 +77,21 @@ class Product(models.Model):
         if title:
             return title
         return ''
+
+    def get_part_attributes(self):
+        part = Part.objects.filter(supplier__title=self.brand, clean_part_number=self.sku).first()
+        part_attributes = PartAttribute.objects.filter(part_number=part.part_number, supplier__title=self.brand)
+        if part_attributes:
+            return part_attributes
+        return False
+
+    def get_part_applicability(self):
+        part = Part.objects.filter(supplier__title=self.brand, clean_part_number=self.sku).first()
+        part_applicability = PartApplicability.objects.filter(part_number=part.part_number, supplier__title=self.brand)
+        if part_applicability:
+            return sorted(part_applicability)
+        return False
+
 
     def __str__(self):
         return "%s %s" % (self.brand, self.get_sku())
