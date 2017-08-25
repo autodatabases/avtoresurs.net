@@ -15,7 +15,7 @@ class ManufacturerList(ListView):
 class ManufacturerView(DetailView):
     model = Manufacturer
     pk_url_kwarg = 'mnf_id'
-
+1
     # def get_context_data(self, **kwargs):
     #     context = super(ManufacturerView, self).get_context_data(**kwargs)
     #     return context
