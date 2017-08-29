@@ -457,4 +457,5 @@ class ProductLoader:
         cursor = connection.cursor()
         cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
         cursor.execute("TRUNCATE shop_productprice")
+        cursor.execute("TRUNCATE shop_product")
         cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
