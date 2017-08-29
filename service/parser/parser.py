@@ -456,6 +456,6 @@ class ProductLoader:
     def truncate_products(self):
         cursor = connection.cursor()
         cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
-        cursor.execute("TRUNCATE shop_product_price")
-        cursor.execute("TRUNCATE shop_product ")
+        cursor.execute("TRUNCATE shop_productprice")
+        cursor.execute("TRUNCATE shop_product")
         cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
