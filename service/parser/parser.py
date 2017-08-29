@@ -7,6 +7,7 @@ import collections
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.mail import EmailMessage
+from django.db import connection
 from django.http import HttpResponseRedirect
 from filer.models import File
 from filer.models.foldermodels import Folder
@@ -234,6 +235,7 @@ class ProductLoader:
     def __init__(self, filename):
         self.date = self.get_date()
         self.data = self.parse_file(filename)
+        self.truncate_products()
         self.product_load()
         self.report_text = self.get_report()
         self.save_report()
@@ -450,3 +452,10 @@ class ProductLoader:
 
         email.attach(report_filename, self.report_text, 'text/plain')
         email.send()
+
+    def truncate_products(self):
+        cursor = connection.cursor()
+        cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
+        cursor.execute("TRUNCATE shop_product_price")
+        cursor.execute("TRUNCATE shop_product ")
+        cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
