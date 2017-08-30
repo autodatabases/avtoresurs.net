@@ -360,10 +360,11 @@ class ProductLoader:
 
                 if part_tecdoc:
                     product, created = Product.objects.get_or_create(sku=clear_sku, brand=brand)
-                    product.quantity = quantity
-                    product.save()
+                    if created:
+                        product.save()
                     product_price = ProductPrice(
                         product=product,
+                        quantity=quantity,
                         retail_price=prices.get(0),
                         price_1=prices.get(1),
                         price_2=prices.get(2),
