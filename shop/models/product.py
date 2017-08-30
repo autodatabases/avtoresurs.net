@@ -35,16 +35,8 @@ class ProductManager(models.Manager):
 class Product(models.Model):
     """ реализует класс Товар """
     brand = models.CharField(max_length=255, blank=True, null=True)
-    # title = models.CharField(max_length=255)
     sku = models.CharField(max_length=255)
-    # cross_sku = models.CharField(max_length=255)
-    quantity = models.IntegerField(blank=True, null=True)
     active = models.BooleanField(default=True)
-    retail_price = models.DecimalField(decimal_places=2, max_digits=20, default=False)
-    price_1 = models.DecimalField(decimal_places=2, max_digits=20, default=False)
-    price_2 = models.DecimalField(decimal_places=2, max_digits=20, default=False)
-    price_3 = models.DecimalField(decimal_places=2, max_digits=20, default=False)
-    price_4 = models.DecimalField(decimal_places=2, max_digits=20, default=False)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
 
@@ -68,9 +60,11 @@ class Product(models.Model):
         return self.whosale_price
 
     def get_quantity(self):
-        if self.quantity == None:
-            self.quantity = 0
-        return self.quantity
+        try:
+            pp = ProductPrice.objects.get(product=self)
+            return pp.quantity
+        except Exception as exp:
+            return 0
 
     def title(self):
         title = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first().title
@@ -91,7 +85,6 @@ class Product(models.Model):
         if part_applicability:
             return sorted(part_applicability)
         return False
-
 
     def __str__(self):
         return "%s %s" % (self.brand, self.get_sku())
@@ -224,6 +217,7 @@ class ProductImage(models.Model):
 
 class ProductPrice(models.Model):
     product = models.ForeignKey(Product)
+    quantity = models.IntegerField(blank=True, null=True, default=0)
     retail_price = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
     price_1 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
     price_2 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
