@@ -77,4 +77,6 @@ class CustomCrossView(TemplateView):
 
         cc = CustomCross(filename)
         cc.parse_file()
-        return HttpResponseRedirect('service/custom_cross.html')
+        cc.make_suppliers()
+        cc.make_products()
+        return HttpResponseRedirect('/service/custom_cross/')

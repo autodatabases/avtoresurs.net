@@ -31,39 +31,39 @@ class Part(models.Model):
     supplier = models.ForeignKey(Supplier, db_column='supplierId', primary_key=True)  # Field name made lowercase.
     part_number = models.CharField(db_column='DataSupplierArticleNumber',
                                    max_length=128, primary_key=True)  # Field name made lowercase.
-    clean_part_number = models.CharField(db_column='FoundString', max_length=128)  # Field name made lowercase.
+    clean_part_number = models.CharField(db_column='FoundString', max_length=128, primary_key=True)  # Field name made lowercase.
     title = models.CharField(db_column='NormalizedDescription',
                              max_length=128)  # Field name made lowercase.
 
     state = models.CharField(db_column='ArticleStateDisplayTitle',
-                             max_length=128)  # Field name made lowercase.
+                             max_length=128, default='')  # Field name made lowercase.
     state_title = models.CharField(db_column='ArticleStateDisplayValue',
-                                   max_length=128)  # Field name made lowercase.
-    description = models.CharField(db_column='Description', max_length=128)  # Field name made lowercase.
-    flagaccessory = models.CharField(db_column='FlagAccessory', max_length=128)  # Field name made lowercase.
+                                   max_length=128, default='Нормальный')  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=128, default='')  # Field name made lowercase.
+    flagaccessory = models.CharField(db_column='FlagAccessory', max_length=128, default='False')  # Field name made lowercase.
     flagmaterialcertification = models.CharField(db_column='FlagMaterialCertification',
-                                                 max_length=128)  # Field name made lowercase.
+                                                 max_length=128, default='False')  # Field name made lowercase.
     flagremanufactured = models.CharField(db_column='FlagRemanufactured',
-                                          max_length=128)  # Field name made lowercase.
+                                          max_length=128, default='False')  # Field name made lowercase.
     flagselfservicepacking = models.CharField(db_column='FlagSelfServicePacking',
-                                              max_length=128)  # Field name made lowercase.
-    foundby = models.CharField(db_column='FoundBy', max_length=128)  # Field name made lowercase.
+                                              max_length=128, default='False')  # Field name made lowercase.
+    foundby = models.CharField(db_column='FoundBy', max_length=128, default='ArticleNumber')  # Field name made lowercase.
 
     hasaxle = models.CharField(db_column='HasAxle', max_length=128)  # Field name made lowercase.
     hascommercialvehicle = models.CharField(db_column='HasCommercialVehicle',
                                             max_length=128)  # Field name made lowercase.
-    hascvmanuid = models.CharField(db_column='HasCVManuID', max_length=128)  # Field name made lowercase.
-    hasengine = models.CharField(db_column='HasEngine', max_length=128)  # Field name made lowercase.
-    haslinkitems = models.CharField(db_column='HasLinkitems', max_length=128)  # Field name made lowercase.
-    hasmotorbike = models.CharField(db_column='HasMotorbike', max_length=128)  # Field name made lowercase.
-    haspassengercar = models.CharField(db_column='HasPassengerCar', max_length=128)  # Field name made lowercase.
-    isvalid = models.CharField(db_column='IsValid', max_length=128)  # Field name made lowercase.
-    lotsize1 = models.CharField(db_column='LotSize1', max_length=128)  # Field name made lowercase.
-    lotsize2 = models.CharField(db_column='LotSize2', max_length=128)  # Field name made lowercase.
+    hascvmanuid = models.CharField(db_column='HasCVManuID', max_length=128, default='False')  # Field name made lowercase.
+    hasengine = models.CharField(db_column='HasEngine', max_length=128, default='False')  # Field name made lowercase.
+    haslinkitems = models.CharField(db_column='HasLinkitems', max_length=128, default='True')  # Field name made lowercase.
+    hasmotorbike = models.CharField(db_column='HasMotorbike', max_length=128, default='False')  # Field name made lowercase.
+    haspassengercar = models.CharField(db_column='HasPassengerCar', max_length=128, default='True')  # Field name made lowercase.
+    isvalid = models.CharField(db_column='IsValid', max_length=128, default='True')  # Field name made lowercase.
+    lotsize1 = models.CharField(db_column='LotSize1', max_length=128, default=1)  # Field name made lowercase.
+    lotsize2 = models.CharField(db_column='LotSize2', max_length=128, default=1)  # Field name made lowercase.
 
-    packingunit = models.CharField(db_column='PackingUnit', max_length=128)  # Field name made lowercase.
+    packingunit = models.CharField(db_column='PackingUnit', max_length=128, default=1)  # Field name made lowercase.
     quantityperpackingunit = models.CharField(db_column='QuantityPerPackingUnit',
-                                              max_length=128)  # Field name made lowercase.
+                                              max_length=128, default=1)  # Field name made lowercase.
 
     def url(self):
         brand = self.supplier.title
@@ -87,7 +87,7 @@ class Part(models.Model):
 class PartAnalog(models.Model):
     supplier = models.ForeignKey(Supplier, db_column='supplierid')
     part_number = models.CharField(db_column='datasupplierarticlenumber', max_length=128, primary_key=True)
-    isadditive = models.CharField(db_column='IsAdditive', max_length=128)  # Field name made lowercase.
+    isadditive = models.CharField(db_column='IsAdditive', max_length=128, default='false')  # Field name made lowercase.
     oenbr = models.CharField(db_column='OENbr', max_length=128, verbose_name='cross')  # Field name made lowercase.
     manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId')  # Field name made lowercase.
 
