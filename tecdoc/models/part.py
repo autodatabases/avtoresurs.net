@@ -85,10 +85,10 @@ class Part(models.Model):
 
 
 class PartAnalog(models.Model):
-    supplier = models.ForeignKey(Supplier, db_column='supplierid')
+    supplier = models.ForeignKey(Supplier, db_column='supplierid', primary_key=True)
     part_number = models.CharField(db_column='datasupplierarticlenumber', max_length=128, primary_key=True)
     isadditive = models.CharField(db_column='IsAdditive', max_length=128, default='false')  # Field name made lowercase.
-    oenbr = models.CharField(db_column='OENbr', max_length=128, verbose_name='cross')  # Field name made lowercase.
+    oenbr = models.CharField(db_column='OENbr', max_length=128, verbose_name='cross', primary_key=True)  # Field name made lowercase.
     manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId')  # Field name made lowercase.
 
     class Meta:
@@ -107,12 +107,12 @@ class PartAnalog(models.Model):
 
 
 class PartCross(models.Model):
-    manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId')  # Field name made lowercase.
+    manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId', primary_key=True)  # Field name made lowercase.
     oenbr = models.CharField(primary_key=True, db_column='OENbr', max_length=128,
                              verbose_name='cross')  # Field name made lowercase.
-    supplier = models.ForeignKey(Supplier, db_column='SupplierId')  # Field name made lowercase.
+    supplier = models.ForeignKey(Supplier, db_column='SupplierId', primary_key=True)  # Field name made lowercase.
     part_number = models.CharField(db_column='PartsDataSupplierArticleNumber',
-                                   max_length=128)  # Field name made lowercase.
+                                   max_length=128, primary_key=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

@@ -13,22 +13,35 @@ def get_title(oe_number):
 
 def create_part_analogs(supplier, sku, row):
     manufacturer = Manufacturer.objects.get(id=16)
+    print("PA sku: %s" % sku)
     try:
-        part_analog = PartAnalog(supplier=supplier, part_number=sku, oenbr=row[6], manufacturer=manufacturer)
-        part_analog.save()
-        print(row[6])
+        oenbr = row[6].strip()
+        if oenbr:
+            part_analog, created = PartAnalog.objects.get_or_create(supplier=supplier, part_number=sku, oenbr=oenbr,
+                                                                    manufacturer=manufacturer)
+            if created:
+                part_analog.save()
+            print(oenbr)
     except Exception as exp:
         print('PA1: /n %s' % exp)
     try:
-        part_analog = PartAnalog(supplier=supplier, part_number=sku, oenbr=row[7], manufacturer=manufacturer)
-        part_analog.save()
-        print(row[7])
+        oenbr = row[7].strip()
+        if oenbr:
+            part_analog, created = PartAnalog.objects.get_or_create(supplier=supplier, part_number=sku, oenbr=oenbr,
+                                                                    manufacturer=manufacturer)
+            if created:
+                part_analog.save()
+            print(oenbr)
     except Exception as exp:
         print('PA2: /n %s' % exp)
     try:
-        part_analog = PartAnalog(supplier=supplier, part_number=sku, oenbr=row[8], manufacturer=manufacturer)
-        part_analog.save()
-        print(row[8])
+        oenbr = row[8].strip()
+        if oenbr:
+            part_analog, created = PartAnalog.objects.get_or_create(supplier=supplier, part_number=sku, oenbr=oenbr,
+                                                                    manufacturer=manufacturer)
+            if created:
+                part_analog.save()
+            print(oenbr)
     except Exception as exp:
         print('PA3: /n %s' % exp)
 
@@ -36,18 +49,30 @@ def create_part_analogs(supplier, sku, row):
 def create_part_crosses(supplier, sku, row):
     manufacturer = Manufacturer.objects.get(id=16)
     try:
-        part_cross = PartCross(supplier=supplier, part_number=sku, oenbr=row[6], manufacturer=manufacturer)
-        part_cross.save()
+        oenbr = row[6].strip()
+        if oenbr:
+            part_cross, created = PartCross.objects.get_or_create(supplier=supplier, part_number=sku, oenbr=oenbr,
+                                                                  manufacturer=manufacturer)
+            if created:
+                part_cross.save()
     except:
         pass
     try:
-        part_cross = PartCross(supplier=supplier, part_number=sku, oenbr=row[7], manufacturer=manufacturer)
-        part_cross.save()
+        oenbr = row[7].strip()
+        if oenbr:
+            part_cross, created = PartCross.objects.get_or_create(supplier=supplier, part_number=sku, oenbr=oenbr,
+                                                                  manufacturer=manufacturer)
+            if created:
+                part_cross.save()
     except:
         pass
     try:
-        part_cross = PartCross(supplier=supplier, part_number=sku, oenbr=row[8], manufacturer=manufacturer)
-        part_cross.save()
+        oenbr = row[8].strip()
+        if oenbr:
+            part_cross, created = PartCross.objects.get_or_create(supplier=supplier, part_number=sku, oenbr=oenbr,
+                                                                  manufacturer=manufacturer)
+            if created:
+                part_cross.save()
     except:
         pass
 
@@ -68,11 +93,11 @@ class CustomCross:
         brands = list()
         row = self.data[0].split(',')
         for brand in row[:4]:
-            supplier, created = Supplier.objects.get_or_create(dataversion='custom', title=brand.upper(),
-                                                               matchcode=brand.upper(), nbrofarticles='false',
+            supplier, created = Supplier.objects.get_or_create(dataversion='custom', title=brand.strip().upper(),
+                                                               matchcode=brand.strip().upper(), nbrofarticles='false',
                                                                hasnewversionarticles='false')
             supplier.save()
-            brands.append(brand)
+            brands.append(brand.strip().upper())
         self.brands = brands
         print(self.brands)
 
@@ -111,4 +136,3 @@ class CustomCross:
                     print('%s %s %s added' % (title, supplier.title, sku))
             except Exception as e:
                 print(e)
-
