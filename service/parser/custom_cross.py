@@ -93,15 +93,19 @@ class CustomCross:
         brands = list()
         row = self.data[0].split(',')
         for brand in row[:4]:
-            supplier, created = Supplier.objects.get_or_create(dataversion='custom', title=brand.strip().upper(),
-                                                               matchcode=brand.strip().upper(), nbrofarticles='false',
-                                                               hasnewversionarticles='false')
-            supplier.save()
+            supplier, created = Supplier.objects.get_or_create(title=brand.strip().upper())
+            # if created:
+            #     supplier.matchcode = supplier.title
+            #     supplier.dataversion = 'custom'
+            #     supplier.nbrofarticles = 'false'
+            #     supplier.hasnewversionarticles = 'false'
+            #     supplier.save()
             brands.append(brand.strip().upper())
         self.brands = brands
         print(self.brands)
 
     def make_products(self):
+
         for row in self.data[1:]:
             row = row.split(',')
             i = 0
@@ -109,6 +113,7 @@ class CustomCross:
                 for brand in self.brands:
                     # print(row)*
                     sku = row[i]
+                    i = i + 1
                     if sku == '-':
                         continue
                     clean_sku = clean_number(sku)
@@ -133,8 +138,7 @@ class CustomCross:
 
                     create_part_crosses(supplier, sku, row)
                     print('part_crosses SAVED()')
-
-                    i = i + 1
                     print('%s %s %s added' % (title, supplier.title, sku))
             except Exception as e:
                 print(e)
+
