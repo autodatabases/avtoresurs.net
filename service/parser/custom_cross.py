@@ -109,6 +109,8 @@ class CustomCross:
                 for brand in self.brands:
                     # print(row)*
                     sku = row[i]
+                    if sku == '-':
+                        continue
                     clean_sku = clean_number(sku)
                     print('sku: %s, clean_sku: %s' % (sku, clean_sku))
                     product, created = Product.objects.get_or_create(brand=brand, sku=clean_sku)
