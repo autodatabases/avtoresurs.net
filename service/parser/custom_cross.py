@@ -77,7 +77,6 @@ class CustomCross:
         print(self.brands)
 
     def make_products(self):
-        idx = 0
         for row in self.data[1:]:
             row = row.split(',')
             i = 0
@@ -112,6 +111,4 @@ class CustomCross:
                     print('%s %s %s added' % (title, supplier.title, sku))
             except Exception as e:
                 print(e)
-            idx = idx + 1
-            if idx > 3:
-                break
+
