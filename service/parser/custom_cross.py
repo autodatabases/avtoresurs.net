@@ -105,7 +105,6 @@ class CustomCross:
         print(self.brands)
 
     def make_products(self):
-
         for row in self.data[1:]:
             row = row.split(',')
             i = 0
@@ -114,9 +113,9 @@ class CustomCross:
                     # print(row)*
                     sku = row[i]
                     i = i + 1
-                    if sku == '-':
-                        continue
                     clean_sku = clean_number(sku)
+                    if sku == '-' or not clean_sku:
+                        continue
                     print('sku: %s, clean_sku: %s' % (sku, clean_sku))
                     product, created = Product.objects.get_or_create(brand=brand, sku=clean_sku)
                     product.save()
