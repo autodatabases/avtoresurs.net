@@ -1,14 +1,11 @@
 import os
 from enum import Enum
-
 import re
 from django.db import models
-
-# Create your models here.
 from django.core.urlresolvers import reverse
 from django.utils.text import slugify
-
 from profile.models import Profile
+from shop.models.category import Category
 from tecdoc.models import Supplier, Image, PartAttribute, PartApplicability
 from tecdoc.models.part import Part, PartAnalog, PartCross, PartProduct
 
@@ -52,12 +49,6 @@ class Product(models.Model):
         self.save()
         ProductPrice(product=self, retail_price=prices[0], price_1=prices[1], price_2=prices[2],
                      price_3=prices[3]).save()
-
-    def get_retail_price(self):
-        return self.retail_price
-
-    def get_whosale_price(self):
-        return self.whosale_price
 
     def get_quantity(self):
         try:
@@ -165,41 +156,6 @@ class PriceGroup(Enum):
     OPT5 = 6
 
 
-# def get_price(product, user=None):
-#     pp = ProductPrice.objects.filter(product=product).first()
-#
-#     if not user:
-#         try:
-#             return pp.retail_price
-#         except:
-#             return -1
-#
-#     try:
-#         discount = Profile.objects.get(user=user).discount.discount
-#         price = pp.retail_price - round((pp.retail_price * discount / 100), 2)
-#         return price
-#     except Exception:
-#         pass
-#
-#     try:
-#         group = user.groups.all()[0]
-#         group = group.pk
-#         if group == PriceGroup.RETAIL.value:
-#             return pp.retail_price
-#         elif group == PriceGroup.OPT1.value:
-#             return pp.price_1
-#         elif group == PriceGroup.OPT2.value:
-#             return pp.price_2
-#         elif group == PriceGroup.OPT3.value:
-#             return pp.price_3
-#         elif group == PriceGroup.OPT4.value:
-#             return pp.price_4
-#     except Exception:
-#         pass
-#
-#     return -1
-
-
 def image_upload_to(instance, filename):
     title = instance.product.title
     slug = slugify(title)
@@ -247,16 +203,12 @@ def get_part_analogs(part_analog, user):
         sku = part.part_group.part.sku
         for product in products:
             if clean_number(sku) == clean_number(product.sku) and brand_name == product.brand:
-                # print(product)
-                # print(group_id)
                 part.part_group.part.price = product.get_price(user=user)
                 part.part_group.part.product_id = product.id
                 part.part_group.part.quantity = product.get_quantity()
         if not hasattr(part.part_group.part, 'price'):
             part.part_group.part.price = -1
     part_analog_data = sorted(data, key=lambda x: x.part_group.part.price, reverse=True)
-    # for pa in part_analog_data:
-    #     print(pa.part_group.part.pk)
     return part_analog_data
 
 

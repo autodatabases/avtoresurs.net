@@ -26,7 +26,7 @@ SECRET_KEY = 'f9vp_6q99r9gk$ptg2j@8p0eifib+64)+6+i&g-5g5#7#1tfxk'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['avtoresurs.net', 'localhost', '94.130.78.236',]
+ALLOWED_HOSTS = ['avtoresurs.net', 'localhost', '94.130.78.236', 'www.avtoresurs.net']
 
 # Application definition
 
