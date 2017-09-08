@@ -236,11 +236,10 @@ class ProductLoader:
         print(self.storage)
         self.date = self.get_date()
         self.data = self.parse_file(filename)
-        self.truncate_products(storage_id)
+        # self.truncate_products(storage_id)
         self.product_load()
         self.report_text = self.get_report()
         self.save_report()
-
 
     def get_date(self):
         """ get date and formatting string"""
@@ -358,19 +357,21 @@ class ProductLoader:
                     product, created = Product.objects.get_or_create(sku=clear_sku, brand=brand)
                     if created:
                         product.save()
-                    product_price = ProductPrice(
-                        product=product,
-                        quantity=quantity,
-                        retail_price=prices.get(0),
-                        price_1=prices.get(1),
-                        price_2=prices.get(2),
-                        price_3=prices.get(3),
-                        price_4=prices.get(4),
-                    )
+
+                    product_price, created = ProductPrice.objects.get_or_create(product=product)
+                    product_price.quantity = quantity
+                    product_price.retail_price = prices.get(0)
+                    product_price.price_1 = prices.get(1)
+                    product_price.price_2 = prices.get(2)
+                    product_price.price_3 = prices.get(3)
+                    product_price.price_4 = prices.get(4)
                     product_price.save()
-                    product_price_storage = ProductStoragePrice(storage=self.storage, product=product,
-                                                                price=product_price)
+
+                    product_price_storage, created = ProductStoragePrice.objects.get_or_create(storage=self.storage,
+                                                                                               product=product,
+                                                                                               price=product_price)
                     product_price_storage.save()
+                    
                     self.report[line_number] = 'Успешно добавлен. %s' % line
                     self.good = self.good + 1
                 else:
@@ -455,6 +456,6 @@ class ProductLoader:
     def truncate_products(self, storage_id):
         cursor = connection.cursor()
         cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
-        cursor.execute("TRUNCATE shop_productprice")
+        # cursor.execute("TRUNCATE shop_productprice")
         cursor.execute("DELETE FROM shop_productstorageprice where storage_id=%s" % storage_id)
         cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
