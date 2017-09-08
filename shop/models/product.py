@@ -291,3 +291,5 @@ def get_products(supplier, clean_part_number):
         )
         part_products.append(part_product)
     return sorted(part_products, reverse=True)
+
+

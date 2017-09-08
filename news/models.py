@@ -18,7 +18,7 @@ class Post(models.Model):
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
     image = models.ImageField(null=True, blank=True, verbose_name='Картинка')
-    status = models.BooleanField(default=True, verbose_name='Статус')
+    status = models.BooleanField(default=True, verbose_name='Активен')
 
     objects = PostManager()
 
