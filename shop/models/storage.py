@@ -35,4 +35,4 @@ class ProductStoragePrice(models.Model):
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
 
     def __str__(self):
-        return "%s %s %s" % (self.storage, self.product, self.price)
+        return "%s" % (self.storage)
