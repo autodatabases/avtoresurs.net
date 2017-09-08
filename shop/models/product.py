@@ -185,6 +185,9 @@ class ProductPrice(models.Model):
     class Meta:
         ordering = ['-added']
 
+    def __str__(self):
+        return  "%s" % self.price_1
+
 
 def get_part_analogs(part_analog, user):
     data = part_analog

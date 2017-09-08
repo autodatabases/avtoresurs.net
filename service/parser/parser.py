@@ -12,6 +12,7 @@ from django.http import HttpResponseRedirect
 from filer.models import File
 from filer.models.foldermodels import Folder
 
+from shop.models.storage import Storage, ProductStoragePrice
 from avtoresurs_new.settings import DIR, EMAIL_NOREPLY, EMAIL_TO, EMAIL_BCC, EMAIL_NOREPLY_LIST, MEDIA_URL, MEDIA_ROOT
 
 from bonus.models import Bonus
@@ -112,7 +113,6 @@ def point_load(filename):
     protocol_string += "\n".join(str(x) for x in protocol[0])
     protocol_bytes = protocol_string.encode('utf-8')
     protocol_path = default_storage.save(protocol_path, ContentFile(protocol_bytes))
-    # print(protocol_path)
 
     folder, created = Folder.objects.get_or_create(name='Klients')
     subfolder_year, created = Folder.objects.get_or_create(name=date.strftime('%Y'), parent=folder)
@@ -183,7 +183,6 @@ def import_bonuses(filename):
 
     protocol_filename = '%s_%s_%s_%s_%s_priz.txt' % (year, month, day, hour, minute)
     protocol_path = os.path.join(DIR['CSV'], DIR['BONUS'], DIR['LOG'], year, month, protocol_filename)
-    # print(protocol_path)
     protocol_path = default_storage.save(protocol_path, ContentFile(protocol.encode('utf-8')))
 
     folder, created = Folder.objects.get_or_create(name='Priz')
@@ -232,13 +231,14 @@ class ProductLoader:
     # one more index for lice
     ONE_MORE = 1
 
-    def __init__(self, filename):
+    def __init__(self, filename, storage_id):
         self.date = self.get_date()
         self.data = self.parse_file(filename)
-        self.truncate_products()
+        self.truncate_products(storage_id)
         self.product_load()
         self.report_text = self.get_report()
         self.save_report()
+        self.storage = Storage.objects.get(id=storage_id)
 
     def get_date(self):
         """ get date and formatting string"""
@@ -268,10 +268,7 @@ class ProductLoader:
         """ method for generating intervals depending of the value SELF.THREADS """
         end_idx = len(self.data)
         interval = end_idx // self.THREADS
-        print(interval)
-        # print(end_idx)
         intervals = list()
-        # intervals.append([0, interval])
         for idx in range(0, self.THREADS):
             start = (interval * idx + idx)
             end = interval * (idx + 1) + idx
@@ -280,9 +277,6 @@ class ProductLoader:
                 break
             intervals.append([start, end])
 
-        # last_interval_start = 0
-        # intervals.append([last_interval_start, end_idx])
-        print(intervals)
         return intervals
 
     def product_load(self):
@@ -372,6 +366,9 @@ class ProductLoader:
                         price_4=prices.get(4),
                     )
                     product_price.save()
+                    product_price_storage = ProductStoragePrice(storage=self.storage, product=product,
+                                                                price=product_price)
+                    product_price_storage.save()
                     self.report[line_number] = 'Успешно добавлен. %s' % line
                     self.good = self.good + 1
                 else:
@@ -399,7 +396,6 @@ class ProductLoader:
         total_products = len(self.report.items())
         bad = self.bad
         good = self.good
-        print('total: %s, bad: %s, good: %s' % (total_products, bad, good))
         report += 'Всего обработано - %s, из них принято - %s, с ошибкой - %s\r\n' % (total_products, good, bad)
         for key, item in self.report.items():
             report += '%s. %s\n' % (key, item)
@@ -454,8 +450,9 @@ class ProductLoader:
         email.attach(report_filename, self.report_text, 'text/plain')
         email.send()
 
-    def truncate_products(self):
+    def truncate_products(self, storage_id):
         cursor = connection.cursor()
         cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
         cursor.execute("TRUNCATE shop_productprice")
+        cursor.execute("DELETE FROM shop_productstorageprice where storage_id=%s" % storage_id)
         cursor.execute("SET FOREIGN_KEY_CHECKS = 1")

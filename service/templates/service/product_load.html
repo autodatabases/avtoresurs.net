@@ -23,7 +23,28 @@
         <div class="col s12 white">
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="file" name="file" required>
+
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Файл</span>
+                        <input type="file" name="file">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
+
+                {% for storage in storages %}
+                    <p>
+                        <input class="with-gap" name="storage" type="radio" id="storage{{ forloop.counter }}" value="{{ forloop.counter }}"/>
+                        <label for="storage{{ forloop.counter }}">{{ storage }} ({{ storage.email }})</label>
+                    </p>
+                {% endfor %}
+
+
+
+
+
                 <button class="btn waves-effect waves-light blue darken-1 center-align" type="submit"
                         name="action">
                     Загрузить

@@ -6,6 +6,7 @@ from shop.models.product import Product, ProductPrice
 class Storage(models.Model):
     """ class for Storages """
     name = models.CharField(max_length=255, blank=True, null=True, verbose_name='Название склада')
+    email = models.EmailField(max_length=255, blank=True, null=True, verbose_name='E-mail склада')
     active = models.BooleanField(default=True, verbose_name='Активен')
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
@@ -20,6 +21,9 @@ class Storage(models.Model):
     def __str__(self):
         return self.name
 
+    def get_price(self):
+        pass
+
 
 class ProductStoragePrice(models.Model):
     """ class for M2M relationships between Product and Storage """
@@ -29,3 +33,6 @@ class ProductStoragePrice(models.Model):
     active = models.BooleanField(default=True, verbose_name='Активен')
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
+
+    def __str__(self):
+        return "%s %s %s" % (self.storage, self.product, self.price)

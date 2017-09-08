@@ -3,6 +3,7 @@ from django.core.files.storage import default_storage
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 
+from shop.models.storage import Storage
 from service.parser.custom_cross import CustomCross
 from service.parser.parser import get_filename, bonus_load, parse_clients, point_load, ProductLoader
 
@@ -31,17 +32,26 @@ class PointLoad(TemplateView):
 class ProductLoad(TemplateView):
     template_name = 'service/product_load.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ProductLoad, self).get_context_data()
+        storages = Storage.objects.filter(active=True)
+        context['storages'] = storages
+
+        return context
+
     def post(self, request):
         try:
             file = self.request.FILES['file']
         except KeyError as ke:
             return HttpResponseRedirect('/service/product_load/')
 
+        storage_id = self.request.POST.get('storage')
+        # print('STORAGE ID: %s' % storage_id)
         post_filename = get_filename(self.request.FILES['file'].name)
         filename = default_storage.save(post_filename, ContentFile(file.read()))
         file.close()
+        ProductLoader(filename, storage_id)
 
-        ProductLoader(filename)
         return HttpResponseRedirect('/service/product_load/')
 
 

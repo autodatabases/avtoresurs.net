@@ -115,6 +115,18 @@
                         </p>
                         <p class="flow-text">Количество на складе: <span
                                 class="blue-text"><strong>{{ product.get_quantity }}</strong></span></p>
+                        <p class="flow-text">Склады:
+                            <span class="blue-text"><strong>
+                                {% for storage_price in storages %}
+                                <span>{{ storage_price.storage }}</span>
+                                <span>{{ storage_price.price }}</span>
+                                <span>{{ storage_price.product }}</span>
+
+                            {% endfor %}
+                        </strong></span>
+
+
+                        </p>
 
                         {% if product.price != product.default_price %}
                             <p class="flow-text green-text"><strong>Ваша цена: <span
