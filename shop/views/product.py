@@ -9,7 +9,11 @@ from tecdoc.models import PartAnalog, Part, PartCriteria, CarType, Image, Suppli
     PartAttribute, Q, PartCross
 
 
-
+def check_availability(storage, product_storages):
+    for product_storage in product_storages:
+        if storage == product_storage.storage:
+            return True
+    return False
 
 
 class ProductDetailView(DetailView):
@@ -27,8 +31,12 @@ class ProductDetailView(DetailView):
         context['part_analogs'] = get_analogs(clean_part_number=clean_part_number, supplier=supplier, user=self.request.user)
 
         storages = Storage.objects.filter(active=True)
-        storage_prices = ProductStoragePrice.objects.filter(storage__in=storages, product=product)
-        context['storages'] = storage_prices
+        product_storages = ProductStoragePrice.objects.filter(storage__in=storages, product=product)
+        
+        for storage in storages:
+            storage.available = check_availability(storage, product_storages)
+
+        context['storages'] = storages
         # for storage_price in storage_prices:
         #     print(storage_price)
 

@@ -21,9 +21,6 @@ class Storage(models.Model):
     def __str__(self):
         return self.name
 
-    def get_price(self):
-        pass
-
 
 class ProductStoragePrice(models.Model):
     """ class for M2M relationships between Product and Storage """

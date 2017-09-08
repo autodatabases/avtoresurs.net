@@ -371,7 +371,7 @@ class ProductLoader:
                                                                                                product=product,
                                                                                                price=product_price)
                     product_price_storage.save()
-                    
+
                     self.report[line_number] = 'Успешно добавлен. %s' % line
                     self.good = self.good + 1
                 else:

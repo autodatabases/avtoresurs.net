@@ -61,8 +61,8 @@ urlpatterns = [
                   url(r'^checkout/success/$', CheckoutSuccessView.as_view(), name='checkout_success'),
                   url(r'^service/', include('service.urls', namespace='service')),
                   url(r'^messages/', include('postman.urls', namespace='postman', app_name='postman')),
-                  url(r'^api/', include(router.urls)),
-                  url(r'^api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+                  # url(r'^api/', include(router.urls)),
+                  # url(r'^api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
                   url(r'^', include('main.urls', namespace='main')),
                   url(r'^', include('cms.urls')),
                   # ALL URLS AFTER 'cms.ursl' WILL NOT WORK!!!
