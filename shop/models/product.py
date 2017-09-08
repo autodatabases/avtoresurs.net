@@ -5,7 +5,6 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.text import slugify
 from profile.models import Profile
-from shop.models.category import Category
 from tecdoc.models import Supplier, Image, PartAttribute, PartApplicability
 from tecdoc.models.part import Part, PartAnalog, PartCross, PartProduct
 
