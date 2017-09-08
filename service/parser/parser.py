@@ -232,13 +232,15 @@ class ProductLoader:
     ONE_MORE = 1
 
     def __init__(self, filename, storage_id):
+        self.storage = Storage.objects.get(id=storage_id)
+        print(self.storage)
         self.date = self.get_date()
         self.data = self.parse_file(filename)
         self.truncate_products(storage_id)
         self.product_load()
         self.report_text = self.get_report()
         self.save_report()
-        self.storage = Storage.objects.get(id=storage_id)
+
 
     def get_date(self):
         """ get date and formatting string"""

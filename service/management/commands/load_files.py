@@ -47,7 +47,7 @@ class FtpFile:
                 pass
         elif filename == 'NewsAuto.csv':
             try:
-                ProductLoader(new_file_path)
+                ProductLoader(new_file_path, 1)
             except:
                 pass
         elif filename == 'Priz.csv':
