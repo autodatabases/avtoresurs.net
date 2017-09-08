@@ -13,5 +13,5 @@ class Command(BaseCommand):
         for product_price in product_prices:
             product = product_price.product
             storage = Storage.objects.get(id=1)
-            psp = ProductStoragePrice(product=product, storage=storage, product_price=product)
+            psp = ProductStoragePrice(product=product, storage=storage, product_price=product_price)
             psp.save()
