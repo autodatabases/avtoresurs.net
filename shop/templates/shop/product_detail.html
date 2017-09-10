@@ -287,7 +287,6 @@
         $(document).ready(function () {
             $('input[type=radio][name=storage]').change(function () {
                 var url = location.protocol + '//' + document.domain + ':' + location.port + '/shop/api/' + this.value + '.json';
-                console.log(url);
                 $.getJSON(url, function (data) {
                     qty = data.price.quantity;
                     retail_price = data.price.retail_price;
