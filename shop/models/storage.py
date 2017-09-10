@@ -10,8 +10,8 @@ class Storage(models.Model):
     active = models.BooleanField(default=True, verbose_name='Активен')
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
-    products = models.ManyToManyField(Product, through='ProductStoragePrice')
-    prices = models.ManyToManyField(ProductPrice, through='ProductStoragePrice')
+    # products = models.ManyToManyField(Product, through='ProductStoragePrice')
+    # prices = models.ManyToManyField(ProductPrice, through='ProductStoragePrice')
 
     class Meta:
         ordering = ['name']
@@ -22,14 +22,14 @@ class Storage(models.Model):
         return self.name
 
 
-class ProductStoragePrice(models.Model):
-    """ class for M2M relationships between Product and Storage """
-    product = models.ForeignKey(Product, verbose_name='Изделие')
-    storage = models.ForeignKey(Storage, verbose_name='Склад')
-    price = models.ForeignKey(ProductPrice, verbose_name='Цены на изделие')
-    active = models.BooleanField(default=True, verbose_name='Активен')
-    added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
-    updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
-
-    def __str__(self):
-        return "%s" % (self.storage)
+# class ProductStoragePrice(models.Model):
+#     """ class for M2M relationships between Product and Storage """
+#     product = models.ForeignKey(Product, verbose_name='Изделие')
+#     storage = models.ForeignKey(Storage, verbose_name='Склад')
+#     price = models.ForeignKey(ProductPrice, verbose_name='Цены на изделие')
+#     active = models.BooleanField(default=True, verbose_name='Активен')
+#     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
+#     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
+#
+#     def __str__(self):
+#         return "%s" % (self.storage)

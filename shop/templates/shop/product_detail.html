@@ -122,7 +122,7 @@
 
 
                                 <input class="with-gap" name="storage" type="radio" id="storage{{ forloop.counter }}"
-                                       value="{{ storage.psp_id }}"
+                                       value="{{ storage.product_price.id }}"
                                         {% if not storage.available %}
                                        disabled="disabled"
                                         {% endif %}
@@ -288,9 +288,9 @@
             $('input[type=radio][name=storage]').change(function () {
                 var url = location.protocol + '//' + document.domain + ':' + location.port + '/shop/api/' + this.value + '.json';
                 $.getJSON(url, function (data) {
-                    qty = data.price.quantity;
-                    retail_price = data.price.retail_price;
-                    whosale_price = data.price.whosale_price;
+                    qty = data.quantity;
+                    retail_price = data.retail_price;
+                    whosale_price = data.whosale_price;
                     $('#quantity').text(qty);
                     $('#retail_price').text(retail_price);
                     if (whosale_price){

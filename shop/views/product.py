@@ -3,7 +3,7 @@ from collections import Set
 from django.views.generic import DetailView
 
 from profile.models import Profile
-from shop.models import Storage, ProductStoragePrice
+from shop.models import Storage, ProductPrice
 from shop.models.product import Product, clean_number, get_analogs
 from tecdoc.models import PartAnalog, Part, PartCriteria, CarType, Image, Supplier, PartApplicability, \
     PartAttribute, Q, PartCross
@@ -15,12 +15,6 @@ def check_availability(storage, product_storages):
             return True
     return False
 
-
-def get_psp_id(storage, product_storages):
-    if storage.available:
-        psp = product_storages.get(storage=storage)
-        return psp.id
-    return None
 
 class ProductDetailView(DetailView):
     model = Product
@@ -34,16 +28,16 @@ class ProductDetailView(DetailView):
         supplier = Supplier.objects.get(title=product.brand)
         clean_part_number = product.sku
 
-        context['part_analogs'] = get_analogs(clean_part_number=clean_part_number, supplier=supplier, user=self.request.user)
+        context['part_analogs'] = get_analogs(clean_part_number=clean_part_number, supplier=supplier,
+                                              user=self.request.user)
 
         storages = Storage.objects.filter(active=True)
-        product_storages = ProductStoragePrice.objects.filter(storage__in=storages, product=product)
-        
+        product_prices = ProductPrice.objects.filter(storage__in=storages, product=product)
+
         for storage in storages:
-            storage.available = check_availability(storage, product_storages)
-            storage.psp_id = get_psp_id(storage, product_storages)
-
-
+            storage.available = check_availability(storage, product_prices)
+            storage.product_price = ProductPrice.objects.filter(storage=storage, product=product).first()
+            # print(storage.product_price)
 
         context['storages'] = storages
         # for storage_price in storage_prices:

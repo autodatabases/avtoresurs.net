@@ -5,6 +5,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.text import slugify
 from profile.models import Profile
+
 from tecdoc.models import Supplier, Image, PartAttribute, PartApplicability
 from tecdoc.models.part import Part, PartAnalog, PartCross, PartProduct
 
@@ -172,6 +173,7 @@ class ProductImage(models.Model):
 
 class ProductPrice(models.Model):
     product = models.ForeignKey(Product)
+    storage = models.ForeignKey('Storage', null=True, blank=True)
     quantity = models.IntegerField(blank=True, null=True, default=0)
     retail_price = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
     price_1 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)

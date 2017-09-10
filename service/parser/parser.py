@@ -12,7 +12,7 @@ from django.http import HttpResponseRedirect
 from filer.models import File
 from filer.models.foldermodels import Folder
 
-from shop.models.storage import Storage, ProductStoragePrice
+from shop.models.storage import Storage
 from avtoresurs_new.settings import DIR, EMAIL_NOREPLY, EMAIL_TO, EMAIL_BCC, EMAIL_NOREPLY_LIST, MEDIA_URL, MEDIA_ROOT
 
 from bonus.models import Bonus
@@ -358,8 +358,7 @@ class ProductLoader:
                     if created:
                         product.save()
 
-                    psp = ProductStoragePrice.objects.filter(storage=self.storage, product=product)
-                    product_price, created = ProductPrice.objects.get_or_create(self=psp.price)
+                    product_price, created = ProductPrice.objects.get_or_create(storage=self.storage, product=product)
                     product_price.quantity = quantity
                     product_price.retail_price = prices.get(0)
                     product_price.price_1 = prices.get(1)

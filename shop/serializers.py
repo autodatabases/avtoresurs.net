@@ -1,10 +1,13 @@
+import json
+
+from django.utils.formats import number_format
 from rest_framework import serializers
-from rest_framework.fields import CurrentUserDefault
-from shop.models import ProductStoragePrice, ProductPrice
+from rest_framework.fields import CurrentUserDefault, DecimalField
+
+from shop.models import ProductPrice
 
 
 class ProductPriceField(serializers.RelatedField):
-
     def to_representation(self, value):
         user = self.context['request'].user
         price = value.get_price(user)
@@ -12,16 +15,15 @@ class ProductPriceField(serializers.RelatedField):
         return price
 
 
+class ProductPriceSerializer(serializers.ModelSerializer):
+    # price = ProductPriceField(read_only=True)
+    whosale_price = serializers.SerializerMethodField()
 
-# class PriceSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = ProductPrice
-#         fields = ('retail_price', 'price_1', 'price_2', 'price_3', 'price_4')
-
-
-class ProductStoragePriceSerializer(serializers.ModelSerializer):
-    price = ProductPriceField(read_only=True)
+    def get_whosale_price(self, obj):
+        user = self.context['request'].user
+        whosale_price = obj.get_whosale_price(user)
+        return number_format(whosale_price)
 
     class Meta:
-        model = ProductStoragePrice
-        fields = ('product', 'storage', 'price', 'active', 'added', 'updated')
+        model = ProductPrice
+        fields = ('product', 'storage', 'quantity', 'retail_price', 'whosale_price', 'added', 'updated')
