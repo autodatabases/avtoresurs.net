@@ -188,6 +188,33 @@ class ProductPrice(models.Model):
     def __str__(self):
         return  "%s" % self.price_1
 
+    def get_price(self, user):
+        retail_price = self.retail_price
+        whosale_price = self.get_whosale_price(user)
+        prices = {'retail_price': retail_price, 'whosale_price': whosale_price}
+        return prices
+
+    def get_whosale_price(self, user):
+        if not user:
+            return None
+        try:
+            group = Profile.objects.get(user=user).group
+            group = group.pk
+            if group == PriceGroup.RETAIL.value:
+                return self.retail_price
+            elif group == PriceGroup.OPT1.value:
+                return self.price_1
+            elif group == PriceGroup.OPT2.value:
+                return self.price_2
+            elif group == PriceGroup.OPT3.value:
+                return self.price_3
+            elif group == PriceGroup.OPT4.value:
+                return self.price_4
+            elif group == PriceGroup.OPT5.value:
+                return self.price_5
+        except Exception:
+            return None
+
 
 def get_part_analogs(part_analog, user):
     data = part_analog

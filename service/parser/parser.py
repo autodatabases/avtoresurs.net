@@ -358,7 +358,8 @@ class ProductLoader:
                     if created:
                         product.save()
 
-                    product_price, created = ProductPrice.objects.get_or_create(product=product)
+                    psp = ProductStoragePrice.objects.filter(storage=self.storage, product=product)
+                    product_price, created = ProductPrice.objects.get_or_create(self=psp.price)
                     product_price.quantity = quantity
                     product_price.retail_price = prices.get(0)
                     product_price.price_1 = prices.get(1)

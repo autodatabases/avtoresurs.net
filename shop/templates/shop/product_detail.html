@@ -114,7 +114,7 @@
                                 class="blue-text"><strong>{{ product.get_sku|upper }}</strong></span>
                         </p>
                         <p class="flow-text">Количество на складе: <span
-                                class="blue-text"><strong>{{ product.get_quantity }}</strong></span></p>
+                                class="blue-text" id="quantity">{{ product.get_quantity }}</span></p>
                         <p class="flow-text">Склады:</p>
 
                         {% for storage in storages %}
@@ -122,9 +122,9 @@
 
 
                                 <input class="with-gap" name="storage" type="radio" id="storage{{ forloop.counter }}"
-                                       value="{{ forloop.counter }}"
+                                       value="{{ storage.psp_id }}"
                                         {% if not storage.available %}
-                                            disabled="disabled"
+                                       disabled="disabled"
                                         {% endif %}
                                 />
                                 <label for="storage{{ forloop.counter }}" style="font-size: 23px">{{ storage }}</label>
@@ -132,16 +132,16 @@
                         {% endfor %}
 
 
-                        {% if product.price != product.default_price %}
-                            <p class="flow-text green-text"><strong>Ваша цена: <span
-                                    class="blue-text">{{ product.price }}</span></strong>
+                        {% if product.whosale_price != product.retail_price %}
+                            <p class="flow-text green-text"><strong>Оптовая цена: <span
+                                    class="blue-text" id="retail_price">{{ product.whosale_price }}</span></strong>
                             </p>
                             <p class="flow-text red-text">Розничная цена: <span
-                                    class="blue-text">{{ product.default_price }}</span>
+                                    class="blue-text" id="whosale_price">{{ product.retail_price }}</span>
                             </p>
                         {% else %}
                             <p class="flow-text">Цена: <span
-                                    class="blue-text"><strong>{{ product.price }}</strong></span>
+                                    class="blue-text" id="retail_price">{{ product.retail_price }}</span>
                             </p>
                         {% endif %}
                     </div>
@@ -281,5 +281,28 @@
                 });
             }
         );
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('input[type=radio][name=storage]').change(function () {
+                var url = location.protocol + '//' + document.domain + ':' + location.port + '/shop/api/' + this.value + '.json';
+                console.log(url);
+                $.getJSON(url, function (data) {
+                    qty = data.price.quantity;
+                    retail_price = data.price.retail_price;
+                    whosale_price = data.price.whosale_price;
+                    $('#quantity').text(qty);
+                    $('#retail_price').text(retail_price);
+                    if (whosale_price){
+                        $('#whosale_price').text(whosale_price);
+                    };
+                    console.log(data.price.quantity);
+                    console.log(data.price.retail_price);
+                    console.log(data.price.whosale_price);
+                });
+            });
+        });
+
     </script>
 {% endblock %}

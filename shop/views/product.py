@@ -16,14 +16,20 @@ def check_availability(storage, product_storages):
     return False
 
 
+def get_psp_id(storage, product_storages):
+    if storage.available:
+        psp = product_storages.get(storage=storage)
+        return psp.id
+    return None
+
 class ProductDetailView(DetailView):
     model = Product
 
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         product = context['product']
-        product.price = product.get_price(user=self.request.user)
-        product.default_price = product.get_price()
+        product.whosale_price = product.get_price(user=self.request.user)
+        product.retail_price = product.get_price()
 
         supplier = Supplier.objects.get(title=product.brand)
         clean_part_number = product.sku
@@ -35,6 +41,9 @@ class ProductDetailView(DetailView):
         
         for storage in storages:
             storage.available = check_availability(storage, product_storages)
+            storage.psp_id = get_psp_id(storage, product_storages)
+
+
 
         context['storages'] = storages
         # for storage_price in storage_prices:
