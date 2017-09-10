@@ -134,10 +134,10 @@
 
                         {% if product.whosale_price != product.retail_price %}
                             <p class="flow-text green-text"><strong>Оптовая цена: <span
-                                    class="blue-text" id="retail_price">{{ product.whosale_price }}</span></strong>
+                                    class="blue-text" id="whosale_price">{{ product.whosale_price }}</span></strong>
                             </p>
                             <p class="flow-text red-text">Розничная цена: <span
-                                    class="blue-text" id="whosale_price">{{ product.retail_price }}</span>
+                                    class="blue-text" id="retail_price">{{ product.retail_price }}</span>
                             </p>
                         {% else %}
                             <p class="flow-text">Цена: <span
