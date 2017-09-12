@@ -52,8 +52,11 @@ class Product(models.Model):
 
     def get_quantity(self):
         try:
-            pp = ProductPrice.objects.get(product=self)
-            return pp.quantity
+            product_prices = ProductPrice.objects.filter(product=self)
+            quantity = 0
+            for product_price in product_prices:
+                quantity += product_price.quantity
+            return quantity
         except Exception as exp:
             return 0
 
