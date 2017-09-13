@@ -367,11 +367,6 @@ class ProductLoader:
                     product_price.price_4 = prices.get(4)
                     product_price.save()
 
-                    product_price_storage, created = ProductStoragePrice.objects.get_or_create(storage=self.storage,
-                                                                                               product=product,
-                                                                                               price=product_price)
-                    product_price_storage.save()
-
                     self.report[line_number] = 'Успешно добавлен. %s' % line
                     self.good = self.good + 1
                 else:
@@ -432,7 +427,8 @@ class ProductLoader:
         self.send_email(report_filename)
 
     def send_email(self, report_filename):
-        subject = 'Протокол загрузки файла NewsAuto.csv из 1С от %s.%s.%s %s:%s' % (
+        subject = 'Протокол загрузки файла News_auto_%s.csv из 1С от %s.%s.%s %s:%s' % (
+            self.storage.id,
             self.date['year'],
             self.date['month'],
             self.date['day'],
