@@ -22,8 +22,8 @@ PASSWD = 'KoxlabiruX'
 # USER = 'ftpuser'
 # PASSWD = 'Ufdhbrb31337'
 
-# filenames = ('Priz.csv', 'Klients.csv', 'NewsAuto.csv')
 filenames = ('Klients.csv', 'Priz.csv', 'News_auto_1.csv', 'News_auto_2.csv', 'News_auto_3.csv')
+# filenames = ('News_auto_1.csv', 'News_auto_2.csv', 'News_auto_3.csv')
 
 
 class FtpFile:
@@ -47,7 +47,7 @@ class FtpFile:
         elif 'News_auto_' in filename:
             try:
                 storage_index = filename[10:11]
-                ProductLoader(new_file_path, storage_index)
+                ProductLoader(new_file_path, storage_index, filename)
             except:
                 pass
         elif filename == 'Priz.csv':

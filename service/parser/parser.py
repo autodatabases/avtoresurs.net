@@ -231,11 +231,13 @@ class ProductLoader:
     # one more index for lice
     ONE_MORE = 1
 
-    def __init__(self, filename, storage_id):
+    def __init__(self, file_path, storage_id, filename):
+        # print('filename: %s' % filename)
+        self.filename = filename
         self.storage = Storage.objects.get(id=storage_id)
-        print(self.storage)
+        # print(self.storage)
         self.date = self.get_date()
-        self.data = self.parse_file(filename)
+        self.data = self.parse_file(file_path)
         # self.truncate_products(storage_id)
         self.product_load()
         self.report_text = self.get_report()
@@ -384,7 +386,8 @@ class ProductLoader:
     def get_report(self):
         """ method for generating report """
         self.report = collections.OrderedDict(sorted(self.report.items()))
-        report = ('Прококол загрузки файла товаров от %s.%s.%s %s:%s\r\n' % (
+        report = ('Прококол загрузки файла товаров %s от %s.%s.%s %s:%s\r\n' % (
+            self.filename,
             self.date['day'],
             self.date['month'],
             self.date['year'],
@@ -401,7 +404,8 @@ class ProductLoader:
 
     def save_report(self):
         """ method for saving report to server, to DB and sending to admins email"""
-        report_filename = '%s_%s_%s_%s_%s_NewsAuto.txt' % (
+        report_filename = '%s_%s_%s_%s_%s_%s' % (
+            self.filename,
             self.date['year'],
             self.date['month'],
             self.date['day'],
@@ -427,8 +431,8 @@ class ProductLoader:
         self.send_email(report_filename)
 
     def send_email(self, report_filename):
-        subject = 'Протокол загрузки файла News_auto_%s.csv из 1С от %s.%s.%s %s:%s' % (
-            self.storage.id,
+        subject = 'Протокол загрузки файла %s из 1С от %s.%s.%s %s:%s' % (
+            self.filename,
             self.date['year'],
             self.date['month'],
             self.date['day'],
