@@ -49,7 +49,7 @@ class ProductLoad(TemplateView):
         post_filename = get_filename(self.request.FILES['file'].name)
         filename = default_storage.save(post_filename, ContentFile(file.read()))
         file.close()
-        ProductLoader(filename, storage_id)
+        ProductLoader(filename, storage_id, post_filename)
 
         return HttpResponseRedirect('/service/product_load/')
 
