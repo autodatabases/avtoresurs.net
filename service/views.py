@@ -46,6 +46,7 @@ class ProductLoad(TemplateView):
             return HttpResponseRedirect('/service/product_load/')
 
         storage_id = self.request.POST.get('storage')
+        filename = self.request.FILES['file'].name
         post_filename = get_filename(self.request.FILES['file'].name)
         filename = default_storage.save(post_filename, ContentFile(file.read()))
         file.close()
