@@ -405,6 +405,7 @@ class ProductLoader:
     def save_report(self):
         """ method for saving report to server, to DB and sending to admins email"""
         filename, file_extension = os.path.splitext(self.filename)
+        print('filename: %s, new_filename: %s, file_ext: %s' % (self.filename, filename, file_extension))
         report_filename = '%s_%s_%s_%s_%s_%s.%s' % (
             self.filename,
             self.date['year'],
