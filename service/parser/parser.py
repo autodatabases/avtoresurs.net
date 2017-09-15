@@ -404,13 +404,16 @@ class ProductLoader:
 
     def save_report(self):
         """ method for saving report to server, to DB and sending to admins email"""
-        report_filename = '%s_%s_%s_%s_%s_%s' % (
+        filename, file_extension = os.path.splitext(self.filename)
+        report_filename = '%s_%s_%s_%s_%s_%s.%s' % (
             self.filename,
             self.date['year'],
             self.date['month'],
             self.date['day'],
             self.date['hour'],
-            self.date['minute'])
+            self.date['minute'],
+            file_extension
+        )
         report_file = os.path.join(
             DIR['CSV'],
             DIR['PRICE'],
