@@ -9,10 +9,14 @@ from django.core.files.storage import default_storage
 from django.core.management.base import BaseCommand, CommandError
 
 from avtoresurs_new.settings import MEDIA_ROOT
-from service.parser.parser import bonus_load, ProductLoader
-from service.views import point_load, get_filename
+from service.parser.bonus import BonusLoader
+from service.parser.parser import get_filename
+
 
 # REAL FTP
+from service.parser.point import PointLoader
+from service.parser.product import ProductLoader
+
 HOST = '195.190.127.74'
 USER = 'oleg'
 PASSWD = 'KoxlabiruX'
@@ -41,18 +45,26 @@ class FtpFile:
         new_file_path = default_storage.save(new_file, ContentFile(file.read()))
         if filename == 'Klients.csv':
             try:
-                point_load(new_file_path)
+                point_loader = PointLoader(new_file_path)
+                point_loader.parse_file()
+                point_loader.load()
+                point_loader.save_report()
+                point_loader.send_email()
+            except:
+                pass
+        elif filename == 'Priz.csv':
+            try:
+                bonus_loader = BonusLoader(new_file_path)
+                bonus_loader.parse_file()
+                bonus_loader.load()
+                bonus_loader.save_report()
+                bonus_loader.send_email()
             except:
                 pass
         elif 'News_auto_' in filename:
             try:
                 storage_index = filename[10:11]
                 ProductLoader(new_file_path, storage_index, filename)
-            except:
-                pass
-        elif filename == 'Priz.csv':
-            try:
-                bonus_load(new_file_path)
             except:
                 pass
 
