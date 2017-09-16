@@ -199,14 +199,13 @@ class ProductLoader:
         """ method for saving report to server, to DB and sending to admins email"""
         filename, file_extension = os.path.splitext(self.filename)
         print('filename: %s, new_filename: %s, file_ext: %s' % (self.filename, filename, file_extension))
-        report_filename = '%s_%s_%s_%s_%s%s%s' % (
+        report_filename = '%s_%s_%s_%s_%s%s.txt' % (
             filename,
             self.date['year'],
             self.date['month'],
             self.date['day'],
             self.date['hour'],
-            self.date['minute'],
-            file_extension
+            self.date['minute']
         )
         print(report_filename)
         report_file = os.path.join(
