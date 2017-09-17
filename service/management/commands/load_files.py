@@ -12,7 +12,6 @@ from avtoresurs_new.settings import MEDIA_ROOT
 from service.parser.bonus import BonusLoader
 from service.parser.parser import get_filename
 
-
 # REAL FTP
 from service.parser.point import PointLoader
 from service.parser.product import ProductLoader
@@ -26,7 +25,9 @@ PASSWD = 'KoxlabiruX'
 # USER = 'ftpuser'
 # PASSWD = 'Ufdhbrb31337'
 
-filenames = ('News_auto_3.csv', 'Klients.csv', 'News_auto_1.csv', 'Priz.csv', 'News_auto_2.csv')
+filenames = ('Klients.csv', 'Priz.csv', 'News_auto_2.csv', 'News_auto_3.csv', 'News_auto_1.csv')
+
+
 # filenames = ('News_auto_1.csv', 'News_auto_2.csv', 'News_auto_3.csv')
 
 
@@ -36,7 +37,6 @@ class FtpFile:
         self.ftp.set_pasv(True)
         self.user = user
         self.passwd = passwd
-
 
     def get_file(self, filename):
         self.ftp.login(user=self.user, passwd=self.passwd)
