@@ -34,13 +34,17 @@ class FtpFile:
     def __init__(self, host, user, passwd):
         self.ftp = FTP(host=host)
         self.ftp.set_pasv(True)
-        self.ftp.login(user=user, passwd=passwd)
+        self.user = user
+        self.passwd = passwd
+
 
     def get_file(self, filename):
+        self.ftp.login(user=self.user, passwd=self.passwd)
         new_file = get_filename(filename)
         file = BytesIO()
         print(filename)
         self.ftp.retrbinary('RETR %s' % filename, file.write)
+        self.ftp.quit()
         file.seek(0)
         new_file_path = default_storage.save(new_file, ContentFile(file.read()))
         if filename == 'Klients.csv':
