@@ -25,9 +25,7 @@ PASSWD = 'KoxlabiruX'
 # USER = 'ftpuser'
 # PASSWD = 'Ufdhbrb31337'
 
-filenames = ('Klients.csv', 'Priz.csv', 'News_auto_2.csv', 'News_auto_3.csv', 'News_auto_1.csv')
-
-
+filenames = ('Klients.csv', 'Priz.csv', 'News_auto_1.csv', 'News_auto_2.csv', 'News_auto_3.csv')
 # filenames = ('News_auto_1.csv', 'News_auto_2.csv', 'News_auto_3.csv')
 
 
@@ -35,11 +33,9 @@ class FtpFile:
     def __init__(self, host, user, passwd):
         self.ftp = FTP(host=host)
         self.ftp.set_pasv(True)
-        self.user = user
-        self.passwd = passwd
+        self.ftp.login(user=user, passwd=passwd)
 
     def get_file(self, filename):
-        self.ftp.login(user=self.user, passwd=self.passwd)
         new_file = get_filename(filename)
         file = BytesIO()
         print(filename)
@@ -77,9 +73,8 @@ class Command(BaseCommand):
     help = 'Download files from FTP'
 
     def handle(self, *args, **options):
-        ftp = FtpFile(host=HOST, user=USER, passwd=PASSWD)
         for filename in filenames:
+            ftp = FtpFile(host=HOST, user=USER, passwd=PASSWD)
             ftp.get_file(filename)
-        ftp.ftp.close()
 
         self.stdout.write(self.style.SUCCESS('Successfully'))
