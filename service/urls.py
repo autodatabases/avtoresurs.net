@@ -5,10 +5,10 @@ from service.views.bonus import BonusView
 from service.views.custom_cross import CustomCrossView
 from service.views.point import PointView
 from service.views.product import ProductView
-from service.views.service import ServiceViev
+from service.views.service import ServiceView
 
 urlpatterns = [
-    url(r'^$', ServiceViev.as_view(), name='main'),
+    url(r'^$', ServiceView.as_view(), name='main'),
     url(r'^product_load/$', ProductView.as_view(), name='product_load'),
     url(r'^point_load/$', PointView.as_view(), name='point_load'),
     url(r'^bonus_load/$', BonusView.as_view(), name='bonus_load'),
