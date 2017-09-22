@@ -23,10 +23,10 @@ class ProductManager(models.Manager):
     def all(self, *args, **kwargs):
         return self.get_queryset()
 
-    def get_price(self):
-        if self.user.request.group == 'розница':
-            return self.get_retail_price()
-        return self.get_whosale_price()
+    # def get_price(self):
+    #     if self.user.request.group == 'розница':
+    #         return self.get_retail_price()
+    #     return self.get_whosale_price()
 
 
 class Product(models.Model):
@@ -93,10 +93,11 @@ class Product(models.Model):
     def remove_from_cart(self):
         return "%s?item=%s&delete=true" % (reverse("cart"), self.id)
 
-    def get_price(self, user=None):
+    def get_price(self, user=None, storage=None):
 
         pp = ProductPrice.objects.filter(product=self).first()
-
+        if storage is not None:
+            pp = ProductPrice.objects.filter(product=self, storage=storage).first()
         if not pp:
             pp = ProductPrice(product=self, price_1=0, price_2=0, price_3=0, price_4=0)
 

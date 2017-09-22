@@ -102,6 +102,7 @@
 
             </div>
             <div class="col s6">
+            <form method="GET" action="{% url 'cart' %}" id="add-form" class="form-inline">
                 <div class="row">
                     <div class="col s12">
                         <p class="flow-text" style="margin-top: 0;">Производитель: <span
@@ -119,15 +120,14 @@
 
                         {% for storage in storages %}
                             <p class="flow-text">
-
-
-                                <input class="with-gap" name="storage" type="radio" id="storage{{ forloop.counter }}"
+                                <input class="with-gap" name="product_price" type="radio" id="product_price{{ forloop.counter }}"
                                        value="{{ storage.product_price.id }}"
                                         {% if not storage.available %}
                                        disabled="disabled"
                                         {% endif %}
                                 />
-                                <label for="storage{{ forloop.counter }}" style="font-size: 23px">{{ storage }}</label>
+
+                                <label for="product_price{{ forloop.counter }}" style="font-size: 23px">{{ storage }}</label>
                             </p>
                         {% endfor %}
 
@@ -147,7 +147,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <form method="GET" action="{% url 'cart' %}" id="add-form" class="form-inline">
+
                         <div class="row">
                             <div class="input-field col s12">
                                 <input placeholder="Введите количество товара" id="id_qty" type="number"
@@ -166,8 +166,9 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+
                 </div>
+            </form>
             </div>
         </div>
 
@@ -242,7 +243,6 @@
                 data: formData,
                 success: function (data) {
                     console.log(data)
-                    {#                    $('#jquery-message').text("Added " + data.item_added + " Deleted " + data.deleted);#}
                     showFlashMessage(data.flash_message);
                     updateCartItemCount();
                 },
@@ -252,7 +252,6 @@
                     $('#add-form').submit();
                 }
             })
-            {#            $('#add-form').submit;#}
         });
     </script>
 
@@ -285,7 +284,7 @@
 
     <script>
         $(document).ready(function () {
-            $('input[type=radio][name=storage]').change(function () {
+            $('input[type=radio][name=product_price]').change(function () {
                 var url = location.protocol + '//' + document.domain + ':' + location.port + '/shop/api/' + this.value + '.json';
                 $.getJSON(url, function (data) {
                     qty = data.quantity;
@@ -293,9 +292,10 @@
                     whosale_price = data.whosale_price;
                     $('#quantity').text(qty);
                     $('#retail_price').text(retail_price);
-                    if (whosale_price){
+                    if (whosale_price) {
                         $('#whosale_price').text(whosale_price);
-                    };
+                    }
+                    ;
                 });
             });
         });

@@ -48,17 +48,21 @@
 
                         <tbody>
 
-                        {% for item in cart_items %}
-                            <tr class="cart-item-{{ item.item.id }}">
-                                <td class="cell_1">
-                                    {#                        <div class="cart_item__img">#}
-                                    {#                            <a href="/products/body-sport-fitness-ball">#}
-                                    {#                                <img src="//cdn.shopify.com/s/files/1/0980/5368/products/body_sport_fitness_ball_1_medium.png?v=1441292712"#}
-                                    {#                                     alt="Body Sport Fitness Ball">#}
-                                    {#                            </a>#}
-                                    {#                        </div>#}
+                        {% for storage, items in cart_storages.items %}
+                            <tr>
+                                <th colspan="5" style="background-color: #26a0d7" class="center-align">{{ storage }}</th>
+                            </tr>
+                            {% for item in items %}
+                                <tr class="cart-item-{{ item.item.id }}">
+                                    <td class="cell_1">
+                                        {#                        <div class="cart_item__img">#}
+                                        {#                            <a href="/products/body-sport-fitness-ball">#}
+                                        {#                                <img src="//cdn.shopify.com/s/files/1/0980/5368/products/body_sport_fitness_ball_1_medium.png?v=1441292712"#}
+                                        {#                                     alt="Body Sport Fitness Ball">#}
+                                        {#                            </a>#}
+                                        {#                        </div>#}
 
-                                    <div class="cart_item__info">
+                                        <div class="cart_item__info">
 
                                             <h5 class="cart_item__name product_name">
 
@@ -75,50 +79,52 @@
                                                     <strong>{{ item.item.title }}</strong></p>
                                                 <p class="item_vendor"><span>Код детали:</span>
                                                     <strong>{{ item.item.get_sku }}</strong></p>
-                                                <p><a href="{{ item.item.get_absolute_url }}" class="link">Перейти к описанию</a></p>
+                                                <p><a href="{{ item.item.get_absolute_url }}" class="link">Перейти к
+                                                    описанию</a></p>
                                             </div>
 
+                                        </div>
+                                    </td>
 
-                                    </div>
-                                </td>
+                                    <td class="cell_2 cart_price">
+                                        <p class="center-align"><span class="money">{{ item.item.price }} <i
+                                                class="fa fa-rub" aria-hidden="true"></i></span></p>
 
-                                <td class="cell_2 cart_price">
-                                    <p class="center-align"><span class="money">{{ item.item.price }} <i
-                                            class="fa fa-rub" aria-hidden="true"></i></span></p>
+                                    </td>
 
-                                </td>
+                                    <td class="cell_3">
 
-                                <td class="cell_3">
+                                        {#                                    <div class="quantity_box text-center">#}
+                                        <div class="item_quantity_box center-align">
+                                            <form action="." method="GET">
+                                                <input type="hidden" name="item" value="{{ item.item.id }}">
+                                                <input class="item-qty quantity_input center-align" name="qty"
+                                                       value="{{ item.quantity }}" type="number" min="1">
+                                                <input type="hidden" name="storage" id="storage" value="{{ storage.id }}">
+                                                {#                                    <span class="quantity_modifier quantity_down"><i class="fa fa-minus"></i></span>#}
+                                                {#                                    <span class="quantity_modifier quantity_up"><i class="fa fa-plus"></i></span>#}
+                                            </form>
+                                        </div>
 
-                                    {#                                    <div class="quantity_box text-center">#}
-                                    <div class="item_quantity_box center-align">
-                                        <form action="." method="GET">
-                                            <input type="hidden" name="item" value="{{ item.item.id }}">
-                                            <input class="item-qty quantity_input center-align" name="qty"
-                                                   value="{{ item.quantity }}" type="number">
-                                            {#                                    <span class="quantity_modifier quantity_down"><i class="fa fa-minus"></i></span>#}
-                                            {#                                    <span class="quantity_modifier quantity_up"><i class="fa fa-plus"></i></span>#}
-                                        </form>
-                                    </div>
+                                    </td>
 
-                                </td>
-
-                                <td class="cell_4 cart_price">
-                                    <p class="center-align">
+                                    <td class="cell_4 cart_price">
+                                        <p class="center-align">
                                 <span class="money"><span
                                         id="item-line-total-{{ item.item.id }}">{{ item.line_item_total }}</span> <i
                                         class="fa fa-rub" aria-hidden="true"></i></span>
-                                    </p>
-                                </td>
+                                        </p>
+                                    </td>
 
-                                <td class="cell_5">
-                                    <p class="center-align">
-                                        <a class="cart_item__remove" title="1"
-                                           href="{{ item.item.remove_from_cart }}"><i
-                                                class="fa fa-trash fa-2x"></i></a>
-                                    </p>
-                                </td>
-                            </tr>
+                                    <td class="cell_5">
+                                        <p class="center-align">
+                                            <a class="cart_item__remove" title="1"
+                                               href="{{ item.item.remove_from_cart }}&storage={{ item.storage.id }}"><i
+                                                    class="fa fa-trash fa-2x"></i></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                         {% endfor %}
                         </tbody>
 
@@ -171,10 +177,13 @@
             var item = $(this).prev("input[type='hidden']").val();
             {#        alert(item);#}
             var qty = $(this).val();
+            var storage = $('#storage').val();
+            console.log(storage);
             var data = {
                 item: item,
-                qty: qty
-            }
+                qty: qty,
+                storage: storage
+            };
             {#            console.log(data);#}
             $.ajax({
                 type: "GET",

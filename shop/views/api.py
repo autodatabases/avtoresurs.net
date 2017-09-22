@@ -8,6 +8,6 @@ class PPList(ListAPIView):
     serializer_class = ProductPriceSerializer
 
 
-class PPDedail(RetrieveAPIView):
+class PPDetail(RetrieveAPIView):
     queryset = ProductPrice.objects.all()
     serializer_class = ProductPriceSerializer

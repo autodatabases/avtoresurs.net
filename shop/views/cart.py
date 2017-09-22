@@ -6,9 +6,9 @@ from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.views.generic.base import View
 from django.views.generic.detail import SingleObjectMixin
 
+from shop.models import Storage
 from shop.models.cart import Cart, CartItem
-from shop.models.product import Product
-
+from shop.models.product import Product, ProductPrice
 
 
 class ItemCountView(View):
@@ -26,6 +26,24 @@ class ItemCountView(View):
             return JsonResponse({"count": count})
         else:
             raise Http404
+
+
+def make_cart_storages(cart, user):
+    cart_storages = dict()
+    cart_items = cart.cartitem_set.all()
+    for item in cart_items:
+        cart_storages.update({item.storage: list()})
+    for item in cart_items:
+        storage = item.storage
+        price = item.item.get_price(user=user, storage=storage)
+        item.item.price = price
+        cart_storages[storage].append(item)
+    return cart_storages
+    #
+    # for cart_storage, items in cart_storages.items():
+    #     print(cart_storage)
+    #     for item in items:
+    #         print(item)
 
 
 class CartView(SingleObjectMixin, View):
@@ -56,17 +74,25 @@ class CartView(SingleObjectMixin, View):
         flash_message = ""
         item_added = False
         cart_item = None
+        storage_id = request.GET.get('storage', None)
+        product_price_id = request.GET.get('product_price', None)
+
         title = None
         if item_id:
             item_instance = get_object_or_404(Product, id=item_id)
             qty = request.GET.get("qty", 1)
-            try:
-                if int(qty) < 1:
-                    delete_item = True
-            except:
-                # pass
-                raise Http404
-            cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item_instance)
+            # product_price = get_object_or_404(ProductPrice, product=item_instance, storage=storage)
+            if storage_id:
+                storage = get_object_or_404(Storage, id=storage_id)
+            if product_price_id:
+                storage = ProductPrice.objects.get(id=product_price_id).storage
+            # try:
+            #     if int(qty) < 1:
+            #         delete_item = True
+            # except:
+            #     pass
+                # raise Http404
+            cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item_instance, storage=storage)
             if created:
                 flash_message = "Товар успешно добавлен в корзину"
                 item_added = True
@@ -82,7 +108,6 @@ class CartView(SingleObjectMixin, View):
                 return HttpResponseRedirect(reverse('cart'))
                 # return cart_item.cart.get_absolute_url()
         if request.is_ajax():
-            # print(request.GET.get('item'))
             try:
                 total = cart_item.line_item_total
             except:
@@ -112,16 +137,13 @@ class CartView(SingleObjectMixin, View):
 
         user = self.request.user
 
-        # print(cart.cartitem_set.all())
-        cart_items = cart.cartitem_set.all()
-        for item in cart_items:
-            price = item.item.get_price(user)
-            item.item.price = price
+        cart_storages = make_cart_storages(cart, user)
 
-        if cart_items:
+
+        if cart_storages:
             context.update({
-                "cart_items": cart_items
+                # "cart_items": cart_items,
+                "cart_storages": cart_storages
             })
         return render(request, template, context)
-
 
