@@ -36,6 +36,7 @@ class Product(models.Model):
     active = models.BooleanField(default=True)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
+    
 
     # slug
     objects = ProductManager()
@@ -158,6 +159,7 @@ class PriceGroup(Enum):
     OPT3 = 4
     OPT4 = 5
     OPT5 = 6
+    OPT6 = 7
 
 
 def image_upload_to(instance, filename):
@@ -185,6 +187,7 @@ class ProductPrice(models.Model):
     price_3 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
     price_4 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
     price_5 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
+    price_6 = models.DecimalField(decimal_places=2, max_digits=20, default=0, blank=True, null=True)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
 
@@ -218,6 +221,8 @@ class ProductPrice(models.Model):
                 return self.price_4
             elif group == PriceGroup.OPT5.value:
                 return self.price_5
+            elif group == PriceGroup.OPT6.value:
+                return self.price_6
         except Exception:
             return None
 

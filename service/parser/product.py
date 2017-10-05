@@ -145,6 +145,22 @@ class ProductLoader:
                         prices[4] = float(row[7])
                 except:
                     prices[4] = 0
+                try:
+                    prices[5] = row[8]
+                    if ',' in row[8]:
+                        prices[5] = row[8].replace(',', '.')
+                    else:
+                        prices[5] = float(row[8])
+                except:
+                    prices[5] = 0
+                try:
+                    prices[6] = row[9]
+                    if ',' in row[9]:
+                        prices[6] = row[9].replace(',', '.')
+                    else:
+                        prices[6] = float(row[9])
+                except:
+                    prices[6] = 0
 
                 part_tecdoc = Part.objects.filter(clean_part_number=clear_sku, supplier__title=brand)
 
@@ -160,6 +176,8 @@ class ProductLoader:
                     product_price.price_2 = prices.get(2)
                     product_price.price_3 = prices.get(3)
                     product_price.price_4 = prices.get(4)
+                    product_price.price_5 = prices.get(5)
+                    product_price.price_6 = prices.get(6)
                     product_price.save()
 
                     self.report[line_number] = 'Успешно добавлен. %s' % line
