@@ -74,7 +74,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for filename in filenames:
-            ftp = FtpFile(host=HOST, user=USER, passwd=PASSWD)
-            ftp.get_file(filename)
+            try:
+                ftp = FtpFile(host=HOST, user=USER, passwd=PASSWD)
+                ftp.get_file(filename)
+            except:
+                pass
 
         self.stdout.write(self.style.SUCCESS('Successfully'))
