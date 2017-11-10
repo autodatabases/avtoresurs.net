@@ -16,7 +16,7 @@ class Storage(models.Model):
     # prices = models.ManyToManyField(ProductPrice, through='ProductStoragePrice')
 
     class Meta:
-        ordering = ['name']
+        ordering = ['pk']
         verbose_name = 'Склад'
         verbose_name_plural = 'Склады'
 
