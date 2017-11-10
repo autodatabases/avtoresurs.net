@@ -205,7 +205,7 @@ EMAIL_NOREPLY = 'no-reply@avtoresurs.net'
 EMAIL_NOREPLY_LIST = ['no-reply@avtoresurs.net']
 EMAIL_TO = ['avtoresurs@mail.ru']
 # EMAIL_TO = ['oleg_a@outlook.com']
-EMAIL_BCC = ['oleg_a@outlook.com', 'o.artemov@gov39.ru', 'avtoresurs@mail.ru']
+EMAIL_BCC = ['oleg_a@outlook.com', 'avtoresurs@mail.ru']
 
 # POSTMAN CONFIG
 POSTMAN_DISALLOW_ANONYMOUS = True

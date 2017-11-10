@@ -7,6 +7,7 @@ from ftplib import FTP
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.management.base import BaseCommand, CommandError
+from shop.models.storage import Storage
 
 from avtoresurs_new.settings import MEDIA_ROOT
 from service.parser.bonus import BonusLoader
@@ -25,7 +26,15 @@ PASSWD = 'KoxlabiruX'
 # USER = 'ftpuser'
 # PASSWD = 'Ufdhbrb31337'
 
-filenames = ('Klients.csv', 'Priz.csv', 'News_auto_1.csv', 'News_auto_2.csv', 'News_auto_3.csv', 'News_auto_4.csv', 'News_auto_5.csv')
+filenames = ['Klients.csv', 'Priz.csv']
+
+storages = Storage.objects.filter(active=True, active_file_upload=True)
+for storage in storages:
+    filenames.append(storage.file_name)
+
+print(filenames)
+
+
 # filenames = ('News_auto_1.csv', 'News_auto_2.csv', 'News_auto_3.csv')
 
 
