@@ -8,8 +8,8 @@ from shop.models.storage import Storage
 
 
 class StorageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'email', 'active', 'added', 'updated')
-    list_display_links = ('id', 'name', 'email', 'active', 'added', 'updated')
+    list_display = ('id', 'name', 'email', 'active', 'file_name', 'active_file_upload', 'added', 'updated')
+    list_display_links = ('id', 'name', 'email', 'active', 'file_name', 'active_file_upload', 'added', 'updated')
     search_fields = ('name', 'email')
 
 
