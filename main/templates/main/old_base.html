@@ -1,0 +1,255 @@
+{% load cms_tags sekizai_tags %}
+{% load staticfiles %}
+{% load menu_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106829013-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments)
+        };
+        gtag('js', new Date());
+
+        gtag('config', 'UA-106829013-1');
+    </script>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                    w.yaCounter46037979 = new Ya.Metrika({
+                        id:46037979,
+                        clickmap:true,
+                        trackLinks:true,
+                        accurateTrackBounce:true
+                    });
+                } catch(e) { }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46037979" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'main/css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link rel="stylesheet/less" type="text/css" href="{% static 'main/less/styles.less' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'bonus/less/bonus.css' %}"/>
+    <script src="{% static 'main/js/less.min.js' %}" type="text/javascript"></script>
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One|Russo+One" rel="stylesheet">
+    {% block extra_scripts %}{% endblock %}
+    {#    <link href="{% static 'main/js/less.min.js' %}" type="text/css" rel="stylesheet" media="screen,projection"/>#}
+    {#    <link href="{% static 'main/css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>#}
+    <link rel="stylesheet" href="{% static 'main/css/font-awesome.min.css' %}">
+
+    <link rel="shortcut icon" type="image/ico" href="{% static 'main/images/favicon.ico' %}">
+    {% render_block "css" %}
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-100079212-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+</head>
+<body class="grey lighten-4">
+{% cms_toolbar %}
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="{% static 'main/js/materialize.js' %}"></script>
+<script src="{% static 'main/js/init.js' %}"></script>
+
+{#navbar#}
+<!-- Dropdown Structure -->
+<header>
+    <div class="container">
+        <div class="row header_row_1">
+            <div class="col s8 offset-s4">
+                <ul class="no-margin-top no-margin-bot">
+                    {% if request.user.is_authenticated %}
+                        <li><a href="/accounts/logout">Выйти
+                            ({{ request.user }})</a></li>
+                        <li><a href="/profile/">
+                            Личный кабинет
+                            {% if postman_unread_count %}
+                                (+{{ postman_unread_count }})
+                            {% endif %}
+                        </a></li>
+                    {% else %}
+                        <li><a href="/accounts/login/" id="customer_login_link">Войти</a></li>
+                        <li><a href="/accounts/register/" id="customer_register_link">Зарегистрироваться</a></li>
+                    {% endif %}
+                    <li class="checkout"><a href="/checkout/">Оформить покупки</a></li>
+                </ul>
+                <ul class="no-margin-top no-margin-bot">
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                    <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row header_row_2 no-margin-bot">
+            <div class="col m12 l3 center-align">
+                <!-- LOGO -->
+                <a href="/" style="display: inline-block;">
+                    <div class="logo_main" style="display: block; white-space: nowrap;">
+                        <div style="font-family: 'Russo One', sans-serif; font-size: 30px !important;">
+                            <b class="logo-circle">А</b>вторесурс
+                        </div>
+                        <div style="font-family: 'Poiret One', cursive; font-size: 17px; color:black !important;">
+                            Добро пожаловать!
+                        </div>
+                        {#                        <div class="logo-circle" style="background-color: #26a0d7; color: #fff; display: inline-block;#}
+                        {#                            width: 60px; height: 60px; vertical-align: middle; text-align: center; border-radius: 50%;#}
+                        {#                            font-size: 35px">#}
+                        {#                            <strong>А</strong>#}
+                        {#                        </div>#}
+
+                        {#                        <div class="logo-text" style="display: inline-block; height:60px; vertical-align: middle;">#}
+                        {#                            <strong style="font-size:20px">вторесурс</strong><br>#}
+                        {#                            <span style="font-size:14px">Добро пожаловать!</span>#}
+                        {#                        </div>#}
+
+
+                    </div>
+                </a>
+            </div>
+            <div class="col m12 l6">
+                <nav class="blue-grey lighten-4 z-depth-0">
+                    <div class="nav-wrapper">
+                        <form action="/shop/search/">
+                            <div class="input-field">
+                                <input id="search" type="search" required name="q">
+                                <label for="search"><i class="material-icons icon-left">search</i></label>
+                                <i class="material-icons icon-right">close</i>
+                            </div>
+                        </form>
+                    </div>
+                </nav>
+            </div>
+            <div class="col m6 l3">
+                <div class="custom_header">
+                    {% static_placeholder 'Phones' %}
+                </div>
+            </div>
+        </div>
+        <div class="row no-margin-bot">
+            <nav class="dark-blue z-depth-0" role="navigation">
+                <div class="nav-wrapper">
+                    <ul class="right hide-on-med-and-down no-float avtoresurs-menu">
+                        {% show_menu 0 100 100 100 'main/includes/menu.html' %}
+                    </ul>
+
+                    <!-- HEADER CART -->
+                    <a href="{% url 'cart' %}" class="header-cart">
+                        <i class="fa fa-shopping-cart"></i> Корзина: <span
+                            id="cart-count-badge">{{ request.session.cart_item_count }}</span> товар(ов)
+                    </a>
+
+                    <ul id="nav-mobile" class="side-nav">
+                        {% for child in children %}
+                            <li>
+                                <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                    <a href="#" data-activates="nav-mobile" class="button-collapse"><i
+                            class="material-icons icon-menu">menu</i></a>
+
+                </div>
+            </nav>
+        </div>
+
+    </div>
+    <div>
+        {#        {% placeholder "breadcrumbs" %}#}
+    </div>
+
+</header>
+
+<main>
+    <div class="container">
+        {% block breadcrumbs %}
+            {% if request.path != "/" %}
+                {% show_breadcrumb 0 "main/includes/breadcrumb.html" %}
+            {% endif %}
+
+        {% endblock %}
+    </div>
+
+
+    <div class="container">
+        {% placeholder "content" %}
+        {% block content %}{% endblock %}
+    </div>
+
+</main>
+
+<footer class="page-footer blue darken-3">
+    {% static_placeholder "footer" %}
+
+</footer>
+
+<script src="{% static 'main/js/custom.js' %}" type="text/javascript"></script>
+<script>
+    function updateCartItemCount() {
+        var badge = $("#cart-count-badge");
+        $.ajax({
+            type: "GET",
+            url: "{% url 'item_count' %}",
+            success: function (data) {
+                badge.text(data.count);
+            },
+            error: function (response, error) {
+                console.log(response);
+                console.log(error);
+            }
+        })
+    }
+    $(document).ready(function () {
+        updateCartItemCount();
+    });
+</script>
+
+
+{% block js %}
+{% endblock %}
+{% render_block "js" %}
+</body>
+</html>

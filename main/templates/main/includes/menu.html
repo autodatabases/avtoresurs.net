@@ -3,45 +3,22 @@
 
 
 {% for child in children %}
-    {% if child.children %}
-        <!-- Dropdown Trigger -->
-        <li><a class="dropdown-button" href="#!" data-activates="dropdown_{{ child.id }}">{{ child.get_menu_title }}<i
-                class="material-icons right">arrow_drop_down</i></a>
-        </li>
-        <ul id="dropdown_{{ child.id }}" class="dropdown-content">
-            <li>
-                <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
-            </li>
-            {% show_menu from_level to_level extra_inactive extra_active template "" "" child %}
-        </ul>
-    {% else %}
-        <li>
-            <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
-        </li>
-    {% endif %}
+    <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}"><li class="list-inline-item2">{{ child.get_menu_title }}</li></a>
+
+    {#    {% if child.children %}#}
+    {#        <!-- Dropdown Trigger -->#}
+    {#        <li><a class="dropdown-button" href="#!" data-activates="dropdown_{{ child.id }}">{{ child.get_menu_title }}<i#}
+    {#                class="material-icons right">arrow_drop_down</i></a>#}
+    {#        </li>#}
+    {#        <ul id="dropdown_{{ child.id }}" class="dropdown-content">#}
+    {#            <li>#}
+    {#                <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>#}
+    {#            </li>#}
+    {#            {% show_menu from_level to_level extra_inactive extra_active template "" "" child %}#}
+    {#        </ul>#}
+    {#    {% else %}#}
+    {#        <li>#}
+    {#            <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>#}
+    {#        </li>#}
+    {#    {% endif %}#}
 {% endfor %}
-
-{#                <li><a href="{% url 'news:news_page' %}">Новости</a></li>#}
-{#                <li><a href="/shop">Интернет магазин</a></li>#}
-{#                <li><a href="/bonus/">Бонусная акция</a></li>#}
-<!-- Dropdown Trigger -->
-{#                <li><a class="dropdown-button" href="#!" data-activates="dropdown_nav">О компании<i#}
-{#                        class="material-icons right">arrow_drop_down</i></a>#}
-{#                </li>#}
-
-
-{#<ul class="right hide-on-med-and-down">#}
-{#    {% for child in children %}#}
-{#        <li>#}
-{#            <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>#}
-{#        </li>#}
-{#    {% endfor %}#}
-{##}
-{#</ul>#}
-{##}
-{#<ul class="side-nav" id="nav-mobile">#}
-{#    {% for child in children %}#}
-{#        <li><a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>#}
-{#        </li>#}
-{#    {% endfor %}#}
-{#</ul>#}
