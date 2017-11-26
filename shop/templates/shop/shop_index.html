@@ -2,58 +2,42 @@
 
 {% load staticfiles %}
 
+{% block custom_css %}
+    <style>
+        .content {
+            padding: 0;
+            background-image: url("{% static 'main/images/back-cat.jpg' %}");
+            background-size: cover;
+        }
+    </style>
+{% endblock %}
+
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="/shop" class="breadcrumb">Интернет-магазин</a>
-        </div>
-    </div>
+    {#    <div class="row">#}
+    {#        <div class="col s12 nav-breadcrumb white">#}
+    {#            <a href="/" class="breadcrumb">Главная</a>#}
+    {#            <a href="/shop" class="breadcrumb">Интернет-магазин</a>#}
+    {#        </div>#}
+    {#    </div>#}
 {% endblock %}
 {% block content %}
 
 
-    <!-- Header -->
-    {#    <div class="row card-panel blue-grey lighten-3">#}
-    {#        <div class="col s12">#}
-    {#            <h5 class="white-text">Онлайн каталог запчастей</h5>#}
-    {#        </div>#}
-    {#    </div>#}
+    <div id="overlay"></div>
 
-    <!-- Main content -->
-    <div class="row white">
-        <div class="col s12">
-            <p>Онлайн каталог запчастей</p>
+    <div class="row justify-content-md-center">
+        <div class="col-md-auto1">
+            <div class="link link1"><a href="/parts/">ОБЩИЙ КАТАЛОГ</a></div>
+            <div class="w-100"></div>
+            <div class="link link2"><a href="silk">АККУМУЛЯТОРЫ <br>FIAMM</a></div>
+            <div class="link link3"><a href="silk">ГОФРЫ ГЛУШИТЕЛЕЙ</a></div>
         </div>
-    </div>
+        <div class="col-md-auto2">
+            <div class="link link1"><a href="silk">ОРИГИНАЛЬНЫЕ КАТАЛОГИ</a></div>
+            <div class="link link2"><a href="silk">АВТОМОБИЛЬНЫЕ ЛАМПЫ <br>M-Tech</a></div>
+            <div class="link link3"><a href="silk">АТОХИМИЯ/МАСЛА</a></div>
+        </div>
 
-    <div class="row card-panel z-depth-0">
-        <div class="col s4 offset-s2">
-            <blockquote>
-                Поиск по наименованию/номеру детали
-            </blockquote>
-            <div class="row">
-                <form action="search/" class="col s12">
-                    <div class="input-field">
-                        <input placeholder="Введите название детали" id="q" type="text" class="validate" name="q"
-                               required>
-                        <label for="q">Номер детали</label>
-                    </div>
-                    <button class="btn waves-effect waves-light dark-blue" type="submit">
-                        Поиск по базе
-                        <i class="material-icons right">send</i>
-                    </button>
-                </form>
-            </div>
-        </div>
-        <div class="col s4 hoverable">
-            <blockquote>
-                Выбор детали по каталогу
-            </blockquote>
-            <a href="/parts">
-                <img class="responsive-img" src="{% static 'main/images/autoparts.jpg' %}">
-            </a>
-        </div>
     </div>
 {% endblock %}

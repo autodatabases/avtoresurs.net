@@ -1,28 +1,58 @@
 {% load sekizai_tags %}
+{% load staticfiles %}
 
-    <div class="row white" style="margin-top: 20px; padding-top: 10px">
-        <div class="col s7">
-            <div class="slider">
-                <ul class="slides">
-                    {% for slide in slides %}
-                        <li class="waves-effect waves-block waves-light">
-                            <img src="{{ slide.image.url }}">
-                            <div class="caption center-align">
-                                <h3>{{ slide.caption }}</h3>
-                                <h5 class="light grey-text text-lighten-3">{{ slide.text }}</h5>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+
+<div id="overlay"></div>
+
+<a href="link"><img src="{% static 'main/images/pict.jpg' %}" class="img-fluid pict2"
+                    alt="Responsive image"></a>
+<a href="link"><img src="{% static 'main/images/action.jpg' %}" class="img-fluid pict3"
+                    alt="Responsive image"></a>
+
+<div class="row">
+    {% for slide in slides %}
+        <div class="col-6 conten2">
+            <a href="link"><img src="{{ slide.image.url }}" class="img-fluid pict4"
+                                alt="Responsive image"></a>
         </div>
-        <div class="col s5">
-            <h4 style="opacity: 0.7">{{ instance.right_caption }}</h4>
-            <hr style="margin-top: 1rem; margin-bottom: 1rem; border: 0; border-top: 1px solid rgba(0,0,0,.1);">
-            <p>{{ instance.text }}</p>
-            <p><a class="waves-effect waves-light btn dark-blue" href="about">О компании</a></p>
-        </div>
-    </div>
+    {% endfor %}
+    {#                <div class="col-6 conten2">#}
+    {#                    <a href="link"><img src="{% static 'main/images/gg.jpg' %}" class="img-fluid pict4"#}
+    {#                                        alt="Responsive image"></a>#}
+    {#                    <a href="link"><img src="{% static 'main/images/texa.jpg' %}" class="img-fluid pict5"#}
+    {#                                        alt="Responsive image"></a>#}
+    {#                </div>#}
+    {#                <div class="col-6 conten2">#}
+    {#                    <a href="link"><img src="{% static 'main/images/fiam.jpg' %}" class="img-fluid pict6"#}
+    {#                                        alt="Responsive image"></a>#}
+    {#                    <a href="link"><img src="{% static 'main/images/mtech.jpg' %}" class="img-fluid pict7"#}
+    {#                                        alt="Responsive image"></a>#}
+    {#                </div>#}
+</div>
+
+{#    <div class="row white" style="margin-top: 20px; padding-top: 10px">#}
+{#        <div class="col s7">#}
+{#            <div class="slider">#}
+{#                <ul class="slides">#}
+{#                    {% for slide in slides %}#}
+{#                        <li class="waves-effect waves-block waves-light">#}
+{#                            <img src="{{ slide.image.url }}">#}
+{#                            <div class="caption center-align">#}
+{#                                <h3>{{ slide.caption }}</h3>#}
+{#                                <h5 class="light grey-text text-lighten-3">{{ slide.text }}</h5>#}
+{#                            </div>#}
+{#                        </li>#}
+{#                    {% endfor %}#}
+{#                </ul>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="col s5">#}
+{#            <h4 style="opacity: 0.7">{{ instance.right_caption }}</h4>#}
+{#            <hr style="margin-top: 1rem; margin-bottom: 1rem; border: 0; border-top: 1px solid rgba(0,0,0,.1);">#}
+{#            <p>{{ instance.text }}</p>#}
+{#            <p><a class="waves-effect waves-light btn dark-blue" href="about">О компании</a></p>#}
+{#        </div>#}
+{#    </div>#}
 
 {% addtoblock "js" %}
     <script>

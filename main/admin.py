@@ -4,8 +4,8 @@ from django.contrib import admin
 from main.models import Slide
 
 
-# class SlideAdmin(admin.ModelAdmin):
-#     list_display = ('caption', 'text', 'updated', 'order', 'image')
+class SlideAdmin(admin.ModelAdmin):
+    list_display = ('caption', 'text', 'updated', 'order', 'image')
 
-admin.site.register(Slide)
+admin.site.register(Slide, SlideAdmin)
 
