@@ -6,47 +6,31 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row no-pad-bot">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'tecdoc:manufacturers' %}">Каталог</a></li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block content %}
 
-
-    <!-- Header -->
-    {#    <div class="row card-panel blue-grey lighten-3">#}
-    {#        <div class="col s12">#}
-    {#            <h5 class="white-text">Каталог автопроизводителей</h5>#}
-    {#        </div>#}
-    {#    </div>#}
-
     <!-- Main content -->
     <div class="list-group">
-
-        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-        <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-        <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-        <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
-    </div>
-
-
-    <div class="collection tecdoc-table row">
         {% for mnf in manufacturer_list %}
             {% if forloop.counter0|divisibleby:4 %}
                 <div class="row">
             {% endif %}
-        <div class="col s3">
-            <a href="{% url 'tecdoc:manufacturer' mnf.id %}" class="collection-item">{{ mnf }}</a>
-            {#                <a href="#" class="collection-item">{{ mnf }}</a>#}
+        <div class="col-md-3">
+            <a href="{% url 'tecdoc:manufacturer' mnf.id %}"
+               class="list-group-item list-group-item-action">{{ mnf }}</a>
         </div>
         {% if forloop.counter|divisibleby:4 or forloop.last %}
             </div>
         {% endif %}
         {% endfor %}
+
     </div>
 
 {% endblock %}

@@ -5,6 +5,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
     <!-- Global Site Tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106829013-1"></script>
     <script>
@@ -146,6 +149,7 @@
                     </div>
                 </div>
             </div>
+            {% block breadcrumbs %}{% endblock %}
             {% placeholder "content" %}
             {% block content %}{% endblock %}
 

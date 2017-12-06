@@ -4,41 +4,53 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-            <a href="" class="breadcrumb">{{ manufacturer }}</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'tecdoc:manufacturers' %}">Каталог</a></li>
+            <li class="breadcrumb-item"><a href="">{{ manufacturer }}</a></li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block content %}
-
     <!-- Main content -->
-    <div class="collection tecdoc-table row">
-        <div class="collection-item">
-            <div class="row">
-                <div class="col s1 tecdoc-header">#</div>
-                <div class="col s2 tecdoc-header">Марка</div>
-                <div class="col s7 tecdoc-header">Модель</div>
-                <div class="col s2 tecdoc-header">Дата производства</div>
-{#                <div class="col s2 tecdoc-header">Окончание выпуска</div>#}
-            </div>
-        </div>
+    <style>
+        table tr td {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        table tr td a {
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <table class="table table-hover">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Марка</th>
+            <th scope="col">Модель</th>
+            <th scope="col">Дата производства</th>
+        </tr>
+        </thead>
+        <tbody>
         {% for model in manufacturer.carmodel_set.all %}
-            <a href="{% url 'tecdoc:model' manufacturer.id model.id %}" class="collection-item">
-                {#                <a href="#" class="collection-item">#}
-                <div class="row" style="margin-bottom: 0">
-                    <div class="col s1">{{ forloop.counter }}</div>
-                    <div class="col s2">{{ model.manufacturer }}</div>
-                    <div class="col s7">{{ model.title }}</div>
-                    {#                        <div class="col s5">{{ model.description }}</div>#}
-                    <div class="col s2">{{ model.construction_interval }}</div>
-{#                    <div class="col s2">{{ model.get_dateend }}</div>#}
-                </div>
-            </a>
+            <tr>
+
+                <th scope="row"><a href="{% url 'tecdoc:model' manufacturer.id model.id %}">{{ forloop.counter }}</a>
+                </th>
+                <td><a href="{% url 'tecdoc:model' manufacturer.id model.id %}">{{ model.manufacturer }}</a></td>
+                <td><a href="{% url 'tecdoc:model' manufacturer.id model.id %}">{{ model.title }}</a></td>
+                <td><a href="{% url 'tecdoc:model' manufacturer.id model.id %}">{{ model.construction_interval }}</a>
+                </td>
+
+            </tr>
+
         {% endfor %}
-    </div>
+        </tbody>
+    </table>
 
 {% endblock %}
