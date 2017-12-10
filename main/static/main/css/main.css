@@ -348,3 +348,13 @@ p {
     margin-bottom: 0
 }
 
+.table-avtoresurs tr td {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.table-avtoresurs tr td a {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
