@@ -357,4 +357,9 @@ p {
     display: block;
     height: 100%;
     width: 100%;
+    color: #495057;
+}
+
+.table-avtoresurs tr th a {
+    color: #495057;
 }

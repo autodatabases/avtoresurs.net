@@ -34,7 +34,7 @@
         </thead>
         <tbody>
         {% for car_type in carmodel.cartypes.all %}
-            <tr>
+            <tr class="table-light">
                 <th scope="row">
                     <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ forloop.counter }}</a>
                 </th>

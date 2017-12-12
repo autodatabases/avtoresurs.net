@@ -37,6 +37,8 @@ class ProductDetailView(DetailView):
         for storage in storages:
             storage.available = check_availability(storage, product_prices)
             storage.product_price = ProductPrice.objects.filter(storage=storage, product=product).first()
+            storage.quantity = range(storage.product_price.quantity)
+
             # print(storage.product_price)
 
         context['storages'] = storages

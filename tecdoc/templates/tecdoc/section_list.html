@@ -1,205 +1,159 @@
 {% extends 'main/base.html' %}
 
+
 {% load staticfiles %}
+
+{% block custom_css %}
+    <link rel="stylesheet" href='{% static "main/css/bootstrap-treeview.css" %}'>
+{% endblock custom_css %}
 
 {% block title %}Каталог деталей {{ object.manufacturer.mfa_brand }}{% endblock %}
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-            <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
-               class="breadcrumb">{{ car_type.model.manufacturer }}</a>
-            <a href="{% url 'tecdoc:model' car_type.model.manufacturer.id car_type.model.id %}"
-               class="breadcrumb">{{ car_type.model.title }}</a>
-            <a href="" class="breadcrumb">{{ car_type }}</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'tecdoc:manufacturers' %}">Каталог</a></li>
+            <li class="breadcrumb-item"><a
+                    href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}">{{ car_type.model.manufacturer }}</a>
+            </li>
+            <li class="breadcrumb-item"><a
+                    href="{% url 'tecdoc:model' car_type.model.manufacturer.id car_type.model.id %}">{{ car_type.model.title }}</a>
+            </li>
+            <li class="breadcrumb-item"><a href="">{{ car_type }}</a></li>
+        </ol>
+    </nav>
+
 {% endblock %}
 
 {% block content %}
 
-    <!-- Header -->
-    {#    <div class="row card-panel blue-grey lighten-3">#}
-    {#        <div class="col s12">#}
-    {#            <h5 class="white-text">{{ car_type.model }}</h5>#}
-    {#        </div>#}
-    {#    </div>#}
-
-    <!-- Main content -->
-    <div class="row">
-        <div class="col s12" style="padding-left: 0; padding-right: 0;">
-            <ul class="collapsible tecdoc-table" id="tecdoc-table" data-collapsible="expandable">
-                {% for part_1 in parts %}
-                    <li>
-                        <div class="collapsible-header">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            {{ part_1.title }}
-                        </div>
-                        <div class="collapsible-body">
-                            <ul class="collapsible" data-collapsible="expandable"
-                                style="margin: 0; padding-left: 20px;">
-                                {% for part_2_key, part_2 in part_1.children.items %}
-                                    <li>
-                                        {% if part_2.children %}
-                                            <div class="collapsible-header">
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                                {{ part_2.title }}
-                                            </div>
-                                            <div class="collapsible-body">
-                                                <ul class="collapsible"
-                                                    data-collapsible="expandable"
-                                                    style="margin: 0; padding-left: 20px;">
-                                                    {% for part_3_key, part_3 in part_2.children.items %}
-                                                        <li>
-                                                            {% if part_3.children %}
-                                                                <div class="collapsible-header">
-                                                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                                                    {{ part_3.title }}
-                                                                </div>
-
-                                                                <div class="collapsible-body">
-                                                                    <ul class="collapsible"
-                                                                        data-collapsible="expandable"
-                                                                        style="margin: 0; padding-left: 20px;">
-                                                                        {% for part_4_key, part_4 in part_3.children.items %}
-
-                                                                            <li>
-                                                                                {% if part_4.children %}
-                                                                                    <div class="collapsible-header">
-                                                                                        <i class="fa fa-plus"
-                                                                                           aria-hidden="true"></i>
-                                                                                        {{ part_4.title }}
-                                                                                    </div>
-                                                                                    <div class="collapsible-body">
-                                                                                        <ul class="collapsible"
-                                                                                            data-collapsible="expandable"
-                                                                                            style="margin: 0; padding-left: 20px;">
-                                                                                            {% for part_5_key, part_5 in part_4.children.items %}
-                                                                                                <li>
-                                                                                                    <a href="{{ part_5.id }}">
-                                                                                                        <div class="collapsible-header">
-                                                                                                            {{ part_5.title }}
-                                                                                                        </div>
-                                                                                                    </a>
-                                                                                                </li>
-                                                                                            {% endfor %}
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                {% else %}
-                                                                                    <a href="{{ part_4.id }}">
-                                                                                        <div class="collapsible-header"
-                                                                                             style="padding-left: 55px;">
-                                                                                            {{ part_4.title }}
-                                                                                        </div>
-                                                                                    </a>
-                                                                                {% endif %}
-                                                                            </li>
-                                                                        {% endfor %}
-                                                                    </ul>
-                                                                </div>
-                                                            {% else %}
-                                                                <a href="{{ part_3.id }}">
-                                                                    <div class="collapsible-header"
-                                                                         style="padding-left: 55px;">
-                                                                        {{ part_3.title }}
-                                                                    </div>
-                                                                </a>
-                                                            {% endif %}
-
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        {% else %}
-                                            <a href="{{ part_2.id }}">
-                                                <div class="collapsible-header" style="padding-left: 55px;">
-                                                    {{ part_2.title }}
-                                                </div>
-                                            </a>
-                                        {% endif %}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </li>
-                {% endfor %}
-
-            </ul>
-        </div>
-    </div>
-
-
-    <script>
-        $(document).ready(function () {
-            $('.collapsible').collapsible({
-                    //accordion: false, // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-                    onOpen: function (el) {
-                        {#                            console.log(el.find("i"));#}
-                        console.log(el.find("i.fa-plus:first"));
-                        el.find("i.fa-plus:first").toggleClass("fa-plus", false).toggleClass("fa-minus", true);
-                    }, // Callback for Collapsible open
-                    onClose: function (el) {
-                        console.log(el.find("i.fa-plus:first"));
-                        el.find("i.fa-minus:first").toggleClass("fa-minus", false).toggleClass("fa-plus", true);
-                    } // Callback for Collapsible close
-                }
-            );
-        });
-    </script>
-
+    <div id="tree"></div>
 
 {% endblock %}
 
 
-{#{% extends "base.html" %}#}
-{##}
-{#{% block content %}#}
-{##}
-{#        <ul>#}
-{#            {% for searchtree in searchtree_list %}#}
-{#                <li>{{ forloop.counter }}. {{ searchtree }}</li>#}
-{#            {% endfor %}#}
-{#        </ul>#}
-{##}
-{##}
-{#    <ul>#}
-{#        {% for part_1 in parts %}#}
-{#            <li>#}
-{#            {{ part_1 }}#}
-{#            {% if part_1.children %}#}
-{#                <ul>#}
-{#                    {% for part_2 in part_1.children %}#}
-{#                        <li>#}
-{#                            {{ part_2 }}#}
-{#                            <ul>#}
-{#                                {% for part_3 in part_2.children %}#}
-{#                                    <li>#}
-{#                                        {{ part_3 }}#}
-{#                                        <ul>#}
-{#                                            {% for part_4 in part_3.children %}#}
-{#                                                <li>#}
-{#                                                    {{ part_4 }}#}
-{#                                                    <ul>#}
-{#                                                        {% for part_5 in part_4.children %}#}
-{#                                                            <li>{{ part_5 }}</li>#}
-{#                                                        {% endfor %}#}
-{#                                                    </ul>#}
-{#                                                </li>#}
-{#                                            {% endfor %}#}
-{#                                        </ul>#}
-{#                                    </li>#}
-{#                                {% endfor %}#}
-{#                            </ul>#}
-{#                        </li>#}
-{#                    {% endfor %}#}
-{#                </ul>#}
-{#            {% endif %}#}
-{#        {% endfor %}#}
-{#    </ul>#}
-{##}
-{##}
-{#{% endblock %}#}
-{##}
+{% block custom_js %}
+    <script src='{% static "main/js/bootstrap-treeview.js" %}'></script>
+
+
+    <script>
+        function getTree() {
+            // Some logic to retrieve, or generate tree structure
+            var tree = [
+
+                {% for part_1 in parts %}
+                    {
+                        text: "{{ part_1.title }}",
+                        nodes: [
+                            {% for part_2_key, part_2 in part_1.children.items %}
+                                {
+                                    text: "{{ part_2.title }}",
+                                    {% if part_2.children %}
+                                        href: "#{{ part_2.title }}",
+                                        selectable: false,
+                                        nodes: [
+                                            {% for part_3_key, part_3 in part_2.children.items %}
+                                                {
+                                                    text: "{{ part_3.title }}",
+                                                    {% if part_3.children %}
+                                                        href: "#{{ part_3.title }}",
+                                                        selectable: false,
+                                                        nodes: [
+                                                            {% for part_4_key, part_4 in part_3.children.items %}
+                                                                {
+                                                                    text: "{{ part_4.title }}",
+                                                                    {% if part_4.children %}
+                                                                        href: "#{{ part_4.title }}",
+                                                                        selectable: false,
+                                                                        nodes: [
+                                                                            {% for part_5_key, part_5 in part_4.children.items %}
+                                                                                {
+                                                                                    text: "{{ part_5.title }}",
+                                                                                    href: "{{ part_5.id }}"
+                                                                                },
+                                                                            {% endfor %}
+                                                                        ],
+                                                                    {% else %}
+                                                                        href: "{{ part_4.id }}",
+                                                                    {% endif %}
+                                                                },
+                                                            {% endfor %}
+                                                        ],
+                                                    {% else %}
+                                                        href: "{{ part_3.id }}",
+                                                    {% endif %}
+                                                },
+                                            {% endfor %}
+                                        ],
+                                    {% else %}
+                                        href: "{{ part_2.id }}",
+                                    {% endif %}
+
+
+                                },
+                            {% endfor %}
+                        ],
+                        state: {
+                            expanded: false,
+                        },
+                        href: "#{{ part_1.title }}",
+                        selectable: false,
+                    },
+                {% endfor %}
+                {#                    text: 'Parent 1123',#}
+                {#                    href: '#parent1',#}
+                {#                    tags: ['4'],#}
+                {#                    nodes: [#}
+                {#                        {#}
+                {#                            text: 'Child 1',#}
+                {#                            href: '#child1',#}
+                {#                            tags: ['2'],#}
+                {#                            nodes: [#}
+                {#                                {#}
+                {#                                    text: 'Grandchild 1',#}
+                {#                                    href: '#grandchild1',#}
+                {#                                    tags: ['0']#}
+                {#                                },#}
+                {#                                {#}
+                {#                                    text: 'Grandchild 2',#}
+                {#                                    href: '#grandchild2',#}
+                {#                                    tags: ['0']#}
+                {#                                }#}
+                {#                            ]#}
+                {#                        },#}
+                {#                        {#}
+                {#                            text: 'Child 2',#}
+                {#                            href: '#child2',#}
+                {#                            tags: ['0']#}
+                {#                        }#}
+                {#                    ]#}
+                {#                },#}
+                {#                {#}
+                {#                    text: 'Parent 2',#}
+                {#                    href: '#parent2',#}
+                {#                    tags: ['0']#}
+                {#                },#}
+                {#                {#}
+                {#                    text: 'Parent 3',#}
+                {#                    href: '#parent3',#}
+                {#                    tags: ['0']#}
+                {#                },#}
+                {#                {#}
+                {#                    text: 'Parent 4',#}
+                {#                    href: '#parent4',#}
+                {#                    tags: ['0']#}
+                {#                },#}
+                {#                {#}
+                {#                    text: 'Parent 5',#}
+                {#                    href: '#parent5',#}
+                {#                    tags: ['0']#}
+                {#                }#}
+            ];
+            return tree;
+        }
+
+        $('#tree').treeview({data: getTree(), enableLinks: true});
+    </script>
+{% endblock %}

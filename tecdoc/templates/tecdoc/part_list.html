@@ -6,31 +6,101 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'tecdoc:manufacturers' %}" class="breadcrumb">Каталог автопроизводителей</a>
-            <a href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}"
-               class="breadcrumb">{{ car_type.model.manufacturer }}</a>
-            <a href="{% url 'tecdoc:model' car_type.model.manufacturer.id car_type.model.id %}"
-               class="breadcrumb">{{ car_type.model.title }}</a>
-            <a href="{% url 'tecdoc:section_list' car_type.model.manufacturer.id car_type.model.id car_type.id %}"
-               class="breadcrumb">{{ car_type.title }}</a>
-            <a href="" class="breadcrumb">{{ section }}</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'tecdoc:manufacturers' %}">Каталог</a></li>
+            <li class="breadcrumb-item"><a
+                    href="{% url 'tecdoc:manufacturer' car_type.model.manufacturer.id %}">{{ car_type.model.manufacturer }}</a>
+            </li>
+            <li class="breadcrumb-item"><a
+                    href="{% url 'tecdoc:model' car_type.model.manufacturer.id car_type.model.id %}">{{ car_type.model.title }}</a>
+            </li>
+            <li class="breadcrumb-item"><a
+                    href="{% url 'tecdoc:section_list' car_type.model.manufacturer.id car_type.model.id car_type.id %}">{{ car_type.title }}</a>
+            </li>
+            <li class="breadcrumb-item"><a href="">{{ section }}</a></li>
+        </ol>
+    </nav>
+
 {% endblock %}
 
 {% block content %}
-
-    <!-- Header -->
-    {#    <div class="row card-panel blue-grey lighten-3">#}
-    {#        <div class="col s12">#}
-    {#            <h5 class="white-text">{{ section.designation }} для {{ car_type.model }}</h5>#}
-    {#        </div>#}
-    {#    </div>#}
-
     <!-- Main content -->
+    <table class="table table-hover table-avtoresurs">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Артикул</th>
+            <th scope="col">Производитель</th>
+            <th scope="col">Название</th>
+            <th scope="col">Кол-во</th>
+            <th scope="col">Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for part in parts %}
+            <tr class="table-light">
+                <th scope="row">
+                    {% if part.product_id %}
+                        <a href="{% url 'shop:product_detail' part.product_id %}">
+                            {{ forloop.counter }}
+                        </a>
+                    {% else %}
+                        {{ forloop.counter }}
+                    {% endif %}
+                </th>
+                <td>
+                    {% if part.product_id %}
+                        <a href="{% url 'shop:product_detail' part.product_id %}">
+                            {{ part.part_number }}
+                        </a>
+                    {% else %}
+                        {{ part.part_number }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if part.product_id %}
+                        <a href="{% url 'shop:product_detail' part.product_id %}">
+                            {{ part.supplier_name }}
+                        </a>
+                    {% else %}
+                        {{ part.supplier_name }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if part.product_id %}
+                        <a href="{% url 'shop:product_detail' part.product_id %}">
+                            {{ part.product_name }}
+                        </a>
+                    {% else %}
+                        {{ part.product_name }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if part.product_id %}
+                        <a href="{% url 'shop:product_detail' part.product_id %}">
+                            {{ part.qty }}
+                        </a>
+                    {% else %}
+                        {{ part.qty }}
+                    {% endif %}
+                </td>
+                <td>{% if part.price > 0 %}
+                    <a href="{% url 'shop:product_detail' part.product_id %}">
+                        {{ part.price }}
+                    </a>
+                {% else %}
+                    -
+                {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+
     <div class="row">
         <div class="col s12">
             <div class="collection tecdoc-table row">

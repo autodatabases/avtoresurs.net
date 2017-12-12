@@ -1,16 +1,21 @@
 {% extends 'main/base.html' %}
+{% load staticfiles %}
 
+{% block custom_css %}
+    <link rel="stylesheet" href='{% static "main/css/generalcatalogs.css" %}'>
+{% endblock %}
 {% block title %}{{ object.title }}{% endblock title %}
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
-            <a href="" class="breadcrumb">{{ product.title }} {{ product|upper }}</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop:shop_index' %}">Интернет-магазин</a></li>
+            <li class="breadcrumb-item"><a href="">{{ product.title }} {{ product|upper }}</a></li>
+        </ol>
+    </nav>
+
 {% endblock %}
 
 {% block content %}
@@ -23,210 +28,278 @@
     {#    </div>#}
 
     <!-- Main content -->
-
-    <div class="row card-panel z-depth-0">
-        <div class="row">
-            <div class="col s6">
-                <div class="row">
-                    <div class="col s12">
-                        <img src="/static/main/images/no-image.png" alt="" class="responsive-img materialboxed"
-                             id="product-image"
-                             data-caption="{{ product|upper }}">
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12 center-align">
-                        <!-- Modal Trigger -->
-                        <a class="waves-effect waves-light btn dark-blue center-align" href="#modal1">Описание</a>
-                    </div>
-                    <!-- Modal Structure -->
-                    <div id="modal1" class="modal modal-fixed-footer">
-                        <div class="modal-content">
-                            <h4>{{ product.title }} {{ product|upper }}</h4>
-
-                            <div class="row">
-                                <div class="col s12">
-                                    <ul class="tabs">
-                                        <li class="tab col s6"><a href="#tab1" class="blue-text">Параметры</a>
-                                        </li>
-                                        <li class="tab col s6"><a href="#tab2" class="blue-text">Применимость</a></li>
-                                    </ul>
-                                </div>
-                                <div id="tab1" class="col s12">
-                                    {% if product.get_part_attributes %}
-                                        {% for pa in product.get_part_attributes %}
-                                            <p>{{ pa.displaytitle }}: <strong>{{ pa.displayvalue }}</strong></p>
-                                        {% endfor %}
-                                    {% else %}
-                                        <p>Описание отсутствует</p>
-                                    {% endif %}
-                                </div>
-                                <div id="tab2" class="col s12">
-                                    {% if product.get_part_applicability %}
-                                        <table class="striped">
-                                            <thead>
-                                            <tr>
-                                                <th data-field="id">МАРКА</th>
-                                                <th data-field="name">МОДЕЛЬ</th>
-                                                <th data-field="price">ДАТА ПРОИЗВОДСТВА</th>
-                                                <th data-field="price">ТИП</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            {% for pa in product.get_part_applicability %}
-                                                <tr>
-                                                    <td>{{ pa.car_type.model.manufacturer.title }} </td>
-                                                    <td>{{ pa.car_type.model.title }}</td>
-                                                    <td>{{ pa.car_type.construction_interval }} </td>
-                                                    <td>{{ pa.car_type.title }}</td>
-                                                </tr>
-                                            {% endfor %}
-
-                                            </tbody>
-                                        </table>
-                                    {% else %}
-                                        <p>Описание отсутствует</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <a href="#!"
-                               class=" modal-action modal-close waves-effect waves-green btn-flat">Закрыть</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col s6">
-            <form method="GET" action="{% url 'cart' %}" id="add-form" class="form-inline">
-                <div class="row">
-                    <div class="col s12">
-                        <p class="flow-text" style="margin-top: 0;">Производитель: <span
-                                class="blue-text"><strong>{{ product.brand|upper }}</strong></span>
-                        </p>
-                        <p class="flow-text">Название: <span
-                                class="blue-text"><strong>{{ product.title|upper }}</strong></span>
-                        </p>
-                        <p class="flow-text">Код детали: <span
-                                class="blue-text"><strong>{{ product.get_sku|upper }}</strong></span>
-                        </p>
-                        <p class="flow-text">Количество на складе: <span
-                                class="blue-text" id="quantity">{{ product.get_quantity }}</span></p>
-                        <p class="flow-text">Склады:</p>
-
-                        {% for storage in storages %}
-                            <p class="flow-text">
-                                <input class="with-gap" name="product_price" type="radio" id="product_price{{ forloop.counter }}"
-                                       value="{{ storage.product_price.id }}"
-                                        {% if not storage.available %}
-                                       disabled="disabled"
-                                        {% endif %}
-                                />
-
-                                <label for="product_price{{ forloop.counter }}" style="font-size: 23px">{{ storage }}</label>
-                            </p>
-                        {% endfor %}
-
-
-                        {% if product.whosale_price != product.retail_price %}
-                            <p class="flow-text green-text"><strong>Оптовая цена: <span
-                                    class="blue-text" id="whosale_price">{{ product.whosale_price }}</span></strong>
-                            </p>
-                            <p class="flow-text red-text">Розничная цена: <span
-                                    class="blue-text" id="retail_price">{{ product.retail_price }}</span>
-                            </p>
-                        {% else %}
-                            <p class="flow-text">Цена: <span
-                                    class="blue-text" id="retail_price">{{ product.retail_price }}</span>
-                            </p>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="row">
-
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input placeholder="Введите количество товара" id="id_qty" type="number"
-                                       class="validate center-align" name="qty"
-                                       value="1" style="font-weight: bold; font-size: 1.5em;">
-                                <label for="first_name">Количество</label>
-                            </div>
-                        </div>
-
-                        <div class="row center-align">
-                            <div class="col s12">
-                                <input type="hidden" name="item" value="{{ object.id }}">
-                                <button class="btn waves-effect waves-light dark-blue" type="submit"
-                                        name="action" id="submit-btn">В корзину
-                                    <i class="material-icons right">send</i>
-                                </button>
-                            </div>
-                        </div>
-
-                </div>
-            </form>
-            </div>
-        </div>
-
-    </div>
-
     <div class="row">
-        <div class="col s12">
-            <div class="collection tecdoc-table row card-panel z-depth-0 no-border">
-                <div class="collection-item">
-                    <div class="row">
-                        <div class="col s1 tecdoc-header">№ п/п</div>
-                        <div class="col s2 tecdoc-header">Артикул</div>
-                        <div class="col s2 tecdoc-header">Производитель</div>
-                        <div class="col s5 tecdoc-header">Название</div>
-                        <div class="col s1 tecdoc-header">Кол-во</div>
-                        <div class="col s1 tecdoc-header">Цена</div>
+        <div class="col-xs-12 col-sm-4 left">
+            <img src="/static/main/images/no-image.png" class="img-fluid tovar" alt="Responsive image"
+                 id="product-image">
+        </div>
+        <div class="col-xs-12 col-sm-6 right">
+            <div class="row">
+                <div class="col-5">
+                    <p class="text">Производитель</p>
+                    <p class="text">Наименование</p>
+                    <p class="text">Код детали</p>
+                    <p class="text">Цена розничная</p>
+                    <p class="text">Цена оптовая</p>
+                </div>
+                <div class="col-2">
+                    <p class="text">-</p>
+                    <p class="text">-</p>
+                    <p class="text">-</p>
+                    <p class="text">-</p>
+                    <p class="text">-</p>
+                </div>
+                <div class="col-5">
+                    <p class="text2">{{ product.brand|upper }}</p>
+                    <p class="text2">{{ product.title|upper }}</p>
+                    <p class="text3">{{ product.get_sku|upper }}</p>
+                    <p class="text3">5&nbsp;000 руб.</p>
+                    <p class="text3">4&nbsp;000 руб.</p>
+                </div>
+            </div>
+            <div class="line3">Наличие на складе:</div>
+
+            {% for storage in storages %}
+                <div class="row sklad">
+                    <div class="col-7">
+
+                        <p class="text">{{ storage }}</p>
+
+                    </div>
+                    <div class="col-5">
+                        <div class="form-group">
+                            {% if storage.product_price.quantity > 0 %}
+                            <select class="form-control custom-select" id="country">
+                                    <option>0</option>
+                                    {% for i in storage.quantity %}
+                                        <option>{{ forloop.counter }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% else %}
+                                <select class="form-control custom-select" id="country" disabled>
+                                    <option>0</option>
+                                </select>
+                                {% endif %}
+
+
+                        </div>
                     </div>
                 </div>
-                {% for part_analog in part_analogs %}
-                    {% if part_analog.product_id %}
-                        <a href="{% url 'shop:product_detail' part_analog.product_id %}" class="collection-item">
-                    {% else %}
-                        <div class="collection-item noactive">
-                    {% endif %}
+            {% endfor %}
 
-                <div class="row no-margin-bot">
-                    <div class="col s1">{{ forloop.counter }}</div>
-                    <div class="col s2">{{ part_analog.part_number }}</div>
-                    <div class="col s2">{{ part_analog.supplier }}</div>
-                    <div class="col s5">{{ part_analog.title }} {{ part_analog.supplier }} {{ part_analog.part_number }}</div>
-                    <div class="col s1">
-
-                        {% if part_analog.quantity > -1 %}
-                            <strong>{{ part_analog.quantity }}</strong>
-                        {% else %}
-                            -
-                        {% endif %}
-
-                    </div>
-                    <div class="col s1">
-
-                        {% if part_analog.price > -1 %}
-                            <strong>{{ part_analog.price }}</strong>
-                        {% else %}
-                            -
-                        {% endif %}
-
-                    </div>
+            <div class="row sklad">
+                <div class="col-12">
+                    <button type="button" class="btn btn-primary">В корзину</button>
                 </div>
-                {% if part_analog.product_id %}
-                    </a>
-                {% else %}
-                    </div>
-                {% endif %}
-                {% endfor %}
+            </div>
         </div>
     </div>
 
+
+    {#        <div class="row card-panel z-depth-0">#}
+    {#            <div class="row">#}
+    {#                <div class="col s6">#}
+    {#                    <div class="row">#}
+    {#                        <div class="col s12">#}
+    {#                            <img src="/static/main/images/no-image.png" alt="" class="responsive-img materialboxed"#}
+    {#                                 id="product-image"#}
+    {#                                 data-caption="{{ product|upper }}">#}
+    {##}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                    <div class="row">#}
+    {#                        <div class="col s12 center-align">#}
+    {#                            <!-- Modal Trigger -->#}
+    {#                            <a class="waves-effect waves-light btn dark-blue center-align" href="#modal1">Описание</a>#}
+    {#                        </div>#}
+    {#                        <!-- Modal Structure -->#}
+    {#                        <div id="modal1" class="modal modal-fixed-footer">#}
+    {#                            <div class="modal-content">#}
+    {#                                <h4>{{ product.title }} {{ product|upper }}</h4>#}
+    {##}
+    {#                                <div class="row">#}
+    {#                                    <div class="col s12">#}
+    {#                                        <ul class="tabs">#}
+    {#                                            <li class="tab col s6"><a href="#tab1" class="blue-text">Параметры</a>#}
+    {#                                            </li>#}
+    {#                                            <li class="tab col s6"><a href="#tab2" class="blue-text">Применимость</a></li>#}
+    {#                                        </ul>#}
+    {#                                    </div>#}
+    {#                                    <div id="tab1" class="col s12">#}
+    {#                                        {% if product.get_part_attributes %}#}
+    {#                                            {% for pa in product.get_part_attributes %}#}
+    {#                                                <p>{{ pa.displaytitle }}: <strong>{{ pa.displayvalue }}</strong></p>#}
+    {#                                            {% endfor %}#}
+    {#                                        {% else %}#}
+    {#                                            <p>Описание отсутствует</p>#}
+    {#                                        {% endif %}#}
+    {#                                    </div>#}
+    {#                                    <div id="tab2" class="col s12">#}
+    {#                                        {% if product.get_part_applicability %}#}
+    {#                                            <table class="striped">#}
+    {#                                                <thead>#}
+    {#                                                <tr>#}
+    {#                                                    <th data-field="id">МАРКА</th>#}
+    {#                                                    <th data-field="name">МОДЕЛЬ</th>#}
+    {#                                                    <th data-field="price">ДАТА ПРОИЗВОДСТВА</th>#}
+    {#                                                    <th data-field="price">ТИП</th>#}
+    {#                                                </tr>#}
+    {#                                                </thead>#}
+    {#                                                <tbody>#}
+    {##}
+    {#                                                {% for pa in product.get_part_applicability %}#}
+    {#                                                    <tr>#}
+    {#                                                        <td>{{ pa.car_type.model.manufacturer.title }} </td>#}
+    {#                                                        <td>{{ pa.car_type.model.title }}</td>#}
+    {#                                                        <td>{{ pa.car_type.construction_interval }} </td>#}
+    {#                                                        <td>{{ pa.car_type.title }}</td>#}
+    {#                                                    </tr>#}
+    {#                                                {% endfor %}#}
+    {##}
+    {#                                                </tbody>#}
+    {#                                            </table>#}
+    {#                                        {% else %}#}
+    {#                                            <p>Описание отсутствует</p>#}
+    {#                                        {% endif %}#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {##}
+    {#                            </div>#}
+    {#                            <div class="modal-footer">#}
+    {#                                <a href="#!"#}
+    {#                                   class=" modal-action modal-close waves-effect waves-green btn-flat">Закрыть</a>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {##}
+    {#                </div>#}
+    {#                <div class="col s6">#}
+    {#                    <form method="GET" action="{% url 'cart' %}" id="add-form" class="form-inline">#}
+    {#                        <div class="row">#}
+    {#                            <div class="col s12">#}
+    {#                                <p class="flow-text" style="margin-top: 0;">Производитель: <span#}
+    {#                                        class="blue-text"><strong>{{ product.brand|upper }}</strong></span>#}
+    {#                                </p>#}
+    {#                                <p class="flow-text">Название: <span#}
+    {#                                        class="blue-text"><strong>{{ product.title|upper }}</strong></span>#}
+    {#                                </p>#}
+    {#                                <p class="flow-text">Код детали: <span#}
+    {#                                        class="blue-text"><strong>{{ product.get_sku|upper }}</strong></span>#}
+    {#                                </p>#}
+    {#                                <p class="flow-text">Количество на складе: <span#}
+    {#                                        class="blue-text" id="quantity">{{ product.get_quantity }}</span></p>#}
+    {#                                <p class="flow-text">Склады:</p>#}
+    {##}
+    {#                                {% for storage in storages %}#}
+    {#                                    <p class="flow-text">#}
+    {#                                        <input class="with-gap" name="product_price" type="radio"#}
+    {#                                               id="product_price{{ forloop.counter }}"#}
+    {#                                               value="{{ storage.product_price.id }}"#}
+    {#                                                {% if not storage.available %}#}
+    {#                                               disabled="disabled"#}
+    {#                                                {% endif %}#}
+    {#                                        />#}
+    {##}
+    {#                                        <label for="product_price{{ forloop.counter }}"#}
+    {#                                               style="font-size: 23px">{{ storage }}</label>#}
+    {#                                    </p>#}
+    {#                                {% endfor %}#}
+    {##}
+    {##}
+    {#                                {% if product.whosale_price != product.retail_price %}#}
+    {#                                    <p class="flow-text green-text"><strong>Оптовая цена: <span#}
+    {#                                            class="blue-text" id="whosale_price">{{ product.whosale_price }}</span></strong>#}
+    {#                                    </p>#}
+    {#                                    <p class="flow-text red-text">Розничная цена: <span#}
+    {#                                            class="blue-text" id="retail_price">{{ product.retail_price }}</span>#}
+    {#                                    </p>#}
+    {#                                {% else %}#}
+    {#                                    <p class="flow-text">Цена: <span#}
+    {#                                            class="blue-text" id="retail_price">{{ product.retail_price }}</span>#}
+    {#                                    </p>#}
+    {#                                {% endif %}#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <div class="row">#}
+    {##}
+    {#                            <div class="row">#}
+    {#                                <div class="input-field col s12">#}
+    {#                                    <input placeholder="Введите количество товара" id="id_qty" type="number"#}
+    {#                                           class="validate center-align" name="qty"#}
+    {#                                           value="1" style="font-weight: bold; font-size: 1.5em;">#}
+    {#                                    <label for="first_name">Количество</label>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {##}
+    {#                            <div class="row center-align">#}
+    {#                                <div class="col s12">#}
+    {#                                    <input type="hidden" name="item" value="{{ object.id }}">#}
+    {#                                    <button class="btn waves-effect waves-light dark-blue" type="submit"#}
+    {#                                            name="action" id="submit-btn">В корзину#}
+    {#                                        <i class="material-icons right">send</i>#}
+    {#                                    </button>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {##}
+    {#                        </div>#}
+    {#                    </form>#}
+    {#                </div>#}
+    {#            </div>#}
+    {##}
+    {#        </div>#}
+    {##}
+    {#        <div class="row">#}
+    {#            <div class="col s12">#}
+    {#                <div class="collection tecdoc-table row card-panel z-depth-0 no-border">#}
+    {#                    <div class="collection-item">#}
+    {#                        <div class="row">#}
+    {#                            <div class="col s1 tecdoc-header">№ п/п</div>#}
+    {#                            <div class="col s2 tecdoc-header">Артикул</div>#}
+    {#                            <div class="col s2 tecdoc-header">Производитель</div>#}
+    {#                            <div class="col s5 tecdoc-header">Название</div>#}
+    {#                            <div class="col s1 tecdoc-header">Кол-во</div>#}
+    {#                            <div class="col s1 tecdoc-header">Цена</div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                    {% for part_analog in part_analogs %}#}
+    {#                        {% if part_analog.product_id %}#}
+    {#                            <a href="{% url 'shop:product_detail' part_analog.product_id %}" class="collection-item">#}
+    {#                        {% else %}#}
+    {#                            <div class="collection-item noactive">#}
+    {#                        {% endif %}#}
+    {##}
+    {#                    <div class="row no-margin-bot">#}
+    {#                        <div class="col s1">{{ forloop.counter }}</div>#}
+    {#                        <div class="col s2">{{ part_analog.part_number }}</div>#}
+    {#                        <div class="col s2">{{ part_analog.supplier }}</div>#}
+    {#                        <div class="col s5">{{ part_analog.title }} {{ part_analog.supplier }} {{ part_analog.part_number }}</div>#}
+    {#                        <div class="col s1">#}
+    {##}
+    {#                            {% if part_analog.quantity > -1 %}#}
+    {#                                <strong>{{ part_analog.quantity }}</strong>#}
+    {#                            {% else %}#}
+    {#                                -#}
+    {#                            {% endif %}#}
+    {##}
+    {#                        </div>#}
+    {#                        <div class="col s1">#}
+    {##}
+    {#                            {% if part_analog.price > -1 %}#}
+    {#                                <strong>{{ part_analog.price }}</strong>#}
+    {#                            {% else %}#}
+    {#                                -#}
+    {#                            {% endif %}#}
+    {##}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                    {% if part_analog.product_id %}#}
+    {#                        </a>#}
+    {#                    {% else %}#}
+    {#                        </div>#}
+    {#                    {% endif %}#}
+    {#                    {% endfor %}#}
+    {#            </div>#}
+    {#        </div>#}
 
 
 {% endblock %}

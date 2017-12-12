@@ -64,8 +64,7 @@
     <link rel="stylesheet" href="{% static 'main/font-awesome/css/font-awesome.min.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Marck+Script" rel="stylesheet">
 
-    {% block custom_css %}
-    {% endblock %}
+    {% block custom_css %}{% endblock custom_css %}
 
 </head>
 <body>
@@ -112,6 +111,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </header>
 <main>
     <div class="row middle">
@@ -212,6 +212,8 @@
         integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
         crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
 {% render_block "js" %}
+{% block custom_js %}{% endblock custom_js %}
 </body>
 </html>
