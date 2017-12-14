@@ -37,7 +37,11 @@ class ProductDetailView(DetailView):
         for storage in storages:
             storage.available = check_availability(storage, product_prices)
             storage.product_price = ProductPrice.objects.filter(storage=storage, product=product).first()
-            storage.quantity = range(storage.product_price.quantity)
+            try:
+                quantity = range(storage.product_price.quantity)
+            except AttributeError:
+                quantity = 0
+            storage.quantity = quantity
 
             # print(storage.product_price)
 

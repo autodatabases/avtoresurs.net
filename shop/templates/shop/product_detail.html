@@ -20,78 +20,76 @@
 
 {% block content %}
 
-    <!-- Header -->
-    {#    <div class="row card-panel blue-grey lighten-3">#}
-    {#        <div class="col s12">#}
-    {#            <h5 class="white-text">{{ product.title|title }}</h5>#}
-    {#        </div>#}
-    {#    </div>#}
-
     <!-- Main content -->
     <div class="row">
         <div class="col-xs-12 col-sm-4 left">
             <img src="/static/main/images/no-image.png" class="img-fluid tovar" alt="Responsive image"
                  id="product-image">
         </div>
+
         <div class="col-xs-12 col-sm-6 right">
-            <div class="row">
-                <div class="col-5">
-                    <p class="text">Производитель</p>
-                    <p class="text">Наименование</p>
-                    <p class="text">Код детали</p>
-                    <p class="text">Цена розничная</p>
-                    <p class="text">Цена оптовая</p>
-                </div>
-                <div class="col-2">
-                    <p class="text">-</p>
-                    <p class="text">-</p>
-                    <p class="text">-</p>
-                    <p class="text">-</p>
-                    <p class="text">-</p>
-                </div>
-                <div class="col-5">
-                    <p class="text2">{{ product.brand|upper }}</p>
-                    <p class="text2">{{ product.title|upper }}</p>
-                    <p class="text3">{{ product.get_sku|upper }}</p>
-                    <p class="text3">5&nbsp;000 руб.</p>
-                    <p class="text3">4&nbsp;000 руб.</p>
-                </div>
-            </div>
-            <div class="line3">Наличие на складе:</div>
-
-            {% for storage in storages %}
-                <div class="row sklad">
-                    <div class="col-7">
-
-                        <p class="text">{{ storage }}</p>
-
+            <form method="GET" action="{% url 'cart' %}" id="add-form">
+                <div class="row">
+                    <div class="col-5">
+                        <p class="text">Производитель</p>
+                        <p class="text">Наименование</p>
+                        <p class="text">Код детали</p>
+                        <p class="text">Цена розничная</p>
+                        <p class="text">Цена оптовая</p>
+                    </div>
+                    <div class="col-2">
+                        <p class="text">-</p>
+                        <p class="text">-</p>
+                        <p class="text">-</p>
+                        <p class="text">-</p>
+                        <p class="text">-</p>
                     </div>
                     <div class="col-5">
-                        <div class="form-group">
-                            {% if storage.product_price.quantity > 0 %}
-                            <select class="form-control custom-select" id="country">
-                                    <option>0</option>
-                                    {% for i in storage.quantity %}
-                                        <option>{{ forloop.counter }}</option>
-                                    {% endfor %}
-                                </select>
+                        <p class="text2">{{ product.brand|upper }}</p>
+                        <p class="text2">{{ product.title|upper }}</p>
+                        <p class="text3">{{ product.get_sku|upper }}</p>
+                        <p class="text3">5&nbsp;000 руб.</p>
+                        <p class="text3">4&nbsp;000 руб.</p>
+                    </div>
+                </div>
+                <div class="line3">Наличие на складе:</div>
+
+                {% for storage in storages %}
+                    <div class="row sklad">
+                        <div class="col-7">
+
+                            <p class="text">{{ storage }}</p>
+
+                        </div>
+                        <div class="col-5">
+                            <div class="form-group">
+                                {% if storage.product_price.quantity > 0 %}
+                                    <select class="form-control custom-select" id="country"
+                                            name="storage[{{ storage.id }}]">
+                                        <option>0</option>
+                                        {% for i in storage.quantity %}
+                                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                        {% endfor %}
+                                    </select>
                                 {% else %}
-                                <select class="form-control custom-select" id="country" disabled>
-                                    <option>0</option>
-                                </select>
+                                    <select class="form-control custom-select" id="country" disabled>
+                                        <option>0</option>
+                                    </select>
                                 {% endif %}
 
 
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
 
-            <div class="row sklad">
-                <div class="col-12">
-                    <button type="button" class="btn btn-primary">В корзину</button>
+                <div class="row sklad">
+                    <div class="col-12">
+                        <input type="hidden" name="item" value="{{ object.id }}">
+                        <button type="submit" class="btn btn-primary" id="submit-btn">В корзину</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
