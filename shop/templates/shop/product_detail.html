@@ -28,8 +28,8 @@
         </div>
 
         <div class="col-xs-12 col-sm-6 right">
-            <form method="POST" action="{% url 'cart' %}" id="add-form">
-                {% csrf_token %}
+            <form method="GET" action="{% url 'cart' %}" id="add-form">
+{#                {% csrf_token %}#}
                 <div class="row">
                     <div class="col-5">
                         <p class="text">Производитель</p>
@@ -67,7 +67,7 @@
                                 {% if storage.product_price.quantity > 0 %}
                                     <select class="form-control custom-select" id="country"
                                             name="storage[{{ storage.id }}]">
-                                        <option>0</option>
+                                        <option value="0">0</option>
                                         {% for i in storage.quantity %}
                                             <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
                                         {% endfor %}
@@ -310,7 +310,7 @@
             var formData = $('#add-form').serialize();
             console.log(formData);
             $.ajax({
-                type: "POST",
+                type: "GET",
                 url: "{% url 'cart' %}",
                 data: formData,
                 success: function (data) {

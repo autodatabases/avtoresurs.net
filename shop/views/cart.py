@@ -91,8 +91,9 @@ class CartView(SingleObjectMixin, View):
         item_added = False
         cart_item = None
         storage_id = request.GET.get('storage', None)
-        storages = self.request.GET.getlist('storage', None)
-        print(storages)
+        storages = request.GET.dict()
+        print(self.request.GET)
+        print("storages: ", storages)
 
         product_price_id = request.GET.get('product_price', None)
 

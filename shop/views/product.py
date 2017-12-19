@@ -43,8 +43,6 @@ class ProductDetailView(DetailView):
                 quantity = 0
             storage.quantity = quantity
 
-            # print(storage.product_price)
-
         context['storages'] = storages
         # for storage_price in storage_prices:
         #     print(storage_price)
