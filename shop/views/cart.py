@@ -67,6 +67,22 @@ class CartView(SingleObjectMixin, View):
             cart.save()
         return cart
 
+    def post(self, *args, **kwargs):
+        cart = self.get_object()
+        item_id = self.request.POST.get("item")
+        print(item_id)
+        storages = self.request.POST.getlist('storage', None)
+        print(storages)
+        data = {
+            "deleted": False,
+            "item_added": True,
+            "line_total": True,
+            "subtotal": True,
+            "flash_message": "Added",
+            "total_items": True,
+        }
+        return JsonResponse(data)
+
     def get(self, request, *args, **kwargs):
         cart = self.get_object()
         item_id = request.GET.get("item")
@@ -75,6 +91,9 @@ class CartView(SingleObjectMixin, View):
         item_added = False
         cart_item = None
         storage_id = request.GET.get('storage', None)
+        storages = self.request.GET.getlist('storage', None)
+        print(storages)
+
         product_price_id = request.GET.get('product_price', None)
 
         title = None
@@ -84,13 +103,15 @@ class CartView(SingleObjectMixin, View):
             # product_price = get_object_or_404(ProductPrice, product=item_instance, storage=storage)
             if storage_id:
                 storage = get_object_or_404(Storage, id=storage_id)
+
+            storage = get_object_or_404(Storage, id=storages[0].id)
             if product_price_id:
                 storage = ProductPrice.objects.get(id=product_price_id).storage
-            # try:
-            #     if int(qty) < 1:
-            #         delete_item = True
-            # except:
-            #     pass
+                # try:
+                #     if int(qty) < 1:
+                #         delete_item = True
+                # except:
+                #     pass
                 # raise Http404
             cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item_instance, storage=storage)
             if created:
@@ -139,11 +160,9 @@ class CartView(SingleObjectMixin, View):
 
         cart_storages = make_cart_storages(cart, user)
 
-
         if cart_storages:
             context.update({
                 # "cart_items": cart_items,
                 "cart_storages": cart_storages
             })
         return render(request, template, context)
-
