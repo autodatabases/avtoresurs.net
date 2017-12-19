@@ -12,6 +12,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106829013-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
+
         function gtag() {
             dataLayer.push(arguments)
         };
@@ -87,9 +88,20 @@
                     </div>
                     <div class="col-xs-12 col-sm-8">
                         <nav class="nav justify-content-end">
-                            <a class="btn btn-lg btn-success" href="contact" data-toggle="modal"
-                               data-target="#basicModal">Войти</a>
-                            <a class="nav-link active" href="registr">Зарегестрироваться</a>
+                            {% if request.user.is_authenticated %}
+                                <a class="btn btn-lg btn-success" href="/accounts/logout">Выйти ({{ request.user }})</a>
+                                <a class="btn btn-lg btn-success" href="/profile/">
+                                    Личный кабинет
+                                    {% if postman_unread_count %}
+                                        (+{{ postman_unread_count }})
+                                    {% endif %}</a>
+                            {% else %}
+                                <a class="btn btn-lg btn-success" href="contact" data-toggle="modal"
+                                   data-target="#basicModal">Войти</a>
+                                <a class="nav-link active" href="registr">Зарегестрироваться</a>
+                            {% endif %}
+
+
                             <a class="nav-link active" href="order">Оформить покупки</a>
                             <a class="nav-link active" href="search.html"><i class="fa fa-search fa-lg"></i></a>
                             <div class="dropdown">
@@ -130,14 +142,15 @@
                             <h6 class="modal-title" id="myModalLabel">АВТОРЕСУРС</h6>
                         </div>
                         <div class="modal-body">
-                            <form class="form-signin">
+                            <form class="form-signin" action="/accounts/login/" method="post">
+                                {% csrf_token %}
                                 <div class="em_log">E-mail/логин:</div>
-                                <input type="email" id="inputEmail" class="form-control">
+                                <input type="text" id="inputEmail" class="form-control" name="username">
                                 <div class="em_log">Пароль:</div>
-                                <input type="password" id="inputPassword" class="form-control">
+                                <input type="password" id="inputPassword" class="form-control" name="password">
                                 <div class="forgot-password">
                                     <a href="#" class="forgot-password1">Забыли пароль?</a>
-                                    <a href="enter" class="vhod">Войти</a>
+                                    <input type="submit" class="vhod" value="Войти"></input>
                                 </div>
                                 <div class="social" align="center">
                                     <a href="#" class="vk"><i class="fa fa-vk"></i></a>

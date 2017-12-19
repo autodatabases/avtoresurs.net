@@ -38,21 +38,37 @@
                 <th scope="row">
                     <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ forloop.counter }}</a>
                 </th>
-                <td><a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ carmodel.get_manufacturer }}</a></td>
-                <td><a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.description }}</a></td>
-                <td><a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.car_specs.fuel }}</a></td>
-                <td><a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.construction_interval }}</a></td>
-                <td><a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.car_specs.eng_volume }}</a></td>
-                <td><a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.car_specs.kw }} / {{ car_type.car_specs.ps }}</a></td>
-                <td><a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.car_specs.cylinders }}</a></td>
-                <td><a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.car_specs.body_type }}</a></td>
+                <td>
+                    <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ carmodel.get_manufacturer }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.description }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.car_specs.fuel }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.construction_interval }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.car_specs.eng_volume }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.car_specs.kw }}
+                        / {{ car_type.car_specs.ps }}</a></td>
+                <td>
+                    <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.car_specs.cylinders }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'tecdoc:section_list' carmodel.manufacturer.id carmodel.id car_type.id %}">{{ car_type.car_specs.body_type }}</a>
+                </td>
             </tr>
 
         {% endfor %}
         </tbody>
     </table>
 
-    
+
 
 
     {% for car_type in carmodel.cartypes.cartypes %}

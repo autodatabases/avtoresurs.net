@@ -42,4 +42,11 @@ def hello():
     return "hello habr"
 
 
-print(hello())  ## выведет <b><i>hello habr</i></b>
+def test(id=None):
+    print(id)
+
+def test():
+    print(2)
+
+
+test(id=4)
