@@ -159,29 +159,29 @@ body {
     padding: 0
 }
 
-.modal:target {
-    border-color: black
-}
+/*.modal:target {*/
+    /*border-color: black*/
+/*}*/
 
-.modal-dialog {
-    width: 300px;
-}
+/*.modal-dialog {*/
+    /*width: 300px;*/
+/*}*/
 
-.modal-content {
-    width: 300px;
-    background-color: #EEEEEE
-}
+/*.modal-content {*/
+    /*width: 300px;*/
+    /*background-color: #EEEEEE*/
+/*}*/
 
-.modal-header {
-    background-color: #1F3EFC;
-}
+/*.modal-header {*/
+    /*background-color: #1F3EFC;*/
+/*}*/
 
-.modal-title {
-    color: white;
-    padding-left: 85px;
-    font-weight: bold;
-    font-family: 'Ubuntu', sans-serif;
-}
+/*.modal-title {*/
+    /*color: white;*/
+    /*padding-left: 85px;*/
+    /*font-weight: bold;*/
+    /*font-family: 'Ubuntu', sans-serif;*/
+/*}*/
 
 .enter {
     margin: auto;
@@ -246,7 +246,7 @@ li > a {
 
 .tovar {
     padding-top: 30%;
-    padding-bottom: 60%
+    padding-bottom: 15%
 }
 
 .right {

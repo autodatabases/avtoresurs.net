@@ -159,29 +159,29 @@ body {
     padding: 0
 }
 
-.modal:target {
-    border-color: black
-}
+/*.modal:target {*/
+/*border-color: black*/
+/*}*/
 
-.modal-dialog {
-    width: 300px;
-}
+/*.modal-dialog {*/
+/*width: 300px;*/
+/*}*/
 
-.modal-content {
-    width: 300px;
-    background-color: #EEEEEE
-}
+/*.modal-content {*/
+/*width: 300px;*/
+/*background-color: #EEEEEE*/
+/*}*/
 
-.modal-header {
-    background-color: #1F3EFC;
-}
+/*.modal-header {*/
+/*background-color: #1F3EFC;*/
+/*}*/
 
-.modal-title {
-    color: white;
-    padding-left: 85px;
-    font-weight: bold;
-    font-family: 'Ubuntu', sans-serif;
-}
+/*.modal-title {*/
+/*color: white;*/
+/*padding-left: 85px;*/
+/*font-weight: bold;*/
+/*font-family: 'Ubuntu', sans-serif;*/
+/*}*/
 
 .enter {
     margin: auto;
@@ -362,4 +362,10 @@ p {
 
 .table-avtoresurs tr th a {
     color: #495057;
+}
+
+@media (min-width: 576px) {
+    #techModal .modal-dialog, #applicabilityModal .modal-dialog {
+        max-width: 900px;
+    }
 }

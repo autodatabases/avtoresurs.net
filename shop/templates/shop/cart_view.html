@@ -4,13 +4,13 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
-            <a href="" class="breadcrumb">Корзина</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop:shop_index' %}">Интернет-магазин</a></li>
+            <li class="breadcrumb-item"><a href="">Корзина</a></li>
+        </ol>
+    </nav>
 {% endblock %}
 
 
@@ -29,6 +29,22 @@
             {% include "shop/empty_cart.html" %}
 
         {% else %}
+            <form action="/cart" method="post" class="">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Итого</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="bg-primary">...</tr>
+                </tbody>
+            </table>
+            </form>
 
 
             <div id="cart_content" class="row white">
@@ -50,7 +66,8 @@
 
                         {% for storage, items in cart_storages.items %}
                             <tr>
-                                <th colspan="5" style="background-color: #26a0d7" class="center-align">{{ storage }}</th>
+                                <th colspan="5" style="background-color: #26a0d7"
+                                    class="center-align">{{ storage }}</th>
                             </tr>
                             {% for item in items %}
                                 <tr class="cart-item-{{ item.item.id }}">
@@ -100,7 +117,8 @@
                                                 <input type="hidden" name="item" value="{{ item.item.id }}">
                                                 <input class="item-qty quantity_input center-align" name="qty"
                                                        value="{{ item.quantity }}" type="number" min="1">
-                                                <input type="hidden" name="storage" id="storage" value="{{ storage.id }}">
+                                                <input type="hidden" name="storage" id="storage"
+                                                       value="{{ storage.id }}">
                                                 {#                                    <span class="quantity_modifier quantity_down"><i class="fa fa-minus"></i></span>#}
                                                 {#                                    <span class="quantity_modifier quantity_up"><i class="fa fa-plus"></i></span>#}
                                             </form>
