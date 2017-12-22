@@ -16,7 +16,7 @@ class CartItem(models.Model):
     line_item_total = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return self.item.__str__()
+        return "%s %s" % (self.item.__str__(), self.storage.__str__())
 
     def remove(self):
         return self.item.remove_from_cart()

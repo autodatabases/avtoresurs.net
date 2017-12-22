@@ -1,8 +1,11 @@
+import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, Http404, redirect
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 from django.views.generic.detail import SingleObjectMixin
 
@@ -39,13 +42,9 @@ def make_cart_storages(cart, user):
         item.item.price = price
         cart_storages[storage].append(item)
     return cart_storages
-    #
-    # for cart_storage, items in cart_storages.items():
-    #     print(cart_storage)
-    #     for item in items:
-    #         print(item)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class CartView(SingleObjectMixin, View):
     """ вьюха для корзины с json """
     model = Cart
@@ -69,17 +68,29 @@ class CartView(SingleObjectMixin, View):
 
     def post(self, *args, **kwargs):
         cart = self.get_object()
-        item_id = self.request.POST.get("item")
-        print(item_id)
-        storages = self.request.POST.getlist('storage', None)
-        print(storages)
+        print(cart)
+        data = json.loads(self.request.body)
+        print(data)
+        item_id = data['id']
+        item_instance = get_object_or_404(Product, id=item_id)
+        for temp_storage in data['storages']:
+            print("=======")
+            print(temp_storage)
+            print("=======")
+            storage_id = temp_storage['id']
+            qty = temp_storage['qty']
+            storage = get_object_or_404(Storage, id=storage_id)
+            cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item_instance, storage=storage)
+            if created:
+                flash_message = "Товар успешно добавлен в корзину"
+                item_added = True
+            elif not created:
+                flash_message = "Количество товара в корзине изменено"
+            cart_item.quantity = qty
+            cart_item.save()
+            print(cart_item)
         data = {
-            "deleted": False,
-            "item_added": True,
-            "line_total": True,
-            "subtotal": True,
-            "flash_message": "Added",
-            "total_items": True,
+            "test": "test"
         }
         return JsonResponse(data)
 
@@ -91,9 +102,6 @@ class CartView(SingleObjectMixin, View):
         item_added = False
         cart_item = None
         storage_id = request.GET.get('storage', None)
-        storages = request.GET.dict()
-        print(self.request.GET)
-        print("storages: ", storages)
 
         product_price_id = request.GET.get('product_price', None)
 
@@ -102,18 +110,13 @@ class CartView(SingleObjectMixin, View):
             item_instance = get_object_or_404(Product, id=item_id)
             qty = request.GET.get("qty", 1)
             # product_price = get_object_or_404(ProductPrice, product=item_instance, storage=storage)
+            storage = None
             if storage_id:
                 storage = get_object_or_404(Storage, id=storage_id)
 
-            storage = get_object_or_404(Storage, id=storages[0].id)
             if product_price_id:
                 storage = ProductPrice.objects.get(id=product_price_id).storage
-                # try:
-                #     if int(qty) < 1:
-                #         delete_item = True
-                # except:
-                #     pass
-                # raise Http404
+
             cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item_instance, storage=storage)
             if created:
                 flash_message = "Товар успешно добавлен в корзину"
