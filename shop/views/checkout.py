@@ -34,7 +34,7 @@ def order_notification(cart, order, user):
 
     for cart_storage, items in cart_storages.items():
         body = 'Новый заказ от %s #%s.\r\n\r\nИнформация о заказе:\r\n' % (
-        order.added.strftime('%d.%m.%Y %H:%M'), order.id)
+            order.added.strftime('%d.%m.%Y %H:%M'), order.id)
         profile = Profile.objects.get(user=user)
         body += 'Заказчик: %s \r\n' % (profile.fullname or profile)
         body += 'Код заказчика: %s\r\n' % (profile.vip_code or 'код заказчика отсутствует')
@@ -60,7 +60,8 @@ def order_notification(cart, order, user):
         status = STATUS_ACCEPTED
         message_user = Message(subject=subject, body=body, sender=sender, recipient=recipient, moderation_status=status)
         message_user.save()
-        message_admin = Message(subject=subject, body=body, sender=recipient, recipient=sender, moderation_status=status)
+        message_admin = Message(subject=subject, body=body, sender=recipient, recipient=sender,
+                                moderation_status=status)
         message_admin.save()
 
         # XLS document
