@@ -33,3 +33,5 @@ function updateCartItemCount() {
 $(document).ready(function () {
     updateCartItemCount();
 });
+
+

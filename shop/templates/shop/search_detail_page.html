@@ -4,66 +4,99 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
-            <a href="" class="breadcrumb">Поиск</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop:shop_index' %}">Интернет-магазин</a></li>
+            <li class="breadcrumb-item"><a href="">Поиск</a></li>
+        </ol>
+    </nav>
 {% endblock %}
 
 
 {% block content %}
     <div class="row">
-        <h5 class="card-panel z-depth-0">Аналоги-заменители для {{ brand }} {{ part_number }}</h5>
-    </div>
-
-    <div class="row">
-        <div class="col s12">
-            <div class="collection tecdoc-table row card-panel z-depth-0 no-border">
-                <div class="collection-item">
-                    <div class="row">
-                        <div class="col s1 tecdoc-header">№ п/п</div>
-                        <div class="col s2 tecdoc-header">Артикул</div>
-                        <div class="col s2 tecdoc-header">Производитель</div>
-                        <div class="col s5 tecdoc-header">Название</div>
-                        <div class="col s1 tecdoc-header">Кол-во</div>
-                        <div class="col s1 tecdoc-header">Цена</div>
-                    </div>
-                </div>
-                {% for part in partproduct_list %}
-                    {% if part.product_id %}
-                        <a href="{% url 'shop:product_detail' part.product_id %}" class="collection-item">
-                    {% else %}
-                        <div class="collection-item noactive">
-                    {% endif %}
-                <div class="row no-margin-bot">
-                    <div class="col s1">{{ forloop.counter }}</div>
-                    <div class="col s2">{{ part.part_number }}</div>
-                    <div class="col s2">{{ part.supplier }}</div>
-                    <div class="col s5">{{ part.title }} {{ part.supplier }} {{ part.part_number }}</div>
-                    <div class="col s1">
-                        {% if part.quantity > -1 %}
-                            {{ part.quantity }}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </div>
-                    <div class="col s1">
-                        {% if part.price > -1 %}
-                            {{ part.price }}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </div>
-                </div>
-                {% if part.product_id %}
-                    </a>
-                {% else %}
-                    </div>
-                {% endif %}
-                {% endfor %}
+        <div class="col">
+            <h3 class="bg-light">Аналоги-заменители для {{ brand }} {{ part_number }}</h3>
         </div>
     </div>
+    <br>
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-hover table-avtoresurs bg-light">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Артикул</th>
+                    <th scope="col">Производитель</th>
+                    <th scope="col">Название</th>
+                    <th scope="col">Кол-во</th>
+                    <th scope="col">Цена</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for part in partproduct_list %}
+                    <tr>
+                        <th>
+                            {% if part.product_id %}
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ forloop.counter }}
+                                </a>
+                            {% else %}
+                                {{ forloop.counter }}
+                            {% endif %}
+                        </th>
+                        <td>
+                            {% if part.product_id %}
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ part.part_number }}
+                                </a>
+                            {% else %}
+                                {{ part.part_number }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if part.product_id %}
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ part.supplier }}
+                                </a>
+                            {% else %}
+                                {{ part.supplier }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if part.product_id %}
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ part.title }} {{ part.supplier }} {{ part.part_number }}
+                                </a>
+                            {% else %}
+                                {{ part.title }} {{ part.supplier }} {{ part.part_number }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if part.quantity > -1 %}
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ part.quantity }}
+                                </a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if part.price > -1 %}
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ part.price }}
+                                </a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 {% endblock %}

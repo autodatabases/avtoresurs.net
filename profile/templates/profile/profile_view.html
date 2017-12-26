@@ -4,75 +4,70 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'profile:profile_main' %}" class="breadcrumb">Личный кабинет</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'profile:profile_main' %}">Личный кабинет</a></li>
+        </ol>
+    </nav>
+
 {% endblock %}
 
 {% block content %}
     <!-- Main content -->
-    <div class="row white">
-        <div class="col s12">
-            <p>Личный кабинет пользователя</p>
-        </div>
-    </div>
-
     <div class="row">
-        <div class="col s12 m6">
-            <div class="card dark-blue no-box-shadow">
-                <div class="card-content white-text">
-                    <span class="card-title">Здравствуйте, {{ request.user }}!</span>
-                    <p>Полное имя: {{ profile.fullname }}</p>
-                    <p>Всего баллов: <strong>{{ profile.points }}</strong></p>
-                    <p>Дата последнего визита: <strong>{{ request.user.last_login|date:"d.m.Y H:i" }}</strong></p>
-                </div>
-                <div class="card-action">
-                    <a href="{% url 'profile:profile_edit' profile.pk %}">Редактировать информацию о пользователе</a>
+        <div class="col-sm-6">
+            <div class="card card-inverse bg-white" style="border-color: #aaa;">
+                <div class="card-block">
+                    <h3 class="card-title text-black">Здравствуйте, {{ request.user }}!</h3>
+                    <p class="card-text text-black">Полное имя: {{ profile.fullname }}</p>
+                    <p class="card-text text-black">Всего баллов: <strong>{{ profile.points }}</strong></p>
+                    <p class="card-text text-black">Дата последнего визита:
+                        <strong>{{ request.user.last_login|date:"d.m.Y H:i" }}</strong></p>
+                    <a href="{% url 'profile:profile_edit' profile.pk %}"
+                       class="btn btn-link text-uppercase text-orange no-padding-left text-left">Редактировать
+                        информацию <br>о пользователе</a>
                 </div>
             </div>
         </div>
 
-        <div class="col s12 m6">
-            <div class="card blue-grey darken-1 no-box-shadow">
-                <div class="card-content white-text">
-                    <span class="card-title">Информация о заказах</span>
-                    <p>Всего заказов: <strong>{{ orders_count }}</strong></p>
-                </div>
-                <div class="card-action">
-                    <a href="{% url 'profile:orders' %}">Посмотреть заказы</a>
+        <div class="col-sm-6">
+            <div class="card card-inverse bg-light" style="border-color: #aaa;">
+                <div class="card-block">
+                    <h3 class="card-title text-black">Информация о заказах</h3>
+                    <p class="card-text text-black">Всего заказов: <strong>{{ orders_count }}</strong></p>
+                    <a href="{% url 'profile:orders' %}"
+                       class="btn btn-link text-uppercase text-orange no-padding-left">История заказов</a>
                 </div>
             </div>
         </div>
     </div>
-
+    <br>
     <div class="row">
-        <div class="col s12 m6">
-            <div class="card blue-grey darken-1 no-box-shadow">
-                <div class="card-content white-text">
-                    <span class="card-title">Личные сообщения</span>
+        <div class="col-sm-6">
+            <div class="card card-inverse bg-light" style="border-color: #aaa;">
+                <div class="card-block">
+                    <h3 class="card-title text-black">Личные сообщения</h3>
                     {% if postman_unread_count %}
-                        <p>У Вас есть новые сообщения</p>
+                        <p class="card-text text-black">У Вас есть новые сообщения</p>
                     {% else %}
-                        <p>Новых сообщений не поступало</p>
+                        <p class="card-text text-black">Новых сообщений не поступало</p>
                     {% endif %}
-                </div>
-                <div class="card-action">
-                    <a href="{% url 'postman:inbox' %}">
+
+                    <a href="{% url 'postman:inbox' %}" class="btn btn-link text-uppercase text-orange no-padding-left">
                         Перейтик к личным сообщениям
                         {% if postman_unread_count == 1 %}
-                            <span class="new badge blue" data-badge-caption="новое">{{ postman_unread_count }}</span>
+                            <span class="badge badge-primary">{{ postman_unread_count }} новое</span>
                         {% elif postman_unread_count > 1 %}
-                            <span class="new badge blue" data-badge-caption="новых">{{ postman_unread_count }}</span>
+                            <span class="badge badge-primary">{{ postman_unread_count }} новых</span>
                         {% endif %}
                     </a>
                 </div>
             </div>
         </div>
-
-
     </div>
+
+
+
 
 {% endblock %}
