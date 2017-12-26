@@ -18,10 +18,64 @@
 {% block content %}
     <!-- Main content -->
     <div class="row">
+        <div class="col">
+            <table class="table table-avtoresurs bg-light">
+                <thead class="thead-light">
+                <tr>
+                    <th><p class="text-center">Товар<br>(наименование)</p></th>
+                    <th><p class="text-center">Количество<br>(шт.)</p></th>
+                    <th><p class="text-center">Сумма<br>(<i class="fa fa-rub" aria-hidden="true"></i>)</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for storage, items in cart_storages.items %}
+                    <tr class="bg-primary-avtoresurs">
+                        <td colspan="3"><p class="text-center text-white">{{ storage }}</p></td>
+                    </tr>
+                    {% for item in items %}
+                        <tr>
+                            <td>
+                                <p class="text-center">
+                                    <a href="/shop/product/{{ item.item.id }}/">{{ item.item.title }} {{ item.item }}</a>
+                                </p>
+                            </td>
+                            <td><p class="text-center"><strong>{{ item.quantity }}</strong></p></td>
+                            <td><p class="text-center"><strong>{{ item.line_item_total }} <i class="fa fa-rub"
+                                                                                             aria-hidden="true"></i></strong>
+                            </p></td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="2"><p class="text-right">Итого: </p></th>
+                    <th><p class="text-center"><span class="checkout">{{ cart.subtotal }}
+                <i class="fa fa-rub" aria-hidden="true"></i></span></p></th>
+                </tr>
+                <tr>
+                    <td class="text-center"><a class="btn btn-link" href="/cart"><i class="fa fa-arrow-left"
+                                                                                          aria-hidden="true"></i> Корзина</a>
+                    </td>
+                    <td></td>
+                    <td>
+                        <form action="{% url 'checkout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Оформить заказ</button>
+                        </form>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="row">
         <div class="col m12 l6 offset-l3 white">
             <div class="row">
                 <div class="col s6">
-                    <p class="center-align">Товар<br>(наименование)</p>
+                    <p class="center-align"><a href="/shop/product/{{ item.item.id }}/">Товар<br>(наименование)</a></p>
                 </div>
                 <div class="col s3">
                     <p class="center-align">Количество<br>(шт.)</p>

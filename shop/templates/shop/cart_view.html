@@ -17,111 +17,119 @@
 {% block content %}
 
     <!-- Main content -->
-    <div class="">
-        {% if object.cartitem_set.count < 1 %}
+    <div class="row">
+        <div class="col">
+            {% if object.cartitem_set.count < 1 %}
 
-            {% include "shop/empty_cart.html" %}
+                {% include "shop/empty_cart.html" %}
 
-        {% else %}
-            <form action="/cart" method="post" class="">
-                <table class="table table-avtoresurs">
-                    <thead class="thead-light">
-                    <tr>
-                        <th>Товар</th>
-                        <th>Цена</th>
-                        <th>Количество</th>
-                        <th>Итого</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for storage, items in cart_storages.items %}
-                        <tr class="bg-primary">
-                            <th colspan="5" class="center-align text-light">{{ storage }}</th>
+            {% else %}
+                <form action="/cart" method="post" class="">
+                    <table class="table table-avtoresurs bg-light">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>Товар</th>
+                            <th>Цена</th>
+                            <th>Количество</th>
+                            <th>Итого</th>
+                            <th></th>
                         </tr>
-                        {% for item in items %}
-                            <tr class="cart-item-{{ item.item.id }}">
-                                <td>
-                                    <p class="item_type">
-                                        <span>Производитель:</span> <strong>{{ item.item.brand }}</strong>
-                                    </p>
-                                    <p class="item_vendor"><span>Название:</span>
-                                        <strong>{{ item.item.title }}</strong></p>
-                                    <p class="item_vendor"><span>Код детали:</span>
-                                        <strong>{{ item.item.get_sku }}</strong></p>
-                                    <p><a href="{{ item.item.get_absolute_url }}">Перейти к описанию</a></p>
-                                </td>
-                                <td>
-                                    <p class="center-align"><span class="money">{{ item.item.price }} <i
-                                            class="fa fa-rub" aria-hidden="true"></i></span></p>
-                                </td>
-                                <td>
-                                    <form action="." method="GET">
-                                        <input type="hidden" name="item" value="{{ item.item.id }}">
-                                        <input class="item-qty quantity_input center-align" name="qty"
-                                               value="{{ item.quantity }}" type="number" min="1">
-                                        <input type="hidden" name="storage" id="storage"
-                                               value="{{ storage.id }}">
-                                        {#                                    <span class="quantity_modifier quantity_down"><i class="fa fa-minus"></i></span>#}
-                                        {#                                    <span class="quantity_modifier quantity_up"><i class="fa fa-plus"></i></span>#}
-                                    </form>
-                                </td>
-                                <td>
-                                    <p class="center-align">
+                        </thead>
+                        <tbody>
+                        {% for storage, items in cart_storages.items %}
+                            <tr class="bg-primary-avtoresurs">
+                                <th colspan="5" class="text-center text-light">{{ storage }}</th>
+                            </tr>
+                            {% for item in items %}
+                                <tr class="cart-item-{{ item.item.id }}">
+                                    <td>
+                                        <p class="item_type">
+                                            <span>Производитель:</span> <strong>{{ item.item.brand }}</strong>
+                                        </p>
+                                        <p class="item_vendor"><span>Название:</span>
+                                            <strong>{{ item.item.title }}</strong></p>
+                                        <p class="item_vendor"><span>Код детали:</span>
+                                            <strong>{{ item.item.get_sku }}</strong></p>
+                                        <p><a href="{{ item.item.get_absolute_url }}" class="text-primary">Перейти к
+                                            описанию</a></p>
+                                    </td>
+                                    <td>
+                                        <p class="center-align"><span class="money">{{ item.item.price }} <i
+                                                class="fa fa-rub" aria-hidden="true"></i></span></p>
+                                    </td>
+                                    <td>
+                                        <form action="." method="GET">
+                                            <input type="hidden" name="item" value="{{ item.item.id }}">
+                                            <input class="item-qty quantity_input center-align" name="qty"
+                                                   value="{{ item.quantity }}" type="number" min="1">
+                                            <input type="hidden" name="storage" id="storage"
+                                                   value="{{ storage.id }}">
+                                            {#                                    <span class="quantity_modifier quantity_down"><i class="fa fa-minus"></i></span>#}
+                                            {#                                    <span class="quantity_modifier quantity_up"><i class="fa fa-plus"></i></span>#}
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <p class="center-align">
                                 <span class="money"><span
                                         id="item-line-total-{{ item.item.id }}">{{ item.line_item_total }}</span> <i
                                         class="fa fa-rub" aria-hidden="true"></i></span>
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="center-align">
-                                        <a class="cart_item__remove" title="1"
-                                           href="{{ item.item.remove_from_cart }}&storage={{ item.storage.id }}"><i
-                                                class="fa fa-trash fa-2x"></i></a>
-                                    </p>
-                                </td>
-                            </tr>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="center-align">
+                                            <a class="cart_item__remove" title="1"
+                                               href="{{ item.item.remove_from_cart }}&storage={{ item.storage.id }}"><i
+                                                    class="fa fa-trash fa-2x"></i></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                    </tbody>
-                    <tfoot>
-                    {#                    <tr class="cart_buttons">#}
-                    {#                        <td colspan="5">#}
-                    {##}
-                    {##}
-                    {#                        </td>#}
-                    {#                    </tr>#}
-                    <tr class="bg-primary">
-                        <td>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <a class="btn btn-warning" href="/shop/">Вернуться к покупкам</a>
-                        </td>
-                        <td>
-                            <p>&nbsp;</p>
-                        </td>
-                        <td colspan="3">
-                            <p class="text-right text-light">
-                                Итоговая сумма
-                                <span class="money">
+                        </tbody>
+                        <tfoot>
+                        {#                    <tr class="cart_buttons">#}
+                        {#                        <td colspan="5">#}
+                        {##}
+                        {##}
+                        {#                        </td>#}
+                        {#                    </tr>#}
+                        <tr>
+                            <td class="text-center">
+                                <p>&nbsp;</p>
+                                <p>&nbsp;</p>
+                                <p>
+                                    <a class="btn btn-link" href="/shop/"><i class="fa fa-arrow-left"
+                                                                             aria-hidden="true"></i> Вернуться к
+                                        покупкам</a>
+                                </p>
+                            </td>
+                            <td>
+                                <p>&nbsp;</p>
+                            </td>
+                            <td colspan="3">
+                                <p class="text-right">
+                                    Итоговая сумма
+                                    <span class="money">
                                 <span id="subtotal">{{ object.subtotal }} <i class="fa fa-rub"
                                                                              aria-hidden="true"></i></span></span>
-                            </p>
-                            <p>&nbsp;</p>
+                                </p>
+                                <p>&nbsp;</p>
 
-                            {#                                    <button name="checkout" class="btn btn-alt">#}
-                            <a href="{% url 'checkout' %}" class="btn btn-danger pull-right">Перейти к оформлению
-                                заказа
-                            </a>
-                            {#                                    </button>#}
-                        </td>
-                    </tr>
-                    </tfoot>
-                </table>
-            </form>
-        {% endif %}
+                                {#                                    <button name="checkout" class="btn btn-alt">#}
+                                <a href="{% url 'checkout' %}" class="btn btn-primary pull-right text-white">Перейти к
+                                    оформлению
+                                    заказа
+                                </a>
+                                {#                                    </button>#}
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </form>
+            {% endif %}
 
 
+        </div>
     </div>
 
 {% endblock content %}

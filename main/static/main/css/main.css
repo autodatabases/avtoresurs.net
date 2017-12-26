@@ -364,6 +364,10 @@ p {
     color: #495057;
 }
 
+.bg-primary-avtoresurs {
+    background-color: #1F3EFC;
+}
+
 @media (min-width: 576px) {
     #techModal .modal-dialog, #applicabilityModal .modal-dialog {
         max-width: 900px;

@@ -4,31 +4,33 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'shop:shop_index' %}" class="breadcrumb">Интернет-магазин</a>
-            <a href="/cart/" class="breadcrumb">Корзина</a>
-            <a href="/checkout/" class="breadcrumb">Оформление заказа</a>
-            <a href="/checkout/success/" class="breadcrumb">Завершено!</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop:shop_index' %}">Интернет-магазин</a></li>
+            <li class="breadcrumb-item"><a href="/cart/">Корзина</a></li>
+            <li class="breadcrumb-item"><a href="/checkout/">Оформление заказа</a></li>
+            <li class="breadcrumb-item"><a href="">Завершено!</a></li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block content %}
 
 
     <!-- Main content -->
-    <div class="row white">
-        <div class="col s12">
+    <div class="row">
+        <div class="col bg-white">
             <p>Оформление заказа завершено!</p>
         </div>
     </div>
 
     <div class="row">
-        <div class="col m12 l6 offset-l3 white">
+        <div class="col bg-white">
             <p>Оформление заказа успешно завершено!</p>
             <p>Наш менеджер свяжется с Вами в ближайшее время</p>
             <p><a href="/">Перейти на главную страницу сайта</a></p>
+        </div>
+    </div>
 
 {% endblock %}
