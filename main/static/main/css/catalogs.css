@@ -53,36 +53,36 @@ body {
     padding: 0;
 }
 
-.btn-success {
-    margin-top: 15px;
-    padding: 0 21px 0 21px;
-    background-color: #ffffff;
-    border: none;
-    font-size: 16px;
-    color: #191919;
-}
+/*.btn-success {*/
+    /*margin-top: 15px;*/
+    /*padding: 0 21px 0 21px;*/
+    /*background-color: #ffffff;*/
+    /*border: none;*/
+    /*font-size: 16px;*/
+    /*color: #191919;*/
+/*}*/
 
-.btn-success:hover {
-    background-color: #191919;
-    border-radius: 29px;
-    color: #ffffff;
-}
+/*.btn-success:hover {*/
+    /*background-color: #191919;*/
+    /*border-radius: 29px;*/
+    /*color: #ffffff;*/
+/*}*/
 
-.btn-success:focus, .btn-success.focus {
-    box-shadow: none;
-}
+/*.btn-success:focus, .btn-success.focus {*/
+    /*box-shadow: none;*/
+/*}*/
 
-.active {
-    margin-top: 15px;
-    padding: 0 21px 0 21px;
-    color: #191919;
-}
+/*.active {*/
+    /*margin-top: 15px;*/
+    /*padding: 0 21px 0 21px;*/
+    /*color: #191919;*/
+/*}*/
 
-.active:hover {
-    background-color: #191919;
-    border-radius: 29px;
-    color: #ffffff;
-}
+/*.active:hover {*/
+    /*background-color: #191919;*/
+    /*border-radius: 29px;*/
+    /*color: #ffffff;*/
+/*}*/
 
 .dropdown {
     margin-top: 13px;

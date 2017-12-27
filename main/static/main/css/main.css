@@ -72,13 +72,13 @@ body {
     box-shadow: none;
 }
 
-.active {
+.avtoresurs-nav {
     margin-top: 15px;
     padding: 0 21px 0 21px;
     color: #191919;
 }
 
-.active:hover {
+.avtoresurs-nav:hover{
     background-color: #191919;
     border-radius: 29px;
     color: #ffffff;
@@ -376,15 +376,15 @@ p {
     padding: 1.25rem;
 }
 
-.text-orange{
+.text-orange {
     color: #ffab40;
 }
 
-.text-orange:hover{
+.text-orange:hover {
     color: #ffd8a6;
 }
 
-.no-padding-left{
+.no-padding-left {
     padding-left: 0 !important;
 }
 
@@ -397,16 +397,16 @@ p {
     background-color: rgba(0, 0, 0, 0.7);
 
     -webkit-transition: all 0.5s ease-in-out;
-	-moz-transition: all 0.5s ease-in-out;
-	-o-transition: all 0.5s ease-in-out;
-	-ms-transition: all 0.5s ease-in-out;
-	transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
 
     -webkit-transform: translate(0px, -100%) scale(0, 0);
-	-moz-transform: translate(0px, -100%) scale(0, 0);
-	-o-transform: translate(0px, -100%) scale(0, 0);
-	-ms-transform: translate(0px, -100%) scale(0, 0);
-	transform: translate(0px, -100%) scale(0, 0);
+    -moz-transform: translate(0px, -100%) scale(0, 0);
+    -o-transform: translate(0px, -100%) scale(0, 0);
+    -ms-transform: translate(0px, -100%) scale(0, 0);
+    transform: translate(0px, -100%) scale(0, 0);
 
     opacity: 0;
 }
@@ -414,9 +414,9 @@ p {
 #search.open {
     -webkit-transform: translate(0px, 0px) scale(1, 1);
     -moz-transform: translate(0px, 0px) scale(1, 1);
-	-o-transform: translate(0px, 0px) scale(1, 1);
-	-ms-transform: translate(0px, 0px) scale(1, 1);
-	transform: translate(0px, 0px) scale(1, 1);
+    -o-transform: translate(0px, 0px) scale(1, 1);
+    -ms-transform: translate(0px, 0px) scale(1, 1);
+    transform: translate(0px, 0px) scale(1, 1);
     opacity: 1;
 }
 
@@ -436,6 +436,7 @@ p {
     padding-right: 30px;
     outline: none;
 }
+
 #search .btn {
     position: absolute;
     top: 50%;
@@ -443,20 +444,22 @@ p {
     margin-top: 61px;
     margin-left: -45px;
 }
+
 #search .close {
     position: fixed;
     top: 15px;
     right: 15px;
     color: #fff;
-	background-color: #428bca;
-	border-color: #357ebd;
-	opacity: 1;
-	padding: 10px 17px;
-	font-size: 27px;
+    background-color: #428bca;
+    border-color: #357ebd;
+    opacity: 1;
+    padding: 10px 17px;
+    font-size: 27px;
 }
 
 @media (min-width: 576px) {
-    #techModal .modal-dialog, #applicabilityModal .modal-dialog {
+    #techModal .modal-dialog, #applicabilityModal .modal-dialog, .news-modal .modal-dialog {
         max-width: 900px;
     }
+
 }

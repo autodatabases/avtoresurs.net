@@ -4,14 +4,16 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'auth_login' %}" class="breadcrumb">Аутентификация</a>
-            <a href="{% url 'registration_register' %}" class="breadcrumb">Регистрация нового
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'auth_login' %}">Аутентификация</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'registration_register' %}">Регистрация нового
                 пользователя</a>
-        </div>
-    </div>
+            </li>
+        </ol>
+    </nav>
+
 {% endblock %}
 
 {% block content %}
