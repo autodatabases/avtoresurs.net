@@ -21,8 +21,8 @@ class MainPageView(TemplateView):
         context = super(MainPageView, self).get_context_data()
         news = Post.objects.all()[:6]
         context['news'] = news
-        slides = Slider.objects.all()
-        context['slides'] = slides
+        # slides = Slider.objects.all()
+        # context['slides'] = slides
         return context
 
 

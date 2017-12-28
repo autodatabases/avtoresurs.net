@@ -31,5 +31,8 @@ class PhonePlugin(CMSPluginBase):
         return context
 
 
+
+
+
 plugin_pool.register_plugin(SliderPlugin)
 plugin_pool.register_plugin(PhonePlugin)

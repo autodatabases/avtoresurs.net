@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse, NoReverseMatch
 class PostPlugin(CMSPluginBase):
     module = ("Контент")
     name = ("Новости")
-    render_template = 'news/main_news_list.html'
+    render_template = 'news/base_news_list.html'
     model = PostPlugin
 
     def render(self, context, instance, placeholder):
