@@ -25,7 +25,7 @@
             <div class="col-sm-6 col-md-4">
                 <div class="card bonus" style="width: 20rem;">
                     {% if bonus.image %}
-                        <img class="card-img-top bonus" src="http://avtoresurs.net/media/{{ bonus.image.name }}"
+                        <img class="card-img-top bonus" src="{{ bonus.image.url }}"
                              alt="{{ bonus.title }}">
                     {% else %}
                         <img class="card-img-top bonus" src="{% static 'main/images/no-image.png' %}"
