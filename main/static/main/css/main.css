@@ -471,6 +471,10 @@ div.card.bonus {
     padding: 8px 16px;
 }
 
+.fa-15x {
+    font-size: 15em !important;
+}
+
 @media (min-width: 576px) {
     #techModal .modal-dialog, #applicabilityModal .modal-dialog, .news-modal .modal-dialog {
         max-width: 900px;
