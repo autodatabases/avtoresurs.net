@@ -5,20 +5,21 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'auth_login' %}" class="breadcrumb">Аутентификация</a>
-            <a href="{% url 'registration_register' %}" class="breadcrumb">Регистрация успешно завершена</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'auth_login' %}">Аутентификация</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'registration_register' %}">Регистрация успешно завершена</a>
+            </li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block content %}
 
 
-    <div class="row white">
-        <div class="col s8 offset-s2">
+    <div class="row">
+        <div class="col bg-light avto-content">
             <p>Поздравляем! Регистрация успешно завершена. Пожалуйста проверьте свой e-mail, на него выслано
                 письмо с дальнейшими инструкциями по активации учетной записи.</p>
         </div>

@@ -4,57 +4,47 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'auth_login' %}" class="breadcrumb">Аутентификация</a>
-            <a href="{% url 'registration_register' %}" class="breadcrumb">Регистрация нового
-                пользователя</a>
-            <a href="" class="breadcrumb">Повторная активация</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'auth_login' %}">Аутентификация</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'registration_register' %}">Регистрация нового
+                пользователя</a></li>
+            <li class="breadcrumb-item"><a href="">Повторная активация</a></li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block content %}
 
     <div class="row white">
-        <div class="col s12">
-            <p>Повторная активация. Ввод e-mail</p>
-        </div>
-    </div>
+        <div class="col bg-light avto-content">
+            <div class="row">
+                <div class="col">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class=" form-group">
+                                <label for="{{ form.email.id_for_label }}">E-mail:</label>
+                                <input id="id_email" name="email" type="email" required="" class="form-control"
+                                       style="width: 100%">
 
-    <div class="row white">
-        <div class="main-content">
-            <div class="col s8 offset-s2">
-                <div class="row">
-                    <div class="col s12">
-                        <form action="" method="post">
-                            <p>Пожалуйста, введите Ваш e-mail:</p>
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    {{ form.email }}
-                                    <label for="{{ form.email.id_for_label }}">E-mail</label>
-                                    {% if form.email.errors %}
-                                        <blockquote>{{ form.email.errors }}</blockquote>
-                                    {% endif %}
-                                </div>
+                                {% if form.email.errors %}
+                                    <blockquote>{{ form.email.errors }}</blockquote>
+                                {% endif %}
                             </div>
-                            <div class="row">
-                                <div class="col s8 offset-s2 center-align">
-                                    <button class="btn waves-effect waves-light dark-blue" type="submit" name="action">
-                                        Выслать повторно
-                                        <i class="material-icons right">send</i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-primary" type="submit" name="action">
+                                Выслать повторно
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="row">
-                    <div class="col s12 center-align">
-                        Забыли пароль? <a href="{% url 'auth_password_reset' %}" class="link">Восстановить!</a>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col s12 center-align">
+                    Забыли пароль? <a href="{% url 'auth_password_reset' %}" class="btn btn-link">Восстановить!</a>
                 </div>
             </div>
         </div>

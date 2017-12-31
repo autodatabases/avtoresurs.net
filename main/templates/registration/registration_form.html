@@ -18,86 +18,99 @@
 
 {% block content %}
 
-    <div class="row white">
-        <div class="col s12">
-            <p>Регистрация нового пользователя</p>
-        </div>
-    </div>
-
-    <div class="row white">
-        <div class="main-content">
+    <div class="row">
+        <div class="col bg-light avto-content">
             <form action="." class="col s12" method="post">
                 <h5 class="center-align">Чтобы создать нового пользователя, пожалуйста заполните все поля:</h5>
                 {% csrf_token %}
 
                 <div class="row">
-                    <div class="input-field col s8 offset-s2">
-                        {{ form.username }}
-                        <label for="{{ form.username.id_for_label }}">Имя пользователя</label>
-                        {% if form.username.errors %}
-                            <blockquote>{{ form.username.errors }}</blockquote>
-                        {% endif %}
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.username.id_for_label }}">Имя пользователя:</label>
+                            <input autofocus="" id="id_username" maxlength="150" name="username" type="text" required=""
+                                   class="form-control" style="width: 100%">
+                            {% if form.username.errors %}
+                                <blockquote>{{ form.username.errors }}</blockquote>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="input-field col s8 offset-s2">
-                        {{ form.email }}
-                        <label for="{{ form.email.id_for_label }}">E-mail</label>
-                        {% if form.email.errors %}
-                            <blockquote>{{ form.email.errors }}</blockquote>
-                        {% endif %}
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.email.id_for_label }}">E-mail:</label>
+                            <input id="id_email" name="email" type="email" required="" style="width: 100%"
+                                   class="form-control">
+
+                            {% if form.email.errors %}
+                                <blockquote>{{ form.email.errors }}</blockquote>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="input-field col s8 offset-s2">
-                        {{ form.password1 }}
-                        <label for="{{ form.message.id_for_label }}">Пароль</label>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.message.id_for_label }}">Пароль:</label>
+                            <input id="id_password1" name="password1" type="password" required="" class="form-control"
+                                   style="width: 100%;">
+
+                        </div>
                     </div>
                 </div>
 
                 <div class="row no-margin-bot">
-                    <div class="input-field col s8 offset-s2">
-                        {{ form.password2 }}
-                        <label for="{{ form.password2.id_for_label }}">Подтверждение пароля</label>
-                        {% if form.password2.errors %}
-                            <blockquote>{{ form.password2.errors }}</blockquote>
-                        {% endif %}
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.password2.id_for_label }}">Подтверждение пароля:</label>
+                            <input id="id_password2" name="password2" type="password" required="" class="form-control"
+                                   style="width: 100%">
+
+                            {% if form.password2.errors %}
+                                <blockquote>{{ form.password2.errors }}</blockquote>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="input-field col m8 offset-m2 l6 offset-l3 margin-bot">
-                        {{ form.tos }}
-                        <label for="{{ form.tos.id_for_label }}">Согласен на обработку персональных данных,
-                            предусмотренных
-                            Федеральным
-                            законом от 27.07.2006 № 152-ФЗ «О персональных данных».</label>
-                        {% if form.tos.errors %}
-                            <blockquote>{{ form.tos.errors }}</blockquote>
-                        {% endif %}
+                    <div class="col">
+                        <div class="form-group">
+
+                            <label for="{{ form.tos.id_for_label }}">Согласен на обработку персональных данных,
+                                предусмотренных
+                                Федеральным
+                                законом от 27.07.2006 № 152-ФЗ «О персональных данных».</label>
+                        <input id="id_tos" name="tos" type="checkbox" required="" class="form-control">
+                            {% if form.tos.errors %}
+                                <blockquote>{{ form.tos.errors }}</blockquote>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col s8 offset-s2 center-align">
-                        <button class="btn waves-effect waves-light dark-blue" type="submit" name="action">
+                    <div class="col text-center">
+                        <button class="btn btn-primary" type="submit" name="action">
                             Зарегистрироваться
-                            <i class="material-icons right">send</i>
                         </button>
                     </div>
                 </div>
             </form>
+            <br>
             <div class="row">
-                <div class="col s8 offset-s2 center-align">
-                    Забыли пароль? <a href="{% url 'auth_password_reset' %}" class="link">Восстановить!</a>
+                <div class="col text-center">
+                    <p>Забыли пароль?</p>
+                    <p><a href="{% url 'auth_password_reset' %}" class="btn btn-link">Восстановить!</a></p>
                 </div>
             </div>
             <div class="row">
-                <div class="col s8 offset-s2 center-align">
-                    Не пришло письмо для активации учетной записи? <a href="{% url 'main:account_reactivate' %}"
-                                                                      class="link">Активировать повторно!</a>
+                <div class="col text-center">
+                    <p>Не пришло письмо для активации учетной записи? </p>
+                    <p><a href="{% url 'main:account_reactivate' %}" class="btn btn-link">Активировать повторно!</a></p>
                 </div>
             </div>
         </div>

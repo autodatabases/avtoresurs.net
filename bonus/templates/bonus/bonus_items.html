@@ -10,121 +10,231 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="" class="breadcrumb">Бонусная акция</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="">Бонусная акция</a></li>
+        </ol>
+    </nav>
 {% endblock %}
 
 
 {% block content %}
-    <div class="bonus-app" ng-app="bonusApp">
-        <div class="row" ng-controller="BonusCardController">
-            {% for bonus in bonus_list %}
-                <div class="col s6 m4 l3 ">
-                    <div class="card z-depth-3" ng-click="BonusCardClick('{{ bonus.title }}', '{{ bonus.price }}', '{{ points }}', '{{ bonus.id }}', '{{ user.id }}')">
-                        <div class="card-content center-align">
-                            <h6 style="color:#0D47A1;"><b>{{ bonus.title }}</b></h6>
+    <div class="row">
+        {% for bonus in bonus_list %}
+            <div class="col-sm-6 col-md-4">
+                <div class="card bonus" style="width: 20rem;">
+                    {% if bonus.image %}
+                        <img class="card-img-top bonus" src="http://avtoresurs.net/media/{{ bonus.image.name }}"
+                             alt="{{ bonus.title }}">
+                    {% else %}
+                        <img class="card-img-top bonus" src="{% static 'main/images/no-image.png' %}"
+                             alt="{{ bonus.title }}">
+                    {% endif %}
+                    <div class="card-block">
+                        <h4 class="card-title">{{ bonus.title }}</h4>
+                        <p class="card-text">
+                        <div class="bonus-price"><h4><span style="color: #1565C0">{{ bonus.price }} баллов</span></h4>
                         </div>
-                        {% if bonus.image %}
-                            <div class="card-image" style="max-height: 300px;">
-                                <img src="{{ bonus.image.url }}" alt="item1" class="responsive-img materialboxed"
-                                     title="{{ bonus.title }}"/>
-                            </div>
-                        {% else %}
-                            <div class="card-image">
-                                <img src="{% static 'main/images/no-image.png' %}" alt="item1"
-                                     class="responsive-img materialboxed"
-                                     title="{{ bonus.title }}"/>
-                            </div>
-                        {% endif %}
-                        <div class="card-action center-align card-footer" style="bottom: 0; left:0; width: 100%; position: absolute;">
-                            <div class="bonus-price">{{ bonus.price }} <span style="color: #1565C0">баллов</span></div>
-                        </div>
+                        </p>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#modal{{ forloop.counter }}">
+                            Купить
+                        </button>
                     </div>
-                </div>
-            {% endfor %}
-            <!-- Modal Structure -->
-            <div id="bonus-modal" class="modal bottom-sheet">
-                <div class="modal-content">
-                    <h4 id="bonus-title"></h4>
-                    <p id="bonus-price"></p>
-
-                    <div id="preloader" class="preloader-wrapper big active center">
-                        <div class="spinner-layer spinner-blue-only">
-                            <div class="circle-clipper left">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="gap-patch">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="circle-clipper right">
-                                <div class="circle"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <a id="cancel-btn" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Отмена</a>
-                    <a id="get-btn" href="#!" ng-click="GetBonusClick('{{ points }}')" class="btn-flat">Получить</a>
                 </div>
             </div>
-        </div>
+
+            <!-- Modal -->
+            <div class="modal fade news-modal" id="modal{{ forloop.counter }}" tabindex="-1" role="dialog"
+                 aria-labelledby="modalLabel{{ forloop.counter }}"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel{{ forloop.counter }}">{{ bonus.title }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p style="text-align: center"><img src="http://avtoresurs.net/media/{{ bonus.image.name }}"
+                                                               style="object-fit:contain; max-height:400px"></p>
+                            <br>
+                            <br>
+                            <p>{{ bonus.title }}</p>
+                            <p>
+                                Необходимо {{ bonus.price }} баллов.
+                            </p>
+                            <p>Ваши баллы: {{ points }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="{% url 'bonus:BonusObtain' %}" method="post">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-danger" data-dismiss="modal" value="Получить">
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
-    {% if is_paginated %}
 
-        <div class="row">
-            <div class="col s12">
-                <ul class="pagination center-align">
-                    {% if page_obj.has_previous %}
-                        <li class="waves-effect"><a href="{{ page_obj.previous_page_number }}"><i
-                                class="material-icons">chevron_left</i></a></li>
-                    {% else %}
-                        <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
-                    {% endif %}
-                    {% for i in paginator.page_range %}
-                        {% if page_obj.number == i %}
-                            <li class="active"><a href="">{{ i }}</a></li>
+    {#    <div class="bonus-app" ng-app="bonusApp">#}
+    {#        <div class="row" ng-controller="BonusCardController">#}
+    {#            {% for bonus in bonus_list %}#}
+    {#                <div class="col-sm-6 col-md-4">#}
+    {#                    <div class="card" style="width: 20rem;"#}
+    {#                         ng-click="BonusCardClick('{{ bonus.title }}', '{{ bonus.price }}', '{{ points }}', '{{ bonus.id }}', '{{ user.id }}')">#}
+    {#                        {% if bonus.image %}#}
+    {#                            <img class="card-img-top" src="{{ bonus.image.url }}" alt="{{ bonus.title }}">#}
+    {#                        {% else %}#}
+    {#                            <img class="card-img-top" src="{% static 'main/images/no-image.png' %}"#}
+    {#                                 alt="{{ bonus.title }}">#}
+    {#                        {% endif %}#}
+    {#                        <div class="card-block">#}
+    {#                            <h4 class="card-title">{{ bonus.title }}</h4>#}
+    {#                            <p class="card-text">#}
+    {#                                <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>#}
+    {#                            </p>#}
+    {#                            <div class="bonus-price">{{ bonus.price }} <span style="color: #1565C0">баллов</span></div>#}
+    {#                            <button type="button" class="btn btn-primary" data-toggle="modal"#}
+    {#                                    data-target="#modal{{ forloop.counter }}">#}
+    {#                                Подробнее#}
+    {#                            </button>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {##}
+    {#                <div class="col s6 m4 l3 ">#}
+    {#                    <div class="card z-depth-3"#}
+    {#                         ng-click="BonusCardClick('{{ bonus.title }}', '{{ bonus.price }}', '{{ points }}', '{{ bonus.id }}', '{{ user.id }}')">#}
+    {#                        <div class="card-content center-align">#}
+    {#                            <h6 style="color:#0D47A1;"><b>{{ bonus.title }}</b></h6>#}
+    {#                        </div>#}
+    {#                        {% if bonus.image %}#}
+    {#                            <div class="card-image" style="max-height: 300px;">#}
+    {#                                <img src="{{ bonus.image.url }}" alt="item1" class="responsive-img materialboxed"#}
+    {#                                     title="{{ bonus.title }}"/>#}
+    {#                            </div>#}
+    {#                        {% else %}#}
+    {#                            <div class="card-image">#}
+    {#                                <img src="{% static 'main/images/no-image.png' %}" alt="item1"#}
+    {#                                     class="responsive-img materialboxed"#}
+    {#                                     title="{{ bonus.title }}"/>#}
+    {#                            </div>#}
+    {#                        {% endif %}#}
+    {#                        <div class="card-action center-align card-footer"#}
+    {#                             style="bottom: 0; left:0; width: 100%; position: absolute;">#}
+    {#                            <div class="bonus-price">{{ bonus.price }} <span style="color: #1565C0">баллов</span></div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            {% endfor %}#}
+    {#            <!-- Modal Structure -->#}
+    {#            <div id="bonus-modal" class="modal bottom-sheet">#}
+    {#                <div class="modal-content">#}
+    {#                    <h4 id="bonus-title"></h4>#}
+    {#                    <p id="bonus-price"></p>#}
+    {##}
+    {#                    <div id="preloader" class="preloader-wrapper big active center">#}
+    {#                        <div class="spinner-layer spinner-blue-only">#}
+    {#                            <div class="circle-clipper left">#}
+    {#                                <div class="circle"></div>#}
+    {#                            </div>#}
+    {#                            <div class="gap-patch">#}
+    {#                                <div class="circle"></div>#}
+    {#                            </div>#}
+    {#                            <div class="circle-clipper right">#}
+    {#                                <div class="circle"></div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {##}
+    {#                </div>#}
+    {#                <div class="modal-footer">#}
+    {#                    <a id="cancel-btn" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Отмена</a>#}
+    {#                    <a id="get-btn" href="#!" ng-click="GetBonusClick('{{ points }}')" class="btn-flat">Получить</a>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    {% if is_paginated %}
+        <div class="row" style="margin-top: 15px">
+            <div class="col">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Предыдущая</span>
+                                </a>
+                            </li>
                         {% else %}
-                            <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Предыдущая</span>
+                                </a>
+                            </li>
                         {% endif %}
-                    {% endfor %}
-                    {% if page_obj.has_next %}
-                        <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i
-                                class="material-icons">chevron_right</i></a></li>
-                    {% else %}
-                        <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
-                    {% endif %}
-                </ul>
+                        {% for i in paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Следующая</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Следующая</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             </div>
         </div>
+
     {% endif %}
 
-{#    <ul class="pagination center-align" style="margin-top:60px;">#}
-{#        {% if page_obj.has_previous %}#}
-{#            <li class="disabled">#}
-{#                <a href="?page={{ page_obj.previous_page_number }}" style="cursor:pointer;">#}
-{#                    <i class="material-icons black">chevron_left</i>#}
-{#                </a>#}
-{#            </li>#}
-{#        {% endif %}#}
-{##}
-{#        <li class="active"><a style="cursor: default;" class="blue" href="#">{{ page_obj.number }}#}
-{#            из {{ page_obj.paginator.num_pages }}</a>#}
-{#        </li>#}
-{##}
-{#        {% if page_obj.has_next %}#}
-{#            <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i#}
-{#                    class="material-icons black">chevron_right</i></a></li>#}
-{#        {% endif %}#}
-{#    </ul>#}
-<script>
-  $(document).ready(function(){
-    $('.modal').modal();
-  });
-</script>
+
+    {#    <ul class="pagination center-align" style="margin-top:60px;">#}
+    {#        {% if page_obj.has_previous %}#}
+    {#            <li class="disabled">#}
+    {#                <a href="?page={{ page_obj.previous_page_number }}" style="cursor:pointer;">#}
+    {#                    <i class="material-icons black">chevron_left</i>#}
+    {#                </a>#}
+    {#            </li>#}
+    {#        {% endif %}#}
+    {##}
+    {#        <li class="active"><a style="cursor: default;" class="blue" href="#">{{ page_obj.number }}#}
+    {#            из {{ page_obj.paginator.num_pages }}</a>#}
+    {#        </li>#}
+    {##}
+    {#        {% if page_obj.has_next %}#}
+    {#            <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i#}
+    {#                    class="material-icons black">chevron_right</i></a></li>#}
+    {#        {% endif %}#}
+    {#    </ul>#}
+    <script>
+        {#  $(document).ready(function(){#}
+        {#    $('.modal').modal();#}
+        {#  });#}
+    </script>
 {% endblock %}

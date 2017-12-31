@@ -4,26 +4,21 @@
 {% block title %}Аутентицикация{% endblock %}
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="/accounts/login/" class="breadcrumb">Аутентификация</a>
-            <a href="" class="breadcrumb">Выход</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="/accounts/login/">Аутентификация</a></li>
+            <li class="breadcrumb-item"><a href="">Выход</a></li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block content %}
-    <div class="row white">
-        <div class="col s12">
+    <div class="row">
+        <div class="col bg-light" style="padding: 8px 16px;">
             <p>Выход из аккаунта</p>
-        </div>
-    </div>
-
-    <div class="row white">
-        <div class="col s12 offset-s1">
             <p>Вы успешно вышли из аккаунта!</p>
             <p><a href="/accounts/login/">Перейти к форме аутентификации</a></p>
-            </div>
+        </div>
     </div>
 {% endblock %}

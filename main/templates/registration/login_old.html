@@ -1,25 +1,35 @@
 {% extends "main/base.html" %}
 {% load i18n %}
 
+{% block title %}Аутентицикация{% endblock %}
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="/accounts/login/">Аутентификация</a></li>
+        </ol>
+    </nav>
+{% endblock %}
+
 {% block content %}
-    <div class="container">
-        <!-- BREADCRUMBS -->
-        <div class="row">
-            <nav>
-                <div class="nav-wrapper">
-                    <div class="col s12 pink lighten-2">
-                        <a href="/" class="breadcrumb">Главная</a>
-                        <a href="{% url 'registration_register' %}" class="breadcrumb">Аутентификация</a>
-                    </div>
-                </div>
-            </nav>
+
+    <div class="row">
+        <div class="col m12 l5 white account-section">
+            <h5>Первый раз на нашем сайте?</h5>
+            <p class="note">Зарегистрироваться просто!</p>
+            <ul class="account">
+                <li>Быстрое оформление заказа</li>
+                <li>Отслеживание статуса заказа</li>
+            </ul>
+            <a class="btn waves-effect waves-light dark-blue" href="/accounts/register/">Зарегистрироваться</a>
         </div>
 
-
-        <div class="row card-panel">
+        <div class="col m12 l6 offset-l1 white account-section">
+            <h5>Уже зарегистрированы?</h5>
             {% if  form.non_field_errors %}
                 <div class="row">
-                    <div class="col s8 offset-s2">
+                    <div class="col s12">
                         <blockquote>{{ form.non_field_errors }}</blockquote>
                     </div>
                 </div>
@@ -27,7 +37,7 @@
             <form method="post" action="." class="col s12">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="input-field col s8 offset-s2">
+                    <div class="input-field col s12">
                         {{ form.username }}
                         <label for="{{ form.username.id_for_label }}">Имя пользователя</label>
                         {% if form.username.errors %}
@@ -37,7 +47,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="input-field col s8 offset-s2">
+                    <div class="input-field col s12">
                         <label for="{{ form.password.id_for_label }}">Пароль</label>
                         {{ form.password }}
 
@@ -49,8 +59,8 @@
 
 
                 <div class="row">
-                    <div class="col s8 offset-s2 center-align">
-                        <button class="btn waves-effect waves-light blue darken-1 center-align" type="submit"
+                    <div class="col s12">
+                        <button class="btn waves-effect waves-light dark-blue center-align" type="submit"
                                 name="action">
                             Войти
                             <i class="material-icons right">send</i>
@@ -60,18 +70,80 @@
                 <input type="hidden" name="next" value="{{ next }}"/>
             </form>
             <div class="row">
-                <div class="col s8 offset-s2 center-align">
+                <div class="col s12">
                     Забыли пароль? <a href="{% url 'auth_password_reset' %}">Восстановить!</a>
                 </div>
             </div>
-
             <div class="row">
-                <div class="col s8 offset-s2 center-align">
-                    Нет аккаунта? <a href="{% url 'registration_register' %}">Зарегистрироваться!</a>
+                <div class="col s12">
+                    Не пришло письмо для активации учетной записи? <a href="">Активировать повторно!</a>
                 </div>
             </div>
         </div>
-
-
     </div>
+
+
+    {#    <div class="row">#}
+    {#        {% if  form.non_field_errors %}#}
+    {#            <div class="row">#}
+    {#                <div class="col s8 offset-s2">#}
+    {#                    <blockquote>{{ form.non_field_errors }}</blockquote>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        {% endif %}#}
+    {#        <form method="post" action="." class="col s12">#}
+    {#            {% csrf_token %}#}
+    {#            <div class="row">#}
+    {#                <div class="input-field col s8 offset-s2">#}
+    {#                    {{ form.username }}#}
+    {#                    <label for="{{ form.username.id_for_label }}">Имя пользователя</label>#}
+    {#                    {% if form.username.errors %}#}
+    {#                        <blockquote>{{ form.username.errors }}</blockquote>#}
+    {#                    {% endif %}#}
+    {#                </div>#}
+    {#            </div>#}
+    {##}
+    {#            <div class="row">#}
+    {#                <div class="input-field col s8 offset-s2">#}
+    {#                    <label for="{{ form.password.id_for_label }}">Пароль</label>#}
+    {#                    {{ form.password }}#}
+    {##}
+    {#                    {% if form.password.errors %}#}
+    {#                        <blockquote>{{ form.password.errors }}</blockquote>#}
+    {#                    {% endif %}#}
+    {#                </div>#}
+    {#            </div>#}
+    {##}
+    {##}
+    {#            <div class="row">#}
+    {#                <div class="col s8 offset-s2 center-align">#}
+    {#                    <button class="btn waves-effect waves-light coral center-align" type="submit"#}
+    {#                            name="action">#}
+    {#                        Войти#}
+    {#                        <i class="material-icons right">send</i>#}
+    {#                    </button>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#            <input type="hidden" name="next" value="{{ next }}"/>#}
+    {#        </form>#}
+    {#        <div class="row">#}
+    {#            <div class="col s8 offset-s2 center-align">#}
+    {#                Забыли пароль? <a href="{% url 'auth_password_reset' %}">Восстановить!</a>#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {#        <div class="row">#}
+    {#            <div class="col s8 offset-s2 center-align">#}
+    {#                Нет аккаунта? <a href="{% url 'registration_register' %}">Зарегистрироваться!</a>#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {#        <div class="row">#}
+    {#            <div class="col s8 offset-s2 center-align">#}
+    {#                Не пришло письмо для активации учетной записи? <a href="">Активировать повторно!</a>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+
 {% endblock %}

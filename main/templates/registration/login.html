@@ -1,156 +1,121 @@
-{% extends "main/base.html" %}
-{% load i18n %}
+{% extends 'main/base.html' %}
 
-{% block title %}Аутентицикация{% endblock %}
+{% block title %}Регистрация нового пользователя{% endblock title %}
+
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="" class="breadcrumb">Аутентификация</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'auth_login' %}">Аутентификация</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'registration_register' %}">Регистрация нового
+                пользователя</a>
+            </li>
+        </ol>
+    </nav>
+
 {% endblock %}
 
 {% block content %}
 
-
-    <div class="row white">
-        <div class="col s12">
-            <p>Авторизовация/регистрация на сайте</p>
-        </div>
-    </div>
-
-    <div class="row" id="account_login">
-        <div class="col m12 l5 white account-section">
-            <h5>Первый раз на нашем сайте?</h5>
-            <p class="note">Зарегистрироваться просто!</p>
-            <ul class="account">
-                <li>Быстрое оформление заказа</li>
-                <li>Отслеживание статуса заказа</li>
-            </ul>
-            <a class="btn waves-effect waves-light dark-blue" href="/accounts/register/">Зарегистрироваться</a>
-        </div>
-
-        <div class="col m12 l6 offset-l1 white account-section">
-            <h5>Уже зарегистрированы?</h5>
-            {% if  form.non_field_errors %}
-                <div class="row">
-                    <div class="col s12">
-                        <blockquote>{{ form.non_field_errors }}</blockquote>
-                    </div>
-                </div>
-            {% endif %}
-            <form method="post" action="." class="col s12">
+    <div class="row">
+        <div class="col bg-light avto-content">
+            <form action="/accounts/register/" class="col s12" method="post">
+                <h5 class="center-align">Чтобы создать нового пользователя, пожалуйста заполните все поля:</h5>
                 {% csrf_token %}
+
                 <div class="row">
-                    <div class="input-field col s12">
-                        {{ form.username }}
-                        <label for="{{ form.username.id_for_label }}">Имя пользователя</label>
-                        {% if form.username.errors %}
-                            <blockquote>{{ form.username.errors }}</blockquote>
-                        {% endif %}
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.username.id_for_label }}">Имя пользователя:</label>
+                            <input autofocus="" id="id_username" maxlength="150" name="username" type="text" required=""
+                                   class="form-control" style="width: 100%">
+                            {% if form.username.errors %}
+                                <blockquote>{{ form.username.errors }}</blockquote>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="input-field col s12">
-                        <label for="{{ form.password.id_for_label }}">Пароль</label>
-                        {{ form.password }}
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.email.id_for_label }}">E-mail:</label>
+                            <input id="id_email" name="email" type="email" required="" style="width: 100%"
+                                   class="form-control">
 
-                        {% if form.password.errors %}
-                            <blockquote>{{ form.password.errors }}</blockquote>
-                        {% endif %}
+                            {% if form.email.errors %}
+                                <blockquote>{{ form.email.errors }}</blockquote>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.message.id_for_label }}">Пароль:</label>
+                            <input id="id_password1" name="password1" type="password" required="" class="form-control"
+                                   style="width: 100%;">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row no-margin-bot">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.password2.id_for_label }}">Подтверждение пароля:</label>
+                            <input id="id_password2" name="password2" type="password" required="" class="form-control"
+                                   style="width: 100%">
+
+                            {% if form.password2.errors %}
+                                <blockquote>{{ form.password2.errors }}</blockquote>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
-                    <div class="col s12">
-                        <button class="btn waves-effect waves-light dark-blue center-align" type="submit"
-                                name="action">
-                            Войти
-                            <i class="material-icons right">send</i>
+                    <div class="col">
+                        <div class="form-group">
+
+                            <label for="{{ form.tos.id_for_label }}">Согласен на обработку персональных данных,
+                                предусмотренных
+                                Федеральным
+                                законом от 27.07.2006 № 152-ФЗ «О персональных данных».</label>
+                        <input id="id_tos" name="tos" type="checkbox" required="" class="form-control">
+                            {% if form.tos.errors %}
+                                <blockquote>{{ form.tos.errors }}</blockquote>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col text-center">
+                        <button class="btn btn-primary" type="submit" name="action">
+                            Зарегистрироваться
                         </button>
                     </div>
                 </div>
-                <input type="hidden" name="next" value="{{ next }}"/>
             </form>
+            <br>
             <div class="row">
-                <div class="col s12">
-                    Забыли пароль? <a href="{% url 'auth_password_reset' %}">Восстановить!</a>
+                <div class="col text-center">
+                    <p>Забыли пароль?</p>
+                    <p><a href="{% url 'auth_password_reset' %}" class="btn btn-link">Восстановить!</a></p>
                 </div>
             </div>
             <div class="row">
-                <div class="col s12">
-                    Не пришло письмо для активации учетной записи? <a href="">Активировать повторно!</a>
+                <div class="col text-center">
+                    <p>Не пришло письмо для активации учетной записи? </p>
+                    <p><a href="{% url 'main:account_reactivate' %}" class="btn btn-link">Активировать повторно!</a></p>
                 </div>
             </div>
         </div>
     </div>
 
+    {#    {{ form.as_p }}#}
 
-{#    <div class="row">#}
-{#        {% if  form.non_field_errors %}#}
-{#            <div class="row">#}
-{#                <div class="col s8 offset-s2">#}
-{#                    <blockquote>{{ form.non_field_errors }}</blockquote>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endif %}#}
-{#        <form method="post" action="." class="col s12">#}
-{#            {% csrf_token %}#}
-{#            <div class="row">#}
-{#                <div class="input-field col s8 offset-s2">#}
-{#                    {{ form.username }}#}
-{#                    <label for="{{ form.username.id_for_label }}">Имя пользователя</label>#}
-{#                    {% if form.username.errors %}#}
-{#                        <blockquote>{{ form.username.errors }}</blockquote>#}
-{#                    {% endif %}#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{#            <div class="row">#}
-{#                <div class="input-field col s8 offset-s2">#}
-{#                    <label for="{{ form.password.id_for_label }}">Пароль</label>#}
-{#                    {{ form.password }}#}
-{##}
-{#                    {% if form.password.errors %}#}
-{#                        <blockquote>{{ form.password.errors }}</blockquote>#}
-{#                    {% endif %}#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{##}
-{#            <div class="row">#}
-{#                <div class="col s8 offset-s2 center-align">#}
-{#                    <button class="btn waves-effect waves-light coral center-align" type="submit"#}
-{#                            name="action">#}
-{#                        Войти#}
-{#                        <i class="material-icons right">send</i>#}
-{#                    </button>#}
-{#                </div>#}
-{#            </div>#}
-{#            <input type="hidden" name="next" value="{{ next }}"/>#}
-{#        </form>#}
-{#        <div class="row">#}
-{#            <div class="col s8 offset-s2 center-align">#}
-{#                Забыли пароль? <a href="{% url 'auth_password_reset' %}">Восстановить!</a>#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="row">#}
-{#            <div class="col s8 offset-s2 center-align">#}
-{#                Нет аккаунта? <a href="{% url 'registration_register' %}">Зарегистрироваться!</a>#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="row">#}
-{#            <div class="col s8 offset-s2 center-align">#}
-{#                Не пришло письмо для активации учетной записи? <a href="">Активировать повторно!</a>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-
-
-{% endblock %}
+{% endblock content %}

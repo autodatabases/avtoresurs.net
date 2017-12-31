@@ -78,7 +78,7 @@ body {
     color: #191919;
 }
 
-.avtoresurs-nav:hover{
+.avtoresurs-nav:hover {
     background-color: #191919;
     border-radius: 29px;
     color: #ffffff;
@@ -455,6 +455,20 @@ p {
     opacity: 1;
     padding: 10px 17px;
     font-size: 27px;
+}
+
+img.bonus {
+    height: 225px;
+    object-fit: contain;
+}
+
+div.card.bonus {
+    /*height: 480px;*/
+    /*margin: */
+}
+
+.avto-content {
+    padding: 8px 16px;
 }
 
 @media (min-width: 576px) {

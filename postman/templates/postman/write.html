@@ -6,13 +6,34 @@
 {% block pm_write_title %}{% trans "Новое сообщение" %}{% endblock %}
 
 {% block postman_menu %}
-    <div class="collection postmenu">{% postman_unread as unread_count %}
-        <a href="{% url 'postman:inbox' %}" class="collection-item">{% trans "Входящие" %}
-            {% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
-        <a href="{% url 'postman:sent' %}" class="collection-item">{% trans "Отправленные" %}</a>
-        <a href="{% url 'postman:archives' %}" class="collection-item">{% trans "Архив" %}</a>
-        <a href="{% url 'postman:trash' %}" class="collection-item">{% trans "Корзина" %}</a>
-        <a href="{% url 'postman:write' %}"
-           class="collection-item active">{% trans "Новое сообщение" %}</a>
-    </div>
+    {% postman_unread as unread_count %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="{% url 'postman:inbox' %}">
+                    {% trans "Входящие" %}
+                    {% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}
+
+                </a>
+                <a class="nav-item nav-link" href="{% url 'postman:sent' %}">
+                    {% trans "Отправленные" %}
+
+                </a>
+                <a class="nav-item nav-link" href="{% url 'postman:archives' %}">
+                    {% trans "Архив" %}
+
+                </a>
+                <a class="nav-item nav-link" href="{% url 'postman:trash' %}">{% trans "Корзина" %}</a>
+                <a class="nav-item nav-link active" href="{% url 'postman:write' %}">
+                    {% trans "Новое сообщение" %}
+                    <span class="sr-only">(current)</span>
+                </a>
+            </div>
+        </div>
+    </nav>
 {% endblock %}

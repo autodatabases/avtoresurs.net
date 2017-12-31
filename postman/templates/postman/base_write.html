@@ -10,94 +10,98 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="/profile/" class="breadcrumb">Личный кабинет</a>
-            <a href="/messages/" class="breadcrumb">Сообщения</a>
-            <a href="" class="breadcrumb">Новое сообщение</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation" class="bg-light">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="/profile/">Личный кабинет</a></li>
+            <li class="breadcrumb-item"><a href="/messages/">Сообщения</a></li>
+            <li class="breadcrumb-item"><a href="/messages/inbox/">Входящие</a></li>
+            <li class="breadcrumb-item"><a href="">Новое сообщение</a></li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block content %}
-    <div class="row white">
-        <div class="col s12">
-            <p>{% block pm_write_title %}{% endblock %}</p>
-        </div>
-    </div>
 
     <div class="row">
-        <div class="col s12">
-            <div class="">
-                <div class="row">
-                    <div class="col s4 m4 l3 white">
-                        {% block postman_menu %}{% endblock postman_menu %}
-                    </div>
-                    <div class="post-content">
-                        <div class="col s7 m7 l8 offset-s1 offset-m1 offset-l1 white">
+        <div class="col-md-12">
+            {% block postman_menu %}{% endblock postman_menu %}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="post-content bg-light" style="padding: 8px 16px">
 
-                            <div id="postman" class="write">
-                                {{ form.non_field_errors }}
-                                {{ form.recipients.errors }}
-                                {{ form.subject.errors }}
-                                {{ form.body.errors }}
-                                <form action="{% if next_url %}?next={{ next_url|urlencode }}{% endif %}"
-                                      method="post">
-                                    {% csrf_token %}
-                                    {% block pm_write_recipient %}{% endblock %}
 
-                                    {% if user.is_superuser %}
+                <div id="postman" class="write">
+                    {{ form.non_field_errors }}
+                    {{ form.recipients.errors }}
+                    {{ form.subject.errors }}
+                    {{ form.body.errors }}
+                    <form action="{% if next_url %}?next={{ next_url|urlencode }}{% endif %}"
+                          method="post">
+                        {% csrf_token %}
+                        {% block pm_write_recipient %}{% endblock %}
 
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                                <select name="recipients">
-                                                    <option value="" disabled selected>Выберите пользователя</option>
-                                                    {% for user in users %}
-                                                        <option value="{{ user }}">{{ user }} ({{ user.fullname }})</option>
-                                                    {% endfor %}
-                                                </select>
-                                                <label>Пользователь</label>
-                                            </div>
-                                        </div>
-                                    {% else %}
-                                        <input type="hidden" name="recipients" value="admin">
-                                    {% endif %}
-                                    <div class="row">
-                                        <div class="input-field col s12">
-                                            <input placeholder="Введите тему сообщения"
-                                                   id="{{ form.subject.id_for_label }}" type="text"
-                                                   class="validate" name="{{ form.subject.name }}" required>
-                                            <label for="{{ form.subject.id_for_label }}">Тема сообщения</label>
-                                        </div>
+                        {% if user.is_superuser %}
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>Пользователь:</label>
+                                        <select name="recipients" class="form-control" style="width:100%;">
+                                            <option value="" disabled selected>Выберите пользователя</option>
+                                            {% for user in users %}
+                                                <option value="{{ user }}">{{ user }} ({{ user.fullname }})
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+
                                     </div>
-
-                                    <div class="row">
-                                        <div class="input-field col s12">
-                                            <textarea id="{{ form.body.id_for_label }}" class="materialize-textarea"
-                                                      name="{{ form.body.name }}" required></textarea>
-                                            <label for="{{ form.body.id_for_label }}">Текст сообщения</label>
-                                        </div>
-                                    </div>
-
-                                    <button type="submit"
-                                            class="waves-effect waves-light btn light-blue">{% trans "Отправить" %}</button>
-
-
-                                    {#                                    <table>#}
-                                    {##}
-                                    {#                                        {{ form.as_table }}#}
-                                    {#                                    </table>#}
-
-
-                                </form>
-
-
+                                </div>
                             </div>
+                        {% else %}
+                            <input type="hidden" name="recipients" value="admin">
+                        {% endif %}
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="{{ form.subject.id_for_label }}">Тема сообщения:</label>
+                                    <input placeholder="Введите тему сообщения"
+                                           id="{{ form.subject.id_for_label }}" type="text"
+                                           class="form-control" name="{{ form.subject.name }}" required
+                                           style="width: 100%;">
 
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="{{ form.body.id_for_label }}">Текст сообщения</label>
+                                    <textarea id="{{ form.body.id_for_label }}" class="form-control"
+                                              name="{{ form.body.name }}" required style="width: 100%"
+                                              rows="10"></textarea>
+
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit"
+                                        class="btn btn-primary">{% trans "Отправить" %}</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+
                 </div>
+
             </div>
         </div>
     </div>

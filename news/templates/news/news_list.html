@@ -63,48 +63,6 @@
         {% endfor %}
     </div>
 
-
-    {#    <div class="row">#}
-    {#        {% for post in post_list %}#}
-    {#            {% if forloop.counter0|divisibleby:3 %}#}
-    {#                </div>#}
-    {#                <div class="row">#}
-    {#            {% endif %}#}
-    {##}
-    {#            <div class="col s6 m4">#}
-    {#                <div class="card large z-depth-0">#}
-    {#                    <div class="card-image waves-effect waves-block waves-light">#}
-    {#                        <img src="{{ post.image.url }}">#}
-    {#                    </div>#}
-    {#                    <div class="card-content">#}
-    {#                        <p>{{ post.title }}</p>#}
-    {#                        <p>#}
-    {#                            <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>#}
-    {#                        </p>#}
-    {#                    </div>#}
-    {#                    <div class="card-action">#}
-    {#                        <a class="waves-effect waves-light btn dark-blue"#}
-    {#                           href="#modal{{ forloop.counter }}">Подробнее</a>#}
-    {#                    </div>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#            <!-- Modal Structure -->#}
-    {#            <div id="modal{{ forloop.counter }}" class="modal">#}
-    {#                <div class="modal-content">#}
-    {#                    <h4>{{ post.title }}</h4>#}
-    {#                    <p><img src="{{ post.image.url }}"></p>#}
-    {#                    <p>{{ post.content }}</p>#}
-    {#                    <p>#}
-    {#                        <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>#}
-    {#                    </p>#}
-    {#                </div>#}
-    {#                <div class="modal-footer">#}
-    {#                    <a class=" modal-action modal-close waves-effect waves-green btn-flat">Закрыть</a>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#        {% endfor %}#}
-    {#        </div>#}
-
     {% if is_paginated %}
         <div class="row" style="margin-top: 15px">
             <div class="col">
