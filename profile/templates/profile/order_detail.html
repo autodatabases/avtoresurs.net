@@ -33,12 +33,12 @@
                     <tr>
                         <td>
                             <p class="text-center">
-                                <a href="/shop/product/{{ item.item.id }}/">{{ op.item.title }} {{ op.item }}</a>
+                                <a href="/shop/product/{{ op.item.id }}/">{{ op.item.title }} {{ op.item }}</a>
                             </p>
                         </td>
                         <td><p class="text-center"><strong>{{ op.qty }}</strong></p></td>
                         <td><p class="text-center"><strong>{% multiply op.price op.qty %} <i class="fa fa-rub"
-                                                                                         aria-hidden="true"></i></strong>
+                                                                                             aria-hidden="true"></i></strong>
                         </p></td>
                     </tr>
                 {% endfor %}
@@ -50,7 +50,6 @@
                     <th><p class="text-center"><span class="checkout">{{ order.order_total }}
                 <i class="fa fa-rub" aria-hidden="true"></i></span></p></th>
                 </tr>
-                
                 </tfoot>
             </table>
         </div>
