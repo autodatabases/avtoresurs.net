@@ -31,7 +31,7 @@ function updateCartItemCount() {
 }
 
 $(document).ready(function () {
-    updateCartItemCount();
+    // updateCartItemCount();
 });
 
 

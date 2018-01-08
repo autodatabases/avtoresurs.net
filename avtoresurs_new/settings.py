@@ -33,10 +33,7 @@ ALLOWED_HOSTS = ['avtoresurs.net', 'localhost', '94.130.78.236', 'www.avtoresurs
 INSTALLED_APPS = [
     'djangocms_admin_style',
     'main',
-    # 'material',
-    # 'material.admin',
     'registration',
-    # 'grappelli',
     'filebrowser',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,10 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'django.contrib.sites',
-    'cms',
     'menus',
+    'cms',
     'treebeard',
     'sekizai',
     'filer',
@@ -62,17 +58,11 @@ INSTALLED_APPS = [
     'djangocms_snippet',
     'djangocms_style',
     'djangocms_column',
-    # 'pagination',
-
     'profile',
-    # 'panel',
     'news',
     'tecdoc',
     'shop',
-    # 'cart',
-    # 'order',
     'bonus',
-    # 'products',
     'service',
     'postman',
     'rest_framework',
@@ -154,7 +144,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
 LANGUAGES = [
-    ('en', 'English'),
+    # ('en', 'English'),
     ('ru', 'Russian'),
 ]
 

@@ -7,6 +7,7 @@
 <head>
     <title>
         {% block title %}{% endblock title %}
+        {% page_attribute "page_title" %}
     </title>
     <!-- Global Site Tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106829013-1"></script>
@@ -133,6 +134,7 @@
         <div class="col-xs-12 col-lg-2 left-sidebar">
             <ul class="list-inline2">
                 {% show_menu 0 100 100 100 'main/includes/menu.html' %}
+{#                {% show_menu 0 100 100 100 %}#}
 
             </ul>
             <img src="{% static 'main/images/ms.jpg' %}" class="img-fluid pict1" alt="Responsive image">

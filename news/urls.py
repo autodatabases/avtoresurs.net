@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.conf.urls import include, url
-from main.views import resend_activation_email, AboutView
+from main.views import resend_activation_email
 
 # from .views import (
 #     news_list

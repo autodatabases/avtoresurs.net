@@ -46,8 +46,8 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
+
                   url(r'^admin/filebrowser/', include(site.urls)),
-                  # url(r'^grappelli/', include('grappelli.urls')),
                   url(r'^admin/', include(admin.site.urls)),
                   url(r'^accounts/register/$', RegistrationView.as_view(form_class=RegistrationFormTOSAndEmail),
                       name='registration_register'),
@@ -63,8 +63,8 @@ urlpatterns = [
                   url(r'^messages/', include('postman.urls', namespace='postman', app_name='postman')),
                   # url(r'^api/', include(router.urls)),
                   # url(r'^api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-                  url(r'^', include('main.urls', namespace='main')),
-                  url(r'^', include('cms.urls')),
+                  # url(r'^', include('main.urls', namespace='main')),
                   # ALL URLS AFTER 'cms.ursl' WILL NOT WORK!!!
+                  url(r'^', include('cms.urls')),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
