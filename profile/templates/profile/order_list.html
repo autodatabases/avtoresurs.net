@@ -2,81 +2,97 @@
 
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'profile:profile_main' %}" class="breadcrumb">Личный кабинет</a>
-            <a href="" class="breadcrumb">Информация о заказах</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'profile:profile_main' %}">Личный кабинет</a></li>
+            <li class="breadcrumb-item"><a href="">Информация о заказах</a></li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block content %}
-
-    <div class="row white">
-        <div class="col s12">
-            <p>Информация о заказах</p>
-        </div>
-    </div>
-
-
     <!-- Main content -->
-    <div class="collection tecdoc-table row">
-        <div class="collection-item">
-            <div class="row">
-                <div class="col s1 tecdoc-header">#</div>
-                <div class="col s4 tecdoc-header">Дата и номер заказа</div>
-                <div class="col s5 tecdoc-header">Товары</div>
-                <div class="col s2 tecdoc-header">
-                    Общая сумма заказа<br>(<i class="fa fa-rub" aria-hidden="true"></i>)
-                </div>
-            </div>
-        </div>
+    <table class="table table-hover table-avtoresurs">
+        <thead class="thead-light">
+        <tr class="table-light">
+            <th scope="col">#</th>
+            <th scope="col">Дата и номер заказа</th>
+            <th scope="col">Товары</th>
+            <th scope="col">Общая сумма заказа<br>(<i class="fa fa-rub" aria-hidden="true"></i>)</th>
+        </tr>
+        </thead>
+        <tbody>
         {% for order in order_list %}
-            <a href="{% url 'profile:order_detail' order.id %}" class="collection-item">
-                <div class="row" style="margin-bottom: 0">
-                    <div class="col s1">
-                        {{ forloop.counter0|add:page_obj.start_index }}
-{#                        {{ paginator.page }}#}
-                    </div>
-                    <div class="col s4">Заказ от {{ order.added }} № {{ order.id }}</div>
-                    <div class="col s5">
-{#                        {% for item in order.items.all %}#}
+            <tr class="table-light">
+                <td>
+                    <a href="{% url 'profile:order_detail' order.id %}">{{ forloop.counter0|add:page_obj.start_index }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'profile:order_detail' order.id %}">Заказ от {{ order.added }} № {{ order.id }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'profile:order_detail' order.id %}">
                         {% for op in order.orderproduct_set.all %}
                             <span>{{ forloop.counter }}. {{ op.item.title }} {{ op.item }} ({{ op.qty }} шт.)</span><br>
                         {% endfor %}
-                    </div>
-                    <div class="col s2">{{ order.order_total }}</div>
-                </div>
-            </a>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'profile:order_detail' order.id %}">{{ order.order_total }}</a>
+                </td>
+            </tr>
         {% endfor %}
-    </div>
+        </tbody>
+    </table>
+
 
     {% if is_paginated %}
-
-        <div class="row">
-            <div class="col s12">
-                <ul class="pagination">
-                    {% if page_obj.has_previous %}
-                        <li class="waves-effect"><a href="?page={{ page_obj.previous_page_number }}"><i
-                                class="material-icons">chevron_left</i></a></li>
-                    {% else %}
-                        <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
-                    {% endif %}
-                    {% for i in paginator.page_range %}
-                        {% if page_obj.number == i %}
-                            <li class="active"><a href="">{{ i }}</a></li>
+        <div class="row" style="margin-top: 15px">
+            <div class="col">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Предыдущая</span>
+                                </a>
+                            </li>
                         {% else %}
-                            <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Предыдущая</span>
+                                </a>
+                            </li>
                         {% endif %}
-                    {% endfor %}
-                    {% if page_obj.has_next %}
-                        <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i
-                                class="material-icons">chevron_right</i></a></li>
-                    {% else %}
-                        <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
-                    {% endif %}
-                </ul>
+                        {% for i in paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Следующая</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Следующая</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             </div>
         </div>
     {% endif %}
