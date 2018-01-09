@@ -63,7 +63,7 @@ urlpatterns = [
                   url(r'^messages/', include('postman.urls', namespace='postman', app_name='postman')),
                   # url(r'^api/', include(router.urls)),
                   # url(r'^api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-                  # url(r'^', include('main.urls', namespace='main')),
+                  url(r'^', include('main.urls', namespace='main')),
                   # ALL URLS AFTER 'cms.ursl' WILL NOT WORK!!!
                   url(r'^', include('cms.urls')),
 
