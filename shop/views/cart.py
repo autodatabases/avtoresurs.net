@@ -68,7 +68,7 @@ class CartView(SingleObjectMixin, View):
 
     def post(self, *args, **kwargs):
         cart = self.get_object()
-
+        print(self.request.body)
         data = json.loads(self.request.body)
         item_id = data['id']
         item_instance = get_object_or_404(Product, id=item_id)
