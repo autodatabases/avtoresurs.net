@@ -68,15 +68,11 @@ class CartView(SingleObjectMixin, View):
 
     def post(self, *args, **kwargs):
         cart = self.get_object()
-        print(cart)
+
         data = json.loads(self.request.body)
-        print(data)
         item_id = data['id']
         item_instance = get_object_or_404(Product, id=item_id)
         for temp_storage in data['storages']:
-            print("=======")
-            print(temp_storage)
-            print("=======")
             storage_id = temp_storage['id']
             qty = temp_storage['qty']
             storage = get_object_or_404(Storage, id=storage_id)
@@ -88,7 +84,6 @@ class CartView(SingleObjectMixin, View):
                 flash_message = "Количество товара в корзине изменено"
             cart_item.quantity = qty
             cart_item.save()
-            print(cart_item)
         data = {
             "test": "test"
         }
