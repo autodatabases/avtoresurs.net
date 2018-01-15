@@ -71,7 +71,9 @@
                         <div class="modal-footer">
                             <form action="{% url 'bonus:BonusObtain' %}" method="post">
                                 {% csrf_token %}
-                                <input type="submit" class="btn btn-danger" data-dismiss="modal" value="Получить">
+                                <input type="hidden" name="bonus" value="{{ bonus.id }}">
+                                <input type="submit" class="btn btn-danger" data-dismiss="modal" value="Получить"
+                                       onclick="return getBonus({{ bonus.id }});">
                             </form>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                         </div>
@@ -79,6 +81,51 @@
                 </div>
             </div>
         {% endfor %}
+    </div>
+
+
+    <!-- bonusOkModal -->
+    <div class="modal fade" id="bonusOkModal" tabindex="-1" role="dialog"
+         aria-labelledby="bonusOkModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bonusOkModalLabel">Заявка на получение бонуса принята!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="bonusOkText"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- bonusErrorModal -->
+    <div class="modal fade" id="bonusErrorModal" tabindex="-1" role="dialog"
+         aria-labelledby="bonusErrorModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bonusErrorModalLabel">Ошибка!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="bonusErrorText"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -210,31 +257,31 @@
                 </nav>
             </div>
         </div>
-
     {% endif %}
+{% endblock %}
 
-
-    {#    <ul class="pagination center-align" style="margin-top:60px;">#}
-    {#        {% if page_obj.has_previous %}#}
-    {#            <li class="disabled">#}
-    {#                <a href="?page={{ page_obj.previous_page_number }}" style="cursor:pointer;">#}
-    {#                    <i class="material-icons black">chevron_left</i>#}
-    {#                </a>#}
-    {#            </li>#}
-    {#        {% endif %}#}
-    {##}
-    {#        <li class="active"><a style="cursor: default;" class="blue" href="#">{{ page_obj.number }}#}
-    {#            из {{ page_obj.paginator.num_pages }}</a>#}
-    {#        </li>#}
-    {##}
-    {#        {% if page_obj.has_next %}#}
-    {#            <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i#}
-    {#                    class="material-icons black">chevron_right</i></a></li>#}
-    {#        {% endif %}#}
-    {#    </ul>#}
+{% block js %}
     <script>
-        {#  $(document).ready(function(){#}
-        {#    $('.modal').modal();#}
-        {#  });#}
+        function getBonus(bonus) {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'bonus:BonusObtain' %}",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({"bonus": bonus}),
+                success: function (response) {
+                    console.log('OK');
+                    $('#bonusOkText').text(response);
+                    $('#bonusOkModal').modal('show');
+                    console.log(response)
+                },
+                error: function (response, error) {
+                    $('#bonusErrorText').text(response.responseJSON);
+                    $('#bonusErrorModal').modal('show');
+                    console.log(response);
+                    console.log(error);
+                }
+            })
+        }
     </script>
 {% endblock %}

@@ -488,7 +488,7 @@
                 }
             });
 
-            cart_product = new Object()
+            cart_product = new Object();
             cart_product.id = product_item;
             cart_product.storages = storages;
             ajax_data = JSON.stringify(cart_product);
@@ -501,7 +501,7 @@
                 dataType: "json",
                 data: ajax_data,
                 success: function (response) {
-                    console.log(response)
+                    console.log(response);
                     showFlashMessage(response.test);
                     updateCartItemCount();
                 },
