@@ -53,6 +53,7 @@ def order_notification(cart, order, user):
             op.save()
 
         body += '\r\nИтого: %s руб.' % (order_total)
+        body += '\r\nСклад: %s' % storage.name
 
         subject = 'Сформирован новый заказ от %s № %s!' % (order.added.strftime("%d.%m.%Y %H:%M"), order.id)
         sender = User.objects.filter(username='admin').first()
@@ -103,18 +104,6 @@ def order_notification(cart, order, user):
         ws.column_dimensions["D"].width = 13.0
         ws.column_dimensions["E"].width = 18.0
         ws.column_dimensions["F"].width = 18.0
-
-        # for column_cells in ws.columns:
-        #     length = max(len(as_text(cell.value)) for cell in column_cells)
-        #     ws.column_dimensions[column_cells[0].column].width = length
-
-        # send_mail(
-        #     'Новый заказ',
-        #     'Сформирован новый заказ',
-        #     'no-reply@avtoresurs.net',
-        #     ['o.artemov@gov39.ru'],
-        #     fail_silently=False,
-        # )
 
         email = EmailMessage(
             subject,
@@ -179,11 +168,9 @@ class CheckoutView(TemplateView):
 class CheckoutSuccessView(TemplateView):
     template_name = "shop/checkout_success_view.html"
 
-
-def get_success_url(self):
-    return reverse("checkout")
-
-
-def get(self, request, *args, **kwargs):
-    get_data = super(CheckoutView, self).get(request, *args, **kwargs)
-    return get_data
+    # def get_success_url(self):
+    #     return reverse("checkout")
+    #
+    # def get(self, request, *args, **kwargs):
+    #     get_data = super(CheckoutView, self).get(request, *args, **kwargs)
+    #     return get_data
