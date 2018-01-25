@@ -96,7 +96,7 @@ class Product(models.Model):
 
     def get_price(self, user=None, storage=None):
 
-        pp = ProductPrice.objects.filter(product=self).first()
+        pp = ProductPrice.objects.filter(product=self, storage__id=1).first()
         if storage is not None:
             pp = ProductPrice.objects.filter(product=self, storage=storage).first()
         if not pp:
