@@ -54,6 +54,7 @@ def order_notification(cart, order, user):
 
         body += '\r\nИтого: %s руб.' % (order_total)
         body += '\r\nСклад: %s' % storage.name
+        body += '\r\n\r\nEmail клиента: %s' % user.email
 
         subject = 'Сформирован новый заказ от %s № %s!' % (order.added.strftime("%d.%m.%Y %H:%M"), order.id)
         sender = User.objects.filter(username='admin').first()
