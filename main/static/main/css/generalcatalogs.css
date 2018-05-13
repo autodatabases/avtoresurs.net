@@ -265,8 +265,8 @@ li > a {
 
 .text {
     font-size: 15px;
-    padding-top: 10px;
-    padding-left: 20px;
+    /*padding-top: 10px;*/
+    /*padding-left: 20px;*/
     font-style: Helvetica;
 }
 
@@ -292,8 +292,9 @@ li > a {
     font-style: Helvetica;
     height: 13%;
     font-size: 19px;
-    padding-top: 2%;
-    margin-top: 2%
+    padding-top: 3%;
+    padding-bottom: 3%;
+    /*margin-top: 2%*/
 }
 
 .sklad {

@@ -28,8 +28,9 @@ class ProductDetailView(DetailView):
         supplier = Supplier.objects.get(title=product.brand)
         clean_part_number = product.sku
 
-        context['part_analogs'] = get_analogs(clean_part_number=clean_part_number, supplier=supplier,
-                                              user=self.request.user)
+        # context['part_analogs'] = get_analogs(clean_part_number=clean_part_number, supplier=supplier,
+        #                                       user=self.request.user)
+        context['part_analogs'] = list()
 
         storages = Storage.objects.filter(active=True)
         product_prices = ProductPrice.objects.filter(storage__in=storages, product=product)
