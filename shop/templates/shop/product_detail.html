@@ -108,16 +108,15 @@
                                    id="product_price{{ storage.id }}" value="{{ storage.product_price.id }}">
                         </div>
                         <div class="col-1">
-                            <p id="storageqty{{ storage.id }}"></p>
+                            <p id="storageqty_{{ storage.id }}" class="storageqty">0</p>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
                                 <div class="slidecontainer">
                                     <span>0</span>
                                     <input type="range" min="0" max="{{ storage.product_price.quantity }}" value="0"
-                                           class="slider"
-                                           id="storageslider{{ storage.id }}"
-                                            {% if storage.product_price.quantity == 0 %} disabled{% endif %}>
+                                           class="slider" name="storage{{ storage.id }}"
+                                           id="storageslider_{{ storage.id }}">
                                     <span>{{ storage.product_price.quantity }}</span>
                                 </div>
 
@@ -389,17 +388,30 @@
 
     </script>
 
-    {% for storage in storages %}
-        <script>
-            var slider = document.getElementById("storageslider" + {{ storage.id }});
-            var output = document.getElementById("storageqty" + {{ storage.id }});
-            output.innerHTML = slider.value; // Display the default slider value
 
-            // Update the current slider value (each time you drag the slider handle)
-            slider.oninput = function () {
-                output.innerHTML = this.value;
-            }
-        </script>
-    {% endfor %}
+    <script>
+        $(document).ready(function () {
+            $('input[type=range]').change(function () {
+                var raw_input_id = $(this).attr('id');
+                var input_id = raw_input_id.split('_')[1];
+                var indicator_id = 'storageqty_' + input_id;
+                $('#' + indicator_id).text($(this).val());
+
+            })
+        })
+    </script>
+
+    {#    {% for storage in storages %}#}
+    {#        <script>#}
+    {#            var slider = document.getElementById("storageslider" + {{ storage.id }});#}
+    {#            var output = document.getElementById("storageqty" + {{ storage.id }});#}
+    {#            output.innerHTML = slider.value; // Display the default slider value#}
+    {##}
+    {#            // Update the current slider value (each time you drag the slider handle)#}
+    {#            slider.oninput = function () {#}
+    {#                output.innerHTML = this.value;#}
+    {#            }#}
+    {#        </script>#}
+    {#    {% endfor %}#}
 
 {% endblock %}

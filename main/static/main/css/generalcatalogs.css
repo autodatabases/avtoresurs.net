@@ -395,3 +395,9 @@ p {
     margin-right: 10px;
     margin-bottom: 0
 }
+
+.storageqty{
+    font-size:16px;
+    color: #1F3EFC;
+    font-weight: bold;
+}
