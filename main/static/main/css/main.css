@@ -475,7 +475,7 @@ div.card.bonus {
     font-size: 15em !important;
 }
 
-.row .product-desc{
+.row .product-desc {
     padding-top: 3%;
     padding-bottom: 3%;
     border-bottom: 1px solid #e9ecef;
@@ -483,6 +483,26 @@ div.card.bonus {
 
 .text-avtoresurs {
     color: #1F3EFC;
+}
+
+#link {
+    color: #191919;
+    /*transition: 0.3s ease-in-out;*/
+}
+
+#link:hover {
+    color: #361AEB;
+}
+
+.btn-avtoresurs {
+    background-color: #1F3EFC;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-avto {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 @media (min-width: 576px) {

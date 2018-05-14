@@ -1,14 +1,20 @@
 {% load menu_tags %}
 
 {% for child in children %}
-    <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">
-        <li class="list-inline-item2">{{ child.get_menu_title }}</li>
-    </a>
+
+    <li class="list-inline-item2">
+        <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}" id="link">
+            {{ child.get_menu_title }}
+        </a>
+    </li>
+
     {% if child.children %}
         {% for child in child.children %}
-            <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">
-                <li class="list-inline-item2">{{ child.get_menu_title }}</li>
-            </a>
+            <li class="list-inline-item2">
+                <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}" id="link">
+                    {{ child.get_menu_title }}
+                </a>
+            </li>
         {% endfor %}
     {% endif %}
 {% endfor %}

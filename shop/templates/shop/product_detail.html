@@ -11,9 +11,7 @@
             border-radius: 5px;
             background: #d3d3d3;
             outline: none;
-            opacity: 0.7;
-            -webkit-transition: .2s;
-            transition: opacity .2s;
+        {#            opacity: 0.7;#}{#            -webkit-transition: .2s;#}{#            transition: opacity .2s;#}
         }
 
         .slider::-webkit-slider-thumb {
@@ -57,13 +55,7 @@
         <div class="col-xs-12 col-sm-4 left">
             <img src="/static/main/images/no-image.png" class="img-fluid tovar" alt="Responsive image"
                  id="product-image">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#techModal">
-                Характеристики
-            </button>
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#applicabilityModal">
-                Применимость
-            </button>
+
 
         </div>
 
@@ -110,7 +102,7 @@
                         <div class="col-1">
                             <p id="storageqty_{{ storage.id }}" class="storageqty">0</p>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6{% if not storage.product_price.quantity %} d-none{% endif %}">
                             <div class="form-group">
                                 <div class="slidecontainer">
                                     <span>0</span>
@@ -119,30 +111,29 @@
                                            id="storageslider_{{ storage.id }}">
                                     <span>{{ storage.product_price.quantity }}</span>
                                 </div>
-
-                                {#                                {% if storage.product_price.quantity > 0 %}#}
-                                {#                                    <select class="form-control custom-select" id="country"#}
-                                {#                                            name="storage{{ storage.id }}">#}
-                                {#                                        <option value="0">0</option>#}
-                                {#                                        {% for i in storage.quantity %}#}
-                                {#                                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>#}
-                                {#                                        {% endfor %}#}
-                                {#                                    </select>#}
-                                {#                                {% else %}#}
-                                {#                                    <select class="form-control custom-select" id="country" disabled>#}
-                                {#                                        <option>0</option>#}
-                                {#                                    </select>#}
-                                {#                                {% endif %}#}
-
-
                             </div>
                         </div>
                     </div>
                 {% endfor %}
                 <div class="row sklad">
-                    <div class="col-12">
+                    <div class="col-4 text-center">
+                        <button type="button" class="btn btn-info btn-avto" data-toggle="modal"
+                                data-target="#applicabilityModal">
+                            Применимость
+                        </button>
+                    </div>
+                    <div class="col-4 text-center">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-info btn-avto" data-toggle="modal" data-target="#techModal">
+                            Характеристики
+                        </button>
+
+                    </div>
+                    <div class="col-4 text-center">
                         <input type="hidden" name="item" value="{{ object.id }}">
-                        <button class="btn btn-primary" id="submit-btn">В корзину</button>
+                        <button class="btn btn-primary btn-avtoresurs" id="submit-btn"><i class="fas fa-cart-plus"></i>
+                            В корзину
+                        </button>
                     </div>
                 </div>
 
@@ -314,7 +305,7 @@
             var storages = [];
             var product_item = $('input[name="item"]').val();
 
-            $('select[name^="storage"]').each(function () {
+            $('input[name^="storage"]').each(function () {
                 var storage_id = $(this).attr('name').split("storage")[1];
                 var product_qty = $(this).val();
 
@@ -390,28 +381,16 @@
 
 
     <script>
-        $(document).ready(function () {
-            $('input[type=range]').change(function () {
-                var raw_input_id = $(this).attr('id');
-                var input_id = raw_input_id.split('_')[1];
-                var indicator_id = 'storageqty_' + input_id;
-                $('#' + indicator_id).text($(this).val());
-
-            })
-        })
+        $(document).on('input', '[type=range]', function () {
+            var raw_input_id = $(this).attr('id');
+            var input_id = raw_input_id.split('_')[1];
+            var indicator_id = 'storageqty_' + input_id;
+            $('#' + indicator_id).text($(this).val()).css("font-weight", "bold");
+            if ($(this).val() == '0') {
+                $('#' + indicator_id).css("font-weight", "normal");
+            }
+            ;
+        });
     </script>
-
-    {#    {% for storage in storages %}#}
-    {#        <script>#}
-    {#            var slider = document.getElementById("storageslider" + {{ storage.id }});#}
-    {#            var output = document.getElementById("storageqty" + {{ storage.id }});#}
-    {#            output.innerHTML = slider.value; // Display the default slider value#}
-    {##}
-    {#            // Update the current slider value (each time you drag the slider handle)#}
-    {#            slider.oninput = function () {#}
-    {#                output.innerHTML = this.value;#}
-    {#            }#}
-    {#        </script>#}
-    {#    {% endfor %}#}
 
 {% endblock %}

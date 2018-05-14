@@ -160,27 +160,27 @@ body {
 }
 
 /*.modal:target {*/
-    /*border-color: black*/
+/*border-color: black*/
 /*}*/
 
 /*.modal-dialog {*/
-    /*width: 300px;*/
+/*width: 300px;*/
 /*}*/
 
 /*.modal-content {*/
-    /*width: 300px;*/
-    /*background-color: #EEEEEE*/
+/*width: 300px;*/
+/*background-color: #EEEEEE*/
 /*}*/
 
 /*.modal-header {*/
-    /*background-color: #1F3EFC;*/
+/*background-color: #1F3EFC;*/
 /*}*/
 
 /*.modal-title {*/
-    /*color: white;*/
-    /*padding-left: 85px;*/
-    /*font-weight: bold;*/
-    /*font-family: 'Ubuntu', sans-serif;*/
+/*color: white;*/
+/*padding-left: 85px;*/
+/*font-weight: bold;*/
+/*font-family: 'Ubuntu', sans-serif;*/
 /*}*/
 
 .enter {
@@ -304,7 +304,7 @@ li > a {
 
 .form-group {
     height: 10%;
-    padding-top: 3%;
+    /*padding-top: 3%;*/
 }
 
 /*.custom-select {border:none;}*/
@@ -396,8 +396,9 @@ p {
     margin-bottom: 0
 }
 
-.storageqty{
-    font-size:16px;
+.storageqty {
+    font-size: 16px;
     color: #1F3EFC;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
+
