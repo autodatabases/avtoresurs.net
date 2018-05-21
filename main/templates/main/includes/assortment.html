@@ -1,3 +1,31 @@
-<p>
-    Hello, World!
-</p>
+
+{% load staticfiles %}
+
+{% block custom_css %}
+    <style>
+        .content {
+            padding: 0;
+            background-image: url("{% static 'main/images/jason_betz.png' %}");
+            background-size: cover;
+        }
+    </style>
+{% endblock %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    {#    <div class="row">#}
+    {#        <div class="col s12 nav-breadcrumb white">#}
+    {#            <a href="/" class="breadcrumb">Главная</a>#}
+    {#            <a href="/shop" class="breadcrumb">Интернет-магазин</a>#}
+    {#        </div>#}
+    {#    </div>#}
+{% endblock %}
+{% block content %}
+
+
+    <div id="overlay"></div>
+
+    <p>
+        Hello, World!
+    </p>
+{% endblock %}
