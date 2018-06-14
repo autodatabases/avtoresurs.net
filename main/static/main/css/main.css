@@ -505,6 +505,14 @@ div.card.bonus {
     margin-bottom: 10px;
 }
 
+.form-control{
+    border-radius: 0.25rem !important;
+}
+
+.form-control:focus{
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
 @media (min-width: 576px) {
     #techModal .modal-dialog, #applicabilityModal .modal-dialog, .news-modal .modal-dialog {
         max-width: 900px;

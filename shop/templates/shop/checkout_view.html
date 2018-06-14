@@ -53,18 +53,26 @@
                     <th><p class="text-center"><span class="checkout">{{ cart.subtotal }}
                 <i class="fa fa-rub" aria-hidden="true"></i></span></p></th>
                 </tr>
-                <tr>
-                    <td class="text-center"><a class="btn btn-link" href="/cart"><i class="fa fa-arrow-left"
-                                                                                          aria-hidden="true"></i> Корзина</a>
-                    </td>
-                    <td></td>
-                    <td>
-                        <form action="{% url 'checkout' %}" method="post">
-                            {% csrf_token %}
+                <form action="{% url 'checkout' %}" method="post">
+                    {% csrf_token %}
+                    <tr>
+                        <td colspan="3">
+                            <div class="form-group">
+                                <p class="text-center"><label for="comment">Комментарии к заказу:</label></p>
+                                <textarea class="form-control" id="comment" rows="3" name="comment"></textarea>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><a class="btn btn-link" href="/cart"><i class="fa fa-arrow-left"
+                                                                                        aria-hidden="true"></i> Корзина</a>
+                        </td>
+                        <td></td>
+                        <td>
                             <button type="submit" class="btn btn-primary">Оформить заказ</button>
-                        </form>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                </form>
                 </tfoot>
             </table>
         </div>

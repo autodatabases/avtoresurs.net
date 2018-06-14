@@ -35,6 +35,7 @@ class Order(models.Model):
     order_total = models.DecimalField(decimal_places=2, max_digits=50)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
+    comment = models.CharField(null=True, max_length=2000)
 
     def __str__(self):
         return str(self.id)

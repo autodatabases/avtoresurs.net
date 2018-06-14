@@ -33,30 +33,37 @@ def order_notification(cart, order, user):
     cart_storages = make_cart_storages(cart, user)
 
     for cart_storage, items in cart_storages.items():
-        body = 'Новый заказ от %s #%s.\r\n\r\nИнформация о заказе:\r\n' % (
-            order.added.strftime('%d.%m.%Y %H:%M'), order.id)
+        body = 'Новый заказ от {date} #{order_number}.\r\n\r\nИнформация о заказе:\r\n'.format(
+            date=order.added.strftime('%d.%m.%Y %H:%M'), order_number=order.id)
         profile = Profile.objects.get(user=user)
-        body += 'Заказчик: %s \r\n' % (profile.fullname or profile)
-        body += 'Код заказчика: %s\r\n' % (profile.vip_code or 'код заказчика отсутствует')
+        body += 'Заказчик: {name} \r\n'.format(name=profile.fullname or profile)
+        body += 'Код заказчика: {vip_code}\r\n'.format(vip_code=profile.vip_code or 'код заказчика отсутствует')
 
         storage = cart_storage
-        print('%s %s %s' % (storage.id, storage, storage.email))
         order_total = 0
         for idx, item in enumerate(items):
             product = item.item
             price = product.get_price(user, item.storage)
             qty = item.quantity
             order_total += price * qty
-            body += '%s. %s %s %s, %s шт. x %s руб.., на общую сумму: %s руб.\r\n' % (
-                idx + 1, product.title(), product.brand, product.get_sku(), qty, price, qty * price)
+            body += '{idx}. {title} {brand} {sku}, {qty} шт. x {price} руб.., на общую сумму: {line_total} руб.\r\n'.format(
+                idx=idx + 1,
+                title=product.title(),
+                brand=product.brand,
+                sku=product.get_sku(),
+                qty=qty,
+                price=price,
+                line_total=qty * price)
             op = OrderProduct(order=order, item=product, qty=qty, price=price)
             op.save()
 
-        body += '\r\nИтого: %s руб.' % (order_total)
-        body += '\r\nСклад: %s' % storage.name
-        body += '\r\n\r\nEmail клиента: %s' % user.email
+        body += '\r\nИтого: {total} руб.'.format(total=order_total)
+        body += '\r\nСклад: {storage}'.format(storage=storage.name)
+        body += '\r\n\r\nEmail клиента: {email}'.format(email=user.email)
+        body += '\r\n\r\nКомментарии к заказу:\r\n{comment}'.format(comment=order.comment)
 
-        subject = 'Сформирован новый заказ от %s № %s!' % (order.added.strftime("%d.%m.%Y %H:%M"), order.id)
+        subject = 'Сформирован новый заказ от {date} № {order_num}!'.format(date=order.added.strftime("%d.%m.%Y %H:%M"),
+                                                                            order_num=order.id)
         sender = User.objects.filter(username='admin').first()
         recipient = user
         status = STATUS_ACCEPTED
@@ -129,8 +136,6 @@ class CheckoutView(TemplateView):
     model = Cart
     template_name = "shop/checkout_view.html"
 
-    # form_class = CheckoutForm
-
     def get_object(self, *args, **kwargs):
         cart_id = self.request.session.get("cart_id")
 
@@ -151,16 +156,14 @@ class CheckoutView(TemplateView):
             context["cart_storages"] = cart_storages
         return context
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         cart = self.get_object()
+        comment = request.POST.get('comment', None)
         order = Order(user=cart.user)
-        # user = self.request.user
+        order.comment = comment
         order.order_total = cart.subtotal
         order.save()
-
         order_notification(cart=cart, order=order, user=self.request.user)
-
-        # drop user cart after success
         self.request.session['cart_id'] = None
 
         return HttpResponseRedirect('/checkout/success/')
@@ -168,10 +171,3 @@ class CheckoutView(TemplateView):
 
 class CheckoutSuccessView(TemplateView):
     template_name = "shop/checkout_success_view.html"
-
-    # def get_success_url(self):
-    #     return reverse("checkout")
-    #
-    # def get(self, request, *args, **kwargs):
-    #     get_data = super(CheckoutView, self).get(request, *args, **kwargs)
-    #     return get_data
