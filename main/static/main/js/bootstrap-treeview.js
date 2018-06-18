@@ -33,13 +33,13 @@
 
 		levels: 2,
 
-		expandIcon: 'fa-plus',
-		collapseIcon: 'fa-minus',
+		expandIcon: 'fa fa-plus',
+		collapseIcon: 'fa fa-minus',
 		emptyIcon: '',
 		nodeIcon: '',
 		selectedIcon: '',
-		checkedIcon: 'fa-check',
-		uncheckedIcon: 'fa-square-o',
+		checkedIcon: 'fa fa-check',
+		uncheckedIcon: 'fa fa-square-o',
 
 		color: undefined, // '#000000',
 		backColor: undefined, // '#FFFFFF',
