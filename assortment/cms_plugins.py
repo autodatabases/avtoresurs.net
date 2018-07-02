@@ -1,24 +1,21 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from django.utils.translation import ugettext_lazy as _
-from .models import PostPlugin
+from .models import AssortmentItemPlugin
 from django.core.urlresolvers import reverse, NoReverseMatch
 
 
-
-
 @plugin_pool.register_plugin
-class PostPlugin(CMSPluginBase):
+class AssortmentPlugin(CMSPluginBase):
     module = ("Контент")
-    name = ("Новости")
-    render_template = 'news/base_news_list.html'
-    model = PostPlugin
+    name = ("Ассортимент")
+    render_template = 'assortment/base_assortment.html'
+    model = AssortmentItemPlugin
 
     def render(self, context, instance, placeholder):
-        posts = instance.get_posts()
+        items = instance.get_items()
         context.update({
             'instance': instance,
-            'posts': posts,
+            'items': items,
         })
         return context
-

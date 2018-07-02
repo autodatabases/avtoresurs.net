@@ -50,10 +50,10 @@ class Assortment(models.Model):
 #         verbose_name_plural = 'Слайды'
 
 
-class AssortmentPlugin(CMSPlugin):
-    def assortment(self):
-        assort = Assortment.objects.all().filter(active=True)
-        return assort
+# class AssortmentPlugin(CMSPlugin):
+#     def assortment(self):
+#         assort = Assortment.objects.all().filter(active=True)
+#         return assort
 
 
 def user_registered_callback(sender, user, request, **kwargs):

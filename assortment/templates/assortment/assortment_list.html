@@ -1,0 +1,128 @@
+{% extends 'main/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %} Новости {% endblock %}
+
+{% block breadcrumbs %}
+    <!-- BREADCRUMBS -->
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="/news/">Новости</a></li>
+        </ol>
+    </nav>
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="row">
+        {% for post in post_list %}
+            <div class="col-sm-6 col-md-4">
+                <div class="card" style="width: 20rem;">
+                    <img class="card-img-top" src="{{ post.image.url }}" alt="{{ post.title }}">
+                    <div class="card-block">
+                        <h4 class="card-title">{{ post.title }}</h4>
+                        <p class="card-text">
+                            <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>
+                        </p>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#modal{{ forloop.counter }}">
+                            Подробнее
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade news-modal" id="modal{{ forloop.counter }}" tabindex="-1" role="dialog"
+                 aria-labelledby="modalLabel{{ forloop.counter }}"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel{{ forloop.counter }}">{{ post.title }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p><img src="{{ post.image.url }}"></p>
+                            <p>{{ post.content }}</p>
+                            <p>
+                                <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+        <div class="row" style="margin-top: 15px">
+            <div class="col">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Предыдущая</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Предыдущая</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for i in paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Следующая</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Следующая</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    <script>
+        {#        $(document).ready(function () {#}
+        {#            $('.slider').slider({full_width: true});#}
+        {#        });#}
+        {#        $(document).ready(function () {#}
+        {#            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered#}
+        {#            $('.modal').modal();#}
+        {#        });#}
+
+    </script>
+{% endblock %}
