@@ -20,7 +20,7 @@ class AssortmentItem(models.Model):
         return self.title
 
     class Meta:
-        ordering = ["-added"]
+        ordering = ["-created_at"]
         verbose_name = 'Товар'
         verbose_name_plural = 'Ассортимент'
 

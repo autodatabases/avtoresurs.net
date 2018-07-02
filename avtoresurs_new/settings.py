@@ -63,7 +63,7 @@ INSTALLED_APPS = [
     'tecdoc',
     'shop',
     'bonus',
-    'assortment'
+    'assortment',
     'service',
     'postman',
     'rest_framework',
