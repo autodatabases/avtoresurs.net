@@ -1,11 +1,9 @@
 from django.contrib import admin
-
-# Register your models here.
-# from main.models import Slide
+from main.models import GoodItem
 
 
-# class SlideAdmin(admin.ModelAdmin):
-#     list_display = ('caption', 'text', 'updated', 'order', 'image')
+class GoodItemAdmin(admin.ModelAdmin):
+    list_display = ('title', 'image', 'active', 'added')
 
-# admin.site.register(Slide, SlideAdmin)
 
+admin.site.register(GoodItem, GoodItemAdmin)

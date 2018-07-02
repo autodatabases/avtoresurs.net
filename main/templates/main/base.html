@@ -175,33 +175,7 @@
 
         </div>
         <div class="col-xs-12 col-lg-3 right-sidebar">
-            <ul class="list-inline3">
-                <li class="list-inline-item2" id="tovar">Поступление товара</li>
-                <img src="{% static 'main/images/audi.jpg' %}" class="img-fluid audi" alt="Responsive image"><a
-                    href="goods1" id="link">
-                <li class="list-inline-item2" id="tovar">Товар 01</li>
-            </a>
-                <img src="{% static 'main/images/alfa.jpg' %}" class="img-fluid auto" alt="Responsive image"><a
-                    href="goods2" id="link">
-                <li class="list-inline-item2" id="tovar">Товар 02</li>
-            </a>
-                <img src="{% static 'main/images/bmw.jpg' %}" class="img-fluid auto" alt="Responsive image"><a
-                    href="goods3" id="link">
-                <li class="list-inline-item2" id="tovar">Товар 03</li>
-            </a>
-                <img src="{% static 'main/images/audi.jpg' %}" class="img-fluid audi" alt="Responsive image"><a
-                    href="goods4" id="link">
-                <li class="list-inline-item2" id="tovar">Товар 04</li>
-            </a>
-                <img src="{% static 'main/images/alfa.jpg' %}" class="img-fluid auto" alt="Responsive image"><a
-                    href="goods5" id="link">
-                <li class="list-inline-item2" id="tovar">Товар 05</li>
-            </a>
-                <img src="{% static 'main/images/skoda.jpg' %}" class="img-fluid auto" alt="Responsive image"><a
-                    href="goods6" id="link">
-                <li class="list-inline-item2" id="tovar">Товар 06</li>
-            </a>
-            </ul>
+            {% static_placeholder 'Goods Receipt' %}
             <hr id="line1">
             <a href="/news/" id="news">НОВОСТИ НАШИХ ПОСТАВЩИКОВ</a>
             <hr>

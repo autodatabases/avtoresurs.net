@@ -277,6 +277,10 @@ body {
     text-decoration: none;
 }
 
+.list-inline-item2.goods-header:hover{
+    color: #000;
+}
+
 .auto {
     position: relative;
     top: 48px;
@@ -511,6 +515,11 @@ div.card.bonus {
 
 .form-control:focus{
     box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.goods-receipt {
+    max-width: 50px;
+    max-height: 40px;
 }
 
 @media (min-width: 576px) {

@@ -19,6 +19,28 @@ class Assortment(models.Model):
         verbose_name_plural = 'Ассортимент'
 
 
+class GoodItem(models.Model):
+    image = models.ImageField(verbose_name='Картинка')
+    title = models.CharField(max_length=100, verbose_name='Название')
+    url = models.CharField(max_length=255, verbose_name='Ссылка на товар')
+    added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
+    active = models.BooleanField(default=True, verbose_name='Активный')
+
+    class Meta:
+        ordering = ['-added']
+        verbose_name = 'Поступление товара'
+        verbose_name_plural = 'Поступление товаров'
+
+class GoodItemModelPlugin(CMSPlugin):
+    latest_goods = models.IntegerField(
+        default=6,
+        help_text=_('The maximum number of latest goods to display.')
+    )
+
+    def get_goods(self):
+        goods = GoodItem.objects.filter(active=True)[:self.latest_goods]
+        return goods
+
 # class SliderPlugin(CMSPlugin):
 #     right_caption = models.CharField(max_length=128, verbose_name='Заголовок справа', blank=True, null=True)
 #     text = HTMLField(max_length=2000, verbose_name='Описание', blank=True, null=True)

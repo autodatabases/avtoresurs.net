@@ -1,0 +1,11 @@
+{% load staticfiles %}
+
+<ul class="list-inline3">
+    <li class="list-inline-item2 goods-header" id="tovar">Поступление товара</li>
+    {% for good in goods %}
+        <img src="{{ good.image.url  }}" class="img-fluid auto goods-receipt" alt="Responsive image">
+        <a href="{{ good.url }}" id="link">
+            <li class="list-inline-item2" id="tovar">{{ good.title }}</li>
+        </a>
+    {% endfor %}
+</ul>
