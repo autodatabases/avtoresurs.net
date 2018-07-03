@@ -4,7 +4,7 @@
     <li class="list-inline-item2 goods-header" id="tovar">Поступление товара</li>
     {% for good in goods %}
         <img src="{{ good.image.url  }}" class="img-fluid auto goods-receipt" alt="Responsive image">
-        <a href="{{ good.url }}" id="link">
+        <a href="{{ good.post.get_absolute_url }}" id="link">
             <li class="list-inline-item2" id="tovar">{{ good.title }}</li>
         </a>
     {% endfor %}

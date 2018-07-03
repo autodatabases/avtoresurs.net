@@ -28,7 +28,7 @@
                             <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>
                         </p>
                         <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#modal{{ forloop.counter }}">
+                                data-target="#modal{{ post.id }}">
                             Подробнее
                         </button>
                     </div>
@@ -36,13 +36,13 @@
             </div>
 
             <!-- Modal -->
-            <div class="modal fade news-modal" id="modal{{ forloop.counter }}" tabindex="-1" role="dialog"
-                 aria-labelledby="modalLabel{{ forloop.counter }}"
+            <div class="modal fade news-modal" id="modal{{ post.id }}" tabindex="-1" role="dialog"
+                 aria-labelledby="modalLabel{{ post.id }}"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalLabel{{ forloop.counter }}">{{ post.title }}</h5>
+                            <h5 class="modal-title" id="modalLabel{{ post.id }}">{{ post.title }}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -116,13 +116,11 @@
 
 {% block js %}
     <script>
-        {#        $(document).ready(function () {#}
-        {#            $('.slider').slider({full_width: true});#}
-        {#        });#}
-        {#        $(document).ready(function () {#}
-        {#            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered#}
-        {#            $('.modal').modal();#}
-        {#        });#}
-
+        var url_path = window.location.pathname;
+        var post_id = url_path.substring(url_path.lastIndexOf('/') + 1);
+        console.log(post_id);
+        $(document).ready(function () {
+            $('#modal' + post_id).modal();
+        });
     </script>
 {% endblock %}

@@ -2,6 +2,8 @@ from cms.models import CMSPlugin
 from django.db import models
 from djangocms_text_ckeditor.fields import HTMLField
 from registration.signals import user_registered
+
+from news.models import Post
 from profile.models import Profile
 from django.utils.translation import ugettext_lazy as _
 
@@ -22,7 +24,7 @@ class Assortment(models.Model):
 class GoodItem(models.Model):
     image = models.ImageField(verbose_name='Картинка')
     title = models.CharField(max_length=100, verbose_name='Название')
-    url = models.CharField(max_length=255, verbose_name='Ссылка на товар')
+    post = models.ForeignKey(Post, verbose_name='Ссылка на новость', null=True)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     active = models.BooleanField(default=True, verbose_name='Активный')
 

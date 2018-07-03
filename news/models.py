@@ -31,8 +31,8 @@ class Post(models.Model):
         verbose_name_plural = 'Публикации'
 
     def get_absolute_url(self):
-        return reverse('news:news_detail', kwargs={'pk': self.id})
-
+        # return reverse('news_list', kwargs={'pk': self.id})
+        return "/news/{id}".format(id=self.id)
 
 class PostPlugin(CMSPlugin):
     latest_articles = models.IntegerField(

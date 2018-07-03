@@ -11,5 +11,5 @@ from .views import (
 )
 
 urlpatterns = [
-    url(r'^$', NewsList.as_view(), name='news_page'),
+    url(r'^.*$', NewsList.as_view(), name='news_list'),
 ]
