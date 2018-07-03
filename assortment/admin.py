@@ -9,4 +9,3 @@ class AssortmentItemAdmin(admin.ModelAdmin):
 
 
 admin.site.register(AssortmentItem, AssortmentItemAdmin)
-
