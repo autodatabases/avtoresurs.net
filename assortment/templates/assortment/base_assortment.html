@@ -1,9 +1,9 @@
 {% load sekizai_tags %}
 
 {% for item in items %}
-    <h6 align="left">{{ post.title }}</h6>
+    <h6 align="left">{{ item.title }}</h6>
     <div class="news2">
-        {{ post.content }}
+        {{ item.status }}
     </div>
     {% if forloop.last %}
         <hr id="line2">

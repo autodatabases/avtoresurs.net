@@ -31,7 +31,7 @@ class AssortmentItemPlugin(CMSPlugin):
     )
 
     def __str__(self):
-        return str(self.latest_articles)
+        return str(self.latest_items)
 
     def get_items(self):
         posts = AssortmentItem.objects.all()[:self.latest_items]
