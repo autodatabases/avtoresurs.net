@@ -1,19 +1,16 @@
 from django.db import models
 
-from shop.models.product import Product, ProductPrice
-
 
 class Storage(models.Model):
     """ class for Storages """
     name = models.CharField(max_length=255, blank=True, null=True, verbose_name='Название склада')
     email = models.EmailField(max_length=255, blank=True, null=True, verbose_name='E-mail склада')
     active = models.BooleanField(default=True, verbose_name='Активен')
-    file_name = models.CharField(max_length=100, default='News_auto_', null=True, verbose_name='Название файла склада на FTP')
+    file_name = models.CharField(max_length=100, default='News_auto_', null=True,
+                                 verbose_name='Название файла склада на FTP')
     active_file_upload = models.BooleanField(default=False, verbose_name='Автоматическая загрузка')
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
-    # products = models.ManyToManyField(Product, through='ProductStoragePrice')
-    # prices = models.ManyToManyField(ProductPrice, through='ProductStoragePrice')
 
     class Meta:
         ordering = ['pk']
@@ -22,16 +19,3 @@ class Storage(models.Model):
 
     def __str__(self):
         return self.name
-
-
-# class ProductStoragePrice(models.Model):
-#     """ class for M2M relationships between Product and Storage """
-#     product = models.ForeignKey(Product, verbose_name='Изделие')
-#     storage = models.ForeignKey(Storage, verbose_name='Склад')
-#     price = models.ForeignKey(ProductPrice, verbose_name='Цены на изделие')
-#     active = models.BooleanField(default=True, verbose_name='Активен')
-#     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
-#     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
-#
-#     def __str__(self):
-#         return "%s" % (self.storage)
