@@ -1,11 +1,27 @@
 {% load staticfiles %}
 
 <ul class="list-inline3">
-    <li class="list-inline-item2 goods-header" id="tovar">Поступление товара</li>
+    <li class="list-inline-goods goods-header" id="tovar">
+        <div class="row">
+            <div class="col col-sm-12">
+                <p>Поступление товара</p>
+            </div>
+        </div>
+    </li>
     {% for good in goods %}
-        <img src="{{ good.image.url  }}" class="img-fluid auto goods-receipt" alt="Responsive image">
+        <li class="list-inline-goods" id="tovar">
         <a href="{{ good.post.get_absolute_url }}" id="link">
-            <li class="list-inline-item2" id="tovar">{{ good.title }}</li>
+            <div class="row">
+                <div class="col col-sm-4">
+                    <img src="{{ good.image.url }}" class="img-fluid goods-receipt" alt="Responsive image">
+                </div>
+                <div class="col col-sm-8">
+
+                        {{ good.title }}
+
+                </div>
+            </div>
         </a>
+        </li>
     {% endfor %}
 </ul>

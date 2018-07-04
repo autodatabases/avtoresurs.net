@@ -305,17 +305,13 @@ body {
     right: -44px
 }
 
-#tovar {
-    margin-bottom: -40px
-}
-
 #link {
     text-decoration: none;
 }
 
 #line1 {
     background-color: #1F3EFC;
-    margin-top: 46px;
+
     height: 20px;
 }
 
