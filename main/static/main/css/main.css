@@ -525,6 +525,52 @@ div.card.bonus {
     max-height: 40px;
 }
 
+.proposal {
+    min-height: 300px;
+    max-height: 500px;
+}
+
+.proposal-row-1 {
+    background-color: rgba(0, 0, 255, 0.78);
+}
+
+.proposal-row-1 p:nth-child(1) {
+    color: white;
+    font-weight: bold;
+    margin-top: 11%;
+    font-size: 1.3em;
+    font-family: Verdana;
+    opacity: 0.9;
+}
+
+.proposal-row-1 p:nth-child(2) {
+    color: white;
+    margin-top: 4%;
+    font-size: 1.4em;
+    font-family: Verdana;
+    opacity: 0.85;
+}
+
+.proposal-row-1 p:nth-child(3) {
+    color: white;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    font-family: Verdana;
+    opacity: 0.8;
+}
+
+.proposal-row-2 {
+    min-height: 200px;
+    max-height: 350px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.proposal-row-2>.col {
+    background-color: rgba(0, 0, 255, 0.78);
+}
+
 @media (min-width: 576px) {
     #techModal .modal-dialog, #applicabilityModal .modal-dialog, .news-modal .modal-dialog {
         max-width: 900px;
