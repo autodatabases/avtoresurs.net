@@ -1,13 +1,38 @@
 {% load sekizai_tags %}
+{% load staticfiles %}
 
-{% for item in items %}
-    <h6 align="left">{{ item.title }}</h6>
-    <div class="news2">
-        {{ item.status }}
+<div class="assortment-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm text-white">
+                Ассортимент
+            </div>
+            <div class="col-sm">
+
+            </div>
+            <div class="col-sm">
+
+            </div>
+        </div>
+        <br/>
+{#        {% for item in items %}#}
+{#            {% if forloop.first or forloop.counter|divisibleby:"6" %}#}
+{#                <div class="row">#}
+{#            {% endif %}#}
+{##}
+{#        <div class="col-xs-6 col-sm col-md-2 col-lg center-align text-center">#}
+{#            <img src="{% static 'assortment/i/items/' %}{{ item.image }}" alt="{{ item.title }}"/>#}
+{#        </div>#}
+{#            {% if forloop.last or forloop.counter|divisibleby:"6" %}</div> <br/><br/>{% endif %}#}
+{#        {% endfor %}#}
+        <div class="row">
+        {% for item in items %}
+
+            <div class="col-sm center-align text-center">
+                <img src="{% static 'assortment/i/items/' %}{{ item.image }}" alt="{{ item.title }}"/>
+            </div>
+
+        {% endfor %}
+        </div>
     </div>
-    {% if forloop.last %}
-        <hr id="line2">
-    {% else %}
-        <hr>
-    {% endif %}
-{% endfor %}
+</div>

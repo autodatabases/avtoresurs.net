@@ -27,7 +27,7 @@ class AssortmentItem(models.Model):
 
 class AssortmentItemPlugin(CMSPlugin):
     latest_items = models.IntegerField(
-        default=6,
+        default=20,
     )
 
     def __str__(self):
