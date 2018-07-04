@@ -1,11 +1,22 @@
 {% load sekizai_tags %}
 {% load staticfiles %}
+{% block custom_css %}
+    <style>
+        .assortment {
+            background-image: url({% static 'assortment/i/back-assort.jpg' %});
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 1100px;
+        }
+    </style>
+{% endblock custom_css %}
 
-<div class="assortment-container">
-    <div class="container">
+<div class="assortment">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-sm text-white">
-                Ассортимент
+                <br/>
+                <span style="margin-left: 17px; ">Ассортимент</span>
             </div>
             <div class="col-sm">
 
@@ -15,24 +26,20 @@
             </div>
         </div>
         <br/>
-{#        {% for item in items %}#}
-{#            {% if forloop.first or forloop.counter|divisibleby:"6" %}#}
-{#                <div class="row">#}
-{#            {% endif %}#}
-{##}
-{#        <div class="col-xs-6 col-sm col-md-2 col-lg center-align text-center">#}
-{#            <img src="{% static 'assortment/i/items/' %}{{ item.image }}" alt="{{ item.title }}"/>#}
-{#        </div>#}
-{#            {% if forloop.last or forloop.counter|divisibleby:"6" %}</div> <br/><br/>{% endif %}#}
-{#        {% endfor %}#}
         <div class="row">
-        {% for item in items %}
+            {% for item in items %}
 
-            <div class="col-sm center-align text-center">
-                <img src="{% static 'assortment/i/items/' %}{{ item.image }}" alt="{{ item.title }}"/>
+                <div class="col-sm center-align text-center">
+                    <img src="{% static 'assortment/i/items/' %}{{ item.image }}" alt="{{ item.title }}"/>
+                    <br/><br/>
+                </div>
+
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <br/><br/><br/>
             </div>
-
-        {% endfor %}
         </div>
     </div>
 </div>

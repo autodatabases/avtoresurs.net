@@ -2,63 +2,16 @@
 
 {% load staticfiles %}
 
-{% block title %} Новости {% endblock %}
+{% block title %} Ассортимент {% endblock %}
 
 {% block breadcrumbs %}
-    <div style="margin-top: -1px; margin-left: -1px;">
-        <img src="{% static 'assortment/i/lent.png' %}" title="lent" alt="'lent"/>
-    </div>
 
 {% endblock %}
 
 
 
 {% block content %}
-    <div class="row">
-        {% for post in post_list %}
-            <div class="col-sm-6 col-md-4">
-                <div class="card" style="width: 20rem;">
-                    <img class="card-img-top" src="{{ post.image.url }}" alt="{{ post.title }}">
-                    <div class="card-block">
-                        <h4 class="card-title">{{ post.title }}</h4>
-                        <p class="card-text">
-                            <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>
-                        </p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#modal{{ forloop.counter }}">
-                            Подробнее
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Modal -->
-            <div class="modal fade news-modal" id="modal{{ forloop.counter }}" tabindex="-1" role="dialog"
-                 aria-labelledby="modalLabel{{ forloop.counter }}"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalLabel{{ forloop.counter }}">{{ post.title }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p><img src="{{ post.image.url }}"></p>
-                            <p>{{ post.content }}</p>
-                            <p>
-                                <strong>{{ post.added.day|stringformat:"02d" }}.{{ post.added.month|stringformat:"02d" }}.{{ post.added.year|stringformat:"02d" }}</strong>
-                            </p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
 {% endblock %}
 
 {% block js %}
