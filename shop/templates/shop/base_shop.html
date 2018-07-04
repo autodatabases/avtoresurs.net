@@ -1,0 +1,45 @@
+{% load sekizai_tags %}
+{% load staticfiles %}
+{% block custom_css %}
+    <style>
+        .assortment {
+            background-image: url({% static 'assortment/i/back-assort.jpg' %});
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 1100px;
+        }
+    </style>
+{% endblock custom_css %}
+
+<div class="assortment">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm text-white">
+                <br/>
+                <span style="margin-left: 17px; ">Магазины</span>
+            </div>
+            <div class="col-sm">
+
+            </div>
+            <div class="col-sm">
+
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            {% for shop in shops %}
+
+                <div class="col-sm center-align text-center">
+                    {{ shop.title }}
+                    <br/><br/>
+                </div>
+
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <br/><br/><br/>
+            </div>
+        </div>
+    </div>
+</div>
