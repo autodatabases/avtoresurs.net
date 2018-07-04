@@ -4,7 +4,7 @@ from cms.models import CMSPlugin
 
 class ShopManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(status=True)
+        return super().get_queryset().filter()
 
 
 class Shop(models.Model):
