@@ -75,9 +75,9 @@
             {% for shop in shops %}
                 var myPlacemark = new ymaps.Placemark([{{ shop.lat|stringformat:"f" }}, {{ shop.lon|stringformat:"f" }}], {
                     // Хинт показывается при наведении мышкой на иконку метки.
-                    hintContent: 'Содержимое всплывающей подсказки',
+                    hintContent: '{{ shop.address }}',
                     // Балун откроется при клике по метке.
-                    balloonContent: 'Содержимое балуна'
+                    balloonContent: '{{ shop.name }}'
                 });
 
                 // После того как метка была создана, ее
