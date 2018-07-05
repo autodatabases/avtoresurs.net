@@ -535,7 +535,10 @@ div.card.bonus {
 }
 
 .proposal-row-1 {
-    background-color: rgba(0, 0, 255, 0.73);
+    background-color: rgba(0, 0, 255, 0.25);
+    border-top: 2px solid #1F3EFC;
+    border-left: 2px solid #1F3EFC;
+    border-right: 2px solid #1F3EFC;
 }
 
 .proposal-row-1 p:nth-child(1) {
@@ -545,6 +548,7 @@ div.card.bonus {
     font-size: 1.3em;
     font-family: Verdana;
     opacity: 0.9;
+    text-shadow: -1px 0 #1F3EFC, 0 1px #1F3EFC, 1px 0 #1F3EFC, 0 -1px #1F3EFC;
 }
 
 .proposal-row-1 p:nth-child(2) {
@@ -553,6 +557,7 @@ div.card.bonus {
     font-size: 1.4em;
     font-family: Verdana;
     opacity: 0.85;
+    text-shadow: -1px 0 #1F3EFC, 0 1px #1F3EFC, 1px 0 #1F3EFC, 0 -1px #1F3EFC;
 }
 
 .proposal-row-1 p:nth-child(3) {
@@ -561,6 +566,7 @@ div.card.bonus {
     margin-bottom: 5%;
     font-family: Verdana;
     opacity: 0.8;
+    text-shadow: -1px 0 #1F3EFC, 0 1px #1F3EFC, 1px 0 #1F3EFC, 0 -1px #1F3EFC;
 }
 
 .proposal-row-2 {
@@ -572,7 +578,10 @@ div.card.bonus {
 }
 
 .proposal-row-2>.col {
-    background-color: rgba(0, 0, 255, 0.73);
+    background-color: rgba(0, 0, 255, 0.25);
+        border-bottom: 2px solid #1F3EFC;
+        border-left: 2px solid #1F3EFC;
+        border-right: 2px solid #1F3EFC;
 }
 
 @media (min-width: 576px) {
