@@ -23,11 +23,6 @@ body {
     padding: 0;
 }
 
-.header {
-    background-color: #ffffff;
-    padding: 0;
-    border-bottom: 6px solid #1F3EFC;
-}
 
 .logo {
     padding: 7px 0 3px 0;
@@ -309,11 +304,6 @@ body {
     text-decoration: none;
 }
 
-#line1 {
-    background-color: #1F3EFC;
-
-    height: 20px;
-}
 
 #news {
     display: block;
@@ -332,12 +322,6 @@ h6 {
     padding-left: 25px
 }
 
-#line2 {
-    background-color: #1F3EFC;
-    margin-top: 16px;
-    height: 62px;
-    margin-bottom: 0
-}
 
 .footer {
     position: absolute;
