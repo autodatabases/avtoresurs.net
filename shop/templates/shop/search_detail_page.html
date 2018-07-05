@@ -37,62 +37,106 @@
                 </thead>
                 <tbody>
                 {% for part in partproduct_list %}
-                    <tr>
-                        <th>
-                            {% if part.product_id %}
+                    {% if part.quantity < 0 %}
+                        <tr class="no-product">
+                            <th>{{ forloop.counter }}</th>
+                            <td>{{ part.part_number }}</td>
+                            <td>{{ part.supplier }}</td>
+                            <td>{{ part.title }} {{ part.supplier }} {{ part.part_number }}</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                    {% else %}
+                        <tr class="{% if part.quantity == 0 %}product-zero{% else %}product{% endif %}">
+                            <th>
                                 <a href="{% url 'shop:product_detail' part.product_id %}">
                                     {{ forloop.counter }}
                                 </a>
-                            {% else %}
-                                {{ forloop.counter }}
-                            {% endif %}
-                        </th>
-                        <td>
-                            {% if part.product_id %}
+                            </th>
+                            <td>
                                 <a href="{% url 'shop:product_detail' part.product_id %}">
                                     {{ part.part_number }}
                                 </a>
-                            {% else %}
-                                {{ part.part_number }}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if part.product_id %}
+                            </td>
+                            <td>
                                 <a href="{% url 'shop:product_detail' part.product_id %}">
                                     {{ part.supplier }}
                                 </a>
-                            {% else %}
-                                {{ part.supplier }}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if part.product_id %}
+                            </td>
+                            <td>
                                 <a href="{% url 'shop:product_detail' part.product_id %}">
                                     {{ part.title }} {{ part.supplier }} {{ part.part_number }}
                                 </a>
-                            {% else %}
-                                {{ part.title }} {{ part.supplier }} {{ part.part_number }}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if part.quantity > -1 %}
+                            </td>
+                            <td>
                                 <a href="{% url 'shop:product_detail' part.product_id %}">
                                     {{ part.quantity }}
                                 </a>
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if part.price > -1 %}
+                            </td>
+                            <td>
                                 <a href="{% url 'shop:product_detail' part.product_id %}">
                                     {{ part.price }}
                                 </a>
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+
+                    {% endif %}
+                    {#                    <tr>#}
+                    {#                        <th>#}
+                    {#                            {% if part.product_id %}#}
+                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
+                    {#                                    {{ forloop.counter }}#}
+                    {#                                </a>#}
+                    {#                            {% else %}#}
+                    {#                                {{ forloop.counter }}#}
+                    {#                            {% endif %}#}
+                    {#                        </th>#}
+                    {#                        <td>#}
+                    {#                            {% if part.product_id %}#}
+                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
+                    {#                                    {{ part.part_number }}#}
+                    {#                                </a>#}
+                    {#                            {% else %}#}
+                    {#                                {{ part.part_number }}#}
+                    {#                            {% endif %}#}
+                    {#                        </td>#}
+                    {#                        <td>#}
+                    {#                            {% if part.product_id %}#}
+                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
+                    {#                                    {{ part.supplier }}#}
+                    {#                                </a>#}
+                    {#                            {% else %}#}
+                    {#                                {{ part.supplier }}#}
+                    {#                            {% endif %}#}
+                    {#                        </td>#}
+                    {#                        <td>#}
+                    {#                            {% if part.product_id %}#}
+                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
+                    {#                                    {{ part.title }} {{ part.supplier }} {{ part.part_number }}#}
+                    {#                                </a>#}
+                    {#                            {% else %}#}
+                    {#                                {{ part.title }} {{ part.supplier }} {{ part.part_number }}#}
+                    {#                            {% endif %}#}
+                    {#                        </td>#}
+                    {#                        <td>#}
+                    {#                            {% if part.quantity > -1 %}#}
+                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
+                    {#                                    {{ part.quantity }}#}
+                    {#                                </a>#}
+                    {#                            {% else %}#}
+                    {#                                -#}
+                    {#                            {% endif %}#}
+                    {#                        </td>#}
+                    {#                        <td>#}
+                    {#                            {% if part.price > -1 %}#}
+                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
+                    {#                                    {{ part.price }}#}
+                    {#                                </a>#}
+                    {#                            {% else %}#}
+                    {#                                -#}
+                    {#                            {% endif %}#}
+                    {#                        </td>#}
+                    {#                    </tr>#}
                 {% endfor %}
                 </tbody>
             </table>

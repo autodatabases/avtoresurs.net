@@ -364,7 +364,8 @@ p {
     display: block;
     height: 100%;
     width: 100%;
-    color: #495057;
+    /*color: #495057;*/
+    /*color: black;*/
 }
 
 .table-avtoresurs tr th a {
@@ -530,7 +531,7 @@ div.card.bonus {
     max-height: 500px;
 }
 
-.proposal a:hover{
+.proposal a:hover {
     text-decoration: none;
 }
 
@@ -577,11 +578,27 @@ div.card.bonus {
     background-position: center;
 }
 
-.proposal-row-2>.col {
+.proposal-row-2 > .col {
     background-color: rgba(0, 0, 255, 0.25);
-        border-bottom: 2px solid #1F3EFC;
-        border-left: 2px solid #1F3EFC;
-        border-right: 2px solid #1F3EFC;
+    border-bottom: 2px solid #1F3EFC;
+    border-left: 2px solid #1F3EFC;
+    border-right: 2px solid #1F3EFC;
+}
+
+.col.bg-light {
+    padding: 10px;
+}
+
+.no-product {
+    color: gray;
+}
+
+.product-zero {
+    color: darkgrey;
+}
+
+.product {
+    font-weight: bold;
 }
 
 @media (min-width: 576px) {

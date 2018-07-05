@@ -305,9 +305,10 @@ def get_analogs(clean_part_number, supplier, user):
     for analog in analogs:
         analog['clean_part_number'] = clean_number(analog['part_number'])
     analogs = get_prices(analogs, user)
+    result = {}
     if analogs:
-        return sorted(analogs, reverse=True)
-    return {}
+        result = sorted(analogs, reverse=True)
+    return result
 
 
 def get_products(supplier, clean_part_number):
