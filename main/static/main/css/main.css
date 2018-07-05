@@ -530,8 +530,12 @@ div.card.bonus {
     max-height: 500px;
 }
 
+.proposal a{
+    text-decoration: none;
+}
+
 .proposal-row-1 {
-    background-color: rgba(0, 0, 255, 0.78);
+    background-color: rgba(0, 0, 255, 0.7);
 }
 
 .proposal-row-1 p:nth-child(1) {
@@ -568,7 +572,7 @@ div.card.bonus {
 }
 
 .proposal-row-2>.col {
-    background-color: rgba(0, 0, 255, 0.78);
+    background-color: rgba(0, 0, 255, 0.7);
 }
 
 @media (min-width: 576px) {
