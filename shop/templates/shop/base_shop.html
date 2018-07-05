@@ -73,7 +73,7 @@
                 zoom: 12
             });
             {% for shop in shops %}
-                var myPlacemark = new ymaps.Placemark([{{ shop.lat }}, {{ shop.lon }}], {
+                var myPlacemark = new ymaps.Placemark([{{ shop.lat|stringformat:"f" }}, {{ shop.lon|stringformat:"f" }}], {
                     // Хинт показывается при наведении мышкой на иконку метки.
                     hintContent: 'Содержимое всплывающей подсказки',
                     // Балун откроется при клике по метке.
