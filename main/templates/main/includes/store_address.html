@@ -1,0 +1,13 @@
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Адреса и
+        телефоны
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {% for store in stores %}
+            <p>{{ store.address }}</p>
+            <a class="dropdown-item" href="#">{{ store.phones }}</a>
+        {% endfor %}
+
+    </div>
+</div>

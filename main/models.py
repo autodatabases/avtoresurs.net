@@ -8,6 +8,8 @@ from news.models import Post
 from profile.models import Profile
 from django.utils.translation import ugettext_lazy as _
 
+from shop.models import Storage
+
 
 class Assortment(models.Model):
     image = models.ImageField(verbose_name='Картинка')
@@ -57,6 +59,13 @@ class ProposalModelPlugin(CMSPlugin):
                               verbose_name=_('Картинка'))
 
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
+
+
+class StoreAddressModelPlugin(CMSPlugin):
+    @property
+    def stores(self):
+        storages = Storage.objects.filter(active=True)
+        return storages
 
 
 def user_registered_callback(sender, user, request, **kwargs):
