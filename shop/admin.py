@@ -4,7 +4,6 @@ from django.contrib import admin
 from shop.models.cart import Cart
 from shop.models.order import Order
 from shop.models.product import Product
-from shop.models.shop import Shop
 from shop.models.storage import Storage
 
 
@@ -18,7 +17,6 @@ class ShopAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at', 'updated', 'address')
 
 
-admin.site.register(Shop, ShopAdmin)
 admin.site.register(Product)
 admin.site.register(Cart)
 admin.site.register(Order)

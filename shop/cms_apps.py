@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 @apphook_pool.register
-class ShopApphook(CMSApp):
+class StorageApphook(CMSApp):
     app_name = 'shop'
     name = _("shop")
 

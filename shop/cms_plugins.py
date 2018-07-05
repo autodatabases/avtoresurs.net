@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.core.urlresolvers import reverse, NoReverseMatch
 
-from shop.models.shop import ShopPlugin
+from shop.models import StoragePlugin
 
 
 @plugin_pool.register_plugin
@@ -12,7 +12,7 @@ class ShopPlugin(CMSPluginBase):
     module = ("Контент")
     name = ("Магазин")
     render_template = 'shop/base_shop.html'
-    model = ShopPlugin
+    model = StoragePlugin
 
     def render(self, context, instance, placeholder):
         shops = instance.get_shops()
