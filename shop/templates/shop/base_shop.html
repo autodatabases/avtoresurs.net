@@ -1,45 +1,89 @@
 {% load sekizai_tags %}
 {% load staticfiles %}
 {% block custom_css %}
-    <style>
-        .assortment {
-            background-image: url({% static 'assortment/i/back-assort.jpg' %});
-            background-repeat: no-repeat;
-            background-size: cover;
-            min-height: 1100px;
-        }
-    </style>
+    <link type="text/css" rel="stylesheet" href="{% static 'shop/css/lightslider.css' %}"/>
+    <script src="{% static 'shop/js/lightslider.js' %}"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 {% endblock custom_css %}
 
-<div class="assortment">
+<div>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm text-white">
-                <br/>
-                <span style="margin-left: 17px; ">Магазины</span>
-            </div>
-            <div class="col-sm">
-
-            </div>
-            <div class="col-sm">
-
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            {% for shop in shops %}
-
-                <div class="col-sm center-align text-center">
-                    {{ shop.title }}
-                    <br/><br/>
+        <div style="background-color: white; margin: 20px;">
+            <div class="row">
+                <div class="col-sm" style="color: darkblue;">
+                    <br/>
+                    <span style="margin-left: 10px; ">Магазины</span>
                 </div>
+                <div class="col-sm">
 
-            {% endfor %}
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <br/><br/><br/>
+                </div>
+                <div class="col-sm">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 center-align text-center">
+                    <ul id="lightSlider">
+                        {% for shop in shops %}
+                            <li style="background-color: white">
+                                <img width="400px" src="{{ shop.image.url }}" alt="{{ shop.name }}"/>
+                                <div style="margin: 5px;">
+                                    {#                                    {{ shop.lat }}, {{ shop.lon }}<br/>#}
+                                    {{ shop.shedule }}<br/>
+                                    {{ shop.address }}<br/><br/>
+                                    <i>{{ shop.phones }}</i><br/>
+                                </div>
+
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div style="margin: 17px; background-color: white; padding: 20px;">
+                <div id="map" style="height: 400px; margin: 11px;"></div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#lightSlider").lightSlider({
+            item: 3,
+            autoWidth: false,
+            slideMove: 1, // slidemove will be 1 if loop is true
+            slideMargin: 0,
+            controls: false,
+            pager: false
+        });
+        // Функция ymaps.ready() будет вызвана, когда
+        // загрузятся все компоненты API, а также когда будет готово DOM-дерево.
+        ymaps.ready(init);
+
+        function init() {
+            // Создание карты.
+            var myMap = new ymaps.Map("map", {
+                // Координаты центра карты.
+                // Порядок по умолчнию: «широта, долгота».
+                // Чтобы не определять координаты центра карты вручную,
+                // воспользуйтесь инструментом Определение координат.
+                center: [54.707658, 20.507212],
+                // Уровень масштабирования. Допустимые значения:
+                // от 0 (весь мир) до 19.
+                zoom: 12
+            });
+            {% for shop in shops %}
+                var myPlacemark = new ymaps.Placemark([{{ shop.lat }}, {{ shop.lon }}], {
+                    // Хинт показывается при наведении мышкой на иконку метки.
+                    hintContent: 'Содержимое всплывающей подсказки',
+                    // Балун откроется при клике по метке.
+                    balloonContent: 'Содержимое балуна'
+                });
+
+                // После того как метка была создана, ее
+                // можно добавить на карту.
+                myMap.geoObjects.add(myPlacemark);
+            {% endfor %}
+        }
+    });
+</script>
