@@ -19,8 +19,7 @@
             appearance: none;
             width: 15px;
             height: 25px;
-{#            border-radius: 50%;#}
-            background: #1F3EFC;
+        {#            border-radius: 50%;#} background: #1F3EFC;
             cursor: pointer;
         }
 
@@ -124,7 +123,8 @@
                     </div>
                     <div class="col-4 text-center">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-info btn-avto" data-toggle="modal" data-target="#techModal">
+                        <button type="button" class="btn btn-info btn-avto" data-toggle="modal"
+                                data-target="#techModal">
                             Характеристики
                         </button>
 
@@ -142,79 +142,67 @@
         </div>
     </div>
 
-    <table class="table table-hover table-avtoresurs">
-        <thead class="thead-light">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Артикул</th>
-            <th scope="col">Производитель</th>
-            <th scope="col">Название</th>
-            <th scope="col">Кол-во</th>
-            <th scope="col">Цена</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for part_analog in part_analogs %}
-            <tr class="table-light">
-                <th scope="row">
-                    {% if part_analog.product_id %}
-                        <a href="{% url 'shop:product_detail' part_analog.product_id %}">
-                            {{ forloop.counter }}
-                        </a>
-                    {% else %}
-                        {{ forloop.counter }}
-                    {% endif %}
-                </th>
-                <td>
-                    {% if part_analog.product_id %}
-                        <a href="{% url 'shop:product_detail' part_analog.product_id %}">
-                            {{ part_analog.part_number }}
-                        </a>
-                    {% else %}
-                        {{ part_analog.part_number }}
-                    {% endif %}
 
-                </td>
-                <td>
-                    {% if part_analog.product_id %}
-                        <a href="{% url 'shop:product_detail' part_analog.product_id %}">
-                            {{ part_analog.supplier }}
-                        </a>
+
+            <table class="table table-hover table-avtoresurs bg-light">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Артикул</th>
+                    <th scope="col">Производитель</th>
+                    <th scope="col">Название</th>
+                    <th scope="col">Кол-во</th>
+                    <th scope="col">Цена</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for part in part_analogs %}
+                    {% if part.quantity < 0 %}
+                        <tr class="no-product table-light">
+                            <th>{{ forloop.counter }}</th>
+                            <td>{{ part.part_number }}</td>
+                            <td>{{ part.supplier }}</td>
+                            <td>{{ part.title }} {{ part.supplier }} {{ part.part_number }}</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
                     {% else %}
-                        {{ part_analog.supplier }}
+                        <tr class="{% if part.quantity == 0 %}product-zero{% else %}product{% endif %} table-light">
+                            <th>
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ forloop.counter }}
+                                </a>
+                            </th>
+                            <td>
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ part.part_number }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ part.supplier }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ part.title }} {{ part.supplier }} {{ part.part_number }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ part.quantity }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'shop:product_detail' part.product_id %}">
+                                    {{ part.price }}
+                                </a>
+                            </td>
+                        </tr>
                     {% endif %}
-                </td>
-                <td>
-                    {% if part_analog.product_id %}
-                        <a href="{% url 'shop:product_detail' part_analog.product_id %}">
-                            {{ part_analog.title }} {{ part_analog.supplier }} {{ part_analog.part_number }}
-                        </a>
-                    {% else %}
-                        {{ part_analog.title }} {{ part_analog.supplier }} {{ part_analog.part_number }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if part_analog.quantity > -1 %}
-                        <a href="{% url 'shop:product_detail' part_analog.product_id %}">
-                            <strong>{{ part_analog.quantity }}</strong>
-                        </a>
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-                <td>
-                    {% if part_analog.price > -1 %}
-                        <a href="{% url 'shop:product_detail' part_analog.product_id %}">
-                            <strong>{{ part_analog.price }}</strong>
-                        </a>
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                {% endfor %}
+                </tbody>
+            </table>
 
     <!-- Modal TECH CHARACTERISTIC -->
     <div class="modal fade" id="techModal" tabindex="-1" role="dialog" aria-labelledby="techModalLabel"

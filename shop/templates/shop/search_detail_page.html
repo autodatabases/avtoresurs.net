@@ -79,64 +79,7 @@
                                 </a>
                             </td>
                         </tr>
-
                     {% endif %}
-                    {#                    <tr>#}
-                    {#                        <th>#}
-                    {#                            {% if part.product_id %}#}
-                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
-                    {#                                    {{ forloop.counter }}#}
-                    {#                                </a>#}
-                    {#                            {% else %}#}
-                    {#                                {{ forloop.counter }}#}
-                    {#                            {% endif %}#}
-                    {#                        </th>#}
-                    {#                        <td>#}
-                    {#                            {% if part.product_id %}#}
-                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
-                    {#                                    {{ part.part_number }}#}
-                    {#                                </a>#}
-                    {#                            {% else %}#}
-                    {#                                {{ part.part_number }}#}
-                    {#                            {% endif %}#}
-                    {#                        </td>#}
-                    {#                        <td>#}
-                    {#                            {% if part.product_id %}#}
-                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
-                    {#                                    {{ part.supplier }}#}
-                    {#                                </a>#}
-                    {#                            {% else %}#}
-                    {#                                {{ part.supplier }}#}
-                    {#                            {% endif %}#}
-                    {#                        </td>#}
-                    {#                        <td>#}
-                    {#                            {% if part.product_id %}#}
-                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
-                    {#                                    {{ part.title }} {{ part.supplier }} {{ part.part_number }}#}
-                    {#                                </a>#}
-                    {#                            {% else %}#}
-                    {#                                {{ part.title }} {{ part.supplier }} {{ part.part_number }}#}
-                    {#                            {% endif %}#}
-                    {#                        </td>#}
-                    {#                        <td>#}
-                    {#                            {% if part.quantity > -1 %}#}
-                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
-                    {#                                    {{ part.quantity }}#}
-                    {#                                </a>#}
-                    {#                            {% else %}#}
-                    {#                                -#}
-                    {#                            {% endif %}#}
-                    {#                        </td>#}
-                    {#                        <td>#}
-                    {#                            {% if part.price > -1 %}#}
-                    {#                                <a href="{% url 'shop:product_detail' part.product_id %}">#}
-                    {#                                    {{ part.price }}#}
-                    {#                                </a>#}
-                    {#                            {% else %}#}
-                    {#                                -#}
-                    {#                            {% endif %}#}
-                    {#                        </td>#}
-                    {#                    </tr>#}
                 {% endfor %}
                 </tbody>
             </table>
