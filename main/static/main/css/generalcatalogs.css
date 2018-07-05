@@ -280,11 +280,11 @@ li > a {
     font-size: 15px;
     padding-top: 10px;
     padding-left: 3px;
-    font-style: Helvetica;
+    font-family: Verdana;
 }
 
 .line3 {
-    background-color: rgba(0, 0, 255, 0.7);
+    background-color: #1F3EFC;
     color: white;
     text-align: center;
     font-style: Helvetica;

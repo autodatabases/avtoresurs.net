@@ -530,7 +530,7 @@ div.card.bonus {
     max-height: 500px;
 }
 
-.proposal a{
+.proposal a:hover{
     text-decoration: none;
 }
 
