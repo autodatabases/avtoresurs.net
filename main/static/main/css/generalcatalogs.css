@@ -339,7 +339,7 @@ li > a {
 }
 
 #tovar {
-    margin-bottom: -40px
+    /*margin-bottom: -40px*/
 }
 
 #link {
@@ -348,7 +348,6 @@ li > a {
 
 #line1 {
     background-color: #1F3EFC;
-    margin-top: 46px;
     height: 20px;
 }
 
