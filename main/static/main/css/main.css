@@ -26,7 +26,7 @@ body {
 .header {
     background-color: #ffffff;
     padding: 0;
-    border-bottom: 6px solid rgba(0, 0, 255, 0.7);
+    border-bottom: 6px solid #1F3EFC;
 }
 
 .logo {
@@ -306,7 +306,7 @@ body {
 }
 
 #line1 {
-    background-color: rgba(0, 0, 255, 0.7);
+    background-color: #1F3EFC;
     height: 20px;
 }
 
@@ -328,7 +328,7 @@ h6 {
 }
 
 #line2 {
-    background-color: rgba(0, 0, 255, 0.7);
+    background-color: #1F3EFC;
     margin-top: 16px;
     height: 90px;
     margin-bottom: 0
@@ -535,7 +535,7 @@ div.card.bonus {
 }
 
 .proposal-row-1 {
-    background-color: rgba(0, 0, 255, 0.7);
+    background-color: rgba(0, 0, 255, 0.73);
 }
 
 .proposal-row-1 p:nth-child(1) {
@@ -572,7 +572,7 @@ div.card.bonus {
 }
 
 .proposal-row-2>.col {
-    background-color: rgba(0, 0, 255, 0.7);
+    background-color: rgba(0, 0, 255, 0.73);
 }
 
 @media (min-width: 576px) {
