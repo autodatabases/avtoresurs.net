@@ -3,6 +3,7 @@ from django.db import models
 from djangocms_text_ckeditor.fields import HTMLField
 from registration.signals import user_registered
 
+from main.utils import get_file_path
 from news.models import Post
 from profile.models import Profile
 from django.utils.translation import ugettext_lazy as _
@@ -33,6 +34,7 @@ class GoodItem(models.Model):
         verbose_name = 'Поступление товара'
         verbose_name_plural = 'Поступление товаров'
 
+
 class GoodItemModelPlugin(CMSPlugin):
     latest_goods = models.IntegerField(
         default=6,
@@ -43,41 +45,18 @@ class GoodItemModelPlugin(CMSPlugin):
         goods = GoodItem.objects.filter(active=True)[:self.latest_goods]
         return goods
 
-# class SliderPlugin(CMSPlugin):
-#     right_caption = models.CharField(max_length=128, verbose_name='Заголовок справа', blank=True, null=True)
-#     text = HTMLField(max_length=2000, verbose_name='Описание', blank=True, null=True)
-#
-#     def __str__(self):
-#         return self.right_caption
-#
-#     def get_slides(self):
-#         slides = Slide.objects.all()
-#         return slides
-#
-#
-# class PhonePlugin(CMSPlugin):
-#     phone_text = HTMLField(max_length=2000, verbose_name='Телефоны', blank=True, null=True)
 
+class ProposalModelPlugin(CMSPlugin):
+    caption = models.CharField(max_length=25, default='Лучшее предложение!', verbose_name='Заголовок')
+    brand = models.CharField(max_length=25, default='', verbose_name='Брэнд')
+    sku = models.CharField(max_length=25, default='', verbose_name='Артикул')
+    url = models.CharField(max_length=255, null=True, verbose_name='Ссылка на продукт')
+    image = models.ImageField(upload_to=get_file_path,
+                              null=True,
+                              blank=True,
+                              verbose_name=_('Картинка'))
 
-#
-# class Slide(models.Model):
-#     image = models.ImageField(verbose_name='Картинка')
-#     caption = models.CharField(max_length=100, verbose_name='Заголовок слайда')
-#     text = models.CharField(max_length=100, verbose_name='Текст на слайде')
-#     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
-#     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
-#     order = models.SmallIntegerField(default=0, verbose_name='Сортировка')
-#
-#     class Meta:
-#         ordering = ["order"]
-#         verbose_name = 'Слайд'
-#         verbose_name_plural = 'Слайды'
-
-
-# class AssortmentPlugin(CMSPlugin):
-#     def assortment(self):
-#         assort = Assortment.objects.all().filter(active=True)
-#         return assort
+    added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
 
 
 def user_registered_callback(sender, user, request, **kwargs):

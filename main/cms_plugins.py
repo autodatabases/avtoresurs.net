@@ -1,6 +1,6 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from main.models import GoodItemModelPlugin
+from main.models import GoodItemModelPlugin, ProposalModelPlugin
 
 
 class GoodItemPlugin(CMSPluginBase):
@@ -12,10 +12,18 @@ class GoodItemPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         goods = instance.get_goods()
         context.update({
-            'instace': instance,
+            'instance': instance,
             'goods': goods
         })
         return context
 
-plugin_pool.register_plugin(GoodItemPlugin)
 
+class ProposalPlugin(CMSPluginBase):
+    model = ProposalModelPlugin
+    module = ('Контент')
+    name = ('Лучшее предложение')
+    render_template = 'main/includes/proposal.html'
+
+
+plugin_pool.register_plugin(GoodItemPlugin)
+plugin_pool.register_plugin(ProposalPlugin)
