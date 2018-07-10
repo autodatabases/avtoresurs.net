@@ -1,6 +1,6 @@
 @font-face {
     font-family: Helvetica;
-    src: url(/static/main/fonts/HelveticaNeueCyr-Black.otf);
+    src: url(/static/main/fonts/HelveticaNeueCyr-Roman.otf);
 }
 
 html {
@@ -17,6 +17,7 @@ body {
     overflow-x: hidden;
     background-color: #EBEFF0;
     padding-right: 0 !important;
+    font-family: Helvetica;
 }
 
 .row {
