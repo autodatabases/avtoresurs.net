@@ -1,3 +1,8 @@
+@font-face {
+    font-family: Helvetica;
+    src: url(/static/main/fonts/HelveticaNeueCyr-Thyn.otf);
+}
+
 html {
     width: 100%;
     max-width: 100%;
@@ -41,7 +46,7 @@ body {
 .column {
     list-style-type: none;
     font-size: 12px;
-    font-family: Verdana;
+    font-family: Helvetica;
     padding-top: 14px;
     padding-left: 2%;
     margin-bottom: 0;
@@ -141,7 +146,7 @@ body {
     color: black;
     list-style-type: none;
     text-align: center;
-    font-family: Verdana;
+    font-family: Helvetica;
     line-height: 240%
 }
 
@@ -149,7 +154,7 @@ body {
     color: black;
     list-style-type: none;
     text-align: center;
-    font-family: Verdana;
+    font-family: Helvetica;
     line-height: 240%;
 }
 
@@ -277,7 +282,7 @@ body {
 
 .list-inline-item2 {
     padding-top: 10px;
-    font-family: Verdana;
+    font-family: Helvetica;
 }
 
 .list-inline-item2:hover {
@@ -547,7 +552,7 @@ div.card.bonus {
     font-weight: bold;
     margin-top: 11%;
     font-size: 1.3em;
-    font-family: Verdana;
+    font-family: Helvetica;
     opacity: 0.9;
     text-shadow: -1px 0 #1F3EFC, 0 1px #1F3EFC, 1px 0 #1F3EFC, 0 -1px #1F3EFC;
 }
@@ -556,7 +561,7 @@ div.card.bonus {
     color: white;
     margin-top: 4%;
     font-size: 1.4em;
-    font-family: Verdana;
+    font-family: Helvetica;
     opacity: 0.85;
     text-shadow: -1px 0 #1F3EFC, 0 1px #1F3EFC, 1px 0 #1F3EFC, 0 -1px #1F3EFC;
 }
@@ -565,7 +570,7 @@ div.card.bonus {
     color: white;
     margin-top: 2%;
     margin-bottom: 5%;
-    font-family: Verdana;
+    font-family: Helvetica;
     opacity: 0.8;
     text-shadow: -1px 0 #1F3EFC, 0 1px #1F3EFC, 1px 0 #1F3EFC, 0 -1px #1F3EFC;
 }

@@ -36,7 +36,7 @@ body {
 .column {
     list-style-type: none;
     font-size: 12px;
-    font-family: Verdana;
+    font-family: Helvetica;
     padding-top: 14px;
     padding-left: 2%;
     margin-bottom: 0;
@@ -136,7 +136,7 @@ body {
     color: black;
     list-style-type: none;
     text-align: center;
-    font-family: Verdana;
+    font-family: Helvetica;
     line-height: 240%
 }
 
@@ -246,7 +246,7 @@ body {
     text-align: center;
     padding-top: 26px;
     font-weight: bold;
-    font-family: Verdana;
+    font-family: Helvetica;
 }
 
 .link a {
@@ -280,7 +280,7 @@ body {
 
 .list-inline-item2 {
     padding-top: 10px;
-    font-family: Verdana;
+    font-family: Helvetica;
 }
 
 .list-inline-item2:hover {

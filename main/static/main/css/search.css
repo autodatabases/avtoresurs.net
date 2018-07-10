@@ -25,7 +25,7 @@ body{
 .column {  
    list-style-type: none;
    font-size: 12px;
-   font-family: Verdana;
+   font-family: Helvetica;
    padding-top: 14px;
    padding-left: 2%;
    margin-bottom: 0;
@@ -82,7 +82,7 @@ body{
    color: black;
    list-style-type: none;
    text-align: center;
-   font-family: Verdana;
+   font-family: Helvetica;
    line-height: 240% }
 .pict1 {
    width: 100%;
@@ -139,7 +139,7 @@ input {
    height: 62px;
    background: white;
    color: black;
-   font-family: Verdana}
+   font-family: Helvetica}
 .form-control {border: none;}
 .input-group-addon {
    border: none;
@@ -174,7 +174,7 @@ input {
    padding-top:10px;}
 .list-inline-item2 {
    padding-top:10px;
-   font-family: Verdana;}
+   font-family: Helvetica;}
 .list-inline-item2:hover {
    color:#361AEB;
    text-decoration: none; }
