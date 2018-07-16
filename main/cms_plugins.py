@@ -1,10 +1,10 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from main.models import GoodItemModelPlugin, ProposalModelPlugin, StoreAddressModelPlugin
+from main.models import ArrivalItemModelPlugin, ProposalModelPlugin, StoreAddressModelPlugin
 
 
-class GoodItemPlugin(CMSPluginBase):
-    model = GoodItemModelPlugin
+class ArrivalItemPlugin(CMSPluginBase):
+    model = ArrivalItemModelPlugin
     module = ('Контент')
     name = ('Поступление товара')
     render_template = 'main/includes/goods_receipt.html'
@@ -39,6 +39,6 @@ class StoreAddressPlugin(CMSPluginBase):
         return context
 
 
-plugin_pool.register_plugin(GoodItemPlugin)
+plugin_pool.register_plugin(ArrivalItemPlugin)
 plugin_pool.register_plugin(ProposalPlugin)
 plugin_pool.register_plugin(StoreAddressPlugin)

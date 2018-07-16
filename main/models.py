@@ -24,7 +24,7 @@ class Assortment(models.Model):
         verbose_name_plural = 'Ассортимент'
 
 
-class GoodItem(models.Model):
+class ArrivalItem(models.Model):
     image = models.ImageField(verbose_name='Картинка')
     title = models.CharField(max_length=100, verbose_name='Название')
     post = models.ForeignKey(Post, verbose_name='Ссылка на новость', null=True)
@@ -37,14 +37,14 @@ class GoodItem(models.Model):
         verbose_name_plural = 'Поступление товаров'
 
 
-class GoodItemModelPlugin(CMSPlugin):
+class ArrivalItemModelPlugin(CMSPlugin):
     latest_goods = models.IntegerField(
         default=6,
         help_text=_('The maximum number of latest goods to display.')
     )
 
     def get_goods(self):
-        goods = GoodItem.objects.filter(active=True)[:self.latest_goods]
+        goods = ArrivalItem.objects.filter(active=True)[:self.latest_goods]
         return goods
 
 
