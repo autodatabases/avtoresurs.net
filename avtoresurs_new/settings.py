@@ -67,7 +67,7 @@ INSTALLED_APPS = [
     'service',
     'postman',
     'rest_framework',
-
+    'colorfield'
 ]
 
 MIDDLEWARE = [

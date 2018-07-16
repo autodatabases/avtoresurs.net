@@ -1,4 +1,5 @@
 from cms.models import CMSPlugin
+from colorfield.fields import ColorField
 from django.db import models
 from djangocms_text_ckeditor.fields import HTMLField
 from registration.signals import user_registered
@@ -66,6 +67,19 @@ class StoreAddressModelPlugin(CMSPlugin):
     def stores(self):
         storages = Storage.objects.filter(active=True)
         return storages
+
+
+class StockModelPlugin(CMSPlugin):
+    text_left = HTMLField(max_length=255, default='', verbose_name='Текст слева')
+    text_right = HTMLField(max_length=255, default='', verbose_name='Текст справа')
+    url = models.CharField(max_length=255, null=True, verbose_name='Ссылка')
+    color = ColorField(default='#FF0000')
+    image = models.ImageField(upload_to=get_file_path,
+                              null=True,
+                              blank=True,
+                              verbose_name=_('Картинка'))
+
+    added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
 
 
 def user_registered_callback(sender, user, request, **kwargs):

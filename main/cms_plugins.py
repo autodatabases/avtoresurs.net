@@ -1,6 +1,6 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from main.models import ArrivalItemModelPlugin, ProposalModelPlugin, StoreAddressModelPlugin
+from main.models import ArrivalItemModelPlugin, ProposalModelPlugin, StoreAddressModelPlugin, StockModelPlugin
 
 
 class ArrivalItemPlugin(CMSPluginBase):
@@ -39,6 +39,14 @@ class StoreAddressPlugin(CMSPluginBase):
         return context
 
 
+class StockPlugin(CMSPluginBase):
+    model = StockModelPlugin
+    module = ('Контент')
+    name = ('Акция на главной странице')
+    render_template = 'main/includes/stock.html'
+
+
 plugin_pool.register_plugin(ArrivalItemPlugin)
 plugin_pool.register_plugin(ProposalPlugin)
 plugin_pool.register_plugin(StoreAddressPlugin)
+plugin_pool.register_plugin(StockPlugin)

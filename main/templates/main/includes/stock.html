@@ -1,0 +1,24 @@
+<div class="stock"
+     style="background-image: url({{ instance.image.url }});
+             background-size: contain;
+             background-repeat: no-repeat;
+             background-position: center;
+             ">
+    <a href="{{ instance.url }}">
+        <div class="row"
+             style="background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.7) 56%, rgba(0, 1, 255, 0.8) 57%, rgba(0, 1, 255, 0.9) 100%);">
+            <div class="col-sm-4">{{ instance.text_left }}</div>
+            <div class="col-sm-4 offset-sm-4"></div>
+            <div class="col-sm-4 offset-sm-4">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-9 text-right">{{ instance.text_right }}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+            </div>
+        </div>
+        {#        <div class="row stock-row-2" style="background-image: url({{ instance.image.url }});">#}
+        {#            <div class="col col-sm-12"></div>#}
+        {#        </div>#}
+    </a>
+</div>
