@@ -4,6 +4,7 @@ click==6.7
 Django==1.11.9
 django-classy-tags==0.8.0
 django-cms==3.4.5
+django-colorfield==0.1.14
 django-filebrowser==3.7.2
 django-filer==1.2.7
 django-filter==1.1.0
