@@ -608,9 +608,6 @@ div.card.bonus {
 }
 
 .stock {
-    min-width: 500px;
-    max-width: 1037px;
-    max-height: 110px;
     margin: 20px 20px 0 20px;
 }
 
