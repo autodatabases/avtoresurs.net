@@ -612,14 +612,8 @@ div.card.bonus {
     max-width: 1037px;
     max-height: 110px;
     margin: 20px 20px 0 20px;
-.
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+56,0001ff+57,0001ff+100 */
-background: rgb(255, 255, 255); /* Old browsers */
-    background: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 1) 56%, rgba(0, 1, 255, 1) 57%, rgba(0, 1, 255, 1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 1) 56%, rgba(0, 1, 255, 1) 57%, rgba(0, 1, 255, 1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(145deg, rgba(255, 255, 255, 1) 56%, rgba(0, 1, 255, 1) 57%, rgba(0, 1, 255, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#0001ff', GradientType=1); /* IE6-9 fallback on horizontal gradient */
 }
+
 
 .stock a:hover {
     text-decoration: none;
@@ -633,6 +627,12 @@ background: rgb(255, 255, 255); /* Old browsers */
 .stock a .row {
     padding: 10px;
     color: black;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+56,0001ff+57,0001ff+100 */
+    /*background: rgb(255, 255, 255); !* Old browsers *!*/
+    /*background: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0) 56%, rgba(0, 1, 255, 1) 57%, rgba(0, 1, 255, 1) 100%); !* FF3.6-15 *!*/
+    /*background: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0) 56%, rgba(0, 1, 255, 1) 57%, rgba(0, 1, 255, 1) 100%); !* Chrome10-25,Safari5.1-6 *!*/
+    /*background: linear-gradient(145deg, rgba(255, 255, 255, 0) 56%, rgba(0, 1, 255, 1) 57%, rgba(0, 1, 255, 1) 100%); !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!*/
+    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#0001ff', GradientType=1); !* IE6-9 fallback on horizontal gradient *!*/
 }
 
 @media (min-width: 576px) {

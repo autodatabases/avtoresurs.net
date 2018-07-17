@@ -81,6 +81,12 @@ class StockModelPlugin(CMSPlugin):
 
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
 
+    def rgba(self):
+        hex_value = self.color.lstrip('#')
+        lv = len(hex_value)
+        rgba_value = tuple(int(hex_value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+        return rgba_value
+
 
 def user_registered_callback(sender, user, request, **kwargs):
     profile = Profile(user=user)
