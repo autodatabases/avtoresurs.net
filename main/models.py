@@ -88,7 +88,7 @@ class StockModelPlugin(CMSPlugin):
         return rgba_value
 
     def image_src(self):
-        return self.image.url or None
+        return getattr(self.image, 'url', None)
 
 
 def user_registered_callback(sender, user, request, **kwargs):
