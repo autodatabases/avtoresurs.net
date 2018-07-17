@@ -9,7 +9,11 @@
     <a href="{{ instance.url }}">
         <div class="row"
              style="background: linear-gradient(145deg, rgba(255, 255, 255, 0) 56%, rgba({{ instance.rgba.0 }}, {{ instance.rgba.1 }}, {{ instance.rgba.2 }}, 0.75) 57%, rgba({{ instance.rgba.0 }}, {{ instance.rgba.1 }}, {{ instance.rgba.2 }}, 1) 100%); min-height: 140px">
-            <div class="col-sm-4">{{ instance.text_left }}</div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-12">{{ instance.text_left }}</div>
+                </div>
+            </div>
             <div class="col-sm-4 offset-sm-4"></div>
             <div class="col-sm-4 offset-sm-4">
                 <div class="row">
