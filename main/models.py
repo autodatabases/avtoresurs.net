@@ -87,6 +87,9 @@ class StockModelPlugin(CMSPlugin):
         rgba_value = tuple(int(hex_value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
         return rgba_value
 
+    def image_src(self):
+        return self.image.url or None
+
 
 def user_registered_callback(sender, user, request, **kwargs):
     profile = Profile(user=user)
