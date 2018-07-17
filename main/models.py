@@ -73,7 +73,7 @@ class StockModelPlugin(CMSPlugin):
     text_left = HTMLField(max_length=255, default='', verbose_name='Текст слева')
     text_right = HTMLField(max_length=255, default='', verbose_name='Текст справа')
     url = models.CharField(max_length=255, null=True, verbose_name='Ссылка')
-    color = ColorField(default='#FF0000')
+    color = ColorField(default='#FF0000', verbose_name='Цвет фона справа')
     image = models.ImageField(upload_to=get_file_path,
                               null=True,
                               blank=True,
