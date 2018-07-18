@@ -1,8 +1,7 @@
 {% load sekizai_tags %}
 {% load staticfiles %}
 {% block custom_css %}
-    <link type="text/css" rel="stylesheet" href="{% static 'shop/css/lightslider.css' %}"/>
-    <script src="{% static 'shop/js/lightslider.js' %}"></script>
+    {% include "main/plugins/light_slider.html" %}
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <style>
         .slider-btn {
@@ -28,7 +27,7 @@
         }
     </style>
 {% endblock custom_css %}
-
+{% include 'main/plugins/brands_lent.html' %}
 <div>
     <div class="container-fluid">
         <div style="background-color: white; margin: 20px;">

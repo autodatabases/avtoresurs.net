@@ -5,9 +5,7 @@
 {% block title %} Ассортимент {% endblock %}
 
 {% block breadcrumbs %}
-    <div style="margin-top: -1px; margin-left: -1px;">
-        <img src="{% static 'assortment/i/lent.png' %}" title="lent" alt="'lent"/>
-    </div>
+    {% include 'main/plugins/brands_lent.html' %}
 {% endblock %}
 
 

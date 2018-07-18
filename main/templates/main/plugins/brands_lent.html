@@ -1,0 +1,43 @@
+{% load staticfiles %}
+{% block custom_css %}
+    {% include "main/plugins/light_slider.html" %}
+{% endblock custom_css %}
+
+
+
+{#    <img src="{% static 'assortment/i/lent.png' %}" title="lent" alt="'lent"/>#}
+    <div style="height: 70px">
+        <div class="container-fluid">
+            <div style="background-color: white;">
+                <div class="row">
+                    <div class="col-sm-12 center-align text-center">
+                        <ul id="brandsSlider">
+
+                            {% for brand in brands %}
+                                <li style="background-color: white">
+                                    <img width="100%" height="70px" src="{{ brand }}" alt="brand"/>
+                                    <br/>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function () {
+        var brandsSlider = $("#brandsSlider").lightSlider({
+            item: 9,
+            auto: true,
+            loop: true,
+            autoWidth: false,
+            slideMove: 3, // slidemove will be 1 if loop is true
+            slideMargin: 0,
+            controls: false,
+            pager: false
+        });
+    });
+</script>

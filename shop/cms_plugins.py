@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.core.urlresolvers import reverse, NoReverseMatch
 
+from avtoresurs_new.support_utils import get_brands_images_list
 from shop.models import StoragePlugin
 
 
@@ -16,8 +17,10 @@ class ShopPlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         shops = instance.get_shops()
+        brands = get_brands_images_list()
         context.update({
             'instance': instance,
             'shops': shops,
+            'brands': brands
         })
         return context
