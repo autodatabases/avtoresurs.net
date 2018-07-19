@@ -1,16 +1,18 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from main.models import ArrivalItemModelPlugin, ProposalModelPlugin, StoreAddressModelPlugin, StockModelPlugin
+from main.models import ArrivalItemModelPlugin, ProposalModelPlugin, StoreAddressModelPlugin, StockModelPlugin, \
+    PostPlugin
 
 
+@plugin_pool.register_plugin
 class ArrivalItemPlugin(CMSPluginBase):
     model = ArrivalItemModelPlugin
     module = ('Контент')
     name = ('Поступление товара')
-    render_template = 'main/includes/goods_receipt.html'
+    render_template = 'main/includes/arrivals.html'
 
     def render(self, context, instance, placeholder):
-        goods = instance.get_goods()
+        goods = instance.get_arrivals()
         context.update({
             'instance': instance,
             'goods': goods
@@ -18,6 +20,7 @@ class ArrivalItemPlugin(CMSPluginBase):
         return context
 
 
+@plugin_pool.register_plugin
 class ProposalPlugin(CMSPluginBase):
     model = ProposalModelPlugin
     module = ('Контент')
@@ -25,6 +28,7 @@ class ProposalPlugin(CMSPluginBase):
     render_template = 'main/includes/proposal.html'
 
 
+@plugin_pool.register_plugin
 class StoreAddressPlugin(CMSPluginBase):
     model = StoreAddressModelPlugin
     module = ('Контент')
@@ -39,6 +43,7 @@ class StoreAddressPlugin(CMSPluginBase):
         return context
 
 
+@plugin_pool.register_plugin
 class StockPlugin(CMSPluginBase):
     model = StockModelPlugin
     module = ('Контент')
@@ -46,7 +51,17 @@ class StockPlugin(CMSPluginBase):
     render_template = 'main/includes/stock.html'
 
 
-plugin_pool.register_plugin(ArrivalItemPlugin)
-plugin_pool.register_plugin(ProposalPlugin)
-plugin_pool.register_plugin(StoreAddressPlugin)
-plugin_pool.register_plugin(StockPlugin)
+@plugin_pool.register_plugin
+class PostPlugin(CMSPluginBase):
+    module = ("Контент")
+    name = ("Новости поставщиков")
+    render_template = 'news/base_news_list.html'
+    model = PostPlugin
+
+    def render(self, context, instance, placeholder):
+        posts = instance.get_posts()
+        context.update({
+            'instance': instance,
+            'posts': posts,
+        })
+        return context

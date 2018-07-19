@@ -5,7 +5,7 @@ from djangocms_text_ckeditor.fields import HTMLField
 from registration.signals import user_registered
 
 from main.utils import get_file_path
-from news.models import Post
+from news.models import Post, Categories
 from profile.models import Profile
 from django.utils.translation import ugettext_lazy as _
 
@@ -25,28 +25,29 @@ class Assortment(models.Model):
         verbose_name_plural = 'Ассортимент'
 
 
-class ArrivalItem(models.Model):
-    image = models.ImageField(verbose_name='Картинка')
-    title = models.CharField(max_length=100, verbose_name='Название')
-    post = models.ForeignKey(Post, verbose_name='Ссылка на новость', null=True)
-    added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
-    active = models.BooleanField(default=True, verbose_name='Активный')
-
-    class Meta:
-        ordering = ['-added']
-        verbose_name = 'Поступление товара'
-        verbose_name_plural = 'Поступление товаров'
-
-
 class ArrivalItemModelPlugin(CMSPlugin):
-    latest_goods = models.IntegerField(
-        default=6,
+    latest_articles = models.IntegerField(
+        default=5,
         help_text=_('The maximum number of latest goods to display.')
     )
 
-    def get_goods(self):
-        goods = ArrivalItem.objects.filter(active=True)[:self.latest_goods]
-        return goods
+    def get_arrivals(self):
+        posts = Post.objects.filter(category=Categories.Arrival.name)[:self.latest_articles]
+        return posts
+
+
+class PostPlugin(CMSPlugin):
+    latest_articles = models.IntegerField(
+        default=6,
+        # help_text=_('The maximum number of latest articles to display.')
+    )
+
+    def __str__(self):
+        return str(self.latest_articles)
+
+    def get_posts(self):
+        posts = Post.objects.filter(category=Categories.Supplier.name)[:self.latest_articles]
+        return posts
 
 
 class ProposalModelPlugin(CMSPlugin):
