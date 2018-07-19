@@ -30,13 +30,14 @@ class Post(models.Model):
         verbose_name_plural = 'Публикации'
 
     title = models.CharField(max_length=255, verbose_name='Название новости')
+    category = models.CharField(max_length=10, choices=Categories.as_choices(), default='normal',
+                                verbose_name='Категория')
     content = HTMLField(null=True, blank=True, verbose_name='Содержание')
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
     image = models.ImageField(null=True, blank=True, verbose_name='Картинка')
     status = models.BooleanField(default=True, verbose_name='Активен')
-    category = models.CharField(max_length=10, choices=Categories.as_choices(), default='normal',
-                                verbose_name='Категория')
+
 
     objects = PostManager()
 
