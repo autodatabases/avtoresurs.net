@@ -9,7 +9,7 @@ class ArrivalItemPlugin(CMSPluginBase):
     model = ArrivalItemModelPlugin
     module = ('Контент')
     name = ('Поступление товара')
-    render_template = 'main/includes/arrivals.html'
+    render_template = 'main/includes/arrival_news_list.html'
 
     def render(self, context, instance, placeholder):
         posts = instance.get_arrivals()
@@ -55,7 +55,7 @@ class StockPlugin(CMSPluginBase):
 class PostPlugin(CMSPluginBase):
     module = ("Контент")
     name = ("Новости поставщиков")
-    render_template = 'news/base_news_list.html'
+    render_template = 'main/includes/supplier_news_list.html'
     model = PostPlugin
 
     def render(self, context, instance, placeholder):
