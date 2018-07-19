@@ -12,10 +12,10 @@ class ArrivalItemPlugin(CMSPluginBase):
     render_template = 'main/includes/arrivals.html'
 
     def render(self, context, instance, placeholder):
-        goods = instance.get_arrivals()
+        posts = instance.get_arrivals()
         context.update({
             'instance': instance,
-            'goods': goods
+            'posts': posts
         })
         return context
 
