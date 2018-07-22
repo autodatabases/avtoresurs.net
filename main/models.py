@@ -26,13 +26,18 @@ class Assortment(models.Model):
 
 
 class PostPluginModel(CMSPlugin):
+    TEMPLATES = (
+        (1, 'main/includes/right_news_list.html'),
+        (2, 'main/includes/supplier_news_list.html')
+    )
+
     latest_articles = models.IntegerField(
         default=6,
         # help_text=_('The maximum number of latest articles to display.')
     )
     category = models.CharField(max_length=10, choices=Categories.as_choices(), default='normal',
                                 verbose_name='Категория')
-    render_template = models.CharField(max_length=255, default='main/includes/right_news_list.html', verbose_name='Путь к шаблону')
+    render_template = models.CharField(max_length=255, default=1, verbose_name='Путь к шаблону', choices=TEMPLATES)
 
     def __str__(self):
         return str(self.latest_articles)
