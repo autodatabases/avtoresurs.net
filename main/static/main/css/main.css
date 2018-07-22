@@ -160,6 +160,11 @@ body {
     line-height: 240%;
 }
 
+.row .arrival-news {
+    margin-top: 7px;
+    margin-bottom: 5px;
+}
+
 .pict1 {
     width: 100%;
     max-height: 48%;
