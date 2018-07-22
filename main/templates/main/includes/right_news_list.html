@@ -1,13 +1,13 @@
 {% load staticfiles %}
 
 <ul class="list-inline3">
-    <li class="list-inline-goods goods-header" id="tovar">
-        <div class="row">
-            <div class="col col-sm-12">
-                <p>Поступление товара</p>
-            </div>
-        </div>
-    </li>
+{#    <li class="list-inline-goods goods-header" id="tovar">#}
+{#        <div class="row">#}
+{#            <div class="col col-sm-12">#}
+{#                <p>Поступление товара</p>#}
+{#            </div>#}
+{#        </div>#}
+{#    </li>#}
     {% for post in posts %}
         <li class="list-inline-goods" id="tovar">
         <a href="{{ post.get_absolute_url }}" id="link">

@@ -41,12 +41,14 @@ class PostPlugin(CMSPlugin):
         default=6,
         # help_text=_('The maximum number of latest articles to display.')
     )
+    category = models.CharField(max_length=10, choices=Categories.as_choices(), default='normal',
+                                verbose_name='Категория')
 
     def __str__(self):
         return str(self.latest_articles)
 
     def get_posts(self):
-        posts = Post.objects.filter(category=Categories.Supplier.name)[:self.latest_articles]
+        posts = Post.objects.filter(category=self.category)[:self.latest_articles]
         return posts
 
 

@@ -4,18 +4,20 @@ from main.models import ArrivalItemModelPlugin, ProposalModelPlugin, StoreAddres
     PostPlugin
 
 
+
+
 @plugin_pool.register_plugin
-class ArrivalItemPlugin(CMSPluginBase):
-    model = ArrivalItemModelPlugin
-    module = ('Контент')
-    name = ('Поступление товара')
-    render_template = 'main/includes/arrival_news_list.html'
+class PostPlugin(CMSPluginBase):
+    module = ("Контент")
+    name = ("Новости")
+    render_template = 'main/includes/right_news_list.html'
+    model = PostPlugin
 
     def render(self, context, instance, placeholder):
-        posts = instance.get_arrivals()
+        posts = instance.get_posts()
         context.update({
             'instance': instance,
-            'posts': posts
+            'posts': posts,
         })
         return context
 
@@ -49,19 +51,3 @@ class StockPlugin(CMSPluginBase):
     module = ('Контент')
     name = ('Акция на главной странице')
     render_template = 'main/includes/stock.html'
-
-
-@plugin_pool.register_plugin
-class PostPlugin(CMSPluginBase):
-    module = ("Контент")
-    name = ("Новости поставщиков")
-    render_template = 'main/includes/supplier_news_list.html'
-    model = PostPlugin
-
-    def render(self, context, instance, placeholder):
-        posts = instance.get_posts()
-        context.update({
-            'instance': instance,
-            'posts': posts,
-        })
-        return context

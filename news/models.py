@@ -22,6 +22,9 @@ class Categories(Enum):
     def as_choices(cls):
         return tuple((x.name, x.value) for x in cls)
 
+    def __str__(self):
+        return self.value
+
 
 class Post(models.Model):
     class Meta:
