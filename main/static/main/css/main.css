@@ -149,6 +149,7 @@ body {
     text-align: center;
     font-family: Helvetica;
     line-height: 240%
+
 }
 
 .list-inline-goods {
@@ -402,6 +403,10 @@ p {
     padding-left: 0 !important;
 }
 
+.no-margin {
+    margin: 0 !important;
+}
+
 #search {
     position: fixed;
     top: 0px;
@@ -611,15 +616,13 @@ div.card.bonus {
     margin: 20px 20px 0 20px;
 }
 
-
 .stock a:hover {
     text-decoration: none;
 }
 
-.stock h3{
+.stock h3 {
     padding-left: 25px;
 }
-
 
 .stock a .row {
     padding: 10px;
