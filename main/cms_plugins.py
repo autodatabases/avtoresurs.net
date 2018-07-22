@@ -1,9 +1,6 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from main.models import ArrivalItemModelPlugin, ProposalModelPlugin, StoreAddressModelPlugin, StockModelPlugin, \
-    PostPlugin
-
-
+from main.models import ProposalModelPlugin, StoreAddressModelPlugin, StockModelPlugin, PostPlugin
 
 
 @plugin_pool.register_plugin
@@ -23,14 +20,6 @@ class PostPlugin(CMSPluginBase):
 
 
 @plugin_pool.register_plugin
-class ProposalPlugin(CMSPluginBase):
-    model = ProposalModelPlugin
-    module = ('Контент')
-    name = ('Лучшее предложение')
-    render_template = 'main/includes/proposal.html'
-
-
-@plugin_pool.register_plugin
 class StoreAddressPlugin(CMSPluginBase):
     model = StoreAddressModelPlugin
     module = ('Контент')
@@ -43,6 +32,14 @@ class StoreAddressPlugin(CMSPluginBase):
             'stores': instance.stores
         })
         return context
+
+
+@plugin_pool.register_plugin
+class ProposalPlugin(CMSPluginBase):
+    model = ProposalModelPlugin
+    module = ('Контент')
+    name = ('Лучшее предложение')
+    render_template = 'main/includes/proposal.html'
 
 
 @plugin_pool.register_plugin

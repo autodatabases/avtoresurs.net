@@ -25,17 +25,6 @@ class Assortment(models.Model):
         verbose_name_plural = 'Ассортимент'
 
 
-class ArrivalItemModelPlugin(CMSPlugin):
-    latest_articles = models.IntegerField(
-        default=5,
-        help_text=_('The maximum number of latest goods to display.')
-    )
-
-    def get_arrivals(self):
-        posts = Post.objects.filter(category=Categories.Arrival.name)[:self.latest_articles]
-        return posts
-
-
 class PostPlugin(CMSPlugin):
     latest_articles = models.IntegerField(
         default=6,
