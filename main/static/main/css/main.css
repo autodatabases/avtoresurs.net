@@ -165,6 +165,8 @@ body {
     margin-bottom: 5px;
 }
 
+
+
 .pict1 {
     width: 100%;
     max-height: 48%;
@@ -323,10 +325,10 @@ body {
 }
 
 #news {
-    display: block;
+    /*display: block;*/
     text-align: center;
-    font-size: 14px;
-    color: #1F3EFC;
+    /*font-size: 14px;*/
+    /*color: #1F3EFC;*/
 }
 
 .news2 {
