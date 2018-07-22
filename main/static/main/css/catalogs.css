@@ -23,7 +23,6 @@ body {
     padding: 0;
 }
 
-
 .logo {
     padding: 7px 0 3px 0;
     text-align: center;
@@ -49,34 +48,34 @@ body {
 }
 
 /*.btn-success {*/
-    /*margin-top: 15px;*/
-    /*padding: 0 21px 0 21px;*/
-    /*background-color: #ffffff;*/
-    /*border: none;*/
-    /*font-size: 16px;*/
-    /*color: #191919;*/
+/*margin-top: 15px;*/
+/*padding: 0 21px 0 21px;*/
+/*background-color: #ffffff;*/
+/*border: none;*/
+/*font-size: 16px;*/
+/*color: #191919;*/
 /*}*/
 
 /*.btn-success:hover {*/
-    /*background-color: #191919;*/
-    /*border-radius: 29px;*/
-    /*color: #ffffff;*/
+/*background-color: #191919;*/
+/*border-radius: 29px;*/
+/*color: #ffffff;*/
 /*}*/
 
 /*.btn-success:focus, .btn-success.focus {*/
-    /*box-shadow: none;*/
+/*box-shadow: none;*/
 /*}*/
 
 /*.active {*/
-    /*margin-top: 15px;*/
-    /*padding: 0 21px 0 21px;*/
-    /*color: #191919;*/
+/*margin-top: 15px;*/
+/*padding: 0 21px 0 21px;*/
+/*color: #191919;*/
 /*}*/
 
 /*.active:hover {*/
-    /*background-color: #191919;*/
-    /*border-radius: 29px;*/
-    /*color: #ffffff;*/
+/*background-color: #191919;*/
+/*border-radius: 29px;*/
+/*color: #ffffff;*/
 /*}*/
 
 .dropdown {
@@ -147,9 +146,9 @@ body {
 }
 
 /*.content {*/
-    /*padding: 0;*/
-    /*background-image: url("../images/back-cat.jpg");*/
-    /*background-size: cover;*/
+/*padding: 0;*/
+/*background-image: url("../images/back-cat.jpg");*/
+/*background-size: cover;*/
 /*}*/
 
 .content2 {
@@ -157,27 +156,27 @@ body {
 }
 
 /*.modal:target {*/
-    /*border-color: black*/
+/*border-color: black*/
 /*}*/
 
 /*.modal-dialog {*/
-    /*width: 300px;*/
+/*width: 300px;*/
 /*}*/
 
 /*.modal-content {*/
-    /*width: 300px;*/
-    /*background-color: #EEEEEE*/
+/*width: 300px;*/
+/*background-color: #EEEEEE*/
 /*}*/
 
 /*.modal-header {*/
-    /*background-color: #1F3EFC;*/
+/*background-color: #1F3EFC;*/
 /*}*/
 
 /*.modal-title {*/
-    /*color: white;*/
-    /*padding-left: 85px;*/
-    /*font-weight: bold;*/
-    /*font-family: 'Ubuntu', sans-serif;*/
+/*color: white;*/
+/*padding-left: 85px;*/
+/*font-weight: bold;*/
+/*font-family: 'Ubuntu', sans-serif;*/
 /*}*/
 
 .enter {
@@ -304,14 +303,6 @@ body {
     text-decoration: none;
 }
 
-
-#news {
-    /*display: block;*/
-    text-align: center;
-    /*font-size: 14px;*/
-    /*color: #1F3EFC;*/
-}
-
 .news2 {
     text-align: left;
     font-size: 13px;
@@ -321,7 +312,6 @@ body {
 h6 {
     padding-left: 25px
 }
-
 
 .footer {
     position: absolute;
