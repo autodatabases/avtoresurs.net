@@ -7,7 +7,7 @@ from main.models import ProposalModelPlugin, StoreAddressModelPlugin, StockModel
 class PostPlugin(CMSPluginBase):
     module = ("Контент")
     name = ("Новости")
-    render_template = 'main/includes/right_news_list.html'
+    # render_template = 'main/includes/right_news_list.html'
     model = PostPlugin
 
     def render(self, context, instance, placeholder):
@@ -17,6 +17,10 @@ class PostPlugin(CMSPluginBase):
             'posts': posts,
         })
         return context
+
+    def get_render_template(self, context, instance, placeholder):
+        return instance.render_template
+
 
 
 @plugin_pool.register_plugin

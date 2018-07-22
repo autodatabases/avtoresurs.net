@@ -32,6 +32,7 @@ class PostPlugin(CMSPlugin):
     )
     category = models.CharField(max_length=10, choices=Categories.as_choices(), default='normal',
                                 verbose_name='Категория')
+    render_template = models.CharField(max_length=255, default='main/includes/right_news_list.html')
 
     def __str__(self):
         return str(self.latest_articles)
