@@ -1,6 +1,10 @@
+import os.path
+
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from main.models import ProposalModelPlugin, StoreAddressModelPlugin, StockModelPlugin, PostPlugin
+
+from avtoresurs_new.settings import PROJECT_ROOT
+from main.models import ProposalModelPlugin, StoreAddressModelPlugin, StockModelPlugin, PostPluginModel
 
 
 @plugin_pool.register_plugin
@@ -8,7 +12,7 @@ class PostPlugin(CMSPluginBase):
     module = ("Контент")
     name = ("Новости")
     # render_template = 'main/includes/right_news_list.html'
-    model = PostPlugin
+    model = PostPluginModel
 
     def render(self, context, instance, placeholder):
         posts = instance.get_posts()
@@ -20,7 +24,6 @@ class PostPlugin(CMSPluginBase):
 
     def get_render_template(self, context, instance, placeholder):
         return instance.render_template
-
 
 
 @plugin_pool.register_plugin
