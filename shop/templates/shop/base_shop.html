@@ -48,7 +48,7 @@
                     <ul id="lightSlider">
                         {% for shop in shops %}
                             <li style="background-color: white" id="shop{{ forloop.counter0 }}">
-                                <img width="400px" src="{{ shop.image.url }}" alt="{{ shop.name }}"/>
+                                <img width="400px" height="300px" src="{{ shop.image.url }}" alt="{{ shop.name }}"/>
                                 <div style="margin: 5px;">
                                     {#                                                                        {{ shop.lat }}, {{ shop.lon }}<br/>#}
                                     {{ shop.shedule }}<br/>
