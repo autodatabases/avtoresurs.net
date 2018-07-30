@@ -47,8 +47,8 @@
                 <div class="col-sm-12 center-align text-center">
                     <ul id="lightSlider">
                         {% for shop in shops %}
-                            <li style="background-color: white">
-                                <img width="400px" src="{{ shop.image.url }}" alt="{{ shop.name }}"/>
+                            <li style="background-color: white" id="shop{{ forloop.counter0 }}">
+                                <img width="400px" height="300px" src="{{ shop.image.url }}" alt="{{ shop.name }}"/>
                                 <div style="margin: 5px;">
                                     {#                                                                        {{ shop.lat }}, {{ shop.lon }}<br/>#}
                                     {{ shop.shedule }}<br/>
@@ -77,22 +77,8 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        var lightSlider = $("#lightSlider").lightSlider({
-            item: 3,
-            autoWidth: false,
-            slideMove: 1, // slidemove will be 1 if loop is true
-            slideMargin: 0,
-            controls: false,
-            pager: false
-        });
-        $('#goToPrevSlide').on('click', function () {
-            lightSlider.goToPrevSlide();
-        });
-        $('#goToNextSlide').on('click', function () {
-            lightSlider.goToNextSlide();
-        });
 
+    $(document).ready(function () {
         // Функция ymaps.ready() будет вызвана, когда
         // загрузятся все компоненты API, а также когда будет готово DOM-дерево.
         ymaps.ready(init);
@@ -109,7 +95,40 @@
                 // от 0 (весь мир) до 19.
                 zoom: 12
             });
+
+
+            var lightSlider = $("#lightSlider").lightSlider({
+                item: 3,
+                autoWidth: false,
+                slideMove: 1, // slidemove will be 1 if loop is true
+                slideMargin: 0,
+                controls: false,
+                pager: false
+            });
+
+            $('#goToPrevSlide').on('click', function () {
+                lightSlider.goToPrevSlide();
+                console.log(lightSlider.item);
+            });
+            $('#goToNextSlide').on('click', function () {
+                lightSlider.goToNextSlide();
+            });
+
+
+
+
             {% for shop in shops %}
+                $( "#shop{{ forloop.counter0 }}" ).click(function() {
+                    myMap.panTo(
+                        [["{{ shop.lat|stringformat:'f' }}","{{ shop.lon|stringformat:'f' }}"]],
+                        {
+                            duration: 1000,
+                            checkZoomRange: true
+                        }
+                    );
+                    console.log("{{ shop.lat|stringformat:'f' }}");
+                });
+
                 var myPlacemark = new ymaps.Placemark([{{ shop.lat|stringformat:"f" }}, {{ shop.lon|stringformat:"f" }}], {
                     // Хинт показывается при наведении мышкой на иконку метки.
                     hintContent: '{{ shop.address }}',
@@ -121,6 +140,7 @@
                 // можно добавить на карту.
                 myMap.geoObjects.add(myPlacemark);
             {% endfor %}
+
         }
     });
 </script>
