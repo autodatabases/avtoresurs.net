@@ -11,6 +11,7 @@ class ProfileManager(models.Manager):
         qs = super(ProfileManager, self).get_queryset().select_related('user')
         return qs
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     vip_code = models.CharField(max_length=50, blank=True, null=True, verbose_name='Номер карты клиента')
