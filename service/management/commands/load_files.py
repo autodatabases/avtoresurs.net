@@ -1,22 +1,18 @@
-import datetime
 from io import BytesIO
-import os
-import threading
 from ftplib import FTP
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from shop.models.storage import Storage
 
-from avtoresurs_new.settings import MEDIA_ROOT
 from service.parser.bonus import BonusLoader
 from service.parser.parser import get_filename
 
-# REAL FTP
 from service.parser.point import PointLoader
 from service.parser.product import ProductLoader
 
+# REAL FTP
 HOST = '195.190.127.74'
 USER = 'oleg'
 PASSWD = 'KoxlabiruX'
@@ -33,9 +29,6 @@ for storage in storages:
     filenames.append(storage.file_name)
 
 print(filenames)
-
-
-# filenames = ('News_auto_1.csv', 'News_auto_2.csv', 'News_auto_3.csv')
 
 
 class FtpFile:
