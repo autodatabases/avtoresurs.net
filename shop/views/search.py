@@ -10,7 +10,7 @@ import urllib.parse
 
 class SearchView(ListView):
     template_name = 'shop/search_page.html'
-    model = Part
+    # model = Part
 
     def get_queryset(self):
         q = self.request.GET['q']

@@ -8,7 +8,7 @@ from django.db import connection
 from filer.models.foldermodels import Folder
 from filer.models import File
 from avtoresurs_new.settings import DIR, EMAIL_NOREPLY, EMAIL_TO, EMAIL_BCC, EMAIL_NOREPLY_LIST
-from shop.models import Storage, Part, Product, ProductPrice, clean_number, os
+from shop.models import Storage, Part, Product, ProductPrice, clean_number, os, ProductTypes
 from django.core.files.storage import default_storage
 
 
@@ -16,7 +16,7 @@ class ProductLoader:
     """ class for parsing and loading NewsAuto.csv file from 1C """
 
     # number of threads that will be adding information in DB
-    THREADS = 50
+    THREADS = 5
     report = {}
     bad = 0
     good = 0
@@ -24,9 +24,10 @@ class ProductLoader:
     # one more index for lice
     ONE_MORE = 1
 
-    def __init__(self, file_path, storage_id, filename):
+    def __init__(self, file_path, storage_id, filename, product_type=ProductTypes.Tecdoc):
         # print('filename: %s' % filename)
         self.filename = filename
+        self.product_type = product_type
         self.storage = Storage.objects.get(id=storage_id)
         # print(self.storage)
         self.date = self.get_date()
@@ -104,70 +105,19 @@ class ProductLoader:
                 brand = row[1]
                 quantity = row[2]
 
-                prices = {}
-                try:
-                    prices[0] = row[3]
-                    if ',' in row[3]:
-                        prices[0] = row[3].replace(',', '.')
-                    else:
-                        prices[0] = float(row[3])
-                except:
-                    prices[0] = 0
-                try:
-                    prices[1] = row[4]
-                    if ',' in row[4]:
-                        prices[1] = row[4].replace(',', '.')
-                    else:
-                        prices[1] = float(row[4])
-                except:
-                    prices[1] = 0
-                try:
-                    prices[2] = row[5]
-                    if ',' in row[5]:
-                        prices[2] = row[5].replace(',', '.')
-                    else:
-                        prices[2] = float(row[5])
-                except:
-                    prices[2] = 0
-                try:
-                    prices[3] = row[6]
-                    if ',' in row[6]:
-                        prices[3] = row[6].replace(',', '.')
-                    else:
-                        prices[3] = float(row[6])
-                except:
-                    prices[3] = 0
-                try:
-                    prices[4] = row[7]
-                    if ',' in row[7]:
-                        prices[4] = row[7].replace(',', '.')
-                    else:
-                        prices[4] = float(row[7])
-                except:
-                    prices[4] = 0
-                try:
-                    prices[5] = row[8]
-                    if ',' in row[8]:
-                        prices[5] = row[8].replace(',', '.')
-                    else:
-                        prices[5] = float(row[8])
-                except:
-                    prices[5] = 0
-                try:
-                    prices[6] = row[9]
-                    if ',' in row[9]:
-                        prices[6] = row[9].replace(',', '.')
-                    else:
-                        prices[6] = float(row[9])
-                except:
-                    prices[6] = 0
+                prices = self.get_prices(row)
 
-                part_tecdoc = Part.objects.filter(clean_part_number=clear_sku, supplier__title=brand)
+                if self.product_type == str(ProductTypes.Tecdoc):
+                    part_tecdoc = Part.objects.filter(clean_part_number=clear_sku, supplier__title=brand)
+                elif self.product_type == str(ProductTypes.Battery):
+                    part_tecdoc = True
+                else:
+                    part_tecdoc = False
 
                 if part_tecdoc:
                     product, created = Product.objects.get_or_create(sku=clear_sku, brand=brand)
-                    if created:
-                        product.save()
+                    product.product_type = self.product_type
+                    product.save()
 
                     product_price, created = ProductPrice.objects.get_or_create(storage=self.storage, product=product)
                     product_price.quantity = quantity
@@ -274,3 +224,64 @@ class ProductLoader:
         # cursor.execute("TRUNCATE shop_productprice")
         cursor.execute("DELETE FROM shop_productstorageprice where storage_id=%s" % storage_id)
         cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
+
+    def get_prices(self, row):
+        prices = {}
+        try:
+            prices[0] = row[3]
+            if ',' in row[3]:
+                prices[0] = row[3].replace(',', '.')
+            else:
+                prices[0] = float(row[3])
+        except:
+            prices[0] = 0
+        try:
+            prices[1] = row[4]
+            if ',' in row[4]:
+                prices[1] = row[4].replace(',', '.')
+            else:
+                prices[1] = float(row[4])
+        except:
+            prices[1] = 0
+        try:
+            prices[2] = row[5]
+            if ',' in row[5]:
+                prices[2] = row[5].replace(',', '.')
+            else:
+                prices[2] = float(row[5])
+        except:
+            prices[2] = 0
+        try:
+            prices[3] = row[6]
+            if ',' in row[6]:
+                prices[3] = row[6].replace(',', '.')
+            else:
+                prices[3] = float(row[6])
+        except:
+            prices[3] = 0
+        try:
+            prices[4] = row[7]
+            if ',' in row[7]:
+                prices[4] = row[7].replace(',', '.')
+            else:
+                prices[4] = float(row[7])
+        except:
+            prices[4] = 0
+        try:
+            prices[5] = row[8]
+            if ',' in row[8]:
+                prices[5] = row[8].replace(',', '.')
+            else:
+                prices[5] = float(row[8])
+        except:
+            prices[5] = 0
+        try:
+            prices[6] = row[9]
+            if ',' in row[9]:
+                prices[6] = row[9].replace(',', '.')
+            else:
+                prices[6] = float(row[9])
+        except:
+            prices[6] = 0
+
+        return prices

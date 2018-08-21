@@ -29,6 +29,18 @@ class ProductManager(models.Manager):
     #     return self.get_whosale_price()
 
 
+class ProductTypes(Enum):
+    Tecdoc = 'tecdoc'
+    Battery = 'battery'
+
+    @classmethod
+    def as_choices(cls):
+        return tuple((x.name, x.value) for x in cls)
+
+    def __str__(self):
+        return self.value
+
+
 class Product(models.Model):
     """ реализует класс Товар """
     brand = models.CharField(max_length=255, blank=True, null=True)
@@ -36,14 +48,14 @@ class Product(models.Model):
     active = models.BooleanField(default=True)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
-    
+    product_type = models.CharField(choices=ProductTypes.as_choices(), max_length=10, verbose_name='Тип продукта', null=True)
 
     # slug
     objects = ProductManager()
 
     def get_sku(self):
         part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
-        return part.part_number
+        return getattr(part, 'part_number', self.sku)
 
     def update(self, quantity, prices):
         self.quantity = quantity
@@ -62,21 +74,22 @@ class Product(models.Model):
             return 0
 
     def title(self):
-        title = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first().title
-        if title:
-            return title
-        return ''
+        part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
+        title = getattr(part, 'title', self.brand)
+        return title
 
     def get_part_attributes(self):
         part = Part.objects.filter(supplier__title=self.brand, clean_part_number=self.sku).first()
-        part_attributes = PartAttribute.objects.filter(part_number=part.part_number, supplier__title=self.brand)
+        part_number = getattr(part, 'part_number', None)
+        part_attributes = PartAttribute.objects.filter(part_number=part_number, supplier__title=self.brand)
         if part_attributes:
             return part_attributes
         return False
 
     def get_part_applicability(self):
         part = Part.objects.filter(supplier__title=self.brand, clean_part_number=self.sku).first()
-        part_applicability = PartApplicability.objects.filter(part_number=part.part_number, supplier__title=self.brand)
+        part_number = getattr(part, 'part_number', None)
+        part_applicability = PartApplicability.objects.filter(part_number=part_number, supplier__title=self.brand)
         if part_applicability:
             return sorted(part_applicability)
         return False
@@ -138,7 +151,8 @@ class Product(models.Model):
     def image(self):
         tecdoc_image_path = '/static/main/images/tecdoc/'
         part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
-        image = Image.objects.filter(supplier__title=self.brand, part_number=part.part_number).first()
+        part_number = getattr(part, 'part_number', None)
+        image = Image.objects.filter(supplier__title=self.brand, part_number=part_number).first()
         try:
             base, ext = os.path.splitext(image.picture)
             if ext == '.BMP':
@@ -195,7 +209,7 @@ class ProductPrice(models.Model):
         ordering = ['-added']
 
     def __str__(self):
-        return  "%s" % self.price_1
+        return "%s" % self.price_1
 
     def get_price(self, user):
         retail_price = self.retail_price
@@ -296,7 +310,7 @@ def get_prices(analogs, user):
 
 def get_analogs(clean_part_number, supplier, user):
     part = Part.objects.filter(clean_part_number=clean_part_number, supplier=supplier).first()
-    part_number = part.part_number
+    part_number = getattr(part, 'part_number', None)
     part_analogs = PartAnalog.objects.filter(part_number=part_number, supplier=supplier)
     crosses = list()
     for part_analog in part_analogs:
@@ -333,5 +347,3 @@ def get_products(supplier, clean_part_number):
         )
         part_products.append(part_product)
     return sorted(part_products, reverse=True)
-
-

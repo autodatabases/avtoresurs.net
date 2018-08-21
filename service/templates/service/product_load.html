@@ -1,20 +1,21 @@
 {% extends 'main/base.html' %}
 
+
 {% block breadcrumbs %}
     <!-- BREADCRUMBS -->
-    <div class="row">
-        <div class="col s12 nav-breadcrumb white">
-            <a href="/" class="breadcrumb">Главная</a>
-            <a href="{% url 'service:main' %}" class="breadcrumb">Сервис</a>
-            <a href="" class="breadcrumb">Загрузка файла с даннами из 1С</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'service:main' %}">Сервис</a></li>
+            <li class="breadcrumb-item"><a href="">Загрузка файла с даннами из 1С</a></li>
+        </ol>
+    </nav>
 {% endblock %}
 
 {% block content %}
 
-    <div class="row white">
-        <div class="col s12">
+    <div class="row">
+        <div class="col bg-white">
             <p>Выберите файл с даннами из 1С</p>
         </div>
     </div>
@@ -25,18 +26,25 @@
                 {% csrf_token %}
 
                 <div class="file-field input-field">
-                    <div class="btn">
-                        <span>Файл</span>
-                        <input type="file" name="file">
+                    <div class="form-group">
+                        <input type="file" class="form-control-file" id="file-input" name="file">
                     </div>
-                    <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text">
+
+                    <div class="form-group">
+                        <label for="file_type">Выберите тип файла:</label>
+                        <select class="form-control" id="file_type" name="product_type">
+                            <option selected value="tecdoc">Текдок</option>
+                            <option value="battery">Аккумеляторы FIAMM</option>
+
+                        </select>
                     </div>
+                    
                 </div>
 
                 {% for storage in storages %}
                     <p>
-                        <input class="with-gap" name="storage" type="radio" id="storage{{ forloop.counter }}" value="{{ forloop.counter }}"/>
+                        <input class="with-gap" name="storage" type="radio" id="storage{{ forloop.counter }}"
+                               value="{{ forloop.counter }}"/>
                         <label for="storage{{ forloop.counter }}">{{ storage }} ({{ storage.email }})</label>
                     </p>
                 {% endfor %}

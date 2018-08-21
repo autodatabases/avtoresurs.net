@@ -7,7 +7,7 @@ from django.core.files.storage import default_storage
 from service.parser.parser import get_filename
 from service.parser.product import ProductLoader
 
-from shop.models import Storage
+from shop.models import Storage, ProductTypes
 
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -27,10 +27,11 @@ class ProductView(TemplateView):
             return HttpResponseRedirect('/service/product_load/')
 
         storage_id = self.request.POST.get('storage')
+        product_type = self.request.POST.get('product_type', ProductTypes.Tecdoc)
         filename = self.request.FILES['file'].name
         new_filename = get_filename(self.request.FILES['file'].name)
         file_path = default_storage.save(new_filename, ContentFile(file.read()))
         file.close()
-        ProductLoader(file_path, storage_id, filename)
+        ProductLoader(file_path, storage_id, filename, product_type)
 
         return HttpResponseRedirect('/service/product_load/')
