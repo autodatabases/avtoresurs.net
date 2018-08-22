@@ -165,8 +165,6 @@ body {
     margin-bottom: 5px;
 }
 
-
-
 .pict1 {
     width: 100%;
     max-height: 48%;
@@ -369,9 +367,14 @@ p {
     margin-bottom: 0
 }
 
+.table-avtoresurs tr th {
+    text-align: center;
+}
+
 .table-avtoresurs tr td {
     padding-left: 0;
     padding-right: 0;
+    text-align: center;
 }
 
 .table-avtoresurs tr td a {

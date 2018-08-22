@@ -75,10 +75,21 @@ class Product(models.Model):
         except Exception as exp:
             return 0
 
+    @property
+    def total_quantity(self):
+        return self.get_quantity()
+
     def title(self):
         part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
-        title = getattr(part, 'title', self.brand)
+        title = getattr(part, 'title', self.default_title)
         return title
+
+    @property
+    def default_title(self):
+        if self.product_type == str(ProductTypes.Battery):
+            return 'Аккумулятор'
+        else:
+            return 'Запчасть'
 
     def get_part_attributes(self):
         part = Part.objects.filter(supplier__title=self.brand, clean_part_number=self.sku).first()
@@ -359,9 +370,5 @@ def get_products(supplier, clean_part_number):
 class BatteryModelPlugin(CMSPlugin):
     @property
     def batteries(self):
-        batteries_qs = Product.get_products(product_type=ProductTypes.Battery).order_by('sku')
-        batteries = []
-        for battery in batteries_qs:
-            battery.total_quantity = battery.get_quantity()
-            batteries.append(battery)
+        batteries = Product.get_products(product_type=ProductTypes.Battery).order_by('sku')
         return batteries

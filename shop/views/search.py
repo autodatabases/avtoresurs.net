@@ -3,26 +3,33 @@ from distutils.command.clean import clean
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.list import MultipleObjectMixin
 
-from shop.models.product import Product, clean_number, get_analogs, get_products
+from shop.models.product import Product, clean_number, get_analogs, get_products, ProductTypes
 from tecdoc.models import Part, Q, PartAnalog, PartCross, Supplier, PartProduct
 import urllib.parse
 
 
-class SearchView(ListView):
+class SearchView(TemplateView):
     template_name = 'shop/search_page.html'
     model = Part
 
-    def get_queryset(self):
-        q = self.request.GET['q']
-        query = q
-        clean_query = clean_number(query)
-        parts = Part.objects.filter(clean_part_number=clean_query)
-        return parts
+    # def get_queryset(self):
+    #     q = self.request.GET['q']
+    #     query = q
+    #     clean_query = clean_number(query)
+    #     parts = Part.objects.filter(clean_part_number=clean_query)
+    #     return parts
 
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data()
         q = self.request.GET['q']
-        context['q'] = q
+        clean_query = clean_number(q)
+        parts = Part.objects.filter(clean_part_number=clean_query)
+        batteries = Product.get_products(product_type=ProductTypes.Battery).filter(sku=clean_query)
+        context.update({
+            'q': q,
+            'parts': parts,
+            'batteries': batteries
+        })
         return context
 
 
