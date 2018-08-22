@@ -47,8 +47,8 @@
                 <div class="col-sm-12 center-align text-center">
                     <ul id="lightSlider">
                         {% for shop in shops %}
-                            <li style="background-color: white" id="shop{{ forloop.counter0 }}">
-                                <img width="400px" height="300px" src="{{ shop.image.url }}" alt="{{ shop.name }}"/>
+                            <li style="background-color: white;" id="shop{{ forloop.counter0 }}">
+                                <img  height="300px" src="{{ shop.image.url }}" alt="{{ shop.name }}"/>
                                 <div style="margin: 5px;">
                                     {#                                                                        {{ shop.lat }}, {{ shop.lon }}<br/>#}
                                     {{ shop.shedule }}<br/>
@@ -99,7 +99,7 @@
 
             var lightSlider = $("#lightSlider").lightSlider({
                 item: 3,
-                autoWidth: false,
+                autoWidth: true,
                 slideMove: 1, // slidemove will be 1 if loop is true
                 slideMargin: 0,
                 controls: false,
