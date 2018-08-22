@@ -16,7 +16,7 @@ class ProductLoader:
     """ class for parsing and loading NewsAuto.csv file from 1C """
 
     # number of threads that will be adding information in DB
-    THREADS = 5
+    THREADS = 50
     report = {}
     bad = 0
     good = 0
