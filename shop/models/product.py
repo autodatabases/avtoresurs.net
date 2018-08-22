@@ -1,4 +1,5 @@
 import os
+from cms.models import CMSPlugin
 from enum import Enum
 import re
 from django.db import models
@@ -48,7 +49,8 @@ class Product(models.Model):
     active = models.BooleanField(default=True)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
-    product_type = models.CharField(choices=ProductTypes.as_choices(), max_length=10, verbose_name='Тип продукта', null=True)
+    product_type = models.CharField(choices=ProductTypes.as_choices(), max_length=10, verbose_name='Тип продукта',
+                                    null=True)
 
     # slug
     objects = ProductManager()
@@ -160,6 +162,11 @@ class Product(models.Model):
             return '%s%s%s' % (tecdoc_image_path, base, ext.lower())
         except Exception as exc:
             return '/static/main/images/no-image.png'
+
+    @staticmethod
+    def get_products(product_type=ProductTypes.Tecdoc):
+        products = Product.objects.filter(product_type=product_type).prefetch_related()
+        return products
 
     class Meta:
         verbose_name = 'Продукт'
@@ -347,3 +354,14 @@ def get_products(supplier, clean_part_number):
         )
         part_products.append(part_product)
     return sorted(part_products, reverse=True)
+
+
+class BatteryModelPlugin(CMSPlugin):
+    @property
+    def batteries(self):
+        batteries_qs = Product.get_products(product_type=ProductTypes.Battery).order_by('sku')
+        batteries = []
+        for battery in batteries_qs:
+            battery.total_quantity = battery.get_quantity()
+            batteries.append(battery)
+        return batteries

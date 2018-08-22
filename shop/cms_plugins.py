@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse, NoReverseMatch
 
 from avtoresurs_new.support_utils import get_brands_images_list
-from shop.models import StoragePlugin
+from shop.models import StoragePlugin, BatteryModelPlugin
 
 
 @plugin_pool.register_plugin
@@ -22,5 +22,20 @@ class ShopPlugin(CMSPluginBase):
             'instance': instance,
             'shops': shops,
             'brands': brands
+        })
+        return context
+
+
+@plugin_pool.register_plugin
+class BatteryPlugin(CMSPluginBase):
+    module = ('Магазин')
+    name = ('Аккумуляторы')
+    render_template = 'shop/includes/battery.html'
+    model = BatteryModelPlugin
+
+    def render(self, context, instance, placeholder):
+        batteries = instance.batteries
+        context.update({
+            'batteries': batteries
         })
         return context

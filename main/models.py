@@ -9,7 +9,7 @@ from news.models import Post, Categories
 from profile.models import Profile
 from django.utils.translation import ugettext_lazy as _
 
-from shop.models import Storage
+from shop.models import Storage, Product
 
 
 class Assortment(models.Model):
@@ -37,7 +37,8 @@ class PostPluginModel(CMSPlugin):
     )
     category = models.CharField(max_length=10, choices=Categories.as_choices(), default='normal',
                                 verbose_name='Категория')
-    render_template = models.CharField(max_length=255, default=TEMPLATES[0][0], verbose_name='Путь к шаблону', choices=TEMPLATES)
+    render_template = models.CharField(max_length=255, default=TEMPLATES[0][0], verbose_name='Путь к шаблону',
+                                       choices=TEMPLATES)
 
     def __str__(self):
         return str(self.latest_articles)
