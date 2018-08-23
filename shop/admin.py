@@ -17,7 +17,13 @@ class ShopAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at', 'updated', 'address')
 
 
-admin.site.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('id', 'brand', 'sku', 'product_type', 'description')
+    list_display_links = ('id', 'brand', 'sku', 'product_type', 'description')
+    search_fields = ('brand', 'sku', 'product_type')
+
+
+admin.site.register(Product, ProductAdmin)
 admin.site.register(Cart)
 admin.site.register(Order)
 admin.site.register(Storage, StorageAdmin)
