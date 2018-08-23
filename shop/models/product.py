@@ -31,8 +31,8 @@ class ProductManager(models.Manager):
 
 
 class ProductTypes(Enum):
-    Tecdoc = 'tecdoc'
-    Battery = 'battery'
+    Tecdoc = 'Tecdoc'
+    Battery = 'Battery'
 
     @classmethod
     def as_choices(cls):
