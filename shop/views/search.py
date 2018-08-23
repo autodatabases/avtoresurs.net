@@ -10,7 +10,7 @@ import urllib.parse
 
 class SearchView(TemplateView):
     template_name = 'shop/search_page.html'
-    model = Part
+    # model = Part
 
     # def get_queryset(self):
     #     q = self.request.GET['q']
@@ -21,12 +21,12 @@ class SearchView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data()
-        q = self.request.GET['q']
-        clean_query = clean_number(q)
+        query = self.request.GET['q']
+        clean_query = clean_number(query)
         parts = Part.objects.filter(clean_part_number=clean_query)
         batteries = Product.get_products(product_type=ProductTypes.Battery).filter(sku=clean_query)
         context.update({
-            'q': q,
+            'q': query,
             'parts': parts,
             'batteries': batteries
         })
