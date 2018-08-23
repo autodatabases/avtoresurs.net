@@ -7,9 +7,8 @@
             <thead class="thead-light">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Артикул</th>
-                <th scope="col">Производитель</th>
                 <th scope="col">Название</th>
+                <th scope="col">Характеристики</th>
                 <th scope="col">Кол-во</th>
                 <th scope="col">Цена</th>
             </tr>
@@ -19,9 +18,8 @@
                 {% if battery.quantity < 0 %}
                     <tr class="no-product">
                         <th>{{ forloop.counter }}</th>
-                        <td> {{ battery.sku }}</td>
-                        <td>{{ battery.brand }}</td>
                         <td>Аккумулятор {{ battery.brand }} {{ battery.sku }}</td>
+                        <td>{{ battery.description }}</td>
                         <td>-</td>
                         <td>-</td>
                     </tr>
@@ -34,17 +32,12 @@
                         </th>
                         <td>
                             <a href="{% url 'shop:product_detail' battery.id %}">
-                                {{ battery.sku }}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{% url 'shop:product_detail' battery.id %}">
-                                {{ battery.brand }}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{% url 'shop:product_detail' battery.id %}">
                                 Аккумулятор {{ battery.brand }} {{ battery.sku }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'shop:product_detail' battery.id %}">
+                                {{ battery.description }}
                             </a>
                         </td>
                         <td>

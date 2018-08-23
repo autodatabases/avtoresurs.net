@@ -253,3 +253,14 @@ REST_FRAMEWORK = {
     # )
 
 }
+
+
+# REAL FTP
+HOST = '195.190.127.74'
+USER = 'oleg'
+PASSWD = 'KoxlabiruX'
+
+# TEST FTP
+# HOST = '46.101.123.237'
+# USER = 'ftpuser'
+# PASSWD = 'Ufdhbrb31337'

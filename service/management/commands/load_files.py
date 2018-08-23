@@ -4,6 +4,8 @@ from ftplib import FTP
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.management.base import BaseCommand
+
+from avtoresurs_new.settings import HOST, USER, PASSWD
 from shop.models.storage import Storage
 
 from service.parser.bonus import BonusLoader
@@ -11,16 +13,6 @@ from service.parser.parser import get_filename
 
 from service.parser.point import PointLoader
 from service.parser.product import ProductLoader
-
-# REAL FTP
-HOST = '195.190.127.74'
-USER = 'oleg'
-PASSWD = 'KoxlabiruX'
-
-# TEST FTP
-# HOST = '46.101.123.237'
-# USER = 'ftpuser'
-# PASSWD = 'Ufdhbrb31337'
 
 filenames = ['Klients.csv', 'Priz.csv']
 

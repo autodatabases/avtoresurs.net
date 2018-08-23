@@ -16,7 +16,7 @@ class ProductLoader:
     """ class for parsing and loading NewsAuto.csv file from 1C """
 
     # number of threads that will be adding information in DB
-    THREADS = 50
+    THREADS = 1
     report = {}
     bad = 0
     good = 0
@@ -24,10 +24,10 @@ class ProductLoader:
     # one more index for lice
     ONE_MORE = 1
 
-    def __init__(self, file_path, storage_id, filename, product_type=ProductTypes.Tecdoc):
+    def __init__(self, file_path, storage_id, filename, mode=ProductTypes.Tecdoc):
         # print('filename: %s' % filename)
         self.filename = filename
-        self.product_type = product_type
+        self.mode = mode
         self.storage = Storage.objects.get(id=storage_id)
         # print(self.storage)
         self.date = self.get_date()
@@ -107,16 +107,19 @@ class ProductLoader:
 
                 prices = self.get_prices(row)
 
-                if self.product_type == str(ProductTypes.Tecdoc):
+                product_type = None
+                if self.mode == str(ProductTypes.Tecdoc) and brand.lower() not in get_batteries_brands():
                     part_tecdoc = Part.objects.filter(clean_part_number=clear_sku, supplier__title=brand)
-                elif self.product_type == str(ProductTypes.Battery):
+                    product_type = str(ProductTypes.Tecdoc)
+                elif self.mode == str(ProductTypes.Battery) or brand.lower() in get_batteries_brands():
                     part_tecdoc = True
+                    product_type = str(ProductTypes.Battery)
                 else:
                     part_tecdoc = False
 
                 if part_tecdoc:
                     product, created = Product.objects.get_or_create(sku=clear_sku, brand=brand)
-                    product.product_type = self.product_type
+                    product.product_type = product_type
                     product.save()
 
                     product_price, created = ProductPrice.objects.get_or_create(storage=self.storage, product=product)
@@ -285,3 +288,8 @@ class ProductLoader:
             prices[6] = 0
 
         return prices
+
+
+def get_batteries_brands():
+    batteries = ['fiamm']
+    return batteries

@@ -51,6 +51,7 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
     product_type = models.CharField(choices=ProductTypes.as_choices(), max_length=10, verbose_name='Тип продукта',
                                     null=True)
+    description = models.CharField(max_length=300, null=True, verbose_name='Описание')
 
     # slug
     objects = ProductManager()
