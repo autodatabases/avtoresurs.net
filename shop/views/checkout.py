@@ -141,7 +141,7 @@ class CheckoutView(TemplateView):
         if self.request.method == 'get':
             cart_id = self.request.session.get("cart_id", None)
         else:
-            cart_id = self.request.session.post("cart_id", None)
+            cart_id = self.request.session.pop("cart_id", None)
         if not cart_id:
             return redirect("cart")
         cart = Cart.objects.get(id=cart_id)
