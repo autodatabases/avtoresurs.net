@@ -138,7 +138,7 @@ class CheckoutView(TemplateView):
     template_name = "shop/checkout_view.html"
 
     def get_object(self, *args, **kwargs):
-        if self.request.method == 'get':
+        if self.request.method == 'GET':
             cart_id = self.request.session.get("cart_id", None)
         else:
             cart_id = self.request.session.pop("cart_id", None)
