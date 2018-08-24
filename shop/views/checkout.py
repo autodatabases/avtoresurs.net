@@ -161,7 +161,6 @@ class CheckoutView(TemplateView):
             context["cart_storages"] = cart_storages
         return context
 
-    @synchronized
     def post(self, request):
         lock = RLock()
         with lock:
