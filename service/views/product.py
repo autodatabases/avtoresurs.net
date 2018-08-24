@@ -27,11 +27,10 @@ class ProductView(TemplateView):
             return HttpResponseRedirect('/service/product_load/')
 
         storage_id = self.request.POST.get('storage')
-        mode = self.request.POST.get('mode', ProductTypes.Tecdoc)
         filename = self.request.FILES['file'].name
         new_filename = get_filename(self.request.FILES['file'].name)
         file_path = default_storage.save(new_filename, ContentFile(file.read()))
         file.close()
-        ProductLoader(file_path, storage_id, filename, mode)
+        ProductLoader(file_path, storage_id, filename)
 
         return HttpResponseRedirect('/service/product_load/')

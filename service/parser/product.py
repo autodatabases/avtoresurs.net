@@ -16,7 +16,7 @@ class ProductLoader:
     """ class for parsing and loading NewsAuto.csv file from 1C """
 
     # number of threads that will be adding information in DB
-    THREADS = 50
+    THREADS = 1
     report = {}
     bad = 0
     good = 0
@@ -24,13 +24,18 @@ class ProductLoader:
     # one more index for lice
     ONE_MORE = 1
 
-    def __init__(self, file_path, storage_id, filename, mode=ProductTypes.Tecdoc):
+    def __init__(self, file_path, storage_id, filename):
         self.filename = filename
-        self.mode = mode.capitalize()
+        self.report = {
+            ProductTypes.Tecdoc.value: {},
+            ProductTypes.Battery.value: {},
+        }
         self.storage = Storage.objects.get(id=storage_id)
         self.date = self.get_date()
-        self.data = self.parse_file(file_path)
-        self.product_load()
+        all_products = self.parse_file(file_path)
+        tecdocs, batteries = self.parse_products(all_products)
+        self.product_load(products=tecdocs, product_type=ProductTypes.Tecdoc.value)
+        self.product_load(products=batteries, product_type=ProductTypes.Battery.value)
         self.report_text = self.get_report()
         self.save_report()
 
@@ -58,9 +63,9 @@ class ProductLoader:
         file_price.close()
         return data[1:]
 
-    def get_intervals(self):
+    def get_intervals(self, products):
         """ method for generating intervals depending of the value SELF.THREADS """
-        end_idx = len(self.data)
+        end_idx = len(products)
         interval = end_idx // self.THREADS
         intervals = list()
         for idx in range(0, self.THREADS):
@@ -73,13 +78,13 @@ class ProductLoader:
 
         return intervals
 
-    def product_load(self):
+    def product_load(self, products, product_type):
         """ method for splitting DATA in threads"""
-        intervals = self.get_intervals()
+        intervals = self.get_intervals(products)
         threads = list()
 
         for interval in intervals:
-            thread = threading.Thread(target=self.add_product, args=(self.data, interval))
+            thread = threading.Thread(target=self.add_product, args=(products, interval, product_type))
             threads.append(thread)
 
         for thread in threads:
@@ -88,7 +93,7 @@ class ProductLoader:
         for thread in threads:
             thread.join()
 
-    def add_product(self, data, interval):
+    def add_product(self, data, interval, product_type):
         """ main logic of searching and inserting product and product price """
         start_idx = interval[0]
         end_idx = interval[1] + self.ONE_MORE
@@ -104,13 +109,10 @@ class ProductLoader:
 
                 prices = self.get_prices(row)
 
-                product_type = None
-                if self.mode == ProductTypes.Tecdoc.value and brand.lower() not in get_batteries_brands():
+                if product_type == ProductTypes.Tecdoc.value:
                     part_tecdoc = Part.objects.filter(clean_part_number=clear_sku, supplier__title=brand)
-                    product_type = ProductTypes.Tecdoc.value
-                elif self.mode == ProductTypes.Battery.value or brand.lower() in get_batteries_brands():
+                elif product_type == ProductTypes.Battery.value:
                     part_tecdoc = True
-                    product_type = ProductTypes.Battery.value
                 else:
                     part_tecdoc = False
 
@@ -130,23 +132,24 @@ class ProductLoader:
                     product_price.price_6 = prices.get(6)
                     product_price.save()
 
-                    self.report[line_number] = 'Успешно добавлен. %s' % line
+                    self.report[product_type][line_number] = 'Успешно добавлен. %s' % line
                     self.good = self.good + 1
                 else:
-                    self.report[line_number] = 'Ошибка! не найдено соответсвие в TECDOC. %s' % line
+                    self.report[product_type][line_number] = 'Ошибка! не найдено соответсвие в TECDOC. %s' % line
                     self.bad = self.bad + 1
 
                 if not prices[0]:
-                    self.report[line_number] = 'Ошибка! Товар добавлен без указании цены товара в рознице. %s' % line
+                    self.report[product_type][line_number] = 'Ошибка! Товар добавлен без указании цены товара в рознице. %s' % line
                     self.bad = self.bad + 1
 
             except Exception as e:
-                self.report[line_number] = "Проверьте корректность строки (Exception: %s) [%s]" % (e, line)
+                self.report[product_type][line_number] = "Проверьте корректность строки (Exception: %s) [%s]" % (e, line)
                 self.bad = self.bad + 1
 
     def get_report(self):
         """ method for generating report """
-        self.report = collections.OrderedDict(sorted(self.report.items()))
+        report_tecdocs = collections.OrderedDict(sorted(self.report[ProductTypes.Tecdoc.value].items()))
+        report_batteries = collections.OrderedDict(sorted(self.report[ProductTypes.Battery.value].items()))
         report = ('Прококол загрузки файла товаров %s от %s.%s.%s %s:%s\r\n' % (
             self.filename,
             self.date['day'],
@@ -155,11 +158,15 @@ class ProductLoader:
             self.date['hour'],
             self.date['minute'],
         ))
-        total_products = len(self.report.items())
+        total_tecdocs = len(report_tecdocs)
+        total_batteries = len(report_batteries)
+        total_products = total_tecdocs + total_batteries
         bad = self.bad
         good = self.good
         report += 'Всего обработано - %s, из них принято - %s, с ошибкой - %s\r\n' % (total_products, good, bad)
-        for key, item in self.report.items():
+        for key, item in report_batteries.items():
+            report += '%s. %s\n' % (key, item)
+        for key, item in report_tecdocs.items():
             report += '%s. %s\n' % (key, item)
         return report
 
@@ -284,6 +291,18 @@ class ProductLoader:
             prices[6] = 0
 
         return prices
+
+    def parse_products(self, all_products):
+        tecdocs = []
+        batteries = []
+        for product in all_products:
+            row = product.split(';')
+            brand = row[1].lower()
+            if brand in get_batteries_brands():
+                batteries.append(product)
+            else:
+                tecdocs.append(product)
+        return tecdocs, batteries
 
 
 def get_batteries_brands():
