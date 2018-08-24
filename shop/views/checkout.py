@@ -140,10 +140,7 @@ class CheckoutView(TemplateView):
     template_name = "shop/checkout_view.html"
 
     def get_object(self, *args, **kwargs):
-        if self.request.method == 'GET':
-            cart_id = self.request.session.get("cart_id", None)
-        else:
-            cart_id = self.request.session.pop("cart_id", None)
+        cart_id = self.request.session.get("cart_id", None)
 
         if not cart_id:
             return redirect("cart")
@@ -161,18 +158,17 @@ class CheckoutView(TemplateView):
             context["cart_storages"] = cart_storages
         return context
 
+    @transaction.atomic
     def post(self, request):
-        lock = RLock()
-        with lock:
-            cart = self.get_object()
-
+        cart = self.get_object()
         comment = request.POST.get('comment', None)
         order = Order(user=cart.user)
-        order.comment = comment
-        order.order_total = cart.subtotal
-        order.save()
+        if order.order_total <= 0:
+            order.comment = comment
+            order.order_total = cart.subtotal
+            order.save()
         order_notification(cart=cart, order=order, user=self.request.user)
-
+        self.request.session.get["cart_id"] = None
         return HttpResponseRedirect('/checkout/success/')
 
 
