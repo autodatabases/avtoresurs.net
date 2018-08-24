@@ -160,13 +160,14 @@ class CheckoutView(TemplateView):
     @transaction.atomic
     def post(self, request):
         cart = self.get_object()
+        self.request.session['cart_id'] = None
         comment = request.POST.get('comment', None)
         order = Order(user=cart.user)
         order.comment = comment
         order.order_total = cart.subtotal
         order.save()
         order_notification(cart=cart, order=order, user=self.request.user)
-        self.request.session['cart_id'] = None
+
 
         return HttpResponseRedirect('/checkout/success/')
 
