@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, Group
 
 
 # Create your models here.
+from bonus.models import Bonus
 
 
 class ProfileManager(models.Manager):
@@ -21,7 +22,8 @@ class Profile(models.Model):
     group = models.ForeignKey(Group, blank=True, default=1, verbose_name='Группа для скидки')
     discount = models.ForeignKey('Discount', blank=True, null=True, verbose_name='Скидка')
     points = models.PositiveIntegerField(default=0, verbose_name='Баллы')
-
+    bonus_code = models.CharField(max_length=20, blank=True, default='', verbose_name='Бонус')
+    
     objects = ProfileManager()
 
     def __str__(self):
