@@ -1,5 +1,4 @@
 from django.core.mail import EmailMessage
-from django.db import transaction
 
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -9,10 +8,10 @@ from io import StringIO, BytesIO
 from django.views.generic import TemplateView
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
+from multiprocessing.sharedctypes import synchronized
 from openpyxl.styles import Border
 from openpyxl.styles import Side
 from openpyxl.utils import get_column_letter
-from threading import Lock, RLock
 
 from avtoresurs_new.settings import EMAIL_NOREPLY, EMAIL_BCC, EMAIL_NOREPLY_LIST
 from avtoresurs_new.settings import EMAIL_TO
@@ -160,12 +159,10 @@ class CheckoutView(TemplateView):
             context["cart_storages"] = cart_storages
         return context
 
-    @transaction.atomic
+    @synchronized
     def post(self, request):
-        lock = RLock()
-        lock.acquire()
         cart = self.get_object()
-        lock.release()
+
         comment = request.POST.get('comment', None)
         order = Order(user=cart.user)
         order.comment = comment
