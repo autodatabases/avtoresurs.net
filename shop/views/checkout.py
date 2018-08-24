@@ -139,14 +139,17 @@ class CheckoutView(TemplateView):
     model = Cart
     template_name = "shop/checkout_view.html"
 
+    @transaction.atomic
     def get_object(self, *args, **kwargs):
         cart_id = self.request.session.get("cart_id", None)
 
         if not cart_id:
             return redirect("cart")
         cart = Cart.objects.get(id=cart_id)
-
-        return cart
+        if not cart.status:
+            return cart
+        else:
+            return redirect("cart")
 
     def get_context_data(self, *args, **kwargs):
         context = super(CheckoutView, self).get_context_data(**kwargs)
@@ -161,14 +164,16 @@ class CheckoutView(TemplateView):
     @transaction.atomic
     def post(self, request):
         cart = self.get_object()
-        comment = request.POST.get('comment', None)
-        order = Order(user=cart.user)
-        if not order.order_total:
+        if not cart.status:
+            comment = request.POST.get('comment', None)
+            order = Order(user=cart.user)
             order.comment = comment
             order.order_total = cart.subtotal
             order.save()
-        order_notification(cart=cart, order=order, user=self.request.user)
-        self.request.session["cart_id"] = None
+            cart.status = True
+            cart.save()
+            order_notification(cart=cart, order=order, user=self.request.user)
+            self.request.session["cart_id"] = None
         return HttpResponseRedirect('/checkout/success/')
 
 

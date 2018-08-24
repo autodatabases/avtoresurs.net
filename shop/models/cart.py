@@ -55,6 +55,7 @@ class Cart(models.Model):
     subtotal = models.DecimalField(max_digits=50, decimal_places=2, default=25.00)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
+    status = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s %s" % (str(self.id), self.user)
