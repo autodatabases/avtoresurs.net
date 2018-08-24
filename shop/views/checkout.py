@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from openpyxl.styles import Border
 from openpyxl.styles import Side
 from openpyxl.utils import get_column_letter
+from threading import Lock
 
 from avtoresurs_new.settings import EMAIL_NOREPLY, EMAIL_BCC, EMAIL_NOREPLY_LIST
 from avtoresurs_new.settings import EMAIL_TO
@@ -138,10 +139,13 @@ class CheckoutView(TemplateView):
     template_name = "shop/checkout_view.html"
 
     def get_object(self, *args, **kwargs):
+        lock = Lock()
+        lock.acquire()
         if self.request.method == 'GET':
             cart_id = self.request.session.get("cart_id", None)
         else:
             cart_id = self.request.session.pop("cart_id", None)
+        lock.release()
         if not cart_id:
             return redirect("cart")
         cart = Cart.objects.get(id=cart_id)
@@ -161,14 +165,12 @@ class CheckoutView(TemplateView):
     @transaction.atomic
     def post(self, request):
         cart = self.get_object()
-
         comment = request.POST.get('comment', None)
         order = Order(user=cart.user)
         order.comment = comment
         order.order_total = cart.subtotal
         order.save()
         order_notification(cart=cart, order=order, user=self.request.user)
-
 
         return HttpResponseRedirect('/checkout/success/')
 
