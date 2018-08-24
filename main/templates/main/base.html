@@ -96,7 +96,7 @@
                         <nav class="nav justify-content-end">
                             {% if request.user.is_authenticated %}
                                 <a class="btn btn-lg btn-success" href="/accounts/logout">Выйти ({{ request.user }})</a>
-                                <a class="btn btn-lg btn-success" href="/user_profile/">
+                                <a class="btn btn-lg btn-success" href="/profile/">
                                     Личный кабинет
                                     {% if postman_unread_count %}
                                         (+{{ postman_unread_count }})
