@@ -168,7 +168,7 @@ class CheckoutView(TemplateView):
             order.order_total = cart.subtotal
             order.save()
         order_notification(cart=cart, order=order, user=self.request.user)
-        self.request.session.get["cart_id"] = None
+        self.request.session["cart_id"] = None
         return HttpResponseRedirect('/checkout/success/')
 
 
