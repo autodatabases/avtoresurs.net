@@ -1,4 +1,5 @@
 from django.core.mail import EmailMessage
+from django.db import transaction
 
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -156,6 +157,7 @@ class CheckoutView(TemplateView):
             context["cart_storages"] = cart_storages
         return context
 
+    @transaction.atomic
     def post(self, request):
         cart = self.get_object()
         comment = request.POST.get('comment', None)
