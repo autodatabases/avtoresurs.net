@@ -16,7 +16,7 @@ class ProductLoader:
     """ class for parsing and loading NewsAuto.csv file from 1C """
 
     # number of threads that will be adding information in DB
-    THREADS = 1
+    THREADS = 50
     report = {}
     bad = 0
     good = 0
@@ -25,14 +25,11 @@ class ProductLoader:
     ONE_MORE = 1
 
     def __init__(self, file_path, storage_id, filename, mode=ProductTypes.Tecdoc):
-        # print('filename: %s' % filename)
         self.filename = filename
-        self.mode = mode
+        self.mode = mode.capitalize()
         self.storage = Storage.objects.get(id=storage_id)
-        # print(self.storage)
         self.date = self.get_date()
         self.data = self.parse_file(file_path)
-        # self.truncate_products(storage_id)
         self.product_load()
         self.report_text = self.get_report()
         self.save_report()
@@ -108,12 +105,12 @@ class ProductLoader:
                 prices = self.get_prices(row)
 
                 product_type = None
-                if self.mode == str(ProductTypes.Tecdoc) and brand.lower() not in get_batteries_brands():
+                if self.mode == ProductTypes.Tecdoc.value and brand.lower() not in get_batteries_brands():
                     part_tecdoc = Part.objects.filter(clean_part_number=clear_sku, supplier__title=brand)
-                    product_type = str(ProductTypes.Tecdoc)
-                elif self.mode == str(ProductTypes.Battery) or brand.lower() in get_batteries_brands():
+                    product_type = ProductTypes.Tecdoc.value
+                elif self.mode == ProductTypes.Battery.value or brand.lower() in get_batteries_brands():
                     part_tecdoc = True
-                    product_type = str(ProductTypes.Battery)
+                    product_type = ProductTypes.Battery.value
                 else:
                     part_tecdoc = False
 
@@ -224,7 +221,6 @@ class ProductLoader:
     def truncate_products(self, storage_id):
         cursor = connection.cursor()
         cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
-        # cursor.execute("TRUNCATE shop_productprice")
         cursor.execute("DELETE FROM shop_productstorageprice where storage_id=%s" % storage_id)
         cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
 
