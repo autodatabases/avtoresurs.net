@@ -163,7 +163,7 @@ class CheckoutView(TemplateView):
         cart = self.get_object()
         comment = request.POST.get('comment', None)
         order = Order(user=cart.user)
-        if order.order_total <= 0:
+        if not order.order_total:
             order.comment = comment
             order.order_total = cart.subtotal
             order.save()
