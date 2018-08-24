@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
-from profile.views import ProfileView, ProfileEdit, OrderList, OrderDetail
+from user_profile.views import ProfileView, ProfileEdit, OrderList, OrderDetail
 
 urlpatterns = [
     url(r'^$', login_required(ProfileView.as_view()), name='profile_main'),

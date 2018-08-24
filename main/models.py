@@ -6,7 +6,7 @@ from registration.signals import user_registered
 
 from main.utils import get_file_path
 from news.models import Post, Categories
-from profile.models import Profile
+from user_profile.models import UserProfile
 from django.utils.translation import ugettext_lazy as _
 
 from shop.models import Storage, Product
@@ -94,7 +94,7 @@ class StockModelPlugin(CMSPlugin):
 
 
 def user_registered_callback(sender, user, request, **kwargs):
-    profile = Profile(user=user)
+    profile = UserProfile(user=user)
     profile.save()
 
 

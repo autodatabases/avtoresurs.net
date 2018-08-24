@@ -5,7 +5,7 @@ import re
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.text import slugify
-from profile.models import Profile
+from user_profile.models import UserProfile
 
 from tecdoc.models import Supplier, Image, PartAttribute, PartApplicability
 from tecdoc.models.part import Part, PartAnalog, PartCross, PartProduct
@@ -140,14 +140,14 @@ class Product(models.Model):
                 return pp.retail_price
 
         try:
-            discount = Profile.objects.get(user=user).discount.discount
+            discount = UserProfile.objects.get(user=user).discount.discount
             price = pp.retail_price - round((pp.retail_price * discount / 100), 2)
             return price
         except Exception:
             pass
 
         try:
-            group = Profile.objects.get(user=user).group
+            group = UserProfile.objects.get(user=user).group
             group = group.pk
             if group == PriceGroup.RETAIL.value:
                 return pp.retail_price
@@ -244,7 +244,7 @@ class ProductPrice(models.Model):
         if not user:
             return None
         try:
-            group = Profile.objects.get(user=user).group
+            group = UserProfile.objects.get(user=user).group
             group = group.pk
             if group == PriceGroup.RETAIL.value:
                 return self.retail_price

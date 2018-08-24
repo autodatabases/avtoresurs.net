@@ -9,7 +9,7 @@ from django.views.generic import ListView
 
 from bonus.models import Bonus, UserBonus
 from postman.models import STATUS_ACCEPTED, Message
-from profile.models import Profile
+from user_profile.models import UserProfile
 
 UNREGISTERED_USER_POINTS = 0
 PROTECTED_KEY = 'GsdfklGsdn6305cHdshy'
@@ -24,7 +24,7 @@ class BonusPageView(ListView):
     def get_context_data(self, **kwargs):
         context = super(BonusPageView, self).get_context_data()
         try:
-            profile = Profile.objects.get(user=self.request.user)
+            profile = UserProfile.objects.get(user=self.request.user)
             context['points'] = profile.points
         except TypeError:
             # 'AnonymousUser' have no profile and points
@@ -66,7 +66,7 @@ class BonusObtainView(View):
             bonus_id = encoded_data['bonus']
             bonus = Bonus.objects.get(pk=bonus_id)
             user = self.request.user
-            profile = Profile.objects.get(user=user)
+            profile = UserProfile.objects.get(user=user)
             if profile.points >= bonus.price:
                 profile.points -= bonus.price
                 profile.save()

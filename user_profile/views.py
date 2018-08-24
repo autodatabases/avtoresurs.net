@@ -8,8 +8,8 @@ from django.views.generic import TemplateView
 # Create your views here.
 from django.views.generic.edit import FormView
 
-from profile.forms import ProfileForm
-from profile.models import Profile
+from user_profile.forms import ProfileForm
+from user_profile.models import UserProfile
 from shop.models.order import Order
 
 
@@ -18,7 +18,7 @@ class ProfileView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data()
-        profile = Profile.objects.all().filter(user=self.request.user).first()
+        profile = UserProfile.objects.all().filter(user=self.request.user).first()
         context['profile'] = profile
         orders_count = Order.objects.filter(user=self.request.user).count()
         context['orders_count'] = orders_count
@@ -27,7 +27,7 @@ class ProfileView(TemplateView):
 
 class ProfileEdit(FormView):
     form_class = ProfileForm
-    model = Profile
+    model = UserProfile
     template_name = 'profile/profile_edit.html'
 
     def get_success_url(self):
@@ -35,7 +35,7 @@ class ProfileEdit(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileEdit, self).get_context_data()
-        profile = get_object_or_404(Profile, user=self.request.user)
+        profile = get_object_or_404(UserProfile, user=self.request.user)
         fullname = profile.fullname
         form = ProfileForm({'fullname': fullname})
         if self.request.POST:
@@ -47,7 +47,7 @@ class ProfileEdit(FormView):
     def post(self, request, *args, **kwargs):
         form = self.get_form()
         if form.is_valid():
-            profile = Profile.objects.get(user=self.request.user)
+            profile = UserProfile.objects.get(user=self.request.user)
             profile.fullname = form.cleaned_data['fullname']
             user = self.request.user
             user.set_password(form.cleaned_data['password1'])

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from profile.models import Profile, Discount
+from user_profile.models import UserProfile, Discount
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -11,5 +11,5 @@ class ProfileAdmin(admin.ModelAdmin):
     exclude = ('discount',)
 
 
-admin.site.register(Profile, ProfileAdmin)
+admin.site.register(UserProfile, ProfileAdmin)
 admin.site.register(Discount)

@@ -2,7 +2,7 @@ import os
 from collections import Set
 from django.views.generic import DetailView
 
-from profile.models import Profile
+from user_profile.models import UserProfile
 from shop.models import Storage, ProductPrice
 from shop.models.product import Product, clean_number, get_analogs
 from tecdoc.models import PartAnalog, Part, PartCriteria, CarType, Image, Supplier, PartApplicability, \

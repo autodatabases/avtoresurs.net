@@ -54,7 +54,7 @@ urlpatterns = [
                   url(r'^accounts/', include('registration.backends.hmac.urls')),
                   url(r'^accounts/profile/$', RedirectView.as_view(url='/profile/', permanent=False),
                       name='ProfilePage'),
-                  url(r'^profile/', include('profile.urls', namespace='profile')),
+                  url(r'^profile/', include('user_profile.urls', namespace='profile')),
                   url(r'^cart/$', CartView.as_view(), name='cart'),
                   url(r'^cart/count/$', ItemCountView.as_view(), name='item_count'),
                   url(r'^checkout/$', CheckoutView.as_view(), name='checkout'),

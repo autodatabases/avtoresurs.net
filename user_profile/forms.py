@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from profile.models import Profile
+from user_profile.models import UserProfile
 
 
 class UploadFileForm(forms.Form):

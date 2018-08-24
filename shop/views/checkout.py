@@ -18,7 +18,7 @@ from threading import Lock, RLock
 from avtoresurs_new.settings import EMAIL_NOREPLY, EMAIL_BCC, EMAIL_NOREPLY_LIST
 from avtoresurs_new.settings import EMAIL_TO
 from postman.models import Message, STATUS_ACCEPTED
-from profile.models import Profile
+from user_profile.models import UserProfile
 from shop.models.cart import Cart
 from shop.models.order import Order, OrderProduct
 from openpyxl import Workbook
@@ -38,7 +38,7 @@ def order_notification(cart, order, user):
     for cart_storage, items in cart_storages.items():
         body = 'Новый заказ от {date} #{order_number}.\r\n\r\nИнформация о заказе:\r\n'.format(
             date=order.added.strftime('%d.%m.%Y %H:%M'), order_number=order.id)
-        profile = Profile.objects.get(user=user)
+        profile = UserProfile.objects.get(user=user)
         body += 'Заказчик: {name} \r\n'.format(name=profile.fullname or profile)
         body += 'Код заказчика: {vip_code}\r\n'.format(vip_code=profile.vip_code or 'код заказчика отсутствует')
 

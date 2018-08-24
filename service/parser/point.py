@@ -4,7 +4,7 @@ import os
 from django.core.mail import EmailMessage
 
 from avtoresurs_new.settings import DIR, EMAIL_NOREPLY, EMAIL_TO, EMAIL_BCC, EMAIL_NOREPLY_LIST
-from profile.models import Profile
+from user_profile.models import UserProfile
 from filer.models.foldermodels import Folder
 from filer.models import File, ContentFile
 from django.core.files.storage import default_storage
@@ -33,7 +33,7 @@ class PointLoader:
             try:
                 row = line.split(';')
                 login = row[0].replace('ЦБ', 'cl')
-                profile = Profile.objects.get(user__username=login)
+                profile = UserProfile.objects.get(user__username=login)
                 profile.fullname = row[1]
                 profile.vip_code = row[2].strip()
                 profile.points = float(row[3].replace(',', '.'))

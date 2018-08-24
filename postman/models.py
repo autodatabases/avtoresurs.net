@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 import hashlib
 
-from profile.models import Profile
+from user_profile.models import UserProfile
 
 try:
     from importlib import import_module
@@ -86,7 +86,7 @@ def get_user_representation(user):
     Return a User representation for display, configurable through an optional setting.
     If profile.vip_code exists, return vip_code, otherwise return username
     """
-    profile = Profile.objects.get(user=user)
+    profile = UserProfile.objects.get(user=user)
     if profile.vip_code:
         return profile.vip_code
     else:

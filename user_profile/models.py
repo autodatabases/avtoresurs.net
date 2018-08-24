@@ -6,13 +6,13 @@ from django.contrib.auth.models import User, Group
 # Create your models here.
 
 
-class ProfileManager(models.Manager):
+class UserProfileManager(models.Manager):
     def get_queryset(self):
-        qs = super(ProfileManager, self).get_queryset().select_related('user')
+        qs = super(UserProfileManager, self).get_queryset().select_related('user')
         return qs
 
 
-class Profile(models.Model):
+class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     vip_code = models.CharField(max_length=50, blank=True, null=True, verbose_name='Номер карты клиента')
     fullname = models.CharField(max_length=255, blank=True, null=True, verbose_name='Полное имя')
@@ -22,7 +22,7 @@ class Profile(models.Model):
     discount = models.ForeignKey('Discount', blank=True, null=True, verbose_name='Скидка')
     points = models.PositiveIntegerField(default=0, verbose_name='Баллы')
 
-    objects = ProfileManager()
+    objects = UserProfileManager()
 
     def __str__(self):
         return self.user.get_username()
@@ -30,6 +30,7 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'Профиль'
         verbose_name_plural = 'Профили'
+        db_table = 'profile_profile'
 
 
 class Discount(models.Model):
@@ -46,3 +47,4 @@ class Discount(models.Model):
     class Meta:
         verbose_name = 'Скидка'
         verbose_name_plural = 'Скидки'
+        db_table = 'profile_discount'

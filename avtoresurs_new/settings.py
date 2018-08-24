@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'djangocms_snippet',
     'djangocms_style',
     'djangocms_column',
-    'profile',
+    'user_profile',
     'news',
     'tecdoc',
     'shop',
