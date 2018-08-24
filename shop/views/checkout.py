@@ -138,7 +138,7 @@ class CheckoutView(TemplateView):
     template_name = "shop/checkout_view.html"
 
     def get_object(self, *args, **kwargs):
-        cart_id = self.request.session.get("cart_id")
+        cart_id = self.request.session.pop("cart_id", None)
 
         if not cart_id:
             return redirect("cart")
@@ -160,7 +160,6 @@ class CheckoutView(TemplateView):
     @transaction.atomic
     def post(self, request):
         cart = self.get_object()
-        self.request.session['cart_id'] = None
         comment = request.POST.get('comment', None)
         order = Order(user=cart.user)
         order.comment = comment
