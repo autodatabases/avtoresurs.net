@@ -149,7 +149,7 @@ class CheckoutView(TemplateView):
         if not cart.status:
             return cart
         else:
-            return redirect("cart")
+            return HttpResponseRedirect('/checkout/success/')
 
     def get_context_data(self, *args, **kwargs):
         context = super(CheckoutView, self).get_context_data(**kwargs)
