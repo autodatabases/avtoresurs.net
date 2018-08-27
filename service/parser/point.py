@@ -1,13 +1,24 @@
 import datetime
+import logging
 import os
-
 from django.core.mail import EmailMessage
-
 from avtoresurs_new.settings import DIR, EMAIL_NOREPLY, EMAIL_TO, EMAIL_BCC, EMAIL_NOREPLY_LIST
 from user_profile.models import UserProfile
 from filer.models.foldermodels import Folder
 from filer.models import File, ContentFile
 from django.core.files.storage import default_storage
+
+
+def get_primary_account_profile_or_none(bonus_account: UserProfile):
+    account_set = UserProfile.objects.filter(vip_code=bonus_account.vip_code).exclude(id=bonus_account.id)
+    try:
+        result = account_set[0]
+    except IndexError:
+        logging.warning('Can not match bonus account {bonus_acc_name} with primary account'.format(
+            bonus_acc_name=bonus_account.user.username
+        ))
+        result = None
+    return result
 
 
 class PointLoader:
@@ -33,7 +44,13 @@ class PointLoader:
             try:
                 row = line.split(';')
                 login = row[0].replace('ЦБ', 'cl')
+
+                # get primary or bonus profile
                 profile = UserProfile.objects.get(user__username=login)
+                primary_account = get_primary_account_profile_or_none(bonus_account=profile)
+                if primary_account:
+                    profile = primary_account
+
                 profile.fullname = row[1]
                 profile.vip_code = row[2].strip()
                 profile.points = float(row[3].replace(',', '.'))
