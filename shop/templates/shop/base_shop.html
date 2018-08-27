@@ -49,11 +49,11 @@
                         {% for shop in shops %}
                             <li style="background-color: white;" id="shop{{ forloop.counter0 }}">
                                 <img  height="300px" src="{{ shop.image.url }}" alt="{{ shop.name }}"/>
-                                <div style="margin: 5px;">
+                                <div style="font-size: 10pt;">
                                     {#                                                                        {{ shop.lat }}, {{ shop.lon }}<br/>#}
                                     {{ shop.shedule }}<br/>
                                     {{ shop.address }}<br/><br/>
-                                    <i>{{ shop.phones }}</i><br/>
+                                    <b><i>{{ shop.phones }}</i></b><br/>
                                 </div>
 
                             </li>
@@ -101,7 +101,7 @@
                 item: 3,
                 autoWidth: true,
                 slideMove: 1, // slidemove will be 1 if loop is true
-                slideMargin: 0,
+                slideMargin: 17,
                 controls: false,
                 pager: false
             });
