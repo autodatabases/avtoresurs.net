@@ -33,6 +33,7 @@ class ProductManager(models.Manager):
 class ProductTypes(Enum):
     Tecdoc = 'Tecdoc'
     Battery = 'Battery'
+    Oil = 'Oil'
 
     @classmethod
     def as_choices(cls):
@@ -52,6 +53,8 @@ class Product(models.Model):
     product_type = models.CharField(choices=ProductTypes.as_choices(), max_length=10, verbose_name='Тип продукта',
                                     null=True)
     _description = models.CharField(max_length=300, null=True, verbose_name='Описание', db_column='description')
+
+    _image = models.ImageField(null=True, blank=True, verbose_name='Картинка', db_column='image')
 
     @property
     def description(self):
@@ -166,21 +169,25 @@ class Product(models.Model):
 
         return pp.retail_price
 
+    @property
     def image(self):
-        tecdoc_image_path = '/static/main/images/tecdoc/'
-        part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
-        part_number = getattr(part, 'part_number', None)
-        image = Image.objects.filter(supplier__title=self.brand, part_number=part_number).first()
-        try:
-            base, ext = os.path.splitext(image.picture)
-            if ext == '.BMP':
-                ext = ext.replace('BMP', 'jpg')
-            return '%s%s%s' % (tecdoc_image_path, base, ext.lower())
-        except Exception as exc:
-            return '/static/main/images/no-image.png'
+        if self._image:
+            return self._image.url
+        else:
+            tecdoc_image_path = '/static/main/images/tecdoc/'
+            part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
+            part_number = getattr(part, 'part_number', None)
+            image = Image.objects.filter(supplier__title=self.brand, part_number=part_number).first()
+            try:
+                base, ext = os.path.splitext(image.picture)
+                if ext == '.BMP':
+                    ext = ext.replace('BMP', 'jpg')
+                return '%s%s%s' % (tecdoc_image_path, base, ext.lower())
+            except Exception as exc:
+                return '/static/main/images/no-image.png'
 
     @staticmethod
-    def get_products(product_type=ProductTypes.Tecdoc):
+    def get_products(product_type=ProductTypes.Tecdoc.value):
         products = Product.objects.filter(product_type=product_type).prefetch_related()
         return products
 
@@ -372,8 +379,11 @@ def get_products(supplier, clean_part_number):
     return sorted(part_products, reverse=True)
 
 
-class BatteryModelPlugin(CMSPlugin):
+class ProductTypeModelPlugin(CMSPlugin):
+    product_type = models.CharField(choices=ProductTypes.as_choices(), max_length=10, verbose_name='Тип продукта',
+                                    null=True)
+
     @property
-    def batteries(self):
-        batteries = Product.get_products(product_type=ProductTypes.Battery).order_by('sku')
-        return batteries
+    def products(self):
+        product_query = Product.get_products(product_type=self.product_type).order_by('sku')
+        return product_query

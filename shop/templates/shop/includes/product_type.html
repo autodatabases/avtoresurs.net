@@ -14,40 +14,40 @@
             </tr>
             </thead>
             <tbody>
-            {% for battery in batteries %}
-                {% if battery.quantity < 0 %}
+            {% for product in products %}
+                {% if product.quantity < 0 %}
                     <tr class="no-product">
                         <th>{{ forloop.counter }}</th>
-                        <td>Аккумулятор {{ battery.brand }} {{ battery.sku }}</td>
-                        <td>{{ battery.description }}</td>
+                        <td>Аккумулятор {{ product.brand }} {{ product.sku }}</td>
+                        <td>{{ product.description }}</td>
                         <td>-</td>
                         <td>-</td>
                     </tr>
                 {% else %}
-                    <tr class="{% if battery.total_quantity == 0 %}product-zero{% else %}product{% endif %}">
+                    <tr class="{% if product.total_quantity == 0 %}product-zero{% else %}product{% endif %}">
                         <th scope="row">
-                            <a href="{% url 'shop:product_detail' battery.id %}">
+                            <a href="{% url 'shop:product_detail' product.id %}">
                                 {{ forloop.counter }}
                             </a>
                         </th>
                         <td>
-                            <a href="{% url 'shop:product_detail' battery.id %}">
-                                Аккумулятор {{ battery.brand }} {{ battery.sku }}
+                            <a href="{% url 'shop:product_detail' product.id %}">
+                                Аккумулятор {{ product.brand }} {{ product.sku }}
                             </a>
                         </td>
                         <td>
-                            <a href="{% url 'shop:product_detail' battery.id %}">
-                                {{ battery.description }}
+                            <a href="{% url 'shop:product_detail' product.id %}">
+                                {{ product.description }}
                             </a>
                         </td>
                         <td>
-                            <a href="{% url 'shop:product_detail' battery.id %}">
-                                {{ battery.total_quantity }}
+                            <a href="{% url 'shop:product_detail' product.id %}">
+                                {{ product.total_quantity }}
                             </a>
                         </td>
                         <td>
-                            <a href="{% url 'shop:product_detail' battery.id %}">
-                                {{ battery.get_price }}
+                            <a href="{% url 'shop:product_detail' product.id %}">
+                                {{ product.get_price }}
                             </a>
                         </td>
                     </tr>
