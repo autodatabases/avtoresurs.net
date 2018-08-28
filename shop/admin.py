@@ -18,8 +18,8 @@ class ShopAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'brand', 'sku', 'product_type', 'description')
-    list_display_links = ('id', 'brand', 'sku', 'product_type', 'description')
+    list_display = ('id', 'brand', 'sku', 'product_type', 'description', '_image')
+    list_display_links = ('id', 'brand', 'sku', 'product_type', 'description', '_image')
     search_fields = ('brand', 'sku', 'product_type')
 
 

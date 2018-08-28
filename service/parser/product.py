@@ -139,11 +139,13 @@ class ProductLoader:
                     self.bad = self.bad + 1
 
                 if not prices[0]:
-                    self.report[product_type][line_number] = 'Ошибка! Товар добавлен без указании цены товара в рознице. %s' % line
+                    self.report[product_type][
+                        line_number] = 'Ошибка! Товар добавлен без указании цены товара в рознице. %s' % line
                     self.bad = self.bad + 1
 
             except Exception as e:
-                self.report[product_type][line_number] = "Проверьте корректность строки (Exception: %s) [%s]" % (e, line)
+                self.report[product_type][line_number] = "Проверьте корректность строки (Exception: %s) [%s]" % (
+                    e, line)
                 self.bad = self.bad + 1
 
     def get_report(self):
@@ -308,3 +310,7 @@ class ProductLoader:
 def get_batteries_brands():
     batteries = ['fiamm']
     return batteries
+
+
+def get_oil_brands():
+    pass
