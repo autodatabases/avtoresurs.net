@@ -220,6 +220,8 @@
                         {% for pa in product.get_part_attributes %}
                             <p>{{ pa.displaytitle }}: <strong>{{ pa.displayvalue }}</strong></p>
                         {% endfor %}
+                    {% elif product.description %}
+                        <p>{{ product.description }}</p>
                     {% else %}
                         <p>Описание отсутствует</p>
                     {% endif %}
