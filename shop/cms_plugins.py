@@ -30,7 +30,7 @@ class ShopPlugin(CMSPluginBase):
 class ProductTypePlugin(CMSPluginBase):
     module = ('Магазин')
     name = ('Продукты по категории')
-    render_template = 'shop/includes/product_type.html'
+    render_template = 'shop/includes/product_category.html'
     model = ProductTypeModelPlugin
 
     def render(self, context, instance, placeholder):

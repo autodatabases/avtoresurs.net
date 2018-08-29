@@ -24,7 +24,7 @@ class SearchView(TemplateView):
         query = self.request.GET['q']
         clean_query = clean_number(query)
         parts = Part.objects.filter(clean_part_number=clean_query)
-        batteries = Product.get_products(product_type=ProductTypes.Battery).filter(sku=clean_query)
+        batteries = Product.get_products(product_category=ProductTypes.Battery).filter(sku=clean_query)
         context.update({
             'q': query,
             'parts': parts,

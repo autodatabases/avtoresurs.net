@@ -43,6 +43,45 @@ class ProductTypes(Enum):
         return self.value
 
 
+class ProductCategory(models.Model):
+    Tecdoc = 'tecdoc'
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
+    name = models.CharField(max_length=255, verbose_name='Название (на английском)')
+    russian_name = models.CharField(max_length=255, verbose_name='Название (на русском)')
+    description = models.CharField(max_length=255, verbose_name='Описание')
+    brands = models.CharField(max_length=255, blank=True, null=True, verbose_name='Брэнды (через запятую)')
+    added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
+
+    def __str__(self):
+        return self.russian_name
+
+    def brands_as_list(self):
+        if self.brands:
+            return self.brands.split(",")
+        else:
+            return {}
+
+    @staticmethod
+    def get_all_categories():
+        product_categories = ProductCategory.objects.all()
+        return product_categories
+
+    @staticmethod
+    def as_choices():
+        product_categories = ProductCategory.get_all_categories()
+        return tuple((x.name.lower(), x.russian_name) for x in product_categories)
+
+    @staticmethod
+    def as_list():
+        product_categories = ProductCategory.get_all_categories()
+        return [x.name.lower() for x in product_categories]
+
+
 class Product(models.Model):
     """ реализует класс Товар """
     brand = models.CharField(max_length=255, blank=True, null=True)
@@ -50,8 +89,9 @@ class Product(models.Model):
     active = models.BooleanField(default=True)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
-    product_type = models.CharField(choices=ProductTypes.as_choices(), max_length=10, verbose_name='Тип продукта',
-                                    null=True)
+    product_category = models.CharField(choices=ProductCategory.as_choices(), max_length=10,
+                                        verbose_name='Тип продукта',
+                                        null=True)
     _description = models.CharField(max_length=300, null=True, verbose_name='Описание', db_column='description')
 
     _image = models.ImageField(null=True, blank=True, verbose_name='Картинка', db_column='image')
@@ -94,7 +134,7 @@ class Product(models.Model):
 
     @property
     def default_title(self):
-        if self.product_type == str(ProductTypes.Battery):
+        if self.product_category == str(ProductTypes.Battery):
             return 'Аккумулятор'
         else:
             return 'Запчасть'
@@ -187,8 +227,8 @@ class Product(models.Model):
                 return '/static/main/images/no-image.png'
 
     @staticmethod
-    def get_products(product_type=ProductTypes.Tecdoc.value):
-        products = Product.objects.filter(product_type=product_type).prefetch_related()
+    def get_products(product_category=ProductCategory.Tecdoc):
+        products = Product.objects.filter(product_category=product_category).prefetch_related()
         return products
 
     class Meta:
@@ -380,10 +420,11 @@ def get_products(supplier, clean_part_number):
 
 
 class ProductTypeModelPlugin(CMSPlugin):
-    product_type = models.CharField(choices=ProductTypes.as_choices(), max_length=10, verbose_name='Тип продукта',
-                                    null=True)
+    product_category = models.CharField(choices=ProductCategory.as_choices(), max_length=10,
+                                        verbose_name='Тип продукта',
+                                        null=True)
 
     @property
     def products(self):
-        product_query = Product.get_products(product_type=self.product_type).order_by('sku')
+        product_query = Product.get_products(product_category=self.product_category).order_by('sku')
         return product_query
