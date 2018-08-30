@@ -230,7 +230,7 @@ class Product(models.Model):
 
     @staticmethod
     def get_products(product_category=ProductCategory.Tecdoc):
-        products = Product.objects.filter(product_category=product_category).prefetch_related()
+        products = Product.objects.filter(product_category=product_category)
         return products
 
     class Meta:
