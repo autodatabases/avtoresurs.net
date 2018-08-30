@@ -39,18 +39,11 @@ class ProductTypes(Enum):
         return self.value
 
 
-class ProductCategoryQuerySet(models.query.QuerySet):
-    """ класс-фильтр queryset - возвращает только категории со статусом Active """
-
-    def get_queryset(self):
-        return self.filter(active=True)
-
-
 class ProductCategoryManager(models.Manager):
     """ кастомный менеджер категорий"""
 
     def all(self, *args, **kwargs):
-        return self.filter(active=True)
+        return self.get_queryset()
 
 
 class ProductCategory(models.Model):
@@ -88,9 +81,14 @@ class ProductCategory(models.Model):
         return product_categories
 
     @classmethod
+    def get_active_categories(cls):
+        product_categories = list(cls.objects.filter(active=True).order_by('russian_name'))
+        return product_categories
+
+    @classmethod
     def as_choices(cls):
-        product_categories = cls.get_all_categories()
-        choices = tuple((x.name.lower(), x.russian_name) for x in cls.get_all_categories())
+        product_categories = cls.get_active_categories()
+        choices = tuple((x.name.lower(), x.russian_name) for x in product_categories)
         return choices
 
     @classmethod
