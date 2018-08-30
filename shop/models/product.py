@@ -1,5 +1,6 @@
 import os
 from cms.models import CMSPlugin
+from django.utils.functional import lazy
 from enum import Enum
 import re
 from django.db import models
@@ -11,18 +12,18 @@ from tecdoc.models import Supplier, Image, PartAttribute, PartApplicability
 from tecdoc.models.part import Part, PartAnalog, PartCross, PartProduct
 
 
-class ProductQuerySet(models.query.QuerySet):
-    """ класс-фильтр queryset - возвращает только продукты со статусом Active """
-
-    def active(self):
-        return self.filter(active=True)
-
-
-class ProductManager(models.Manager):
-    """ кастомный менеджер товаров"""
-
-    def all(self, *args, **kwargs):
-        return self.get_queryset()
+# class ProductQuerySet(models.query.QuerySet):
+#     """ класс-фильтр queryset - возвращает только продукты со статусом Active """
+#
+#     def all(self, get_from_cache=False):
+#         return self.filter(active=True)
+#
+#
+# class ProductManager(models.Manager):
+#     """ кастомный менеджер товаров"""
+#
+#     def get_queryset(self, *args, **kwargs):
+#         return self.get_queryset()
 
 
 class ProductTypes(Enum):
@@ -83,13 +84,14 @@ class ProductCategory(models.Model):
 
     @classmethod
     def get_all_categories(cls):
-        product_categories = cls.objects.all()
+        product_categories = list(cls.objects.all().order_by('russian_name'))
         return product_categories
 
     @classmethod
     def as_choices(cls):
         product_categories = cls.get_all_categories()
-        return tuple((x.name.lower(), x.russian_name) for x in product_categories if x.active == True)
+        choices = tuple((x.name.lower(), x.russian_name) for x in cls.get_all_categories())
+        return choices
 
     @classmethod
     def as_list(cls):
@@ -116,7 +118,7 @@ class Product(models.Model):
         return self._description or ''
 
     # slug
-    objects = ProductManager()
+    # objects = ProductManager()
 
     def get_sku(self):
         part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
@@ -456,6 +458,10 @@ def get_products(supplier, clean_part_number):
 
 
 class ProductTypeModelPlugin(CMSPlugin):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._meta.get_field('product_category').choices = ProductCategory.as_choices()
+
     product_category = models.CharField(choices=ProductCategory.as_choices(), max_length=10,
                                         verbose_name='Тип продукта',
                                         null=True)
