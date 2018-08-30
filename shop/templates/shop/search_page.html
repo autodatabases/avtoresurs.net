@@ -17,74 +17,69 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h3 class="bg-light">Поиск осуществлен по фразе: {{ q }}</h3>
+            <h3 class="bg-light">Поиск по фразе: {{ q }}</h3>
         </div>
     </div>
     <br>
 
+    {% for additional_product, products in additional_products.items %}
     <div class="row">
         <div class="col">
-            <h3 class="bg-light">Аккумуляторы</h3>
+            <h3 class="bg-light text-center search-header" style="padding: 7px; margin: 0px !important;">{{ additional_product.russian_name }}</h3>
         </div>
     </div>
+
 
     <div class="row">
         <div class="col">
             <table class="table table-hover table-avtoresurs bg-light">
                 <thead class="thead-light">
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Артикул</th>
-                    <th scope="col">Производитель</th>
-                    <th scope="col">Название</th>
-                    <th scope="col">Кол-во</th>
-                    <th scope="col">Цена</th>
+                <th scope="col">#</th>
+                <th scope="col">Название</th>
+                <th scope="col">Характеристики</th>
+                <th scope="col">Кол-во</th>
+                <th scope="col">Цена</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for battery in batteries %}
-                    {% if battery.quantity < 0 %}
+                {% for product in products %}
+                    {% if product.total_quantity < 0 %}
                         <tr class="no-product">
-                            <th>{{ forloop.counter }}</th>
-                            <td> {{ battery.sku }}</td>
-                            <td>{{ battery.brand }}</td>
-                            <td>Аккумулятор {{ battery.brand }} {{ battery.sku }}</td>
-                            <td>-</td>
-                            <td>-</td>
+                        <th>{{ forloop.counter }}</th>
+                        <td>{{ product.title }} {{ product.brand }} {{ product.sku }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>-</td>
+                        <td>-</td>
                         </tr>
                     {% else %}
-                        <tr class="{% if battery.total_quantity == 0 %}product-zero{% else %}product{% endif %}">
-                            <th scope="row">
-                                <a href="{% url 'shop:product_detail' battery.id %}">
-                                    {{ forloop.counter }}
-                                </a>
-                            </th>
-                            <td>
-                                <a href="{% url 'shop:product_detail' battery.id %}">
-                                    {{ battery.sku }}
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{% url 'shop:product_detail' battery.id %}">
-                                    {{ battery.brand }}
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{% url 'shop:product_detail' battery.id %}">
-                                    Аккумулятор {{ battery.brand }} {{ battery.sku }}
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{% url 'shop:product_detail' battery.id %}">
-                                    {{ battery.total_quantity }}
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{% url 'shop:product_detail' battery.id %}">
-                                    {{ battery.get_price }}
-                                </a>
-                            </td>
-                        </tr>
+                        <tr class="{% if product.total_quantity == 0 %}product-zero{% else %}product{% endif %}">
+                        <th scope="row">
+                            <a href="{% url 'shop:product_detail' product.id %}">
+                                {{ forloop.counter }}
+                            </a>
+                        </th>
+                        <td>
+                            <a href="{% url 'shop:product_detail' product.id %}">
+                                {{ product.title }} {{ product.brand }} {{ product.sku }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'shop:product_detail' product.id %}">
+                                {{ product.description }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'shop:product_detail' product.id %}">
+                                {{ product.total_quantity }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'shop:product_detail' product.id %}">
+                                {{ product.get_price }}
+                            </a>
+                        </td>
+                    </tr>
                     {% endif %}
                 {% endfor %}
 
@@ -92,12 +87,13 @@
             </table>
         </div>
     </div>
+    {% endfor %}
 
     <hr>
 
     <div class="row">
         <div class="col">
-            <h3 class="bg-light">Запчасти</h3>
+            <h3 class="bg-light text-center search-header">Запчасти</h3>
         </div>
     </div>
 

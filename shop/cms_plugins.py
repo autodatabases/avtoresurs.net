@@ -3,6 +3,7 @@ from cms.plugin_pool import plugin_pool
 from django.utils.translation import ugettext_lazy as _
 
 from django.core.urlresolvers import reverse, NoReverseMatch
+from django.views.decorators.cache import never_cache
 
 from avtoresurs_new.support_utils import get_brands_images_list
 from shop.models import StoragePlugin, ProductTypeModelPlugin
@@ -28,11 +29,11 @@ class ShopPlugin(CMSPluginBase):
 
 @plugin_pool.register_plugin
 class ProductTypePlugin(CMSPluginBase):
+    cache = False
+    model = ProductTypeModelPlugin
     module = ('Магазин')
     name = ('Продукты по категории')
-    render_template = 'shop/includes/product_category.html'
-    model = ProductTypeModelPlugin
-    cache = False
+    render_template = 'shop/plugin_category.html'
 
     def render(self, context, instance, placeholder):
         context.update({

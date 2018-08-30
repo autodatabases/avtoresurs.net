@@ -265,3 +265,5 @@ PASSWD = 'KoxlabiruX'
 # HOST = '46.101.123.237'
 # USER = 'ftpuser'
 # PASSWD = 'Ufdhbrb31337'
+
+CMS_PLUGIN_CACHE = False

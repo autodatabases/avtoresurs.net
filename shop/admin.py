@@ -28,6 +28,9 @@ class ProductCategoryAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'name', 'russian_name', 'description', 'brands', 'added')
     search_fields = ('name', 'russian_name', 'brands')
 
+    def queryset(self, request):
+        return ProductCategory.objects
+
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Cart)
