@@ -66,19 +66,19 @@ class ProductCategory(models.Model):
         else:
             return {}
 
-    @staticmethod
-    def get_all_categories():
-        product_categories = ProductCategory.objects.all()
+    @classmethod
+    def get_all_categories(cls):
+        product_categories = cls.objects.all()
         return product_categories
 
-    @staticmethod
-    def as_choices():
-        product_categories = ProductCategory.get_all_categories()
+    @classmethod
+    def as_choices(cls):
+        product_categories = cls.get_all_categories()
         return tuple((x.name.lower(), x.russian_name) for x in product_categories)
 
-    @staticmethod
-    def as_list():
-        product_categories = ProductCategory.get_all_categories()
+    @classmethod
+    def as_list(cls):
+        product_categories = cls.get_all_categories()
         return [x.name.lower() for x in product_categories]
 
 
