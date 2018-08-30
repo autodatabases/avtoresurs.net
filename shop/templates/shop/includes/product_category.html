@@ -18,7 +18,7 @@
                 {% if product.quantity < 0 %}
                     <tr class="no-product">
                         <th>{{ forloop.counter }}</th>
-                        <td>Аккумулятор {{ product.brand }} {{ product.sku }}</td>
+                        <td>{{ product.title }} {{ product.brand }} {{ product.sku }}</td>
                         <td>{{ product.description }}</td>
                         <td>-</td>
                         <td>-</td>
@@ -32,7 +32,7 @@
                         </th>
                         <td>
                             <a href="{% url 'shop:product_detail' product.id %}">
-                                Аккумулятор {{ product.brand }} {{ product.sku }}
+                                {{ product.title }} {{ product.brand }} {{ product.sku }}
                             </a>
                         </td>
                         <td>

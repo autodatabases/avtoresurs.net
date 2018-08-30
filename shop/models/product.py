@@ -127,15 +127,17 @@ class Product(models.Model):
     def total_quantity(self):
         return self.get_quantity()
 
+    @property
     def title(self):
         part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
-        title = getattr(part, 'title', self.default_title)
+        title = getattr(part, 'title', self._default_title)
         return title
 
     @property
-    def default_title(self):
-        if self.product_category == str(ProductTypes.Battery):
-            return 'Аккумулятор'
+    def _default_title(self):
+        product_category = ProductCategory.objects.filter(name=self.product_category).first()
+        if product_category:
+            return product_category.description
         else:
             return 'Запчасть'
 
