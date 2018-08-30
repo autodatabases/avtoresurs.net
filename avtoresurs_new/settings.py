@@ -71,6 +71,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -84,6 +85,7 @@ MIDDLEWARE = [
     'cms.middleware.toolbar.ToolbarMiddleware',
     'cms.middleware.language.LanguageCookieMiddleware',
     'cms.middleware.utils.ApphookReloadMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware'
     # 'pagination.middleware.PaginationMiddleware',
 
 ]
@@ -254,7 +256,6 @@ REST_FRAMEWORK = {
 
 }
 
-
 # REAL FTP
 HOST = '195.190.127.74'
 USER = 'oleg'
@@ -264,5 +265,3 @@ PASSWD = 'KoxlabiruX'
 # HOST = '46.101.123.237'
 # USER = 'ftpuser'
 # PASSWD = 'Ufdhbrb31337'
-
-CMS_PLUGIN_CACHE = False
