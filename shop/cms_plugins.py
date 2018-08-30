@@ -32,6 +32,7 @@ class ProductTypePlugin(CMSPluginBase):
     name = ('Продукты по категории')
     render_template = 'shop/includes/product_category.html'
     model = ProductTypeModelPlugin
+    cache = False
 
     def render(self, context, instance, placeholder):
         context.update({
