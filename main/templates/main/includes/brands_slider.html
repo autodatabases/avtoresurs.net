@@ -1,0 +1,76 @@
+{% load sekizai_tags %}
+{% load staticfiles %}
+{% block custom_css %}
+    {% include "main/plugins/light_slider.html" %}
+    <style>
+        .slider-btn {
+            width: 50px;
+            height: 300px;
+            background-color: transparent;
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            padding-top: 137px;
+            opacity: 0.5;
+            font-size: 17pt;
+            color: #1F3EFC;
+        }
+        .slider-btn :hover {
+            background-color: #EBEFF0;
+        }
+        .prev-btn {
+            left: 4px;
+        }
+        .next-btn {
+            right: 4px;
+        }
+    </style>
+{% endblock custom_css %}
+{% include 'main/plugins/brands_lent.html' %}
+<div>
+    <div class="container-fluid">
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        // Функция ymaps.ready() будет вызвана, когда
+        // загрузятся все компоненты API, а также когда будет готово DOM-дерево.
+        ymaps.ready(init);
+
+        function init() {
+            // Создание карты.
+            var myMap = new ymaps.Map("map", {
+                // Координаты центра карты.
+                // Порядок по умолчнию: «широта, долгота».
+                // Чтобы не определять координаты центра карты вручную,
+                // воспользуйтесь инструментом Определение координат.
+                center: [54.707658, 20.507212],
+                // Уровень масштабирования. Допустимые значения:
+                // от 0 (весь мир) до 19.
+                zoom: 12
+            });
+
+
+            var lightSlider = $("#lightSlider").lightSlider({
+                item: 3,
+                autoWidth: true,
+                slideMove: 1, // slidemove will be 1 if loop is true
+                slideMargin: 17,
+                controls: false,
+                pager: false
+            });
+
+            $('#goToPrevSlide').on('click', function () {
+                lightSlider.goToPrevSlide();
+                console.log(lightSlider.item);
+            });
+            $('#goToNextSlide').on('click', function () {
+                lightSlider.goToNextSlide();
+            });
+
+
+        }
+    });
+</script>

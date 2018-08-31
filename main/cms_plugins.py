@@ -51,3 +51,10 @@ class StockPlugin(CMSPluginBase):
     module = ('Контент')
     name = ('Акция на главной странице')
     render_template = 'main/includes/stock.html'
+
+
+@plugin_pool.register_plugin
+class BrandList(CMSPluginBase):
+    module = ('Контент')
+    name = ('Лента с брэндами')
+    render_template = 'main/includes/brands_slider.html'
