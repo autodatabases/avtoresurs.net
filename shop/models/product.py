@@ -39,22 +39,12 @@ class ProductTypes(Enum):
         return self.value
 
 
-class ProductCategoryManager(models.Manager):
-    """ кастомный менеджер категорий"""
-
-    def all(self, *args, **kwargs):
-        return self.get_queryset()
-
-
 class ProductCategory(models.Model):
     Tecdoc = 'tecdoc'
 
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
-
-    class Admin:
-        manager = ProductCategoryManager()
 
     name = models.CharField(max_length=255, verbose_name='Название (на английском)')
     russian_name = models.CharField(max_length=255, verbose_name='Название (на русском)')
@@ -63,8 +53,6 @@ class ProductCategory(models.Model):
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
     active = models.BooleanField(default=True, verbose_name='Активен')
-
-    objects = ProductCategoryManager()
 
     def __str__(self):
         return self.russian_name

@@ -24,15 +24,9 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class ProductCategoryAdmin(admin.ModelAdmin):
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        return qs.filter(active=True)
-
-    list_display = ('id', 'name', 'russian_name', 'description', 'brands', 'added')
-    list_display_links = ('id', 'name', 'russian_name', 'description', 'brands', 'added')
+    list_display = ('id', 'name', 'russian_name', 'description', 'brands', 'active', 'added')
+    list_display_links = ('id', 'name', 'russian_name', 'description', 'brands', 'active', 'added')
     search_fields = ('name', 'russian_name', 'brands')
-
-
 
 
 admin.site.register(Product, ProductAdmin)
