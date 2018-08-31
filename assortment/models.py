@@ -2,11 +2,6 @@ from django.db import models
 from cms.models import CMSPlugin
 
 
-class AssortmentItemManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(status=True)
-
-
 class AssortmentItem(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название брэнда')
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
@@ -22,8 +17,6 @@ class AssortmentItem(models.Model):
     @url.setter
     def url(self, value):
         self.url = value
-
-    objects = AssortmentItemManager()
 
     def __str__(self):
         return self.title
