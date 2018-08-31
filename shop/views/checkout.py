@@ -51,7 +51,7 @@ def order_notification(cart, order, user):
             order_total += price * qty
             body += '{idx}. {title} {brand} {sku}, {qty} шт. x {price} руб.., на общую сумму: {line_total} руб.\r\n'.format(
                 idx=idx + 1,
-                title=product.title(),
+                title=product.title,
                 brand=product.brand,
                 sku=product.get_sku(),
                 qty=qty,
@@ -95,7 +95,7 @@ def order_notification(cart, order, user):
             qty = item.quantity
             coordinate = 'B' + str(idx)
             article = '%s %s' % (product.brand, product.get_sku())
-            data.append([idx + 1, product.title(), article, qty, price, qty * price])
+            data.append([idx + 1, product.title, article, qty, price, qty * price])
 
         ws.append(['#', 'Товар', 'Брэнд', 'Количество', 'Цена за единицу', 'Цена (общая)'])
         for row in data:
