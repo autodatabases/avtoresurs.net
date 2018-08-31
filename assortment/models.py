@@ -12,11 +12,11 @@ class AssortmentItem(models.Model):
 
     @property
     def url(self):
-        return self.url or '#'
+        return self._url or '#'
 
     @url.setter
     def url(self, value):
-        self.url = value
+        self._url = value
 
     def __str__(self):
         return self.title
