@@ -59,6 +59,7 @@ class BrandList(CMSPluginBase):
     module = ('Контент')
     name = ('Лента с брэндами')
     render_template = 'main/plugins/brands_lent.html'
+    cache = None
 
     def render(self, context, instance, placeholder):
         brands = get_brands_images_list()
