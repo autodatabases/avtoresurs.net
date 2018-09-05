@@ -13,9 +13,8 @@ def get_brands_images_list():
     result = []
     for img in brands_images:
         result.append(
-            "{static_url}{brands_path}{img_name}".format(
-                static_url=settings.STATIC_URL,
-                img_name=img, brands_path=brands_path
+            "/media/{img_name}".format(
+                img_name=img
             )
         )
     return result
