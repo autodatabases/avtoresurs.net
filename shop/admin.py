@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from shop.models.cart import Cart
 from shop.models.order import Order
-from shop.models.product import Product
+from shop.models.product import Product, ProductCategory
 from shop.models.storage import Storage
 
 
@@ -18,12 +18,19 @@ class ShopAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'brand', 'sku', 'product_type', 'description')
-    list_display_links = ('id', 'brand', 'sku', 'product_type', 'description')
-    search_fields = ('brand', 'sku', 'product_type')
+    list_display = ('id', 'brand', 'sku', 'product_category', 'description', '_image')
+    list_display_links = ('id', 'brand', 'sku', 'product_category', 'description', '_image')
+    search_fields = ('brand', 'sku', 'product_category')
+
+
+class ProductCategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'russian_name', 'description', 'brands', 'active', 'added')
+    list_display_links = ('id', 'name', 'russian_name', 'description', 'brands', 'active', 'added')
+    search_fields = ('name', 'russian_name', 'brands')
 
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Cart)
 admin.site.register(Order)
 admin.site.register(Storage, StorageAdmin)
+admin.site.register(ProductCategory, ProductCategoryAdmin)

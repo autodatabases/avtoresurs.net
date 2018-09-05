@@ -6,7 +6,7 @@
             background-image: url({% static 'assortment/i/back-assort.jpg' %});
             background-repeat: no-repeat;
             background-size: cover;
-            min-height: 1100px;
+            min-height: 900px;
         }
     </style>
 {% endblock custom_css %}
@@ -30,7 +30,9 @@
             {% for item in items %}
 
                 <div class="col-sm center-align text-center">
-                    <img src="{% static 'assortment/i/items/' %}{{ item.image }}" alt="{{ item.title }}"/>
+                    <a href="{{ item.url }}" target="_blank">
+                        <img src="{% static 'assortment/i/items/' %}{{ item.image }}" alt="{{ item.title }}"/>
+                    </a>
                     <br/><br/>
                 </div>
 

@@ -8,8 +8,15 @@ from django.db import connection
 from filer.models.foldermodels import Folder
 from filer.models import File
 from avtoresurs_new.settings import DIR, EMAIL_NOREPLY, EMAIL_TO, EMAIL_BCC, EMAIL_NOREPLY_LIST
-from shop.models import Storage, Part, Product, ProductPrice, clean_number, os, ProductTypes
+from shop.models import Storage, Part, Product, ProductPrice, clean_number, os, ProductTypes, ProductCategory
 from django.core.files.storage import default_storage
+
+
+def sort_reports(reports):
+    sorted_reports = {}
+    for category_key, category_report in reports.items():
+        sorted_reports.update({category_key: collections.OrderedDict(sorted(category_report.items()))})
+    return sorted_reports
 
 
 class ProductLoader:
@@ -26,16 +33,18 @@ class ProductLoader:
 
     def __init__(self, file_path, storage_id, filename):
         self.filename = filename
-        self.report = {
-            ProductTypes.Tecdoc.value: {},
-            ProductTypes.Battery.value: {},
-        }
+        self.product_categories = ProductCategory.as_list()
+        self.report = {}
+        for pc in self.product_categories:
+            self.report.update({pc.lower(): {}})
         self.storage = Storage.objects.get(id=storage_id)
         self.date = self.get_date()
+
         all_products = self.parse_file(file_path)
-        tecdocs, batteries = self.parse_products(all_products)
-        self.product_load(products=tecdocs, product_type=ProductTypes.Tecdoc.value)
-        self.product_load(products=batteries, product_type=ProductTypes.Battery.value)
+        parsed_products = self.parse_products(all_products)
+        for product_category, products in parsed_products.items():
+            self.product_load(products=products, product_category=product_category)
+
         self.report_text = self.get_report()
         self.save_report()
 
@@ -78,13 +87,13 @@ class ProductLoader:
 
         return intervals
 
-    def product_load(self, products, product_type):
+    def product_load(self, products, product_category):
         """ method for splitting DATA in threads"""
         intervals = self.get_intervals(products)
         threads = list()
 
         for interval in intervals:
-            thread = threading.Thread(target=self.add_product, args=(products, interval, product_type))
+            thread = threading.Thread(target=self.add_product, args=(products, interval, product_category))
             threads.append(thread)
 
         for thread in threads:
@@ -93,7 +102,7 @@ class ProductLoader:
         for thread in threads:
             thread.join()
 
-    def add_product(self, data, interval, product_type):
+    def add_product(self, data, interval, product_category):
         """ main logic of searching and inserting product and product price """
         start_idx = interval[0]
         end_idx = interval[1] + self.ONE_MORE
@@ -109,16 +118,16 @@ class ProductLoader:
 
                 prices = self.get_prices(row)
 
-                if product_type == ProductTypes.Tecdoc.value:
+                if product_category == ProductCategory.Tecdoc:
                     part_tecdoc = Part.objects.filter(clean_part_number=clear_sku, supplier__title=brand)
-                elif product_type == ProductTypes.Battery.value:
+                elif product_category in self.product_categories:
                     part_tecdoc = True
                 else:
                     part_tecdoc = False
 
                 if part_tecdoc:
                     product, created = Product.objects.get_or_create(sku=clear_sku, brand=brand)
-                    product.product_type = product_type
+                    product.product_category = product_category
                     product.save()
 
                     product_price, created = ProductPrice.objects.get_or_create(storage=self.storage, product=product)
@@ -132,24 +141,26 @@ class ProductLoader:
                     product_price.price_6 = prices.get(6)
                     product_price.save()
 
-                    self.report[product_type][line_number] = 'Успешно добавлен. %s' % line
+                    self.report[product_category][line_number] = 'Успешно добавлен. %s' % line
                     self.good = self.good + 1
                 else:
-                    self.report[product_type][line_number] = 'Ошибка! не найдено соответсвие в TECDOC. %s' % line
+                    self.report[product_category][line_number] = 'Ошибка! не найдено соответсвие в TECDOC. %s' % line
                     self.bad = self.bad + 1
 
                 if not prices[0]:
-                    self.report[product_type][line_number] = 'Ошибка! Товар добавлен без указании цены товара в рознице. %s' % line
+                    self.report[product_category][
+                        line_number] = 'Ошибка! Товар добавлен без указании цены товара в рознице. %s' % line
                     self.bad = self.bad + 1
 
             except Exception as e:
-                self.report[product_type][line_number] = "Проверьте корректность строки (Exception: %s) [%s]" % (e, line)
+                self.report[product_category][line_number] = "Проверьте корректность строки (Exception: %s) [%s]" % (
+                    e, line)
                 self.bad = self.bad + 1
 
     def get_report(self):
         """ method for generating report """
-        report_tecdocs = collections.OrderedDict(sorted(self.report[ProductTypes.Tecdoc.value].items()))
-        report_batteries = collections.OrderedDict(sorted(self.report[ProductTypes.Battery.value].items()))
+        sorted_reports = sort_reports(self.report)
+
         report = ('Прококол загрузки файла товаров %s от %s.%s.%s %s:%s\r\n' % (
             self.filename,
             self.date['day'],
@@ -158,16 +169,18 @@ class ProductLoader:
             self.date['hour'],
             self.date['minute'],
         ))
-        total_tecdocs = len(report_tecdocs)
-        total_batteries = len(report_batteries)
-        total_products = total_tecdocs + total_batteries
+
+        total_products = 0
+        for key, category_report in sorted_reports.items():
+            total_products += len(category_report)
+
         bad = self.bad
         good = self.good
         report += 'Всего обработано - %s, из них принято - %s, с ошибкой - %s\r\n' % (total_products, good, bad)
-        for key, item in report_batteries.items():
-            report += '%s. %s\n' % (key, item)
-        for key, item in report_tecdocs.items():
-            report += '%s. %s\n' % (key, item)
+
+        for category_key, category_report in sorted_reports.items():
+            for key, item in category_report.items():
+                report += '%s. %s\n' % (key, item)
         return report
 
     def save_report(self):
@@ -233,78 +246,92 @@ class ProductLoader:
 
     def get_prices(self, row):
         prices = {}
-        try:
-            prices[0] = row[3]
-            if ',' in row[3]:
-                prices[0] = row[3].replace(',', '.')
-            else:
-                prices[0] = float(row[3])
-        except:
-            prices[0] = 0
-        try:
-            prices[1] = row[4]
-            if ',' in row[4]:
-                prices[1] = row[4].replace(',', '.')
-            else:
-                prices[1] = float(row[4])
-        except:
-            prices[1] = 0
-        try:
-            prices[2] = row[5]
-            if ',' in row[5]:
-                prices[2] = row[5].replace(',', '.')
-            else:
-                prices[2] = float(row[5])
-        except:
-            prices[2] = 0
-        try:
-            prices[3] = row[6]
-            if ',' in row[6]:
-                prices[3] = row[6].replace(',', '.')
-            else:
-                prices[3] = float(row[6])
-        except:
-            prices[3] = 0
-        try:
-            prices[4] = row[7]
-            if ',' in row[7]:
-                prices[4] = row[7].replace(',', '.')
-            else:
-                prices[4] = float(row[7])
-        except:
-            prices[4] = 0
-        try:
-            prices[5] = row[8]
-            if ',' in row[8]:
-                prices[5] = row[8].replace(',', '.')
-            else:
-                prices[5] = float(row[8])
-        except:
-            prices[5] = 0
-        try:
-            prices[6] = row[9]
-            if ',' in row[9]:
-                prices[6] = row[9].replace(',', '.')
-            else:
-                prices[6] = float(row[9])
-        except:
-            prices[6] = 0
+        for x in range(7):
+            try:
+                column = x + 3
+                prices[x] = row[column]
+                if ',' in row[column]:
+                    prices[x] = row[column].replace(',', '.')
+                else:
+                    prices[x] = float(row[column])
+            except:
+                prices[x] = 0
+        # try:
+        #     prices[1] = row[4]
+        #     if ',' in row[4]:
+        #         prices[1] = row[4].replace(',', '.')
+        #     else:
+        #         prices[1] = float(row[4])
+        # except:
+        #     prices[1] = 0
+        # try:
+        #     prices[2] = row[5]
+        #     if ',' in row[5]:
+        #         prices[2] = row[5].replace(',', '.')
+        #     else:
+        #         prices[2] = float(row[5])
+        # except:
+        #     prices[2] = 0
+        # try:
+        #     prices[3] = row[6]
+        #     if ',' in row[6]:
+        #         prices[3] = row[6].replace(',', '.')
+        #     else:
+        #         prices[3] = float(row[6])
+        # except:
+        #     prices[3] = 0
+        # try:
+        #     prices[4] = row[7]
+        #     if ',' in row[7]:
+        #         prices[4] = row[7].replace(',', '.')
+        #     else:
+        #         prices[4] = float(row[7])
+        # except:
+        #     prices[4] = 0
+        # try:
+        #     prices[5] = row[8]
+        #     if ',' in row[8]:
+        #         prices[5] = row[8].replace(',', '.')
+        #     else:
+        #         prices[5] = float(row[8])
+        # except:
+        #     prices[5] = 0
+        # try:
+        #     prices[6] = row[9]
+        #     if ',' in row[9]:
+        #         prices[6] = row[9].replace(',', '.')
+        #     else:
+        #         prices[6] = float(row[9])
+        # except:
+        #     prices[6] = 0
 
         return prices
 
     def parse_products(self, all_products):
-        tecdocs = []
-        batteries = []
+        product_categories = ProductCategory.get_all_categories()
+        brands = make_brands(product_categories)
+        products = make_products_template_with_category(product_categories)
+
         for product in all_products:
             row = product.split(';')
             brand = row[1].lower()
-            if brand in get_batteries_brands():
-                batteries.append(product)
+            if brand in brands:
+                products[brands.get(brand)].append(product)
             else:
-                tecdocs.append(product)
-        return tecdocs, batteries
+                products[ProductCategory.Tecdoc].append(product)
+        return products
 
 
-def get_batteries_brands():
-    batteries = ['fiamm']
-    return batteries
+def make_brands(product_categories):
+    brands = {}
+    for product_category in product_categories:
+        for brand in product_category.brands_as_list():
+            brands.update({brand.lower(): product_category.name.lower()})
+    return brands
+
+
+def make_products_template_with_category(product_categories):
+    products = {}
+    for product_category in product_categories:
+        products.update({product_category.name.lower(): []})
+    return products

@@ -32,9 +32,9 @@
                              alt="{{ bonus.title }}">
                     {% endif %}
                     <div class="card-block">
-                        <h4 class="card-title">{{ bonus.title }}</h4>
+                        <p class="card-title">{{ bonus.title }}</p>
                         <p class="card-text">
-                        <div class="bonus-price"><h4><span style="color: #1565C0">{{ bonus.price }} баллов</span></h4>
+                        <div class="bonus-price"><p><span style="color: #1565C0">{{ bonus.price }} баллов</span></p>
                         </div>
                         </p>
                         <button type="button" class="btn btn-primary" data-toggle="modal"
@@ -52,7 +52,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalLabel{{ forloop.counter }}">{{ bonus.title }}</h5>
+                            <p class="modal-title" id="modalLabel{{ forloop.counter }}">{{ bonus.title }}</p>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

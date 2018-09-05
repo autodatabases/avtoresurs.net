@@ -1,5 +1,6 @@
 import os
 from cms.models import CMSPlugin
+from django.utils.functional import lazy
 from enum import Enum
 import re
 from django.db import models
@@ -11,28 +12,24 @@ from tecdoc.models import Supplier, Image, PartAttribute, PartApplicability
 from tecdoc.models.part import Part, PartAnalog, PartCross, PartProduct
 
 
-class ProductQuerySet(models.query.QuerySet):
-    """ класс-фильтр queryset - возвращает только продукты со статусом Active """
-
-    def active(self):
-        return self.filter(active=True)
-
-
-class ProductManager(models.Manager):
-    """ кастомный менеджер товаров"""
-
-    def all(self, *args, **kwargs):
-        return self.get_queryset()
-
-    # def get_price(self):
-    #     if self.user.request.group == 'розница':
-    #         return self.get_retail_price()
-    #     return self.get_whosale_price()
+# class ProductQuerySet(models.query.QuerySet):
+#     """ класс-фильтр queryset - возвращает только продукты со статусом Active """
+#
+#     def all(self, get_from_cache=False):
+#         return self.filter(active=True)
+#
+#
+# class ProductManager(models.Manager):
+#     """ кастомный менеджер товаров"""
+#
+#     def get_queryset(self, *args, **kwargs):
+#         return self.get_queryset()
 
 
 class ProductTypes(Enum):
     Tecdoc = 'Tecdoc'
     Battery = 'Battery'
+    Oil = 'Oil'
 
     @classmethod
     def as_choices(cls):
@@ -42,6 +39,52 @@ class ProductTypes(Enum):
         return self.value
 
 
+class ProductCategory(models.Model):
+    Tecdoc = 'tecdoc'
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
+    name = models.CharField(max_length=255, verbose_name='Название (на английском)')
+    russian_name = models.CharField(max_length=255, verbose_name='Название (на русском)')
+    description = models.CharField(max_length=255, verbose_name='Описание')
+    brands = models.CharField(max_length=255, blank=True, null=True, verbose_name='Брэнды (через запятую)')
+    added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
+    active = models.BooleanField(default=True, verbose_name='Активен')
+
+    def __str__(self):
+        return self.russian_name
+
+    def brands_as_list(self):
+        if self.brands:
+            return self.brands.split(",")
+        else:
+            return {}
+
+    @classmethod
+    def get_all_categories(cls):
+        product_categories = list(cls.objects.all().order_by('russian_name'))
+        return product_categories
+
+    @classmethod
+    def get_active_categories(cls):
+        product_categories = list(cls.objects.filter(active=True).order_by('russian_name'))
+        return product_categories
+
+    @classmethod
+    def as_choices(cls):
+        product_categories = cls.get_active_categories()
+        choices = tuple((x.name.lower(), x.russian_name) for x in product_categories)
+        return choices
+
+    @classmethod
+    def as_list(cls):
+        product_categories = cls.get_all_categories()
+        return [x.name.lower() for x in product_categories]
+
+
 class Product(models.Model):
     """ реализует класс Товар """
     brand = models.CharField(max_length=255, blank=True, null=True)
@@ -49,16 +92,19 @@ class Product(models.Model):
     active = models.BooleanField(default=True)
     added = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Добавлена')
     updated = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Изменена')
-    product_type = models.CharField(choices=ProductTypes.as_choices(), max_length=10, verbose_name='Тип продукта',
-                                    null=True)
+    product_category = models.CharField(choices=ProductCategory.as_choices(), max_length=10,
+                                        verbose_name='Тип продукта',
+                                        null=True)
     _description = models.CharField(max_length=300, null=True, verbose_name='Описание', db_column='description')
+
+    _image = models.ImageField(null=True, blank=True, verbose_name='Картинка', db_column='image')
 
     @property
     def description(self):
         return self._description or ''
 
     # slug
-    objects = ProductManager()
+    # objects = ProductManager()
 
     def get_sku(self):
         part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
@@ -84,15 +130,17 @@ class Product(models.Model):
     def total_quantity(self):
         return self.get_quantity()
 
+    @property
     def title(self):
         part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
-        title = getattr(part, 'title', self.default_title)
+        title = getattr(part, 'title', self._default_title)
         return title
 
     @property
-    def default_title(self):
-        if self.product_type == str(ProductTypes.Battery):
-            return 'Аккумулятор'
+    def _default_title(self):
+        product_category = ProductCategory.objects.filter(name=self.product_category).first()
+        if product_category:
+            return product_category.description
         else:
             return 'Запчасть'
 
@@ -166,23 +214,46 @@ class Product(models.Model):
 
         return pp.retail_price
 
+    @property
     def image(self):
-        tecdoc_image_path = '/static/main/images/tecdoc/'
-        part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
-        part_number = getattr(part, 'part_number', None)
-        image = Image.objects.filter(supplier__title=self.brand, part_number=part_number).first()
-        try:
-            base, ext = os.path.splitext(image.picture)
-            if ext == '.BMP':
-                ext = ext.replace('BMP', 'jpg')
-            return '%s%s%s' % (tecdoc_image_path, base, ext.lower())
-        except Exception as exc:
-            return '/static/main/images/no-image.png'
+        if self._image:
+            return self._image.url
+        else:
+            tecdoc_image_path = '/static/main/images/tecdoc/'
+            part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
+            part_number = getattr(part, 'part_number', None)
+            image = Image.objects.filter(supplier__title=self.brand, part_number=part_number).first()
+            try:
+                base, ext = os.path.splitext(image.picture)
+                if ext == '.BMP':
+                    ext = ext.replace('BMP', 'jpg')
+                return '%s%s%s' % (tecdoc_image_path, base, ext.lower())
+            except Exception as exc:
+                return '/static/main/images/no-image.png'
 
-    @staticmethod
-    def get_products(product_type=ProductTypes.Tecdoc):
-        products = Product.objects.filter(product_type=product_type).prefetch_related()
+    @classmethod
+    def get_products(cls, product_category=ProductCategory.Tecdoc):
+        products = cls.objects.filter(product_category=product_category)
         return products
+
+    @classmethod
+    def get_additional_products(cls, sku):
+        pc_query = ProductCategory.get_all_categories()
+        additional_products = {}
+        for product_category in pc_query:
+            products = Product.search_by_sku_category(sku=sku, category=product_category.name)
+            if products:
+                additional_products.update({product_category: products})
+        return additional_products
+
+    @classmethod
+    def search_by_sku_category(cls, sku, category):
+        products_query = cls.objects.filter(sku__icontains=sku, product_category=category).prefetch_related()
+        products = sorted(products_query, reverse=True)
+        return products
+
+    def __gt__(self, other):
+        return self.total_quantity > other.total_quantity
 
     class Meta:
         verbose_name = 'Продукт'
@@ -372,8 +443,16 @@ def get_products(supplier, clean_part_number):
     return sorted(part_products, reverse=True)
 
 
-class BatteryModelPlugin(CMSPlugin):
+class ProductTypeModelPlugin(CMSPlugin):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._meta.get_field('product_category').choices = ProductCategory.as_choices()
+
+    product_category = models.CharField(choices=ProductCategory.as_choices(), max_length=10,
+                                        verbose_name='Тип продукта',
+                                        null=True)
+
     @property
-    def batteries(self):
-        batteries = Product.get_products(product_type=ProductTypes.Battery).order_by('sku')
-        return batteries
+    def products(self):
+        product_query = Product.get_products(product_category=self.product_category).order_by('sku')
+        return product_query

@@ -645,6 +645,13 @@ div.card.bonus {
     /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#0001ff', GradientType=1); !* IE6-9 fallback on horizontal gradient *!*/
 }
 
+.search-header {
+    background-color: #007bff !important;
+    color: white;
+    padding: 7px;
+    margin: 0 !important;
+}
+
 @media (min-width: 576px) {
     #techModal .modal-dialog, #applicabilityModal .modal-dialog, .news-modal .modal-dialog {
         max-width: 900px;

@@ -1,6 +1,7 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
+from avtoresurs_new.support_utils import get_brands_images_list
 from main.models import ProposalModelPlugin, StoreAddressModelPlugin, StockModelPlugin, PostPluginModel
 
 
@@ -51,3 +52,18 @@ class StockPlugin(CMSPluginBase):
     module = ('Контент')
     name = ('Акция на главной странице')
     render_template = 'main/includes/stock.html'
+
+
+@plugin_pool.register_plugin
+class BrandList(CMSPluginBase):
+    module = ('Контент')
+    name = ('Лента с брэндами')
+    render_template = 'main/plugins/brands_lent.html'
+    cache = None
+
+    def render(self, context, instance, placeholder):
+        brands = get_brands_images_list()
+        context.update({
+            'brands': brands
+        })
+        return context

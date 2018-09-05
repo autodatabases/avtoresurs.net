@@ -3,9 +3,10 @@ from cms.plugin_pool import plugin_pool
 from django.utils.translation import ugettext_lazy as _
 
 from django.core.urlresolvers import reverse, NoReverseMatch
+from django.views.decorators.cache import never_cache
 
 from avtoresurs_new.support_utils import get_brands_images_list
-from shop.models import StoragePlugin, BatteryModelPlugin
+from shop.models import StoragePlugin, ProductTypeModelPlugin
 
 
 @plugin_pool.register_plugin
@@ -27,15 +28,15 @@ class ShopPlugin(CMSPluginBase):
 
 
 @plugin_pool.register_plugin
-class BatteryPlugin(CMSPluginBase):
+class ProductTypePlugin(CMSPluginBase):
+    cache = False
+    model = ProductTypeModelPlugin
     module = ('Магазин')
-    name = ('Аккумуляторы')
-    render_template = 'shop/includes/battery.html'
-    model = BatteryModelPlugin
+    name = ('Продукты по категории')
+    render_template = 'shop/plugin_category.html'
 
     def render(self, context, instance, placeholder):
-        batteries = instance.batteries
         context.update({
-            'batteries': batteries
+            'products': instance.products
         })
         return context
