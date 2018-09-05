@@ -13,8 +13,6 @@ def get_brands_images_list():
     result = []
     for img in brands_images:
         result.append(
-            "/media/{img_name}".format(
-                img_name=img
-            )
+            os.path.join(os.sep, brands_path, img)
         )
     return result
