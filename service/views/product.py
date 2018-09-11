@@ -1,3 +1,4 @@
+import threading
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.files.base import ContentFile
 from django.http import HttpResponseRedirect
@@ -31,6 +32,11 @@ class ProductView(TemplateView):
         new_filename = get_filename(self.request.FILES['file'].name)
         file_path = default_storage.save(new_filename, ContentFile(file.read()))
         file.close()
-        ProductLoader(file_path, storage_id, filename)
+        thread = threading.Thread(target=load_products, args=(file_path, storage_id, filename))
+        thread.start()
 
         return HttpResponseRedirect('/service/product_load/')
+
+
+def load_products(file_path, storage_id, filename):
+    ProductLoader(file_path, storage_id, filename)
