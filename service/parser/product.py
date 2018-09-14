@@ -256,7 +256,6 @@ class ProductLoader:
                     prices[x] = float(row[column])
             except:
                 prices[x] = 0
-
         return prices
 
     def parse_products(self, all_products):
