@@ -267,7 +267,7 @@ class ProductLoader:
             row = product.split(';')
             try:
                 brand = row[1].lower()
-            except AttributeError:
+            except (AttributeError, IndexError):
                 brand = ''
             if brand in brands:
                 products[brands.get(brand)].append(product)
