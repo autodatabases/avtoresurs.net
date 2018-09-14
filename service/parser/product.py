@@ -256,54 +256,6 @@ class ProductLoader:
                     prices[x] = float(row[column])
             except:
                 prices[x] = 0
-        # try:
-        #     prices[1] = row[4]
-        #     if ',' in row[4]:
-        #         prices[1] = row[4].replace(',', '.')
-        #     else:
-        #         prices[1] = float(row[4])
-        # except:
-        #     prices[1] = 0
-        # try:
-        #     prices[2] = row[5]
-        #     if ',' in row[5]:
-        #         prices[2] = row[5].replace(',', '.')
-        #     else:
-        #         prices[2] = float(row[5])
-        # except:
-        #     prices[2] = 0
-        # try:
-        #     prices[3] = row[6]
-        #     if ',' in row[6]:
-        #         prices[3] = row[6].replace(',', '.')
-        #     else:
-        #         prices[3] = float(row[6])
-        # except:
-        #     prices[3] = 0
-        # try:
-        #     prices[4] = row[7]
-        #     if ',' in row[7]:
-        #         prices[4] = row[7].replace(',', '.')
-        #     else:
-        #         prices[4] = float(row[7])
-        # except:
-        #     prices[4] = 0
-        # try:
-        #     prices[5] = row[8]
-        #     if ',' in row[8]:
-        #         prices[5] = row[8].replace(',', '.')
-        #     else:
-        #         prices[5] = float(row[8])
-        # except:
-        #     prices[5] = 0
-        # try:
-        #     prices[6] = row[9]
-        #     if ',' in row[9]:
-        #         prices[6] = row[9].replace(',', '.')
-        #     else:
-        #         prices[6] = float(row[9])
-        # except:
-        #     prices[6] = 0
 
         return prices
 
@@ -314,7 +266,10 @@ class ProductLoader:
 
         for product in all_products:
             row = product.split(';')
-            brand = row[1].lower()
+            try:
+                brand = row[1].lower()
+            except AttributeError:
+                brand = ''
             if brand in brands:
                 products[brands.get(brand)].append(product)
             else:
