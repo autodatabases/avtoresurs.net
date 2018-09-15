@@ -35,8 +35,6 @@ class Part(models.Model):
     title = models.CharField(db_column='NormalizedDescription',
                              max_length=128)  # Field name made lowercase.
 
-    state = models.CharField(db_column='ArticleStateDisplayTitle',
-                             max_length=128, default='')  # Field name made lowercase.
     state_title = models.CharField(db_column='ArticleStateDisplayValue',
                                    max_length=128, default='Нормальный')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=128, default='')  # Field name made lowercase.
@@ -47,7 +45,6 @@ class Part(models.Model):
                                           max_length=128, default='False')  # Field name made lowercase.
     flagselfservicepacking = models.CharField(db_column='FlagSelfServicePacking',
                                               max_length=128, default='False')  # Field name made lowercase.
-    foundby = models.CharField(db_column='FoundBy', max_length=128, default='ArticleNumber')  # Field name made lowercase.
 
     hasaxle = models.CharField(db_column='HasAxle', max_length=128)  # Field name made lowercase.
     hascommercialvehicle = models.CharField(db_column='HasCommercialVehicle',
@@ -189,7 +186,6 @@ class PartAttribute(models.Model):
     supplier = models.ForeignKey(Supplier, db_column='supplierid')
     part_number = models.CharField(db_column='datasupplierarticlenumber', max_length=128)
     id = models.BigIntegerField(db_column='id', primary_key=True)
-    attributeinformationtype = models.CharField(db_column='attributeinformationtype', max_length=512)
     description = models.CharField(db_column='description', max_length=512, blank=True, null=True)
     displaytitle = models.CharField(db_column='displaytitle', max_length=512, blank=True, null=True)
     displayvalue = models.CharField(db_column='displayvalue', max_length=4096)

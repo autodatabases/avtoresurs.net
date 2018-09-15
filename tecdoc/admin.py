@@ -5,7 +5,6 @@ from tecdoc.models import Supplier, Part, Manufacturer, CarModel, CarType, PartA
 # Register your models here.
 
 
-
 class SupplierAdmin(admin.ModelAdmin):
     list_display = ('id', 'dataversion', 'title', 'matchcode', 'nbrofarticles', 'hasnewversionarticles')
     list_display_links = ('id', 'dataversion', 'title', 'matchcode', 'nbrofarticles', 'hasnewversionarticles')
@@ -14,8 +13,8 @@ class SupplierAdmin(admin.ModelAdmin):
 
 class PartAdmin(admin.ModelAdmin):
     list_display = (
-        'supplier', 'part_number', 'clean_part_number', 'title', 'state', 'state_title', 'description',
-        'flagaccessory', 'flagmaterialcertification', 'flagremanufactured', 'flagselfservicepacking', 'foundby',
+        'supplier', 'part_number', 'clean_part_number', 'title', 'state_title', 'description',
+        'flagaccessory', 'flagmaterialcertification', 'flagremanufactured', 'flagselfservicepacking',
         'hasaxle', 'hascommercialvehicle', 'hascvmanuid', 'hasengine', 'haslinkitems', 'hasmotorbike',
         'haspassengercar', 'isvalid', 'lotsize1', 'lotsize2', 'packingunit', 'quantityperpackingunit')
     list_display_links = ('supplier', 'part_number', 'clean_part_number', 'title')
@@ -24,11 +23,11 @@ class PartAdmin(admin.ModelAdmin):
 
 class ManufacturerAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'title', 'can_display', 'description', 'link', 'axle', 'commercial_vehicle', 'cv_manufacturer', 'engine',
-        'motorbike', 'passenger_car', 'transporter', 'valid_for_current_country', 'vgl', 'link_item_type', 'match_code')
+        'id', 'title', 'can_display', 'description', 'link', 'axle', 'commercial_vehicle', 'engine',
+        'motorbike', 'passenger_car', 'transporter', 'vgl', 'match_code')
     list_display_links = (
-        'id', 'title', 'can_display', 'description', 'link', 'axle', 'commercial_vehicle', 'cv_manufacturer', 'engine',
-        'motorbike', 'passenger_car', 'transporter', 'valid_for_current_country', 'vgl', 'link_item_type', 'match_code')
+        'id', 'title', 'can_display', 'description', 'link', 'axle', 'commercial_vehicle', 'engine',
+        'motorbike', 'passenger_car', 'transporter', 'vgl', 'match_code')
     search_fields = ('id', 'title', 'description')
 
     def get_queryset(self, request):
@@ -39,24 +38,24 @@ class ManufacturerAdmin(admin.ModelAdmin):
 class CarModelAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'manufacturer', 'title', 'can_display', 'description', 'link', 'axle', 'commercial_vehicle',
-        'cv_manufacturer_id', 'engine',
-        'motorbike', 'passenger_car', 'transporter', 'valid_for_current_country', 'link_item_type')
+        'engine',
+        'motorbike', 'passenger_car', 'transporter')
     list_display_links = (
         'id', 'manufacturer', 'title', 'can_display', 'description', 'link', 'axle', 'commercial_vehicle',
-        'cv_manufacturer_id', 'engine',
-        'motorbike', 'passenger_car', 'transporter', 'valid_for_current_country', 'link_item_type')
+        'engine',
+        'motorbike', 'passenger_car', 'transporter')
     search_fields = ('id', 'manufacturer__title', 'title', 'description')
 
 
 class CarTypeAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'get_manufacturer', 'model', 'description', 'construction_interval', 'can_display', 'link', 'axle',
-        'commercial_vehicle', 'cv_manufacturer_id', 'engine', 'motorbike', 'passenger_car', 'transporter',
-        'valid_for_current_country', 'link_item_type')
+        'commercial_vehicle', 'engine', 'motorbike', 'passenger_car', 'transporter'
+    )
     list_display_links = (
         'id', 'get_manufacturer', 'model', 'description', 'construction_interval', 'can_display', 'link', 'axle',
-        'commercial_vehicle', 'cv_manufacturer_id', 'engine', 'motorbike', 'passenger_car', 'transporter',
-        'valid_for_current_country', 'link_item_type')
+        'commercial_vehicle', 'engine', 'motorbike', 'passenger_car', 'transporter',
+    )
     search_fields = ('id', 'model__title', 'title', 'description', 'model__manufacturer__title')
 
 

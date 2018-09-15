@@ -50,15 +50,11 @@ class Manufacturer(models.Model):
     link = models.CharField(db_column='haslink', max_length=512, blank=True, null=True)
     axle = models.CharField(db_column='isaxle', max_length=512, blank=True, null=True)
     commercial_vehicle = models.CharField(db_column='iscommercialvehicle', max_length=512, blank=True, null=True)
-    cv_manufacturer = models.CharField(db_column='iscvmanufacturerid', max_length=512, blank=True, null=True)
     engine = models.CharField(db_column='isengine', max_length=512, blank=True, null=True)
     motorbike = models.CharField(db_column='ismotorbike', max_length=512, blank=True, null=True)
     passenger_car = models.CharField(db_column='ispassengercar', max_length=512, blank=True, null=True)
     transporter = models.CharField(db_column='istransporter', max_length=512, blank=True, null=True)
-    valid_for_current_country = models.CharField(db_column='isvalidforcurrentcountry', max_length=512, blank=True,
-                                                 null=True)
     vgl = models.CharField(db_column='isvgl', max_length=512, blank=True, null=True)
-    link_item_type = models.CharField(db_column='linkitemtype', max_length=512, blank=True, null=True)
     match_code = models.CharField(db_column='matchcode', max_length=512, blank=True, null=True)
 
     def __str__(self):
