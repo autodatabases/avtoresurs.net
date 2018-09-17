@@ -80,10 +80,10 @@ class Part(models.Model):
         tecdoc_image_path = '/static/main/images/tecdoc/'
         image = Image.objects.filter(supplier=self.supplier, part_number=self.part_number).first()
         try:
-            base, ext = os.path.splitext(image.picture.lower())
+            base, ext = os.path.splitext(image.picture)
             if ext == '.bpm':
                 ext = ext.replace('bmp', 'jpg')
-            picture_name = ''.join([base, ext])
+            picture_name = ''.join([base, ext.lower()])
 
             image_path = os.path.join(tecdoc_image_path, str(self.supplier.id), picture_name)
             return image_path
