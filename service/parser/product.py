@@ -268,7 +268,7 @@ class ProductLoader:
             try:
                 brand = row[1].lower()
             except (AttributeError, IndexError):
-                brand = ''
+                brand = 'UNKNOWN'
             if brand in brands:
                 products[brands.get(brand)].append(product)
             else:
