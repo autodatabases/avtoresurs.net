@@ -224,10 +224,13 @@ class Product(models.Model):
             part_number = getattr(part, 'part_number', None)
             image = Image.objects.filter(supplier__title=self.brand, part_number=part_number).first()
             try:
-                base, ext = os.path.splitext(image.picture)
-                if ext == '.BMP':
-                    ext = ext.replace('BMP', 'jpg')
-                return '%s%s%s' % (tecdoc_image_path, base, ext.lower())
+                base, ext = os.path.splitext(image.picture.lower())
+                if ext == '.bpm':
+                    ext = ext.replace('bmp', 'jpg')
+                picture_name = ''.join([base, ext])
+
+                image_path = os.path.join(tecdoc_image_path, str(part.supplier.id), picture_name)
+                return image_path
             except Exception as exc:
                 return '/static/main/images/no-image.png'
 

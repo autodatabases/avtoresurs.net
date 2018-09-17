@@ -31,14 +31,16 @@ class Part(models.Model):
     supplier = models.ForeignKey(Supplier, db_column='supplierId', primary_key=True)  # Field name made lowercase.
     part_number = models.CharField(db_column='DataSupplierArticleNumber',
                                    max_length=128, primary_key=True)  # Field name made lowercase.
-    clean_part_number = models.CharField(db_column='FoundString', max_length=128, primary_key=True)  # Field name made lowercase.
+    clean_part_number = models.CharField(db_column='FoundString', max_length=128,
+                                         primary_key=True)  # Field name made lowercase.
     title = models.CharField(db_column='NormalizedDescription',
                              max_length=128)  # Field name made lowercase.
 
     state_title = models.CharField(db_column='ArticleStateDisplayValue',
                                    max_length=128, default='Нормальный')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=128, default='')  # Field name made lowercase.
-    flagaccessory = models.CharField(db_column='FlagAccessory', max_length=128, default='False')  # Field name made lowercase.
+    flagaccessory = models.CharField(db_column='FlagAccessory', max_length=128,
+                                     default='False')  # Field name made lowercase.
     flagmaterialcertification = models.CharField(db_column='FlagMaterialCertification',
                                                  max_length=128, default='False')  # Field name made lowercase.
     flagremanufactured = models.CharField(db_column='FlagRemanufactured',
@@ -49,11 +51,15 @@ class Part(models.Model):
     hasaxle = models.CharField(db_column='HasAxle', max_length=128)  # Field name made lowercase.
     hascommercialvehicle = models.CharField(db_column='HasCommercialVehicle',
                                             max_length=128)  # Field name made lowercase.
-    hascvmanuid = models.CharField(db_column='HasCVManuID', max_length=128, default='False')  # Field name made lowercase.
+    hascvmanuid = models.CharField(db_column='HasCVManuID', max_length=128,
+                                   default='False')  # Field name made lowercase.
     hasengine = models.CharField(db_column='HasEngine', max_length=128, default='False')  # Field name made lowercase.
-    haslinkitems = models.CharField(db_column='HasLinkitems', max_length=128, default='True')  # Field name made lowercase.
-    hasmotorbike = models.CharField(db_column='HasMotorbike', max_length=128, default='False')  # Field name made lowercase.
-    haspassengercar = models.CharField(db_column='HasPassengerCar', max_length=128, default='True')  # Field name made lowercase.
+    haslinkitems = models.CharField(db_column='HasLinkitems', max_length=128,
+                                    default='True')  # Field name made lowercase.
+    hasmotorbike = models.CharField(db_column='HasMotorbike', max_length=128,
+                                    default='False')  # Field name made lowercase.
+    haspassengercar = models.CharField(db_column='HasPassengerCar', max_length=128,
+                                       default='True')  # Field name made lowercase.
     isvalid = models.CharField(db_column='IsValid', max_length=128, default='True')  # Field name made lowercase.
     lotsize1 = models.CharField(db_column='LotSize1', max_length=128, default=1)  # Field name made lowercase.
     lotsize2 = models.CharField(db_column='LotSize2', max_length=128, default=1)  # Field name made lowercase.
@@ -73,10 +79,13 @@ class Part(models.Model):
         tecdoc_image_path = '/static/main/images/tecdoc/'
         image = Image.objects.filter(supplier=self.supplier, part_number=self.part_number).first()
         try:
-            base, ext = os.path.splitext(image.picture)
-            if ext == '.BMP':
-                ext = ext.replace('BMP', 'jpg')
-            return '%s%s%s' % (tecdoc_image_path, base, ext.lower())
+            base, ext = os.path.splitext(image.picture.lower())
+            if ext == '.bpm':
+                ext = ext.replace('bmp', 'jpg')
+            picture_name = ''.join([base, ext])
+
+            image_path = os.path.join(tecdoc_image_path, str(self.supplier.id), picture_name)
+            return image_path
         except Exception as exc:
             return '/static/main/images/no-image.png'
 
@@ -85,7 +94,8 @@ class PartAnalog(models.Model):
     supplier = models.ForeignKey(Supplier, db_column='supplierid', primary_key=True)
     part_number = models.CharField(db_column='datasupplierarticlenumber', max_length=128, primary_key=True)
     isadditive = models.CharField(db_column='IsAdditive', max_length=128, default='false')  # Field name made lowercase.
-    oenbr = models.CharField(db_column='OENbr', max_length=128, verbose_name='cross', primary_key=True)  # Field name made lowercase.
+    oenbr = models.CharField(db_column='OENbr', max_length=128, verbose_name='cross',
+                             primary_key=True)  # Field name made lowercase.
     manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId')  # Field name made lowercase.
 
     class Meta:
@@ -104,7 +114,8 @@ class PartAnalog(models.Model):
 
 
 class PartCross(models.Model):
-    manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId', primary_key=True)  # Field name made lowercase.
+    manufacturer = models.ForeignKey(Manufacturer, db_column='manufacturerId',
+                                     primary_key=True)  # Field name made lowercase.
     oenbr = models.CharField(primary_key=True, db_column='OENbr', max_length=128,
                              verbose_name='cross')  # Field name made lowercase.
     supplier = models.ForeignKey(Supplier, db_column='SupplierId', primary_key=True)  # Field name made lowercase.
@@ -214,9 +225,6 @@ class PartProduct:
     def __gt__(self, other):
         return self.price > other.price
 
-
-
-
         # class PartManager(TecdocLanguageDesManager):
         #     use_for_related_fields = True
         #
@@ -228,7 +236,6 @@ class PartProduct:
         #         query = query.prefetch_related('analogs', 'images', )
         #         # query = query.prefetch_related('analogs')
         #         return query
-
 
         # class Part(models.Model):
         #     id = models.AutoField(db_column='ART_ID', primary_key=True)
@@ -272,7 +279,6 @@ class PartProduct:
         #     class Meta:
         #         managed = False
         #         db_table = tdsettings.DB_PREFIX + 'articles'
-
 
         # class Group(models.Model):
         #     id = models.AutoField(db_column='ga_id', primary_key=True, verbose_name='Ид')
