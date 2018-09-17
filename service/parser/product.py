@@ -156,6 +156,7 @@ class ProductLoader:
                 self.report[product_category][line_number] = "Проверьте корректность строки (Exception: %s) [%s]" % (
                     e, line)
                 self.bad = self.bad + 1
+        connection.close()
 
     def get_report(self):
         """ method for generating report """
