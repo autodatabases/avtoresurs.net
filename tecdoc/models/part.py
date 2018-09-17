@@ -75,6 +75,7 @@ class Part(models.Model):
         url = urllib.parse.urlencode(url)
         return url
 
+
     def image(self):
         tecdoc_image_path = '/static/main/images/tecdoc/'
         image = Image.objects.filter(supplier=self.supplier, part_number=self.part_number).first()

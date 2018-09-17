@@ -219,20 +219,8 @@ class Product(models.Model):
         if self._image:
             return self._image.url
         else:
-            tecdoc_image_path = '/static/main/images/tecdoc/'
             part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
-            part_number = getattr(part, 'part_number', None)
-            image = Image.objects.filter(supplier__title=self.brand, part_number=part_number).first()
-            try:
-                base, ext = os.path.splitext(image.picture.lower())
-                if ext == '.bpm':
-                    ext = ext.replace('bmp', 'jpg')
-                picture_name = ''.join([base, ext])
-
-                image_path = os.path.join(tecdoc_image_path, str(part.supplier.id), picture_name)
-                return image_path
-            except Exception as exc:
-                return '/static/main/images/no-image.png'
+            return part.image()
 
     @classmethod
     def get_products(cls, product_category=ProductCategory.Tecdoc):
