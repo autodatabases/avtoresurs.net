@@ -220,8 +220,8 @@ class Product(models.Model):
             return self._image.url
         else:
             part = Part.objects.filter(clean_part_number=self.sku, supplier__title=self.brand).first()
-            return part.image() if part or '/static/main/images/no-image.png'
-            
+            return part.image() if part else '/static/main/images/no-image.png'
+
     @classmethod
     def get_products(cls, product_category=ProductCategory.Tecdoc):
         products = cls.objects.filter(product_category=product_category)
