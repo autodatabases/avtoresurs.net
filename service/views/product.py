@@ -32,8 +32,9 @@ class ProductView(TemplateView):
         new_filename = get_filename(self.request.FILES['file'].name)
         file_path = default_storage.save(new_filename, ContentFile(file.read()))
         file.close()
-        thread = threading.Thread(target=load_products, args=(file_path, storage_id, filename))
-        thread.start()
+        ProductLoader(file_path, storage_id, filename)
+        # thread = threading.Thread(target=load_products, args=(file_path, storage_id, filename))
+        # thread.start()
 
         return HttpResponseRedirect('/service/product_load/')
 

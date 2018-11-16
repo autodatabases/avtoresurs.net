@@ -1,52 +1,25 @@
-# import threading
-#
-# def test():
-#     i = 1
-#     while True:
-#         i += 1
-#         print(i)
-#
-# thread = threading.Thread(target=test, args=())
-# thread.daemon = True
-# thread.start()
+from typing import Iterable
 
 
-# thread.join()
+class MessagePattern:
+    def __init__(self):
+        self.user = self.User()
+        self.channel = ""
+        self.sn_channel_id = ""
+        self.message = ""
+        self.attachments = []
+
+    class User:
+        def __init__(self):
+            self.id = None
+            self.first_name = None
+            self.last_name = None
+            self.username = None
+
+    def as_dict(self):
+        return dict(vars(self), user=vars(self.user))
 
 
-# s1 = 'test'
-# s2 = 'test'
-#
-# if s1 == s2:
-#     print(True)
-# else:
-#     print(False)
+test = MessagePattern()
 
-def makebold(fn):
-    def wrapped():
-        return "<b>" + fn() + "</b>"
-
-    return wrapped
-
-
-def makeitalic(fn):
-    def wrapped():
-        return "<i>" + fn() + "</i>"
-
-    return wrapped
-
-
-@makebold
-@makeitalic
-def hello():
-    return "hello habr"
-
-
-def test(id=None):
-    print(id)
-
-def test():
-    print(2)
-
-
-test(id=4)
+print(test.as_dict())

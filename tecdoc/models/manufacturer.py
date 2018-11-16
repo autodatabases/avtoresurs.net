@@ -24,7 +24,6 @@ class ManufacturerManager(models.Manager):
         return qs
 
 
-
 class Manufacturer(models.Model):
     objects = ManufacturerManager()
 
