@@ -186,16 +186,27 @@ STATICFILES_DIRS = (
 ACCOUNT_ACTIVATION_DAYS = 7
 
 # EMAIL_USE_TLS = True
+#EMAIL_USE_SSL = True
+#EMAIL_HOST = 'smtp.yandex.ru'
+#EMAIL_PORT = 465
+#EMAIL_HOST_USER = 'no-reply@avtoresurs.net'
+#EMAIL_HOST_PASSWORD = 'Iddqd31337'
+#DEFAULT_FROM_EMAIL = 'no-reply@avtoresurs.net'
+#EMAIL_NOREPLY = 'no-reply@avtoresurs.net'
+#EMAIL_NOREPLY_LIST = ['no-reply@avtoresurs.net']
+#EMAIL_TO = ['avtoresurs@mail.ru']
+# EMAIL_TO = ['oleg_a@outlook.com']
+#EMAIL_BCC = ['oleg_a@outlook.com', 'avtoresurs@mail.ru']
+
 EMAIL_USE_SSL = True
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'no-reply@avtoresurs.net'
-EMAIL_HOST_PASSWORD = 'Iddqd31337'
-DEFAULT_FROM_EMAIL = 'no-reply@avtoresurs.net'
+EMAIL_HOST_USER = 'valery.avtoresurs@gmail.com'
+EMAIL_HOST_PASSWORD = 'AF0U7QY2'
+DEFAULT_FROM_EMAIL = 'valery.avtoresurs@gmail.com'
 EMAIL_NOREPLY = 'no-reply@avtoresurs.net'
 EMAIL_NOREPLY_LIST = ['no-reply@avtoresurs.net']
 EMAIL_TO = ['avtoresurs@mail.ru']
-# EMAIL_TO = ['oleg_a@outlook.com']
 EMAIL_BCC = ['oleg_a@outlook.com', 'avtoresurs@mail.ru']
 
 # POSTMAN CONFIG
