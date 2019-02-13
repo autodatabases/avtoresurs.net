@@ -207,7 +207,7 @@ DEFAULT_FROM_EMAIL = 'valery.avtoresurs@gmail.com'
 EMAIL_NOREPLY = 'no-reply@avtoresurs.net'
 EMAIL_NOREPLY_LIST = ['no-reply@avtoresurs.net']
 EMAIL_TO = ['avtoresurs@mail.ru']
-EMAIL_BCC = ['oleg_a@outlook.com', 'avtoresurs@mail.ru']
+EMAIL_BCC = ['avtoresurs@mail.ru']
 
 # POSTMAN CONFIG
 POSTMAN_DISALLOW_ANONYMOUS = True
