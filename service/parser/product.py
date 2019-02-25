@@ -118,10 +118,10 @@ class ProductLoader:
 
                 prices = self.get_prices(row)
 
-                if product_category == ProductCategory.Tecdoc:
-                    part_tecdoc = Part.objects.filter(clean_part_number=clear_sku, supplier__title=brand)
-                elif product_category in self.product_categories:
+                if product_category in self.product_categories:
                     part_tecdoc = True
+                elif product_category == ProductCategory.Tecdoc:
+                    part_tecdoc = Part.objects.filter(clean_part_number=clear_sku, supplier__title=brand)
                 else:
                     part_tecdoc = False
 
